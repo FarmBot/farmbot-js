@@ -12,7 +12,7 @@ var FarmbotJS = FarmbotJS || {};
 
   function validateOptions(input, required) {
     required.forEach(function(prop, inx, parent){
-      if (parent.hasOwnProperty(prop)) {
+      if (!parent.hasOwnProperty(prop)) {
         throw(new Error("FarmbotJS options require a " + prop + " property"));
       }
     });
