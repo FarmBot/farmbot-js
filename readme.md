@@ -1,0 +1,92 @@
+# FarmbotJS: Farmbot RPC wrapper
+
+# Project Status
+
+Pre-alpha / Not ready for use of any kind.
+
+## Prerequisites
+
+Works on any browser that supports native promises. Consider using a polyfill if your target browser does not support promises natively.
+
+## Quick Usage:
+
+If you are running your bot off of the [officially supported service](http://my.farmbot.io), then all you need to pass in is the UUID/Token of your device.
+
+```javascript
+
+var bot = FarmbotJS.createBot({uuid: "123", token: "456"});
+
+bot
+  .connect()
+  .then(function(bot){ alert("Bot online!"); })
+  .catch(function(error) { alert("Opps! Couldnt connect :("); });
+
+```
+
+See "Advanced Usage and Config" for advanced use cases such as running a private server.
+
+## Basic RPC Commands
+
+Call RPC commands using the corresponding method on `bot.commands`. Most (all?) RPC commands return a promise. Timeout is set at `1000 ms`
+
+Example:
+
+```javascript
+
+  bot
+    .commands
+    .home_x()
+    .then(function(ack){
+      console.log("X Axis is now at 0.");
+    })
+    .catch(function(err){
+      console.log("Failed to bring X axis home.");
+    })
+
+```
+
+Currently supported commands:
+
+ * emergency_stop
+ * exec_sequence
+ * home_all
+ * home_x
+ * home_y
+ * home_z
+ * move_absolute({x:, y:, z:})
+ * move_relative({x:, y:, z:})
+ * pin_write(num, val)
+ * read_status
+ * sync_sequence (Rename to `syncronize`? Comments welcome.)
+ * update_calibration
+
+## Advanced Usage and Config
+
+If you are running your own servers, you may want to use other options.
+
+### meshServer (String)
+
+URL for the mesh server used by the bot. Defaults to `ws://mesh.farmbot.io`.
+
+```javascript
+
+var options = {
+  uuid: "123",
+  token: "456",
+  meshServer: 'wss://localhost:443'
+};
+
+var bot = FarmbotJS.createBot(options);
+
+```
+
+### Timeout (Number)
+
+Time (in milliseconds) to wait before deeming an RPC command to be unacknowledged. Relevant promise objects will be rejected if the bot does not respond in the timeframe provided. Defaults to `1000`.
+
+## TODO
+
+ - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] Test suite
+ - [ ] Test coverage
+ - [ ] Get feature parity with old version.
