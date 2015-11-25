@@ -2,7 +2,7 @@
 
 # Project Status
 
-Pre-alpha / Not ready for use of any kind.
+**Don't use it yet**. Pre-alpha / Not ready for use of any kind.
 
 ## Prerequisites
 
