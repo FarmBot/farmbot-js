@@ -4,9 +4,25 @@
 
 **Don't use it yet**. Pre-alpha / Not ready for use of any kind.
 
+## TODO
+
+ - [ ] **Add support for UMD modules**
+ - [ ] Add test suite
+ - [ ] Add test coverage reporter
+ - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] Get feature parity with old version.
+
 ## Prerequisites
 
 Works on any browser that supports native promises. Consider using a polyfill if your target browser does not support promises natively.
+
+## Installation
+
+```
+npm install farmbotjs
+```
+
+If you would like support for other package managers, feel free to submit a PR or raise an issue.
 
 ## Quick Usage:
 
@@ -55,9 +71,11 @@ Currently supported commands:
  * home_z
  * move_absolute({x:, y:, z:})
  * move_relative({x:, y:, z:})
- * pin_write(num, val)
+ * pin_write(num, val, mode)
  * read_status
+ * send_raw(jsObject)
  * sync_sequence (Rename to `syncronize`? Comments welcome.)
+ * togglePin(number)
  * update_calibration
 
 ## Advanced Usage and Config
@@ -83,10 +101,3 @@ var bot = FarmbotJS.createBot(options);
 ### Timeout (Number)
 
 Time (in milliseconds) to wait before deeming an RPC command to be unacknowledged. Relevant promise objects will be rejected if the bot does not respond in the timeframe provided. Defaults to `1000`.
-
-## TODO
-
- - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
- - [ ] Test suite
- - [ ] Test coverage
- - [ ] Get feature parity with old version.
