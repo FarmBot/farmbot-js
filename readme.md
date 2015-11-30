@@ -7,7 +7,7 @@
 ## TODO
 
  - [ ] **Add support for UMD modules**
- - [ ] Add test suite
+ - [X] Add test suite
  - [ ] Add test coverage reporter
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.
