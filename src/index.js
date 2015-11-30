@@ -1,35 +1,34 @@
-var FarmbotJS = FarmbotJS || {};
-
-(function(F, window){
+(function(window){
   "use strict";
 
-  function extend(target, mixins) {
+  FarmbotJS.extend = function(target, mixins) {
     mixins.forEach(function(mixin){
       for (var prop in mixin) { target[prop] = mixin[prop]; }
     });
     return target;
   };
 
-  function validateOptions(input, required) {
+  FarmbotJS.requiredOptions = ["uuid", "token", "meshServer", "timeout"];
+
+  FarmbotJS.requireKeys = function(input, required) {
     required.forEach(function(prop, inx, parent){
-      if (!parent.hasOwnProperty(prop)) {
-        throw(new Error("FarmbotJS options require a " + prop + " property"));
+      if (!input.hasOwnProperty(prop)) {
+        throw(new Error("Expected input object to have `" + prop + "` property"));
       }
     });
   }
 
-  var requiredOptions = ["uuid", "token", "meshServer", "timeout"];
-
-  var defaultOptions = {
+  FarmbotJS.defaultOptions = {
     meshServer: 'ws://mesh.farmbot.io',
     timeout: 1000
   };
 
-  F.create = function(input) {
+  function FarmbotJS(input){
     var bot = {};
-    bot.options = extend({}, [defaultOptions, (input || {})]);
-    validateOptions(bot.options, requiredOptions);
+    bot.options = FarmbotJS.extend({}, [FarmbotJS.defaultOptions, (input || {})]);
+    FarmbotJS.requireKeys(bot.options, FarmbotJS.requiredOptions);
     return bot;
   };
 
-})(FarmbotJS, window);
+  window.FarmbotJS = FarmbotJS; // TODO: Modules (UMD?);
+})(window);

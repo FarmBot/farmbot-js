@@ -4,7 +4,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
       'src/**/*.js',
-      'test/**/*_spec.js'
+      'test/**/*_test.js'
     ],
     exclude: [
     ],
@@ -24,7 +24,7 @@ module.exports = function(config) {
     autoWatch: true,
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'],
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
