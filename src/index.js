@@ -10,8 +10,8 @@ function FarmbotJS(input) {
 
   // Add instance methds via composition.
   FarmbotJS.util.extend(bot, [
-      FarmbotJS._instanceMethods//,
-      // FarmbotJS.events
+      FarmbotJS._instanceMethods,
+      FarmbotJS.events
   ]);
 
   return bot;

@@ -7,6 +7,7 @@ module.exports = function(config) {
       'src/fb_config.js',
       'src/fb_util.js',
       'src/fb_instance_methods.js',
+      'src/fb_events.js',
       'test/**/*_test.js'
     ],
     exclude: [
