@@ -3,7 +3,10 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'src/**/*.js',
+      'src/index.js',
+      'src/fb_config.js',
+      'src/fb_util.js',
+      'src/fb_instance_methods.js',
       'test/**/*_test.js'
     ],
     exclude: [

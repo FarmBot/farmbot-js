@@ -1,5 +1,3 @@
-'use strict';
-
 describe('FarmbotJS()', function() {
   it('constructs a new farmbot object', function() {
     var bot = FarmbotJS({
@@ -14,3 +12,4 @@ describe('FarmbotJS()', function() {
     expect(options.timeout).toEqual(FarmbotJS.config.defaultOptions.timeout);
   });
 });
+

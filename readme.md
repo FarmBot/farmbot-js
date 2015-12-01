@@ -6,6 +6,7 @@
 
 ## TODO
 
+ - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] **Add support for UMD modules**
  - [X] Add test suite
  - [ ] Add test coverage reporter
