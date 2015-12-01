@@ -14,7 +14,10 @@
 
 ## Prerequisites
 
-Works on any browser that supports native promises. Consider using a polyfill if your target browser does not support promises natively.
+Works on any browser that supports:
+
+ * Native Promise objects (you can polyfill this one).
+ * Native Websockets (we don't plan on supporting polyfills).
 
 ## Installation
 
@@ -30,7 +33,7 @@ If you are running your bot off of the [officially supported service](http://my.
 
 ```javascript
 
-var bot = FarmbotJS.createBot({uuid: "123", token: "456"});
+var bot = FarmbotJS({uuid: "123", token: "456"});
 
 bot
   .connect()
@@ -94,7 +97,7 @@ var options = {
   meshServer: 'wss://localhost:443'
 };
 
-var bot = FarmbotJS.createBot(options);
+var bot = FarmbotJS(options);
 
 ```
 
