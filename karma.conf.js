@@ -3,6 +3,7 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
+      "https://cdn.socket.io/socket.io-1.3.7.js",
       'src/index.js',
       'src/fb_config.js',
       'src/fb_util.js',

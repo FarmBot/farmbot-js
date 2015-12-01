@@ -12,7 +12,7 @@ describe('FarmbotJS.events', function() {
     var bot = FarmbotJS({ uuid: '', token: ''});
     expect(observation.count).toEqual(0);
     bot.on("test", function(count){ observation.count = count });
-    bot.trigger("test", 3);
+    bot.emit("test", 3);
     expect(observation.count).toEqual(3);
   });
 });

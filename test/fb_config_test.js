@@ -1,7 +1,7 @@
 describe('FarmbotJS.config', function() {
   it('provides default options', function() {
     var defaultOptions = {
-      meshServer: 'ws://mesh.farmbot.io/ws/v2',
+      meshServer: 'ws://mesh.farmbot.io',//"wss://meshblu.octoblu.com/socket.io", //'ws://mesh.farmbot.io/ws/v2',
       timeout: 1000
     };
 

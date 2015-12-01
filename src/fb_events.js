@@ -12,7 +12,7 @@ FarmbotJS.events = {
     this.event(event).push(callback);
   },
 
-  trigger: function(event, data) {
+  emit: function(event, data) {
     this.event(event).forEach(function(handler){ handler(data); });
   }
 };
