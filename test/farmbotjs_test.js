@@ -1,10 +1,10 @@
-describe("FarmbotJS", function(){
+describe("FarmbotJS.util", function(){
   "use strict";
   it('extends objects using .extend(obj, [mixins...])', function(){
     var extended = {};
     var mixin1 = {mixin1: 123};
     var mixin2 = {mixin2: 456};
-    FarmbotJS.extend(extended, [mixin1, mixin2]);
+    FarmbotJS.util.extend(extended, [mixin1, mixin2]);
 
     expect(extended.mixin1).toEqual(123);
     expect(extended.mixin2).toEqual(456);
@@ -12,7 +12,7 @@ describe("FarmbotJS", function(){
 
   it('explicitly states required config options', function(){
     ["uuid", "token", "meshServer", "timeout"].forEach(function(option){
-      expect(FarmbotJS.requiredOptions).toContain(option);
+      expect(FarmbotJS.config.requiredOptions).toContain(option);
     });
   });
 
@@ -20,12 +20,13 @@ describe("FarmbotJS", function(){
     var requiredFields = ["important"];
     var expectedError = new Error(
       "Expected input object to have `important` property");
-    var badAttempt = function() { FarmbotJS.requireKeys({}, requiredFields) };
+    var badAttempt = function() {
+      FarmbotJS.util.requireKeys({}, requiredFields) };
     var goodAttempt = function() {
-      FarmbotJS.requireKeys({important: "yes"}, requiredFields)
+      FarmbotJS.util.requireKeys({important: "yes"}, requiredFields);
     };
 
-    expect(FarmbotJS.requireKeys).toBeDefined();
+    expect(FarmbotJS.util.requireKeys).toBeDefined();
     expect(badAttempt).toThrow(expectedError);
     expect(goodAttempt).not.toThrow(expectedError);
   });
@@ -36,10 +37,10 @@ describe("FarmbotJS", function(){
       timeout: 1000
     };
 
-    expect(FarmbotJS.defaultOptions).toBeDefined();
+    expect(FarmbotJS.config.defaultOptions).toBeDefined();
     for (var option in defaultOptions) {
       var expectation = defaultOptions[option];
-      var reality = FarmbotJS.defaultOptions[option];
+      var reality = FarmbotJS.config.defaultOptions[option];
       expect(expectation).toEqual(reality);
     };
   });
@@ -50,8 +51,8 @@ describe("FarmbotJS", function(){
 
     expect(options.uuid).toEqual("myUUID");
     expect(options.token).toEqual("myToken");
-    expect(options.meshServer).toEqual(FarmbotJS.defaultOptions.meshServer);
-    expect(options.timeout).toEqual(FarmbotJS.defaultOptions.timeout);
+    expect(options.meshServer).toEqual(FarmbotJS.config.defaultOptions.meshServer);
+    expect(options.timeout).toEqual(FarmbotJS.config.defaultOptions.timeout);
   });
 });
 

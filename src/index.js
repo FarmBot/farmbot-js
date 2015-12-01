@@ -1,32 +1,34 @@
 (function(window) {
   "use strict";
 
-  // TODO: Add a FarmbotJS.util namespace?
-  FarmbotJS.extend = function(target, mixins) {
-    mixins.forEach(function(mixin) {
-      var iterate = function(prop) {
-        target[prop] = mixin[prop];
-      };
-      Object.keys(mixin).forEach(iterate);
-    });
-    return target;
-  };
+  FarmbotJS.util = {
+    extend: function(target, mixins) {
+      mixins.forEach(function(mixin) {
+        var iterate = function(prop) {
+          target[prop] = mixin[prop];
+        };
+        Object.keys(mixin).forEach(iterate);
+      });
+      return target;
+    },
 
-  FarmbotJS.requiredOptions = ["uuid", "token", "meshServer", "timeout"];
+    requireKeys: function(input, required) {
+      required.forEach(function(prop) {
+        if (!input.hasOwnProperty(prop)) {
+          throw (new Error("Expected input object to have `" + prop +
+            "` property"));
+        }
+      });
+    }
+  }
 
-  FarmbotJS.requireKeys = function(input, required) {
-    required.forEach(function(prop) {
-      if (!input.hasOwnProperty(prop)) {
-        throw (new Error("Expected input object to have `" + prop +
-          "` property"));
-      }
-    });
-  };
-
-  FarmbotJS.defaultOptions = {
-    meshServer: 'ws://mesh.farmbot.io',
-    timeout: 1000
-  };
+  FarmbotJS.config = {
+    requiredOptions: ["uuid", "token", "meshServer", "timeout"],
+    defaultOptions: {
+      meshServer: 'ws://mesh.farmbot.io',
+      timeout: 1000
+    }
+  }
 
   FarmbotJS._instanceMethods = {
     connect: function(){
@@ -44,11 +46,13 @@
   function FarmbotJS(input) {
     var bot = {};
     // Validate / Set config options.
-    bot.options = FarmbotJS.extend({}, [FarmbotJS.defaultOptions, input || {}]);
-    FarmbotJS.requireKeys(bot.options, FarmbotJS.requiredOptions);
+    bot.options = FarmbotJS
+      .util
+      .extend({}, [FarmbotJS.config.defaultOptions, input || {}]);
+    FarmbotJS.util.requireKeys(bot.options, FarmbotJS.config.requiredOptions);
 
     // Add instance methds via composition.
-    FarmbotJS.extend(bot, [FarmbotJS._instanceMethods]);
+    FarmbotJS.util.extend(bot, [FarmbotJS._instanceMethods]);
 
     return bot;
   }
