@@ -54,3 +54,25 @@ describe("FarmbotJS", function(){
     expect(options.timeout).toEqual(FarmbotJS.defaultOptions.timeout);
   });
 });
+
+describe("an instance of FarmbotJS ", function (){
+  var bot;
+
+  beforeEach(function(done){
+    bot = FarmbotJS({uuid: "myUUID", token: "myToken"});
+    done();
+  })
+
+  it("connects to the server", function (done){
+    bot
+      .connect()
+      .then(function(){
+        console.log("inside then()");
+        done();
+      })
+      .catch(function(){
+        console.log("inside catch()");
+        done();
+      });
+  });
+});
