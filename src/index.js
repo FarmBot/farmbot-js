@@ -19,6 +19,31 @@
             "` property"));
         }
       });
+    },
+
+    uuid: function() {
+      var template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+      var replaceChar = function(c) {
+        var r = Math.random() * 16 | 0;
+        var v = c === 'x' ? r : r & 0x3 | 0x8;
+        return v.toString(16);
+      };
+      return template.replace(/[xy]/g, replaceChar);
+    },
+    // This function isn't clever enough.
+    token: function() {
+      var randomHex = function(){
+        return Math.
+          floor((1 + Math.random()) * 0x10000).
+          toString(16).
+          substring(1);
+      }
+      var i = 10;
+      var results = [];
+      while(i--) {
+        results.push(randomHex());
+      }
+      return results.join('');
     }
   }
 
@@ -31,8 +56,11 @@
   }
 
   FarmbotJS._instanceMethods = {
+    rawSend: function(msg) { this.socket.send(JSON.stringify(msg)); },
     connect: function(){
       var executor = function(resolve, reject) {
+        this.socket = new WebSocket("wss://meshblu.octoblu.com/ws/v2");
+
         // Case 1: OK
         // Case 2: Error
         // Case 3: Timeout
