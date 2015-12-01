@@ -1,6 +1,6 @@
-describe('FarmbotJS.util', function() {
-  'use strict';
+'use strict';
 
+describe('FarmbotJS.util', function() {
   it('extends objects using .extend(obj, [mixins...])', function() {
     var extended = {};
     var mixin1 = {
@@ -61,7 +61,7 @@ describe('FarmbotJS.util', function() {
 describe('FarmbotJS.config', function() {
   it('provides default options', function() {
     var defaultOptions = {
-      meshServer: 'ws://mesh.farmbot.io',
+      meshServer: 'ws://mesh.farmbot.io/ws/v2',
       timeout: 1000
     };
 
@@ -96,14 +96,9 @@ describe('an instance of FarmbotJS ', function() {
   it('connects to the server', function(done) {
     bot
       .connect()
-      .then(function() {
-        console.log('inside then()');
-        done();
-      })
-      .catch(function() {
-        console.log('inside catch()');
-        done();
-      });
+      .then(function() { done(); })
+      .catch(function() { done(); });
+    console.log('FIXME');
   });
 });
 
