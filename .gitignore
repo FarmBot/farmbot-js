@@ -1,3 +1,4 @@
+test/fb_integration_test.js
 logs
 *.log
 npm-debug.log*

@@ -8,6 +8,8 @@
 
  - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] **Add support for UMD modules**
+ - [ ] Upgrade to support latest MeshBlu
+ - [ ] Get off of socket.io after meshblu upgrade.
  - [X] Add test suite
  - [ ] Need ability to generate guest UUID / Token.
  - [ ] Add test coverage reporter
@@ -19,7 +21,7 @@
 Works on any browser that supports:
 
  * Native Promise objects (you can polyfill this one).
- * Native Websockets (we don't plan on supporting polyfills).
+ * Has socketio.
 
 ## Installation
 

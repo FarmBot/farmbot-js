@@ -11,7 +11,7 @@ FarmbotJS.util = {
 
   requireKeys: function(input, required) {
     required.forEach(function(prop) {
-      if (!input.hasOwnProperty(prop)) {
+      if (!input[prop]) {
         throw (new Error("Expected input object to have `" + prop +
           "` property"));
       }

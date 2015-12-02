@@ -1,6 +1,7 @@
-  // TODO: 'off' function
-  // TODO: 'once' function
-
+// TODO: 'off' function
+// TODO: 'once' function
+// NOTE: We don't use this right now, but we will when we remove socket.io from
+//       the project.
 FarmbotJS.events = {
   event: function(name) {
     if (!this.events) { this.events = {}; };
