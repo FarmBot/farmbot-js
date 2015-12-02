@@ -9,6 +9,7 @@
  - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] **Add support for UMD modules**
  - [X] Add test suite
+ - [ ] Need ability to generate guest UUID / Token.
  - [ ] Add test coverage reporter
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.

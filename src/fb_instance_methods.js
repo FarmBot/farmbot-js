@@ -1,6 +1,9 @@
 FarmbotJS._instanceMethods = {
+  clientCredentials: function() {
+
+  },
   connect: function(){
-    var executor = function(resolve, reject) {
+    return new window.Promise(function(resolve, reject) {
       var that = this;
       var me = {
         uuid: "73425170-2660-49de-acd9-6fad4989aff6",
@@ -27,10 +30,9 @@ FarmbotJS._instanceMethods = {
             });
         });
       })
-      // setTimeout(function(){
-      //   if (!completed) { reject(new Error("Connection timed out")) };
-      // }, that.options.timeout)
-    };
-    return new window.Promise(executor.bind(this));
+      setTimeout(function(){
+        if (!completed) { reject(new Error("Connection timed out")) };
+      }, that.options.timeout)
+    }.bind(this));
   }
 }
