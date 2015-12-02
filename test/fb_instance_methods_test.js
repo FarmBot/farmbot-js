@@ -10,14 +10,18 @@ describe('an instance of FarmbotJS ', function() {
   })
 
   it('connects to the server', function(done) {
+    FakeSioClient.start();
     bot
       .connect()
-      .then(function(data) {
+      .then(function(bot) {
+        expect(bot).toEqual(bot);
+        expect(bot.socket.connected).toBeTruthy();
         done();
-        pending();
+        FakeSioClient.stop();
       })
       .catch(function(err) {
-        throw (new Error('Attempted to connect to Farmbot, but it timed out.'));
+        FakeSioClient.stop();
+        throw (new Error('Farmbot timed out. Can\'t connect to Mesh server.'));
       });
   });
 });
