@@ -1,8 +1,8 @@
 (function() {
 
-  function TimeoutPromise(executor, time){
+  function TimeoutPromise(executor, time) {
     var completed = false;
-    return new window.Promise(function(resolve, reject){
+    return new window.Promise(function(resolve, reject) {
       executor(resolve, reject);
       setTimeout(function() {
         if (!completed) {
@@ -13,7 +13,7 @@
   }
 
   FarmbotJs.commands = {
-    emergency_stop: function(){
+    emergency_stop: function() {
       // var payload = {
       //   message_type: 'single_command',
       //   action: 'EMERGENCY STOP'
@@ -22,7 +22,7 @@
       // var executor = function() {
       // };
       // return new Promise();
-    }//,
+    } //,
     // exec_sequence: function(){
     //   return new Promise();
     // },

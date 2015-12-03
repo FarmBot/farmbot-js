@@ -29,15 +29,13 @@ FarmbotJS.util = {
   },
   // This function isn't clever enough.
   token: function() {
-    var randomHex = function(){
-      return Math.
-        floor((1 + Math.random()) * 0x10000).
-        toString(16).
-        substring(1);
+    var randomHex = function() {
+      var num = (1 + Math.random()) * 0x10000;
+      return Math.floor(num).toString(16).substring(1);
     }
     var i = 10;
     var results = [];
-    while(i--) {
+    while (i--) {
       results.push(randomHex());
     }
     return results.join('');
