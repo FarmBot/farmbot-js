@@ -4,15 +4,14 @@ function FarmbotJS(input) {
   bot.options = FarmbotJS
     .util
     .extend({}, [FarmbotJS.config.defaultOptions, input]);
-
   FarmbotJS.util.requireKeys(bot.options, FarmbotJS.config.requiredOptions);
 
   // Add instance methds via composition.
   FarmbotJS.util.extend(bot, [
     FarmbotJS.instanceMethods,
-    FarmbotJS.events
+    FarmbotJS.events,
+    FarmbotJS.commands
   ]);
-
   return bot;
 }
 
