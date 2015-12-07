@@ -1,7 +1,17 @@
 FarmbotJS.util = {
+  encodeFrame: function(name, payload) {
+    return JSON.stringify([name, payload]);
+  },
+  decodeFrame: function(frameString) {
+    var raw = JSON.parse(frameString)
+    return {
+      name: raw[0],
+      message: raw[1]
+    }
+  },
   registerDevice: function (meshUrl, timeOut) {
       var meshUrl = meshUrl || '//meshblu.octoblu.com';
-      var timeOut = timeOut || 3000;
+      var timeOut = timeOut || 6000;
       var request = new XMLHttpRequest();
       request.open('POST', meshUrl + '/devices?type=prototype', true);
       request.setRequestHeader(
@@ -26,6 +36,7 @@ FarmbotJS.util = {
         };
 
         setTimeout(function() {
+          console.warn("Device Registration Timed out.")
           reject(new Error("Connection timed out"))
         }, timeOut);
       });

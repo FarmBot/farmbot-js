@@ -2,9 +2,9 @@
 // TODO: 'once' function
 FarmbotJS.events = {
   event: function(name) {
-    this.events = this.events || {};
-    this.events[name] = this.events[name] || [];
-    return this.events[name];
+    this.__events = this.__events || {};
+    this.__events[name] = this.__events[name] || [];
+    return this.__events[name];
   },
 
   on: function(event, callback) {
@@ -12,8 +12,6 @@ FarmbotJS.events = {
   },
 
   emit: function(event, data) {
-    this.event(event).forEach(function(handler) {
-      handler(data);
-    });
+    this.event(event).forEach(function(handler) { handler(data); });
   }
 };

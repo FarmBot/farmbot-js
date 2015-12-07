@@ -6,6 +6,7 @@
 
 ## TODO
 
+ - [ ] Get compliant with A+ promise spec.
  - [ ] DRY up repetitious promise code via helper in `FarmbotJS.util`
  - [ ] Get off of socket.io after meshblu upgrade.
  - [ ] **Add support for UMD modules**
