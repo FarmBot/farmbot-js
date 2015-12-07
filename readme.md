@@ -6,15 +6,16 @@
 
 ## TODO
 
- - [ ] Add build tool / pre built `farmbot.min.js`
+ - [ ] DRY up repetitious promise code via helper in `FarmbotJS.util`
+ - [ ] Get off of socket.io after meshblu upgrade.
  - [ ] **Add support for UMD modules**
  - [ ] Upgrade to support latest MeshBlu
- - [ ] Get off of socket.io after meshblu upgrade.
- - [X] Add test suite
- - [X] Ability to generate guest UUID / Token.
- - [X] Add test coverage reporter
+ - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.
+ - [X] Ability to generate guest UUID / Token.
+ - [X] Add test suite
+ - [X] Add test coverage reporter
 
 ## Prerequisites
 

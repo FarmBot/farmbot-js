@@ -1,4 +1,38 @@
 FarmbotJS.util = {
+  registerDevice: function (meshUrl, timeOut) {
+      var meshUrl = meshUrl || '//meshblu.octoblu.com';
+      var timeOut = timeOut || 3000;
+      var request = new XMLHttpRequest();
+      request.open('POST', meshUrl + '/devices?type=prototype', true);
+      request.setRequestHeader(
+        'Content-Type',
+        'application/x-www-form-urlencoded; charset=UTF-8'
+      );
+
+      var promise = new Promise(function(resolve, reject) {
+        var finished = false;
+
+        request.onload = function() {
+          finished = true;
+          var data = JSON.parse(request.responseText);
+          var allIsWell = (request.status >= 200 && request.status < 400);
+          return allIsWell ? resolve(data) : reject(data);
+        };
+
+        request.onerror = function(error) {
+          if (!finished) {
+            reject(error || "Connection error. I dunno.");
+          };
+        };
+
+        setTimeout(function() {
+          reject(new Error("Connection timed out"))
+        }, timeOut);
+      });
+      request.send();
+      return promise;
+  },
+
   extend: function(target, mixins) {
     mixins.forEach(function(mixin) {
       var iterate = function(prop) {

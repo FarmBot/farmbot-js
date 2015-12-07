@@ -31,7 +31,6 @@ describe('an instance of FarmbotJS', function() {
     bot
       .connect()
       .then(function(bot) {
-        debugger;
         expect("timeout").toEqual("true");
         done();
       })
