@@ -1,9 +1,9 @@
-describe('an instance of FarmbotJS', function() {
+describe('an instance of Farmbot', function() {
   var bot;
 
   beforeEach(function(done) {
 
-    bot = FarmbotJS({
+    bot = Farmbot({
       uuid: '73425170-2660-49de-acd9-6fad4989aff6',
       token: 'bcbd352aaeb9b7f18214a63cb4f3b16b89d8fd24'
     });
@@ -12,7 +12,7 @@ describe('an instance of FarmbotJS', function() {
       bot.socket = {
         calls: [],
         send: function (msg) {
-          this.calls.push(FarmbotJS.util.decodeFrame(msg));
+          this.calls.push(Farmbot.decodeFrame(msg));
         }
       }
       return Promise.resolve(bot);
@@ -87,7 +87,7 @@ describe('an instance of FarmbotJS', function() {
 
   it('requires user to connect() before send()ing', function(){
     expect(function(){
-      FarmbotJS({uuid: '-', token: '-'})
+      Farmbot({uuid: '-', token: '-'})
         .sendRaw("Blah")
     }).toThrow(new Error("You must connect() before sending data"))
   })

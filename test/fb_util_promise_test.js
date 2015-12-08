@@ -1,17 +1,17 @@
-describe('FarmbotJS.util promise object', function() {
+describe('Farmbot promise object', function() {
   beforeAll(function(done) {
     done();
   });
 
   it('has a default label', function(){
-    var $p = FarmbotJS.util.defer("Testing defer()");
+    var $p = Farmbot.defer("Testing defer()");
     expect($p.label).toEqual("Testing defer()");
-    var $p = FarmbotJS.util.defer();
+    var $p = Farmbot.defer();
     expect($p.label).toEqual("a promise");
   })
 
   it('resolves', function(done){
-    var $p = FarmbotJS.util.defer("Testing defer()");
+    var $p = Farmbot.defer("Testing defer()");
     var finished = "The promise is resolved."
     expect($p.finished).toBeFalsy();
     $p
@@ -24,7 +24,7 @@ describe('FarmbotJS.util promise object', function() {
   });
 
   it('rejects', function(done){
-    var $p = FarmbotJS.util.defer("Testing defer()");
+    var $p = Farmbot.defer("Testing defer()");
     var finished = "The promise is resolved."
     expect($p.finished).toBeFalsy();
     $p
@@ -38,7 +38,7 @@ describe('FarmbotJS.util promise object', function() {
   });
 
   it('resolves before timeout', function(done){
-    var $p = FarmbotJS.util.timerDefer("Testing timerDefer()");
+    var $p = Farmbot.timerDefer("Testing timerDefer()");
     var finished = "The promise is resolved.";
     expect($p.finished).toBeFalsy();
     $p
@@ -51,7 +51,7 @@ describe('FarmbotJS.util promise object', function() {
   });
 
   it('rejects after timeout', function(done){
-    var $p = FarmbotJS.util.timerDefer(1, "Testing timeDefer() timeout");
+    var $p = Farmbot.timerDefer(1, "Testing timeDefer() timeout");
     $p.catch(function(value){
       expect($p.finished).toBeTruthy();
       expect(value.message).toContain("did not execute");

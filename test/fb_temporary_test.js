@@ -7,7 +7,7 @@ describe("Raw websocket", function() {
   beforeAll(function(done) { done(); });
 
   it("connects to meshblu", function(done) {
-      var bot = FarmbotJS(goodCreds);
+      var bot = Farmbot(goodCreds);
       bot
         .connect()
         .then(function(bot) {
