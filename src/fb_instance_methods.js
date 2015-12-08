@@ -34,6 +34,16 @@
     __newSocket: function() { // for easier testing.
       return new WebSocket("ws://" + this.options.meshServer + "/ws/v2");
     },
+    __onmessage: function(e) {
+        var msg = FarmbotJS.util.decodeFrame(e.data);
+        var id = msg.message.id;
+
+        if (id) {
+          this.emit(id, msg.message);
+        } else {
+          this.emit(msg.name, msg.message);
+        };
+      },
     __newConnection: function(credentials) {
       var that = this;
       var promise = FarmbotJS.util.timerDefer(that.options.timeout,
@@ -43,16 +53,7 @@
         that.socket.send(FarmbotJS.util.encodeFrame("identity", credentials));
       };
 
-      that.socket.onmessage = function(e) {
-        var msg = FarmbotJS.util.decodeFrame(e.data);
-        var id = msg.message.id;
-
-        if (id) {
-          that.emit(id, msg.message);
-        } else {
-          that.emit(msg.name, msg.message);
-        };
-      };
+      that.socket.onmessage = that.__onmessage.bind(that);
 
       that.on("ready", function() { promise.resolve(that) });
 
