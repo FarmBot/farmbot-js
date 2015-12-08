@@ -22,29 +22,14 @@
     },
     send: function(input) {
       var that = this;
-      var msg = that.sendRaw(input)
-      // var promise = FarmbotJS.util.timerDefer(that.options.timeout,
-      //                                         msg.method + " " + msg.params)
-      return new Promise(function(resolve, reject) {
-        var finished = false;
-
-        setTimeout(
-          function() {
-            if (!finished){
-              reject(FarmbotJS.MeshErrorResponse("Timed out while sending message"));
-            };
-          },
-          that.options.timeout
-        );
-        that.on(msg.id, function(response) {
-          finished = true;
-          if (response && response.result) {
-            resolve(response);
-          } else {
-            reject(response);
-          }
-        })
-      });
+      var msg = that.sendRaw(input);
+      var promise = FarmbotJS.util.timerDefer(that.options.timeout,
+        msg.method + " " + msg.params);
+      that.on(msg.id, function(response) {
+        var respond = (response && response.result) ? promise.resolve : promise.reject;
+        respond(response);
+      })
+      return promise
     },
     __newSocket: function() { // for easier testing.
       return new WebSocket("ws://" + this.options.meshServer + "/ws/v2");
@@ -62,7 +47,7 @@
 
         if (id) {
           that.emit(id, msg.message);
-        } else{
+        } else {
           that.emit(msg.name, msg.message);
         };
       };
