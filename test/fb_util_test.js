@@ -1,4 +1,4 @@
-describe('FarmbotJS.util', function() {
+describe('Farmbot', function() {
   it('extends objects using .extend(obj, [mixins...])', function() {
     var extended = {};
     var mixin1 = {
@@ -7,23 +7,23 @@ describe('FarmbotJS.util', function() {
     var mixin2 = {
       mixin2: 456
     };
-    FarmbotJS.util.extend(extended, [mixin1, mixin2]);
+    Farmbot.extend(extended, [mixin1, mixin2]);
 
     expect(extended.mixin1).toEqual(123);
     expect(extended.mixin2).toEqual(456);
   });
 
   it('validates input options against required fields', function() {
-    expect(FarmbotJS.util.requireKeys).toBeDefined();
+    expect(Farmbot.requireKeys).toBeDefined();
 
     var requiredFields = ['important'];
     var expectedError = new Error(
       'Expected input object to have `important` property');
     var badAttempt = function() {
-      FarmbotJS.util.requireKeys({}, requiredFields)
+      Farmbot.requireKeys({}, requiredFields)
     };
     var goodAttempt = function() {
-      FarmbotJS.util.requireKeys({
+      Farmbot.requireKeys({
         important: 'yes'
       }, requiredFields);
     };
@@ -33,8 +33,8 @@ describe('FarmbotJS.util', function() {
   });
 
   it('generates UUIDs', function(){
-    expect(FarmbotJS.util.uuid).toBeDefined;
-    var uuid = FarmbotJS.util.uuid();
+    expect(Farmbot.uuid).toBeDefined;
+    var uuid = Farmbot.uuid();
     var segments = uuid.split("-");
 
     expect(uuid.length).toEqual(36);
@@ -48,8 +48,8 @@ describe('FarmbotJS.util', function() {
   });
 
   it('generates tokens', function(){
-    expect(FarmbotJS.util.token).toBeDefined;
-    var token = FarmbotJS.util.token();
+    expect(Farmbot.token).toBeDefined;
+    var token = Farmbot.token();
     expect(token.length).toEqual(40);
     expect(token).toMatch(/[0-9a-f]{40}/);
   });

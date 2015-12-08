@@ -1,44 +1,24 @@
-describe('an instance of FarmbotJS', function() {
-  var bot, oldEmit, fakeConnection;
+describe('an instance of Farmbot', function() {
+  var bot;
 
   beforeEach(function(done) {
 
-    bot = FarmbotJS({
+    bot = Farmbot({
       uuid: '73425170-2660-49de-acd9-6fad4989aff6',
       token: 'bcbd352aaeb9b7f18214a63cb4f3b16b89d8fd24'
     });
-    // TODO: So nasty, so coupled.
-    fakeConnection = {
-      on: function(name, cb) {
-        return (cb || function() {
-          return {};
-        })();
-      },
-      emit: function(name, data, callBack) {
-        // The only callback we expect right now is 'subscribed';
-        if (callBack) {
-          callBack({})
-        };
-      }
-    }
-    spyOn(io, "connect").and.returnValue(fakeConnection);
-    done();
-  });
 
-  it('times out when connect()ing', function(done) {
-    bot.options.timeout = 0; // Insta-timeout!
-    fakeConnection.on = function() { /* Sit there. Timeout. */ }
-    bot
-      .connect()
-      .then(function(bot) {
-        debugger;
-        expect("timeout").toEqual("true");
-        done();
-      })
-      .catch(function(err) {
-        expect(err.message).toContain('timed out');
-        done();
-      });
+    bot.connect = function(){
+      bot.socket = {
+        calls: [],
+        send: function (msg) {
+          this.calls.push(Farmbot.decodeFrame(msg));
+        }
+      }
+      return Promise.resolve(bot);
+    }
+
+    bot.connect().then(done)
   });
 
   it('connects to the server', function(done) {
@@ -51,12 +31,11 @@ describe('an instance of FarmbotJS', function() {
       })
       .catch(function(err) {
         expect("failure").toEqual("success", "error while connecting!");
-        console.log((err.message || err));
         done();
       });
   });
 
-  it('builds mesh message payloads', function() {
+  it('builds mesh message payloads', function(done) {
     var msg1 = bot.buildMessage({
       params: {},
       method: 'test'
@@ -89,31 +68,27 @@ describe('an instance of FarmbotJS', function() {
     expect(msg2.id).toEqual('explicilty set2');
     expect(msg2.params).toEqual('explicilty set3');
     expect(msg2.method).toEqual('explicilty set4');
+    done();
   });
 
-  it('sends messages without waiting for a reply', function() {
-    var calls = [];
-    bot.socket = {
-      // Stub out bot.socket.send to just collect messages for examination later
-      emit: function(name, message) {
-        calls.push({
-          name: name,
-          message: message
-        });
-      }
-    };
-    expect(calls.length).toEqual(0)
+  it('sends messages without waiting for a reply', function(done) {
     bot.sendRaw({
       params: "PARAMS",
       method: "METHODS"
     });
+    var calls = bot.socket.calls;
+
     expect(calls.length).toEqual(1);
     expect(calls[0].name).toEqual("message");
     expect(calls[0].message.params).toEqual("PARAMS");
     expect(calls[0].message.method).toEqual("METHODS");
+    done();
   });
 
-  it('send()s promise backed messages to the bot', function() {
-
-  });
+  it('requires user to connect() before send()ing', function(){
+    expect(function(){
+      Farmbot({uuid: '-', token: '-'})
+        .sendRaw("Blah")
+    }).toThrow(new Error("You must connect() before sending data"))
+  })
 });

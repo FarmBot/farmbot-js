@@ -6,15 +6,18 @@
 
 ## TODO
 
- - [ ] Add build tool / pre built `farmbot.min.js`
+ - [ ] Get compliant with A+ promise spec.
  - [ ] **Add support for UMD modules**
- - [ ] Upgrade to support latest MeshBlu
- - [ ] Get off of socket.io after meshblu upgrade.
- - [X] Add test suite
- - [X] Ability to generate guest UUID / Token.
- - [X] Add test coverage reporter
+ - [ ] Factor out hardcoded strings and "magic numbers"
+ - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.
+ - [X] Get off of socket.io after meshblu upgrade.
+ - [X] Upgrade to support latest MeshBlu
+ - [X] DRY up repetitious promise code via helper in `Farmbot.util`
+ - [X] Ability to generate guest UUID / Token.
+ - [X] Add test suite
+ - [X] Add test coverage reporter
 
 ## Prerequisites
 
@@ -37,7 +40,7 @@ If you are running your bot off of the [officially supported service](http://my.
 
 ```javascript
 
-var bot = FarmbotJS({uuid: "123", token: "456"});
+var bot = Farmbot({uuid: "123", token: "456"});
 
 bot
   .connect()
@@ -91,7 +94,6 @@ Currently supported commands:
  * readStatus
  * send(commandObject)
  * syncSequence
- * togglePin(number)
  * updateCalibration
  * sendRaw(jsObject) (NOT PROMISE BASED- USE `send()`)
 
@@ -111,7 +113,7 @@ var options = {
   meshServer: 'wss://localhost:443'
 };
 
-var bot = FarmbotJS(options);
+var bot = Farmbot(options);
 
 ```
 
@@ -121,7 +123,7 @@ Time (in milliseconds) to wait before deeming an RPC command to be unacknowledge
 
 ```javascript
 
-var bot = FarmbotJS({
+var bot = Farmbot({
   uuid: "123",
   token: "456"
 })
