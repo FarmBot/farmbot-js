@@ -2,7 +2,7 @@ FarmbotJS.util = {
   // a convinience promise wrapper.
   defer: function(label) {
     var $reject, $resolve;
-    var that = new Promise(function(resolve, reject){
+    var that = new Promise(function(resolve, reject) {
       $reject = reject;
       $resolve = resolve;
     });
@@ -43,39 +43,29 @@ FarmbotJS.util = {
       message: raw[1]
     }
   },
-  registerDevice: function (meshUrl, timeOut) {
-      var meshUrl = meshUrl || '//meshblu.octoblu.com';
-      var timeOut = timeOut || 6000;
-      var request = new XMLHttpRequest();
-      request.open('POST', meshUrl + '/devices?type=prototype', true);
-      request.setRequestHeader(
-        'Content-Type',
-        'application/x-www-form-urlencoded; charset=UTF-8'
-      );
+  registerDevice: function(meshUrl, timeOut) {
+    var meshUrl = meshUrl || '//meshblu.octoblu.com';
+    var timeOut = timeOut || 6000;
+    var request = new XMLHttpRequest();
+    var promise = FarmbotJS.util.timerDefer(timeOut, "registering device");
 
-      var promise = new Promise(function(resolve, reject) {
-        var finished = false;
+    request.open('POST', meshUrl + '/devices?type=prototype', true);
 
-        request.onload = function() {
-          finished = true;
-          var data = JSON.parse(request.responseText);
-          var allIsWell = (request.status >= 200 && request.status < 400);
-          return allIsWell ? resolve(data) : reject(data);
-        };
+    request.setRequestHeader(
+      'Content-Type',
+      'application/x-www-form-urlencoded; charset=UTF-8'
+    );
 
-        request.onerror = function(error) {
-          if (!finished) {
-            reject(error || "Connection error. I dunno.");
-          };
-        };
+    request.onload = function() {
+      var data = JSON.parse(request.responseText);
+      var allIsWell = (request.status >= 200 && request.status < 400);
+      return allIsWell ? promise.resolve(data) : promise.reject(data);
+    };
 
-        setTimeout(function() {
-          console.warn("Device Registration Timed out.")
-          reject(new Error("Connection timed out"))
-        }, timeOut);
-      });
-      request.send();
-      return promise;
+    request.onerror = promise.reject
+
+    request.send();
+    return promise;
   },
 
   extend: function(target, mixins) {

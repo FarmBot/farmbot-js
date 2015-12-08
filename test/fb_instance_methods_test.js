@@ -21,22 +21,6 @@ describe('an instance of FarmbotJS', function() {
     bot.connect().then(done)
   });
 
-  it('times out when connect()ing', function(done) {
-    pending("Need to factor down some methods before testing.");
-    bot.options.timeout = 0; // Insta-timeout!
-
-    bot
-      .connect()
-      .then(function(bot) {
-        expect("timeout").toEqual("true");
-        done();
-      })
-      .catch(function(err) {
-        expect(err.message).toContain('timed out');
-        done();
-      });
-  });
-
   it('connects to the server', function(done) {
     bot
       .connect()
@@ -100,4 +84,11 @@ describe('an instance of FarmbotJS', function() {
     expect(calls[0].message.method).toEqual("METHODS");
     done();
   });
+
+  it('requires user to connect() before send()ing', function(){
+    expect(function(){
+      FarmbotJS({uuid: '-', token: '-'})
+        .sendRaw("Blah")
+    }).toThrow(new Error("You must connect() before sending data"))
+  })
 });
