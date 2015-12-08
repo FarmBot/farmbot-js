@@ -36,6 +36,8 @@
     },
     __newConnection: function(credentials) {
       var that = this;
+      var promise = FarmbotJS.util.timerDefer(that.options.timeout,
+        "__newConnection");
       that.socket = that.__newSocket();
       that.socket.onopen = function() {
         that.socket.send(FarmbotJS.util.encodeFrame("identity", credentials));
@@ -52,19 +54,9 @@
         };
       };
 
-      return new window.Promise(function(resolve, reject) {
-        var completed = false;
+      that.on("ready", function() { promise.resolve(that) });
 
-        that.on("ready", function() {
-          resolve(that)
-        });
-
-        setTimeout(function() {
-          if (!completed) {
-            reject(new Error("Connection timed out"))
-          };
-        }, that.options.timeout)
-      });
+      return promise;
     },
     connect: function() {
       var that = this;
