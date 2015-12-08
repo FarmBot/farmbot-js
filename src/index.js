@@ -15,8 +15,7 @@ Farmbot.prototype.execSequence = function(sequence) {
 }
 
 Farmbot.prototype.homeAll = function(opts) {
-  opts = opts || {};
-  opts.speed = opts.speed || this.options.speed;
+  Farmbot.requireKeys(opts, ["speed"]);
   return this.send({
     params: opts,
     method: "single_command.HOME ALL"
@@ -24,8 +23,7 @@ Farmbot.prototype.homeAll = function(opts) {
 }
 
 Farmbot.prototype.homeX = function(opts) {
-  opts = opts || {};
-  opts.speed = opts.speed || this.options.speed;
+  Farmbot.requireKeys(opts, ["speed"]);
   return this.send({
     params: opts,
     method: "single_command.HOME X"
@@ -33,8 +31,7 @@ Farmbot.prototype.homeX = function(opts) {
 }
 
 Farmbot.prototype.homeY = function(opts) {
-  opts = opts || {};
-  opts.speed = opts.speed || this.options.speed;
+  Farmbot.requireKeys(opts, ["speed"]);
   return this.send({
     params: opts,
     method: "single_command.HOME Y"
@@ -42,8 +39,7 @@ Farmbot.prototype.homeY = function(opts) {
 }
 
 Farmbot.prototype.homeZ = function(opts) {
-  opts = opts || {};
-  opts.speed = opts.speed || this.options.speed;
+  Farmbot.requireKeys(opts, ["speed"]);
   return this.send({
     params: opts,
     method: "single_command.HOME Z"
@@ -52,8 +48,7 @@ Farmbot.prototype.homeZ = function(opts) {
 
 
 Farmbot.prototype.moveAbsolute = function(opts) {
-  opts = opts || {};
-  opts.speed = opts.speed || this.options.speed;
+  Farmbot.requireKeys(opts, ["speed"]);
   return this.send({
     params: opts,
     method: "single_command.MOVE ABSOLUTE"
@@ -61,8 +56,7 @@ Farmbot.prototype.moveAbsolute = function(opts) {
 }
 
 Farmbot.prototype.moveRelative = function(opts) {
-  opts = opts || {};
-  opts.speed = opts.speed || this.options.speed;
+  Farmbot.requireKeys(opts, ["speed"]);
   return this.send({
     params: opts,
     method: "single_command.MOVE RELATIVE"
@@ -70,12 +64,9 @@ Farmbot.prototype.moveRelative = function(opts) {
 }
 
 Farmbot.prototype.pinWrite = function(values) {
+  Farmbot.requireKeys(opts, ["pin", "value1", "mode"]);
   return this.send({
-    params: {
-      pin: values.pin,
-      value1: values.value1,
-      mode: values.mode
-    },
+    params: opts,
     method: "single_command.PIN WRITE"
   });
 }
@@ -91,15 +82,7 @@ Farmbot.prototype.syncSequence = function() {
   console.warn("Not yet implemented");
   return this.send({
     params: {},
-    method: "single_command.?"
-  });
-}
-
-Farmbot.prototype.togglePin = function(number) {
-  console.warn("Not yet implemented");
-  return this.send({
-    params: {},
-    method: "single_command.?"
+    method: "sync_sequence"
   });
 }
 
@@ -107,7 +90,7 @@ Farmbot.prototype.updateCalibration = function() {
   console.warn("Not yet implemented");
   return this.send({
     params: {},
-    method: "single_command.?"
+    method: "update_calibration"
   });
 }
 
@@ -259,7 +242,7 @@ Farmbot.registerDevice = function(meshUrl, timeOut) {
   var timeOut = timeOut || 6000;
   var request = new XMLHttpRequest();
   var promise = Farmbot.timerDefer(timeOut, "registering device");
-  request.open('POST', meshUrl + '/devices?type=prototype', true);
+  request.open('POST', meshUrl + '/devices?type=farmbotjs_client', true);
   request.setRequestHeader(
     'Content-Type',
     'application/x-www-form-urlencoded; charset=UTF-8'
@@ -286,7 +269,7 @@ Farmbot.extend = function(target, mixins) {
 
 Farmbot.requireKeys = function(input, required) {
   required.forEach(function(prop) {
-    if (!input[prop]) {
+    if (!(input || {})[prop]) {
       throw (new Error("Expected input object to have `" + prop +
         "` property"));
     }

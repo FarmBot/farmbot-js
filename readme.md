@@ -8,6 +8,7 @@
 
  - [ ] Get compliant with A+ promise spec.
  - [ ] **Add support for UMD modules**
+ - [ ] Factor out hardcoded strings and "magic numbers"
  - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.
@@ -93,7 +94,6 @@ Currently supported commands:
  * readStatus
  * send(commandObject)
  * syncSequence
- * togglePin(number)
  * updateCalibration
  * sendRaw(jsObject) (NOT PROMISE BASED- USE `send()`)
 
