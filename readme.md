@@ -1,4 +1,4 @@
-# Farmbot: Farmbot RPC wrapper
+# FarmbotJS: Farmbot RPC wrapper
 
 # Project Status
 
@@ -29,7 +29,7 @@ Works on any browser that supports:
 ## Installation
 
 ```
-npm install Farmbot
+npm install farmbotjs
 ```
 
 If you would like support for other package managers, feel free to submit a PR or raise an issue.
