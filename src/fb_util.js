@@ -1,4 +1,38 @@
 FarmbotJS.util = {
+  // a convinience promise wrapper.
+  defer: function(label) {
+    var $reject, $resolve;
+    var that = new Promise(function(resolve, reject){
+      $reject = reject;
+      $resolve = resolve;
+    });
+    that.finished = false
+
+    that.reject = function() {
+      that.finished = true;
+      $reject.apply(that, arguments);
+    }
+
+    that.resolve = function() {
+      that.finished = true;
+      $resolve.apply(that, arguments);
+    }
+
+    that.label = label || "a promise";
+    return that;
+  },
+  // A promise that has a timeout.
+  timerDefer: function(timeout, label) {
+    label = label || ("promise with " + timeout + " ms timeout");
+    var that = FarmbotJS.util.defer(label);
+    setTimeout(function() {
+      if (!that.finished) {
+        var failure = new Error(label + " did not execute in time");
+        that.reject(failure);
+      };
+    }, timeout);
+    return that;
+  },
   encodeFrame: function(name, payload) {
     return JSON.stringify([name, payload]);
   },

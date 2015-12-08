@@ -23,13 +23,15 @@
     send: function(input) {
       var that = this;
       var msg = that.sendRaw(input)
+      // var promise = FarmbotJS.util.timerDefer(that.options.timeout,
+      //                                         msg.method + " " + msg.params)
       return new Promise(function(resolve, reject) {
         var finished = false;
 
         setTimeout(
           function() {
             if (!finished){
-              reject(FarmbotJS.MeshErrorResponse("Timed out"));
+              reject(FarmbotJS.MeshErrorResponse("Timed out while sending message"));
             };
           },
           that.options.timeout
