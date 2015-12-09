@@ -30,10 +30,10 @@ Works on any browser that supports:
 ## Installation
 
 ```
-npm install farmbotjs
+npm install farmbot
 ```
 
-If you would like support for other package managers, feel free to submit a PR or raise an issue.
+If you would like support for other package managers (eg: bower), feel free to submit a PR or raise an issue.
 
 ## Quick Usage:
 
