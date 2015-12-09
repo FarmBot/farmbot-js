@@ -14,6 +14,7 @@ describe("Raw websocket", function() {
           expect(bot).toEqual(bot);
           done();
         })
-        .catch(alert)
+        .catch(done)
+      done();
   });
 })

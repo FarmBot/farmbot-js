@@ -181,16 +181,18 @@ Farmbot.prototype.__newConnection = function(credentials) {
 }
 
 Farmbot.prototype.connect = function() {
-  var that = this;
-  return new window.Promise(function(resolve, reject) {
-    function subscribe() {
-      that.socket.send(Farmbot.encodeFrame("subscribe", that));
-      resolve(that);
-    }
-    Farmbot.registerDevice()
-      .then(that.__newConnection.bind(that))
-      .then(subscribe)
-  });
+  var bot = this;
+  var $p = Farmbot.timerDefer(bot.options.timeout, "subscribing to device");
+
+  function subscribe() {
+    bot.socket.send(Farmbot.encodeFrame("subscribe", bot));
+    $p.resolve(bot); // TODO is there a way to confirm "subscribe" success?
+  }
+
+  return Farmbot
+    .registerDevice()
+    .then(bot.__newConnection.bind(bot))
+    .then(subscribe);
 }
 
 // a convinience promise wrapper.
@@ -218,7 +220,7 @@ Farmbot.timerDefer = function(timeout, label) {
   var that = Farmbot.defer(label);
   setTimeout(function() {
     if (!that.finished) {
-      var failure = new Error(label + " did not execute in time");
+      var failure = new Error("`" + label + "` did not execute in time");
       that.reject(failure);
     };
   }, timeout);
@@ -237,21 +239,21 @@ Farmbot.decodeFrame = function(frameString) {
   }
 };
 
-Farmbot.registerDevice = function(meshUrl, timeOut) {
+Farmbot.registerDevice = function(timeOut, meshUrl) {
   var meshUrl = meshUrl || '//meshblu.octoblu.com';
-  var timeOut = timeOut || 6000;
+  var timeOut = timeOut || 3000;
   var request = new XMLHttpRequest();
   var promise = Farmbot.timerDefer(timeOut, "registering device");
   request.open('POST', meshUrl + '/devices?type=farmbotjs_client', true);
-  request.setRequestHeader(
-    'Content-Type',
-    'application/x-www-form-urlencoded; charset=UTF-8'
-  );
+
   request.onload = function() {
-    var data = JSON.parse(request.responseText);
-    var allIsWell = (request.status >= 200 && request.status < 400);
-    return allIsWell ? promise.resolve(data) : promise.reject(data);
+    if (request.status >= 200 && request.status < 400) {
+      return promise.resolve(JSON.parse(request.responseText))
+    } else{
+      return promise.reject(data);
+    };
   };
+
   request.onerror = promise.reject
   request.send();
   return promise;
