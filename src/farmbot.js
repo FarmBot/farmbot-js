@@ -324,8 +324,8 @@
   }
 
   function Fb(input) {
-    if (!(this instanceof Farmbot)) {
-      return new Farmbot(input);
+    if (!(this instanceof Fb)) {
+      return new Fb(input);
     }
     this.options = {};
     Fb.extend(this.options, [Fb.config.defaultOptions, input]);
