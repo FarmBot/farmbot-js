@@ -1,8 +1,12 @@
-var gulp = require('gulp');
-var wrap = require('gulp-wrap-umd');
+var gulp = require('gulp'),
+    wrap = require('gulp-wrap-umd'),
+    minify = require('gulp-minify');
 
-gulp.task('build', function(){
-  gulp.src('src/index.js')
-    .pipe(wrap({ namespace: 'Farmbot' }))
-    .pipe(gulp.dest('dist/'));
+gulp.task('build', function() {
+    gulp.src('src/farmbot.js')
+        .pipe(wrap({
+            namespace: 'Farmbot'
+        }))
+        .pipe(minify())
+        .pipe(gulp.dest('dist/'));
 });

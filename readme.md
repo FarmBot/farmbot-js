@@ -2,18 +2,18 @@
 
 # Project Status
 
-**Don't use it yet**. Pre-alpha / Not ready for use of any kind.
+**Public Alpha**. Were using it in the next version of the Farm Designer and are stabilizing the API as we go. API may change without notice, but is mostly functional.
 
 ## TODO
 
  - [ ] Add setState(key, value) function
  - [ ] Add getState() amd getState(key) function
- - [ ] Add build tool / pre built `farmbot.min.js`
- - [ ] **Add support for UMD modules**
  - [ ] Get compliant with A+ promise spec.
  - [ ] Get feature parity with old version.
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
+ - [X] Add support for UMD modules
+ - [X] Add build tool / pre built `farmbot.min.js`
  - [X] Get off of socket.io after meshblu upgrade.
  - [X] Upgrade to support latest MeshBlu
  - [X] DRY up repetitious promise code via helper in `Farmbot.util`
