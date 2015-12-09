@@ -4,6 +4,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
       // 'dist/farmbot-min.js',
+      // 'dist/farmbot.js',
       'src/farmbot.js',
       'test/helpers.js',
       'test/**/*_test.js'
