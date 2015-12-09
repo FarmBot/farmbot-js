@@ -6,12 +6,14 @@
 
 ## TODO
 
- - [ ] Get compliant with A+ promise spec.
- - [ ] **Add support for UMD modules**
- - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
+ - [ ] Add setState(key, value) function
+ - [ ] Add getState() amd getState(key) function
  - [ ] Add build tool / pre built `farmbot.min.js`
- - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] **Add support for UMD modules**
+ - [ ] Get compliant with A+ promise spec.
  - [ ] Get feature parity with old version.
+ - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
  - [X] Get off of socket.io after meshblu upgrade.
  - [X] Upgrade to support latest MeshBlu
  - [X] DRY up repetitious promise code via helper in `Farmbot.util`
