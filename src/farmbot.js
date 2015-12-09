@@ -201,10 +201,9 @@
       $p.resolve(bot); // TODO is there a way to confirm "subscribe" success?
     }
 
-    return Farmbot
-      .registerDevice()
-      .then(bot.__newConnection.bind(bot))
-      .then(subscribe);
+    return Fb.registerDevice()
+             .then(bot.__newConnection.bind(bot))
+             .then(subscribe);
   }
 
   // a convinience promise wrapper.
