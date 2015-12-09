@@ -2,16 +2,18 @@
 
 # Project Status
 
-**Don't use it yet**. Pre-alpha / Not ready for use of any kind.
+**Public Alpha**. Were using it in the next version of the Farm Designer and are stabilizing the API as we go. API may change without notice, but is mostly functional.
 
 ## TODO
 
+ - [ ] Add setState(key, value) function
+ - [ ] Add getState() amd getState(key) function
  - [ ] Get compliant with A+ promise spec.
- - [ ] **Add support for UMD modules**
- - [ ] Factor out hardcoded strings and "magic numbers"
- - [ ] Add build tool / pre built `farmbot.min.js`
- - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.
+ - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
+ - [X] Add support for UMD modules
+ - [X] Add build tool / pre built `farmbot.min.js`
  - [X] Get off of socket.io after meshblu upgrade.
  - [X] Upgrade to support latest MeshBlu
  - [X] DRY up repetitious promise code via helper in `Farmbot.util`
@@ -24,15 +26,14 @@
 Works on any browser that supports:
 
  * Native Promise objects (you can polyfill this one).
- * Has socketio (will remove dependency in future release)
 
 ## Installation
 
 ```
-npm install farmbotjs
+npm install farmbot
 ```
 
-If you would like support for other package managers, feel free to submit a PR or raise an issue.
+If you would like support for other package managers (eg: bower), feel free to submit a PR or raise an issue.
 
 ## Quick Usage:
 
@@ -80,9 +81,7 @@ Example:
 
 Currently supported commands:
 
-**Commands will be marked with a `*` as they are implemented**
-
- * emergencyStop*
+ * emergencyStop
  * execSequence
  * homeAll
  * homeX
@@ -96,6 +95,28 @@ Currently supported commands:
  * syncSequence
  * updateCalibration
  * sendRaw(jsObject) (NOT PROMISE BASED- USE `send()`)
+
+## Using Events
+
+```
+  var bot = Farmbot({uuid: '---', token: '---'});
+  bot.on("eventName", function(data, eventName) {
+    console.log("I just got an" + eventName + " event!");
+    console.log("This is the payload: " + data);
+  })
+   // "I just got an eventName event!"
+   // "This is the payload: any javascript object or primitive"
+  bot.emit("eventName", "any javascript object or primitive");
+  var eventHandlers = bot.event("eventName");
+   // [function(){...}]
+```
+
+## Common Events
+
+ * `*`: Catch all event. Mostly for debugging.
+ * `ready`: Client is connected and subscribed to bot.
+ * `disconnect`: Connection lost. **Note: FarmbotJS won't auto-reconnect**.
+ * `message`: When the bot gets a *non-rpc* command, it is regarded as a 'message'.
 
 ## Advanced Usage and Config
 
