@@ -8,7 +8,7 @@
 
  - [ ] Get compliant with A+ promise spec.
  - [ ] **Add support for UMD modules**
- - [ ] Factor out hardcoded strings and "magic numbers"
+ - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
  - [ ] Add build tool / pre built `farmbot.min.js`
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Get feature parity with old version.
@@ -80,9 +80,7 @@ Example:
 
 Currently supported commands:
 
-**Commands will be marked with a `*` as they are implemented**
-
- * emergencyStop*
+ * emergencyStop
  * execSequence
  * homeAll
  * homeX
@@ -96,6 +94,28 @@ Currently supported commands:
  * syncSequence
  * updateCalibration
  * sendRaw(jsObject) (NOT PROMISE BASED- USE `send()`)
+
+## Using Events
+
+```
+  var bot = Farmbot({uuid: '---', token: '---'});
+  bot.on("eventName", function(data, eventName) {
+    console.log("I just got an" + eventName + " event!");
+    console.log("This is the payload: " + data);
+  })
+   // "I just got an eventName event!"
+   // "This is the payload: any javascript object or primitive"
+  bot.emit("eventName", "any javascript object or primitive");
+  var eventHandlers = bot.event("eventName");
+   // [function(){...}]
+```
+
+## Common Events
+
+ * `*`: Catch all event. Mostly for debugging.
+ * `ready`: Client is connected and subscribed to bot.
+ * `disconnect`: Connection lost. **Note: FarmbotJS won't auto-reconnect**.
+ * `message`: When the bot gets a *non-rpc* command, it is regarded as a 'message'.
 
 ## Advanced Usage and Config
 

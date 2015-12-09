@@ -114,9 +114,12 @@ Farmbot.prototype.on = function(event, callback) {
 };
 
 Farmbot.prototype.emit = function(event, data) {
-  this.event(event).forEach(function(handler) {
-    handler(data);
-  });
+  [this.event(event), this.event('*')]
+    .forEach(function(handlers) {
+      handlers.forEach(function(handler) {
+        handler(data, event);
+      })
+    });
 }
 
 Farmbot.prototype.buildMessage = function(input) {
@@ -155,6 +158,11 @@ Farmbot.prototype.send = function(input) {
 Farmbot.prototype.__newSocket = function() { // for easier testing.
   return new WebSocket("ws://" + this.options.meshServer + "/ws/v2");
 };
+
+Farmbot.prototype.__onclose = function() {
+  this.emit('disconnect', this);
+};
+
 Farmbot.prototype.__onmessage = function(e) {
   var msg = Farmbot.decodeFrame(e.data);
   var id = msg.message.id;
@@ -174,6 +182,7 @@ Farmbot.prototype.__newConnection = function(credentials) {
     that.socket.send(Farmbot.encodeFrame("identity", credentials));
   };
   that.socket.onmessage = that.__onmessage.bind(that);
+  that.socket.onclose = that.__onclose.bind(that);
   that.on("ready", function() {
     promise.resolve(that)
   });
@@ -249,7 +258,7 @@ Farmbot.registerDevice = function(timeOut, meshUrl) {
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       return promise.resolve(JSON.parse(request.responseText))
-    } else{
+    } else {
       return promise.reject(data);
     };
   };
