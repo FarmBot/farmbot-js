@@ -26,7 +26,6 @@
 Works on any browser that supports:
 
  * Native Promise objects (you can polyfill this one).
- * Has socketio (will remove dependency in future release)
 
 ## Installation
 
