@@ -113,7 +113,7 @@ return (function(global) {
     defaultOptions: {
       speed: 100,
       meshServer: 'meshblu.octoblu.com',
-      timeout: 5000
+      timeout: 6000
     }
   }
 
@@ -131,7 +131,11 @@ return (function(global) {
     [this.event(event), this.event('*')]
       .forEach(function(handlers) {
         handlers.forEach(function(handler) {
-          handler(data, event);
+          try {
+            handler(data, event);
+          } catch(e){
+            console.warn("Exception thrown while handling `" + event + "` event.");
+          }
         })
       });
   }
@@ -139,7 +143,7 @@ return (function(global) {
   Farmbot.prototype.buildMessage = function(input) {
     var msg = input || {};
     var metaData = {
-      devices: (msg.devices || this.options.uuid),
+      devices: (msg.devices || this.getState("uuid")),
       id: (msg.id || Farmbot.uuid())
     };
     Farmbot.extend(msg, [metaData]);
@@ -160,7 +164,7 @@ return (function(global) {
   Farmbot.prototype.send = function(input) {
     var that = this;
     var msg = that.sendRaw(input);
-    var promise = Farmbot.timerDefer(that.options.timeout,
+    var promise = Farmbot.timerDefer(that.getState("timeout"),
       msg.method + " " + msg.params);
     that.on(msg.id, function(response) {
       var respond = (response && response.result) ? promise.resolve : promise.reject;
@@ -170,10 +174,11 @@ return (function(global) {
   };
 
   Farmbot.prototype.__newSocket = function() { // for easier testing.
-    return new WebSocket("ws://" + this.options.meshServer + "/ws/v2");
+    return new WebSocket("ws://" + this.getState("meshServer") + "/ws/v2");
   };
 
   Farmbot.prototype.__onclose = function() {
+    delete this.socket;
     this.emit('disconnect', this);
   };
 
@@ -189,15 +194,16 @@ return (function(global) {
 
   Farmbot.prototype.__newConnection = function(credentials) {
     var that = this;
-    var promise = Farmbot.timerDefer(that.options.timeout,
-      "__newConnection");
-    that.socket = that.__newSocket();
-    that.socket.onopen = function() {
-      that.socket.send(Farmbot.encodeFrame("identity", credentials));
+    var promise = Farmbot.timerDefer(that.getState("timeout"), "__newConnection");
+    var socket = that.__newSocket();
+
+    socket.onopen = function() {
+      socket.send(Farmbot.encodeFrame("identity", credentials));
     };
-    that.socket.onmessage = that.__onmessage.bind(that);
-    that.socket.onclose = that.__onclose.bind(that);
+    socket.onmessage = that.__onmessage.bind(that);
+    socket.onclose = that.__onclose.bind(that);
     that.on("ready", function() {
+      that.socket = socket;
       promise.resolve(that)
     });
     return promise;
@@ -205,7 +211,7 @@ return (function(global) {
 
   Farmbot.prototype.connect = function() {
     var bot = this;
-    var $p = Farmbot.timerDefer(bot.options.timeout, "subscribing to device");
+    var $p = Farmbot.timerDefer(bot.getState("timeout"), "subscribing to device");
 
     function subscribe() {
       bot.socket.send(Farmbot.encodeFrame("subscribe", bot));
@@ -213,8 +219,10 @@ return (function(global) {
     }
 
     return Farmbot.registerDevice()
-             .then(bot.__newConnection.bind(bot))
-             .then(subscribe);
+            .then(function(credentials) {
+              return bot.__newConnection(credentials);
+            })
+            .then(subscribe);
   }
 
   // a convinience promise wrapper.
@@ -240,6 +248,7 @@ return (function(global) {
   Farmbot.timerDefer = function(timeout, label) {
     label = label || ("promise with " + timeout + " ms timeout");
     var that = Farmbot.defer(label);
+    if(!timeout) { throw new Error("No timeout value set."); };
     setTimeout(function() {
       if (!that.finished) {
         var failure = new Error("`" + label + "` did not execute in time");
@@ -261,14 +270,19 @@ return (function(global) {
     }
   };
 
-  Farmbot.registerDevice = function(timeOut, meshUrl) {
+  Farmbot.__newXHR = function(timeOut, meshUrl){
     var meshUrl = meshUrl || '//meshblu.octoblu.com';
-    var timeOut = timeOut || 3000;
+    var timeOut = timeOut || Farmbot.config.defaultOptions.timeout;
     var request = new XMLHttpRequest();
-    var promise = Farmbot.timerDefer(timeOut, "registering device");
     request.open('POST', meshUrl + '/devices?type=farmbotjs_client', true);
+    return request;
+  }
 
-    request.onload = function() {
+  Farmbot.registerDevice = function(timeOut, meshUrl) {
+    var timeOut = timeOut || Farmbot.config.defaultOptions.timeout;
+    var request = Farmbot.__newXHR(timeOut, meshUrl);
+    var promise = Farmbot.timerDefer(timeOut, "Registeration of device");
+    request.onload = function(data) {
       if (request.status >= 200 && request.status < 400) {
         return promise.resolve(JSON.parse(request.responseText))
       } else {
@@ -293,7 +307,7 @@ return (function(global) {
 
   Farmbot.requireKeys = function(input, required) {
     required.forEach(function(prop) {
-      if (!(input || {})[prop]) {
+      if (!input[prop]) {
         throw (new Error("Expected input object to have `" + prop +
           "` property"));
       }
@@ -337,12 +351,25 @@ return (function(global) {
     if (!(this instanceof Farmbot)) {
       return new Farmbot(input);
     }
-    this.options = {};
-    Farmbot.extend(this.options, [Farmbot.config.defaultOptions, input]);
-    Farmbot.requireKeys(this.options, Farmbot.config.requiredOptions);
+
+    var state = {};
+    Farmbot.extend(state, [Farmbot.config.defaultOptions, input]);
+    Farmbot.requireKeys(state, Farmbot.config.requiredOptions);
+    this.listState = function() { return Object.keys(state); }
+    this.getState = function(key) { return state[key]; }
+    this.setState = function(key, val) {
+      if (val !== state[key]) {
+        var old = state[key];
+        state[key] = val;
+        this.emit("change", { name: key, value: val, oldValue: old });
+      };
+      return val;
+    }
   }
 
-  // if(!global['Farmbot'] = Farmbot; // Simplifies my workflow when testing.
+  // FIXME :
+  // Simplifies my workflow when testing so that I don't need to run `gulp build`
+  global['Farmbot'] = Farmbot;
 
   return Farmbot
 })(this);

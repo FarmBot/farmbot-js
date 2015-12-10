@@ -4,12 +4,11 @@ describe('Farmbot', function() {
       uuid: 'myUUID',
       token: 'myToken'
     });
-    var options = bot.options;
 
-    expect(options.uuid).toEqual('myUUID');
-    expect(options.token).toEqual('myToken');
-    expect(options.meshServer).toEqual(Farmbot.config.defaultOptions.meshServer);
-    expect(options.timeout).toEqual(Farmbot.config.defaultOptions.timeout);
+    expect(bot.getState("uuid")).toEqual('myUUID');
+    expect(bot.getState("token")).toEqual('myToken');
+    expect(bot.getState("meshServer")).toEqual(Farmbot.config.defaultOptions.meshServer);
+    expect(bot.getState("timeout")).toEqual(Farmbot.config.defaultOptions.timeout);
   });
 
   it('requires input', function() {

@@ -62,7 +62,7 @@ describe('an instance of Farmbot', function() {
       })
     }).toThrow();
     expect(msg1.params).toEqual({});
-    expect(msg1.devices).toEqual(bot.options.uuid);
+    expect(msg1.devices).toEqual(bot.getState("uuid"));
     expect(msg1.id.length).toEqual(36);
     expect(msg2.devices).toEqual('explicilty set1');
     expect(msg2.id).toEqual('explicilty set2');
@@ -90,5 +90,13 @@ describe('an instance of Farmbot', function() {
       Farmbot({uuid: '-', token: '-'})
         .sendRaw("Blah")
     }).toThrow(new Error("You must connect() before sending data"))
+  });
+
+  it("creates a __newSocket()", function(done){
+    bot.setState("meshServer", "localhost");
+    var result = bot.__newSocket();
+    expect(result.url).toContain("://localhost/ws/v2");
+    expect(result.url).toContain("ws");
+    done();
   })
 });
