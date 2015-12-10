@@ -6,12 +6,13 @@
 
 ## TODO
 
- - [ ] Add setState(key, value) function
- - [ ] Add getState() amd getState(key) function
- - [ ] Get compliant with A+ promise spec.
  - [ ] Get feature parity with old version.
- - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
+ - [ ] Get compliant with A+ promise spec.
+ - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] Convert library to literate javascript?
+ - [X] Add getState() amd getState(key) function
+ - [X] Add setState(key, value) function
  - [X] Add support for UMD modules
  - [X] Add build tool / pre built `farmbot.min.js`
  - [X] Get off of socket.io after meshblu upgrade.
@@ -21,11 +22,11 @@
  - [X] Add test suite
  - [X] Add test coverage reporter
 
-## Prerequisites
+## Browser Support
 
 Works on any browser that supports:
 
- * Native Promise objects (you can polyfill this one).
+ * Native Promise objects (you can polyfill this one- raise an issue if you need help).
 
 ## Installation
 
@@ -33,7 +34,7 @@ Works on any browser that supports:
 npm install farmbot
 ```
 
-If you would like support for other package managers (eg: bower), feel free to submit a PR or raise an issue.
+If you would like support for other package managers (eg: bower), submit a PR or raise an issue.
 
 ## Quick Usage:
 
@@ -58,11 +59,14 @@ bot
 
 ```
 
-See "Advanced Usage and Config" for advanced use cases such as running a private server.
+To run it off of a private server, you will need to change the `meshServer` url first:
 
+```javascript
+var bot = Farmbot({uuid: "123", token: "456", meshServer: "//myMeshBluServer.org"});
+```
 ## Basic RPC Commands
 
-Call RPC commands using the corresponding method on `bot`. Most (all?) RPC commands return a promise. Timeout is set at `1000 ms` by default and can be reconfigured by passing in a `timeout` propery on instantiation.
+Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise. Timeout is set at `1000 ms` by default and can be reconfigured by changing the bot `timeout` propery on instantiation or via `bot.setState("timeout", 999)`.
 
 Example:
 
@@ -113,12 +117,20 @@ Currently supported commands:
 
 ## Common Events
 
- * `*`: Catch all event. Mostly for debugging.
+ * `*`: Catch all events (for debugging).
  * `ready`: Client is connected and subscribed to bot.
  * `disconnect`: Connection lost. **Note: FarmbotJS won't auto-reconnect**.
  * `message`: When the bot gets a *non-rpc* command, it is regarded as a 'message'.
+ * `change`: The bot object's internal state has changed.
+ * `<random uuid>`: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request's UUID. Mostly for internal use.
 
-## Advanced Usage and Config
+## Internal State and Config
+
+The bot object keeps all state in one place for sanity.
+
+ * `bot.listState()`: See all relevant state records.
+ * `bot.getState(attribute_name)`: Fetch a config option such as `timeout` or `meshServer` URL.
+ * `bot.setState(name, value)`: Set state value 'x' to 'y'. Ex: `bot.setState('uuid', '---')`. Emits a `change` event.
 
 If you are running your own servers, you may want to use other options.
 
