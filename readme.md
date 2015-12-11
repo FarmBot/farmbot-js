@@ -4,37 +4,20 @@
 
 **Public Alpha**. Were using it in the next version of the Farm Designer and are stabilizing the API as we go. API may change without notice, but is mostly functional.
 
-## TODO
-
- - [ ] Get feature parity with old version.
- - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
- - [ ] Get compliant with A+ promise spec.
- - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
- - [ ] Convert library to literate javascript?
- - [X] Add getState() amd getState(key) function
- - [X] Add setState(key, value) function
- - [X] Add support for UMD modules
- - [X] Add build tool / pre built `farmbot.min.js`
- - [X] Get off of socket.io after meshblu upgrade.
- - [X] Upgrade to support latest MeshBlu
- - [X] DRY up repetitious promise code via helper in `Farmbot.util`
- - [X] Ability to generate guest UUID / Token.
- - [X] Add test suite
- - [X] Add test coverage reporter
-
 ## Browser Support
 
 Works on any browser that supports:
 
- * Native Promise objects (you can polyfill this one- raise an issue if you need help).
+ * [Native Promise objects](http://caniuse.com/#feat=promises).
+ * [Websockets](http://caniuse.com/#feat=websockets).
 
-## Installation
+## Installation (Library Users)
 
 ```
 npm install farmbot
 ```
 
-If you would like support for other package managers (eg: bower), submit a PR or raise an issue.
+Raise an issue if you require support with other package managers such as Bower.
 
 ## Quick Usage:
 
@@ -64,6 +47,17 @@ To run it off of a private server, you will need to change the `meshServer` url 
 ```javascript
 var bot = Farmbot({uuid: "123", token: "456", meshServer: "//myMeshBluServer.org"});
 ```
+
+## Installation (Library Developers)
+
+ 1. `git clone https://github.com/FarmBot/farmbot-js`
+ 2. `cd farmbot-js`
+ 3. `npm install` or `sudo npm install` if required
+
+To run tests: `npm test`
+
+To minify and convert to a [UMD module](https://github.com/umdjs/umd): `gulp build`
+
 ## Basic RPC Commands
 
 Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise. Timeout is set at `1000 ms` by default and can be reconfigured by changing the bot `timeout` propery on instantiation or via `bot.setState("timeout", 999)`.
@@ -98,7 +92,8 @@ Currently supported commands:
  * send(commandObject)
  * syncSequence
  * updateCalibration
- * sendRaw(jsObject) (NOT PROMISE BASED- USE `send()`)
+ * send(messageObject)
+ * sendRaw(jsObject) (NOT PROMISE BASED- consider using `send()` instead.)
 
 ## Using Events
 
@@ -126,11 +121,13 @@ Currently supported commands:
 
 ## Internal State and Config
 
-The bot object keeps all state in one place for sanity.
+The bot object keeps all state in one place for sanity. This includes things like configuration options, current position, etc. All updates to the bot's state are broadcast with a `change` event, that reports current and previous state value as it changes.
 
- * `bot.listState()`: See all relevant state records.
- * `bot.getState(attribute_name)`: Fetch a config option such as `timeout` or `meshServer` URL.
+ * `bot.listState()`: See all relevant state record names.
+ * `bot.getState(attribute_name)`: Fetch a state record such as `timeout` or `meshServer` URL.
  * `bot.setState(name, value)`: Set state value 'x' to 'y'. Ex: `bot.setState('uuid', '---')`. Emits a `change` event.
+
+## Common Config Options
 
 If you are running your own servers, you may want to use other options.
 
@@ -163,3 +160,22 @@ var bot = Farmbot({
 bot.options.timeout = 5000 // 5 seconds
 
 ```
+
+## TODO
+
+ - [ ] Get feature parity with old version.
+ - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
+ - [ ] Get compliant with A+ promise spec.
+ - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
+ - [ ] Convert library to literate javascript?
+ - [X] Add getState() amd getState(key) function
+ - [X] Add setState(key, value) function
+ - [X] Add support for UMD modules
+ - [X] Add build tool / pre built `farmbot.min.js`
+ - [X] Get off of socket.io after meshblu upgrade.
+ - [X] Upgrade to support latest MeshBlu
+ - [X] DRY up repetitious promise code via helper in `Farmbot.util`
+ - [X] Ability to generate guest UUID / Token.
+ - [X] Add test suite
+ - [X] Add test coverage reporter
+
