@@ -53,8 +53,10 @@ var bot = Farmbot({uuid: "123", token: "456", meshServer: "//myMeshBluServer.org
  1. `git clone https://github.com/FarmBot/farmbot-js`
  2. `cd farmbot-js`
  3. `npm install` or `sudo npm install` if required
- 4. `npm test`
- 5. (optional) `gulp build` to minify and convert to a [UMD module](https://github.com/umdjs/umd).
+
+To run tests: `npm test`
+
+To minify and convert to a [UMD module](https://github.com/umdjs/umd): `gulp build`
 
 ## Basic RPC Commands
 
