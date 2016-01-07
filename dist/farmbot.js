@@ -100,7 +100,7 @@ return (function(global) {
     });
   }
 
-  Farmbot.prototype.updateCalibration = function() {
+  Farmbot.prototype.updateCalibration = function(params) {
     // Valid keys for `params` object: movement_timeout_x, movement_timeout_y,
     // movement_timeout_z, movement_invert_endpoints_x,
     // movement_invert_endpoints_y, movement_invert_endpoints_z,
