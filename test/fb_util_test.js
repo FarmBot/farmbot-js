@@ -22,14 +22,22 @@ describe('Farmbot', function() {
     var badAttempt = function() {
       Farmbot.requireKeys({}, requiredFields)
     };
+
     var goodAttempt = function() {
       Farmbot.requireKeys({
         important: 'yes'
       }, requiredFields);
     };
 
+    var goodAttempt2 = function() {
+      Farmbot.requireKeys({
+        important: 0 // 0 is OK!
+      }, requiredFields);
+    };
+
     expect(badAttempt).toThrow(expectedError);
     expect(goodAttempt).not.toThrow(expectedError);
+    expect(goodAttempt2).not.toThrow(expectedError);
   });
 
   it('generates UUIDs', function(){
