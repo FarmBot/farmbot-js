@@ -305,9 +305,11 @@ return (function(global) {
     return target;
   };
 
+
   Farmbot.requireKeys = function(input, required) {
     required.forEach(function(prop) {
-      if (!input[prop]) {
+      var val = input[prop];
+      if (!val && (val !== 0)) { // FarmbotJS considers 0 to be truthy.
         throw (new Error("Expected input object to have `" + prop +
           "` property"));
       }
@@ -366,10 +368,6 @@ return (function(global) {
       return val;
     }
   }
-
-  // FIXME :
-  // Simplifies my workflow when testing so that I don't need to run `gulp build`
-  global['Farmbot'] = Farmbot;
 
   return Farmbot
 })(this);
