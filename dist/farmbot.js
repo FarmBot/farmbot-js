@@ -101,11 +101,16 @@ return (function(global) {
   }
 
   Farmbot.prototype.updateCalibration = function() {
-    console.warn("Not yet implemented");
-    return this.send({
-      params: {},
-      method: "update_calibration"
-    });
+    // Valid keys for `params` object: movement_timeout_x, movement_timeout_y,
+    // movement_timeout_z, movement_invert_endpoints_x,
+    // movement_invert_endpoints_y, movement_invert_endpoints_z,
+    // movement_invert_motor_x, movement_invert_motor_y, movement_invert_motor_z,
+    // movement_steps_acc_dec_x, movement_steps_acc_dec_y,
+    // movement_steps_acc_dec_z, movement_home_up_x, movement_home_up_y,
+    // movement_home_up_z, movement_min_spd_x, movement_min_spd_y,
+    // movement_min_spd_z, movement_max_spd_x, movement_max_spd_y,
+    // movement_max_spd_z
+    return this.send({ params: params || {}, method: "update_calibration" });
   }
 
   Farmbot.config = {
