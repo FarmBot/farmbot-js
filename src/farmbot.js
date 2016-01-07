@@ -66,7 +66,7 @@
     });
   }
 
-  Farmbot.prototype.pinWrite = function(values) {
+  Farmbot.prototype.pinWrite = function(opts) {
     Farmbot.requireKeys(opts, ["pin", "value1", "mode"]);
     return this.send({
       params: opts,
