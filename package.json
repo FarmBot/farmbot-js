@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Javascript wrapper for Farmbot's authentication and RPC instructions",
   "main": "dist/farmbot.js",
   "scripts": {
