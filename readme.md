@@ -53,14 +53,11 @@ var bot = Farmbot({uuid: "123", token: "456", meshServer: "//myMeshBluServer.org
  1. `git clone https://github.com/FarmBot/farmbot-js`
  2. `cd farmbot-js`
  3. `npm install` or `sudo npm install` if required
-
-To run tests: `npm test`
-
-To minify and convert to a [UMD module](https://github.com/umdjs/umd): `gulp build`
+ 4. `npm test` to verify installation and build to `/dist`
 
 ## Basic RPC Commands
 
-Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise. Timeout is set at `1000 ms` by default and can be reconfigured by changing the bot `timeout` propery on instantiation or via `bot.setState("timeout", 999)`.
+Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise. Timeout is set at `1000 ms` by default and can be reconfigured by changing the bot `timeout` property on instantiation or via `bot.setState("timeout", 999)`.
 
 Example:
 
@@ -117,7 +114,7 @@ Currently supported commands:
  * `disconnect`: Connection lost. **Note: FarmbotJS won't auto-reconnect**.
  * `message`: When the bot gets a *non-rpc* command, it is regarded as a 'message'.
  * `change`: The bot object's internal state has changed.
- * `<random uuid>`: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request's UUID. Mostly for internal use.
+ * `<random uuid>`: Sometimes you will see events that have random UUIDs for names. These events are typically responses to outbound commands. RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS emits an event named after the request's UUID. Mostly for internal use and JSON RPC compliance.
 
 ## Internal State and Config
 
@@ -163,11 +160,11 @@ bot.options.timeout = 5000 // 5 seconds
 
 ## TODO
 
- - [ ] Get feature parity with old version.
  - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
- - [ ] Get compliant with A+ promise spec.
+ - [ ] Get comp/liant with A+ promise spec.
  - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
  - [ ] Convert library to literate javascript?
+ - [X] Get feature parity with old version.
  - [X] Add getState() amd getState(key) function
  - [X] Add setState(key, value) function
  - [X] Add support for UMD modules
