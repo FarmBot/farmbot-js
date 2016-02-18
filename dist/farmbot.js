@@ -169,8 +169,9 @@ return (function(global) {
   Farmbot.prototype.send = function(input) {
     var that = this;
     var msg = that.sendRaw(input);
-    var promise = Farmbot.timerDefer(that.getState("timeout"),
-      msg.method + " " + msg.params);
+    var errMsg = msg.method + " " + JSON.stringify(msg.params);
+    var timeOut = that.getState("timeout");
+    var promise = Farmbot.timerDefer(timeOut, errMsg);
     that.on(msg.id, function(response) {
       var respond = (response && response.result) ? promise.resolve : promise.reject;
       respond(response);
