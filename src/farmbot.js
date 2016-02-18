@@ -210,7 +210,9 @@
     var $p = Farmbot.timerDefer(bot.getState("timeout"), "subscribing to device");
 
     function subscribe() {
-      bot.socket.send(Farmbot.encodeFrame("subscribe", bot));
+      var payload = { uuid: bot.getState("uuid") };
+      var frame = Farmbot.encodeFrame("subscribe", payload);
+      bot.socket.send(frame);
       $p.resolve(bot); // TODO is there a way to confirm "subscribe" success?
     }
 
