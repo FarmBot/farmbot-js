@@ -178,7 +178,7 @@
 
   Farmbot.prototype.__onmessage = function(e) {
     var msg = Farmbot.decodeFrame(e.data);
-    var id = msg.message.id;
+    var id = (msg.message || {}).id;
     if (id) {
       this.emit(id, msg.message);
     } else {

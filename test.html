@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="/dist/farmbot.js"></script>
+  <script>
+  // ========= TOKEN JAR
+  // [{
+  //   "uuid": "06294f4c-36cf-4ecf-8157-03fab8c94103",
+  //   "token": "275e162eb371cce7436ef7aa0e05db64f33317cb",
+  // }, {
+  //   "uuid": "ade3785c-fb6e-4f07-877a-ace9d03f9b3e",
+  //   "token": "d14b093d602e83c7d7ca686d4bc4cef931dbc178",
+  // }]
+    function log(message) {
+      message += '\n';
+      console.log(message);
+      document.write(message);
+    }
+
+    var bot = Farmbot({
+      uuid: "f91d5bb8-c117-4d6f-a80a-1e1f2ad9007c",
+      token: "d914054dad71f8da6e12af6f8c63e8fd75d0cc00"
+    });
+
+    function connectOk() {
+      log("Connected OK");
+      return bot.emergencyStop()
+    }
+
+    function connectNo(error) {
+      log("Connection failed");
+    }
+
+    function emergencyStopNo(bot) {
+      log("Failed to perform e stop");
+    }
+
+    function emergencyStopNo(bot) {
+      log("Failed to perform e stop");
+    }
+
+    bot
+      .connect()
+      .then(connectOk, connectNo);
+
+  </script>
+</head>
+<body>
+...
+</body>
+</html>

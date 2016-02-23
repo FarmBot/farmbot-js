@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="/dist/farmbot.js"></script>
+  <script>
+
+  // ========= TOKEN JAR
+  var creds = {
+    local: {
+      "uuid": "06294f4c-36cf-4ecf-8157-03fab8c94103",
+      "token": "275e162eb371cce7436ef7aa0e05db64f33317cb",
+    },
+    remote: {
+      "uuid": "ade3785c-fb6e-4f07-877a-ace9d03f9b3e",
+      "token": "d14b093d602e83c7d7ca686d4bc4cef931dbc178",
+    }
+  }
+
+  var choice = prompt("type 'local' or 'remote'");
+
+  switch(choice) {
+    case "local":
+        var me = creds.local;
+        var you = creds.remote;
+        break;
+    case "remote":
+        var you = creds.local;
+        var me = creds.remote;
+        break;
+    default:
+        console.warn("Refresh page and try again");
+        break;
+  }
+
+  var ws = new WebSocket("wss://meshblu.octoblu.com/ws/v2");
+
+  function auth() {
+    output("identity", me);
+  }
+
+  function output(name, payload) {
+    var sent = JSON.stringify([name, payload]);
+    ws.send(sent);
+    console.log("-> " + sent);
+  }
+
+  function input(e) {
+    console.dir(e.data)
+    if (JSON.parse(e.data)[0] === "ready") { subscribe() };
+  }
+
+  function subscribe() {
+    output("subscribe", you);
+  }
+
+  ws.onopen = auth;
+  ws.onmessage = input;
+
+  console.log("PASTE THIS WHEN READY: ",
+              'output("message", {devices: ["*"], hello: "WORLD"})');
+
+  </script>
+</head>
+<body>
+...
+</body>
+</html>
