@@ -3,9 +3,7 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
-            'dist/farmbot-min.js',
-            // 'dist/farmbot.js',
-            // 'src/farmbot.js',
+            'dist/farmbot.js',
             'test/helpers.js',
             'test/**/*_test.js'
         ],
@@ -21,7 +19,7 @@ module.exports = function(config) {
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: ['Chrome'],
-        singleRun: true,
+        singleRun: false,
         concurrency: Infinity
     })
 }
