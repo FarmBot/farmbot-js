@@ -181,12 +181,13 @@ export class Farmbot {
 
     send(input) {
         var that = this;
-        var msg = input || {};
-        var label = `${msg.method} ${msg.params}`;
+        var msg = this.buildMessage(input);
+        var label = `${msg.method} ${JSON.stringify(msg.params)}`;
         var time = that.getState("timeout");
         this.client.publish(this.channel('request'), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
         that.on(msg.id, function(response) {
+          console.log("!!!", response.id);
           var respond = ((response || {}).result) ? p.resolve : p.reject;
           respond(response);
         })
@@ -197,14 +198,12 @@ export class Farmbot {
       console.log(channel);
       var msg = JSON.parse(buffer.toString());
       var id = msg.id;
-      if (id) {
-        this.emit(id, msg.message);
-      } else {
-        this.emit(msg.name, msg.message);
-      };
+      // TODO: Are we actually emitting msg.name anymore?
+      this.emit(id || msg.name, msg);
     };
 
     connect() {
+        var that = this;
         var p = Farmbot.timerDefer(this.getState("timeout"), "connecting to MQTT");
         this.client = connect(this.getState("mqttServer"), {
             username: this.getState("username"),
@@ -213,7 +212,7 @@ export class Farmbot {
 
         this.client.on("connect", () => {
           if (p.finished) { return };
-          this.client.on("message", this._onmessage)
+          this.client.on("message", this._onmessage.bind(that))
           this.client.subscribe([
             this.channel("error"),
             this.channel("response"),

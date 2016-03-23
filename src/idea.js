@@ -141,12 +141,13 @@ var Farmbot = (function () {
     ;
     Farmbot.prototype.send = function (input) {
         var that = this;
-        var msg = input || {};
-        var label = msg.method + " " + msg.params;
+        var msg = this.buildMessage(input);
+        var label = msg.method + " " + JSON.stringify(msg.params);
         var time = that.getState("timeout");
         this.client.publish(this.channel('request'), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
         that.on(msg.id, function (response) {
+            console.log("!!!", response.id);
             var respond = ((response || {}).result) ? p.resolve : p.reject;
             respond(response);
         });
@@ -157,17 +158,12 @@ var Farmbot = (function () {
         console.log(channel);
         var msg = JSON.parse(buffer.toString());
         var id = msg.id;
-        if (id) {
-            this.emit(id, msg.message);
-        }
-        else {
-            this.emit(msg.name, msg.message);
-        }
-        ;
+        this.emit(id || msg.name, msg);
     };
     ;
     Farmbot.prototype.connect = function () {
         var _this = this;
+        var that = this;
         var p = Farmbot.timerDefer(this.getState("timeout"), "connecting to MQTT");
         this.client = mqtt_1.connect(this.getState("mqttServer"), {
             username: this.getState("username"),
@@ -178,7 +174,7 @@ var Farmbot = (function () {
                 return;
             }
             ;
-            _this.client.on("message", _this._onmessage);
+            _this.client.on("message", _this._onmessage.bind(that));
             _this.client.subscribe([
                 _this.channel("error"),
                 _this.channel("response"),
