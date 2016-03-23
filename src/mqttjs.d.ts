@@ -1,9 +1,10 @@
-declare class MqttClient {
-  public publish: (String, any) => void;
-  public subscribe: (String) => void;
-  public on: (String, any) => void;
-}
+type MQTTEventName = "connect" | "message";
 
+declare class MqttClient {
+  public publish: (channel: String, payload: any) => void;
+  public subscribe: (channel: String|String[]) => void;
+  public on: (wow: MQTTEventName, cool: any) => void;
+}
 interface IMQTTConnectOptions {
   keepalive?: Number;
   clientId?: String;
@@ -14,13 +15,13 @@ interface IMQTTConnectOptions {
   connectTimeout?: Number;
   username?: String;
   password?: String;
-// incomingStore: a Store for the incoming packets
-// outgoingStore: a Store for the outgoing packets
-// will: a message that will sent by the broker automatically when the client disconnect badly. The format is:
-// topic: the topic to publish
-// payload: the message to publish
-// qos: the QoS
-// retain: the retain flag
+  topic?: String
+  qos?: Number;
+  retain?: Boolean;
+  // outgoingStore: a Store for the outgoing packets
+  // will: a message that will sent by the broker automatically when the client disconnect badly. The format is:
+  // payload: the message to publish
+  // incomingStore: a Store for the incoming packets
 }
 
 declare module "mqtt" {

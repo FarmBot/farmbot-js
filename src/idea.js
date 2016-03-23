@@ -128,22 +128,65 @@ var Farmbot = (function () {
     Farmbot.prototype.buildMessage = function (input) {
         var msg = input || {};
         var metaData = {
-            devices: (msg.devices || this.getState("uuid")),
             id: (msg.id || Farmbot.uuid())
         };
         Farmbot.extend(msg, [metaData]);
-        Farmbot.requireKeys(msg, ["params", "method", "devices", "id"]);
+        Farmbot.requireKeys(msg, ["params", "method", "id"]);
         return msg;
     };
     ;
+    Farmbot.prototype.channel = function (name) {
+        return "bot/" + this.getState("username") + "/" + name;
+    };
+    ;
     Farmbot.prototype.send = function (input) {
+        var that = this;
+        var msg = input || {};
+        var label = msg.method + " " + msg.params;
+        var time = that.getState("timeout");
+        this.client.publish(this.channel('request'), JSON.stringify(input));
+        var p = Farmbot.timerDefer(time, label);
+        that.on(msg.id, function (response) {
+            var respond = ((response || {}).result) ? p.resolve : p.reject;
+            respond(response);
+        });
+        return p;
+    };
+    ;
+    Farmbot.prototype._onmessage = function (channel, buffer, message) {
+        console.log(channel);
+        var msg = JSON.parse(buffer.toString());
+        var id = msg.id;
+        if (id) {
+            this.emit(id, msg.message);
+        }
+        else {
+            this.emit(msg.name, msg.message);
+        }
+        ;
     };
     ;
     Farmbot.prototype.connect = function () {
+        var _this = this;
+        var p = Farmbot.timerDefer(this.getState("timeout"), "connecting to MQTT");
         this.client = mqtt_1.connect(this.getState("mqttServer"), {
             username: this.getState("username"),
             password: this.getState("password")
         });
+        this.client.on("connect", function () {
+            if (p.finished) {
+                return;
+            }
+            ;
+            _this.client.on("message", _this._onmessage);
+            _this.client.subscribe([
+                _this.channel("error"),
+                _this.channel("response"),
+                _this.channel("notification")
+            ]);
+            p.resolve(_this);
+        });
+        return p;
     };
     Farmbot.defer = function (label) {
         var $reject, $resolve;
