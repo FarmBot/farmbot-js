@@ -11,7 +11,7 @@ Works on any browser that supports:
  * [Native Promise objects](http://caniuse.com/#feat=promises).
  * [Websockets](http://caniuse.com/#feat=websockets).
 
-## Installation (Library Users)
+## Installation
 
 ```
 npm install farmbot
@@ -19,13 +19,34 @@ npm install farmbot
 
 Raise an issue if you require support with other package managers such as Bower.
 
-## Quick Usage:
+## Login with an API Token
 
-If you are running your bot off of the [officially supported service](http://my.farmbot.io), then all you need to pass in is the UUID/Token of your device.
+:+1:
+
+Login using your API token from the [Farmbot Web App](my.farmbot.io).
+
+[Click here for instructions on how to generate an API token](https://github.com/FarmBot/farmbot-web-app#generating-an-api-token)
+
+Example:
 
 ```javascript
+  var SUPER_SECRET_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIzQHRlc3QuY29tIiwiaWF0IjoxNDU5MTA5NzI4LCJqdGkiOiI5MjJhNWEwZC0wYjNhLTQ3NjctOTMxOC0xZTQxYWU2MDAzNTIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwiZXhwIjoxNDU5NDU1MzI4LCJtcXR0IjoibG9jYWxob3N0IiwiYm90IjoiYWE3YmIzN2YtNWJhMy00NjU0LWIyZTQtNThlZDU3NDY1MDhjIn0.KpkNGR9YH68AF3iHP48GormqXzspBJrDGm23aMFGyL_eRIN8iKzy4gw733SaJgFjmebJOqZkz3cly9P5ZpCKwlaxAyn9RvfjQgFcUK0mywWAAvKp5lHfOFLhBBGICTW1r4HcZBgY1zTzVBw4BqS4zM7Y0BAAsflYRdl4dDRG_236p9ETCj0MSYxFagfLLLq0W63943jSJtNwv_nzfqi3TTi0xASB14k5vYMzUDXrC-Z2iBdgmwAYUZUVTi2HsfzkIkRcTZGE7l-rF6lvYKIiKpYx23x_d7xGjnQb8hqbDmLDRXZJnSBY3zGY7oEURxncGBMUp4F_Yaf3ftg4Ry7CiA";
 
-var bot = Farmbot({uuid: "123", token: "456"});
+  bot = Farmbot({ token: SUPER_SECRET_TOKEN });
+  bot.connect();
+});
+
+```
+
+**Notes about using tokens:**
+
+ * There's no need to mention the MQTT server, it's in the token.
+ * There's no need to mention the bot's UUID, it's in the token.
+
+
+# Sending Commands to a Farmbot Object
+
+```javascript
 
 bot
   .connect()
@@ -178,4 +199,3 @@ bot.options.timeout = 5000 // 5 seconds
  - [X] Ability to generate guest UUID / Token.
  - [X] Add test suite
  - [X] Add test coverage reporter
-

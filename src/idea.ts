@@ -14,6 +14,19 @@ export class Farmbot {
         this._events = {};
         this._state = Farmbot.extend({}, [Farmbot.config.defaultOptions, input]);
         Farmbot.requireKeys(this._state, Farmbot.config.requiredOptions);
+        this._decodeThatToken();
+    }
+
+    _decodeThatToken(){
+      try {
+        var token = JSON.parse(atob((this.getState("token").split(".")[1])))
+      } catch(e) {
+        console.warn(e);
+        throw new Error("Unable to parse token. Is it properly formatted?");
+      }
+      var mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
+      this.setState("mqttServer", `ws://${mqttUrl}:3002`);
+      this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
     }
 
     listState() {
@@ -135,10 +148,9 @@ export class Farmbot {
     }
 
     static config = {
-        requiredOptions: ["mqttServer", "timeout", "username", "password"],
+        requiredOptions: ["timeout", "token"],
         defaultOptions: {
             speed: 100,
-            mqttServer: 'ws://localhost:3002',
             timeout: 6000
         }
     }
@@ -176,7 +188,7 @@ export class Farmbot {
     };
 
     channel(name: String): string {
-      return `bot/${this.getState("username")}/${name}`;
+      return `bot/${this.getState("uuid")}/${name}`;
     };
 
     send(input) {
@@ -184,7 +196,8 @@ export class Farmbot {
         var msg = this.buildMessage(input);
         var label = `${msg.method} ${JSON.stringify(msg.params)}`;
         var time = that.getState("timeout");
-        this.client.publish(this.channel('request'), JSON.stringify(input));
+        debugger;
+        that.client.publish(that.channel('request'), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
         that.on(msg.id, function(response) {
           console.log("!!!", response.id);
@@ -204,21 +217,21 @@ export class Farmbot {
 
     connect() {
         var that = this;
-        var p = Farmbot.timerDefer(this.getState("timeout"), "connecting to MQTT");
-        this.client = connect(this.getState("mqttServer"), {
-            username: this.getState("username"),
-            password: this.getState("password")
+        that.client = connect(that.getState("mqttServer"), {
+          email: that.getState("uuid"),
+          password: that.getState("token")
         });
+        var p = Farmbot.timerDefer(that.getState("timeout"), "connecting to MQTT");
 
-        this.client.on("connect", () => {
-          if (p.finished) { return };
-          this.client.on("message", this._onmessage.bind(that))
-          this.client.subscribe([
-            this.channel("error"),
-            this.channel("response"),
-            this.channel("notification")
+        that.client.on("connect", function() {
+          // if (p.finished) { return that };
+          that.client.on("message", that._onmessage.bind(that))
+          that.client.subscribe([
+            that.channel("error"),
+            that.channel("response"),
+            that.channel("notification")
           ]);
-          p.resolve(this);
+          that.client && p.resolve(that);
         });
 
         return p;
