@@ -5,30 +5,35 @@
     <script src="//code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8" src="/dist/farmbot.js"></script>
     <script>
+    var datum;
 
     var errorr = function(err){
       console.log("Failed to fetch token");
       // debugger;
     };
-
-    $.ajax({
-        url: "//localhost:3000/api/tokens",
-        type: "POST",
-        data: JSON.stringify({
-          user: {
-            email: 'admin@admin.com',
-            password: 'password123'
-          }
-        }),
-        contentType: "application/json"
-    })
-    .then(data => data.token.encoded)
-    .then(token => Farmbot({ token: token }))
-    .then(function(bot){
-      return bot.connect(function(){
-        debugger;
+    function getToken(email, password) {
+      var jqp = $.ajax({
+          url: "//localhost:3000/api/tokens",
+          type: "POST",
+          data: JSON.stringify({
+            user: {
+              email: email,
+              password: password
+            }
+          }),
+          contentType: "application/json"
       });
-    }, errorr);
+      return new Promise(function(resolve, reject){
+        jqp.then(function(data){
+          resolve(data.token.encoded);
+        }, errorr);
+      });
+    }
+
+    getToken('admin@admin.com', 'password123')
+    .then(token => Farmbot({ token: token }).connect())
+    .then(function(bot){ bot.moveRelative({speed: 100, x: 50}); })
+    .then(function(bot){ debugger; });
 
     </script>
   </head>

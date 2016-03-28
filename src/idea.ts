@@ -198,8 +198,9 @@ export class Farmbot {
         var time = that.getState("timeout");
         that.client.publish(that.channel('request'), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
+        console.log(`Sent: ${input.id}`)
         that.on(msg.id, function(response) {
-          console.log("!!!", response.id);
+          console.log(`Got ${response.id}`);
           var respond = ((response || {}).result) ? p.resolve : p.reject;
           respond(response);
         })
@@ -207,29 +208,31 @@ export class Farmbot {
     };
 
     _onmessage(channel: String, buffer: Uint8Array, message) {
-      console.log(channel);
       var msg = JSON.parse(buffer.toString());
       var id = msg.id;
+      console.dir(msg);
       // TODO: Are we actually emitting msg.name anymore?
       this.emit(id || msg.name, msg);
     };
 
     connect(callback) {
       var that = this;
+      var timeout = that.getState("timeout");
+      var label = "MQTT Connect Attmpt";
+      var p = Farmbot.timerDefer(timeout, label);
 
       that.client = connect(that.getState("mqttServer"), {
         username: that.getState("uuid"),
         password: that.getState("token")
       });
-
       that.client.subscribe([
         that.channel("error"),
         that.channel("response"),
         that.channel("notification")
       ]);
-      that.client.once("connect", callback);
+      that.client.once("connect", () => p.resolve(that));
       that.client.on("message", that._onmessage);
-      return that;
+      return p;
     }
 
     // a convinience promise wrapper.
