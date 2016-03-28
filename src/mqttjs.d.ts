@@ -3,7 +3,8 @@ type MQTTEventName = "connect" | "message";
 declare class MqttClient {
   public publish: (channel: String, payload: any) => void;
   public subscribe: (channel: String|String[]) => void;
-  public on: (wow: MQTTEventName, cool: any) => void;
+  public on: (type: MQTTEventName, listener: any) => void;
+  public once: (type: MQTTEventName, listener: any) => void;
 }
 interface IMQTTConnectOptions {
   keepalive?: Number;

@@ -196,7 +196,6 @@ export class Farmbot {
         var msg = this.buildMessage(input);
         var label = `${msg.method} ${JSON.stringify(msg.params)}`;
         var time = that.getState("timeout");
-        debugger;
         that.client.publish(that.channel('request'), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
         that.on(msg.id, function(response) {
@@ -215,26 +214,22 @@ export class Farmbot {
       this.emit(id || msg.name, msg);
     };
 
-    connect() {
-        var that = this;
-        that.client = connect(that.getState("mqttServer"), {
-          email: that.getState("uuid"),
-          password: that.getState("token")
-        });
-        var p = Farmbot.timerDefer(that.getState("timeout"), "connecting to MQTT");
+    connect(callback) {
+      var that = this;
 
-        that.client.on("connect", function() {
-          // if (p.finished) { return that };
-          that.client.on("message", that._onmessage.bind(that))
-          that.client.subscribe([
-            that.channel("error"),
-            that.channel("response"),
-            that.channel("notification")
-          ]);
-          that.client && p.resolve(that);
-        });
+      that.client = connect(that.getState("mqttServer"), {
+        username: that.getState("uuid"),
+        password: that.getState("token")
+      });
 
-        return p;
+      that.client.subscribe([
+        that.channel("error"),
+        that.channel("response"),
+        that.channel("notification")
+      ]);
+      that.client.once("connect", callback);
+      that.client.on("message", that._onmessage);
+      return that;
     }
 
     // a convinience promise wrapper.

@@ -8,10 +8,8 @@
 
     var errorr = function(err){
       console.log("Failed to fetch token");
-      debugger;
+      // debugger;
     };
-
-    console.log("Firing up");
 
     $.ajax({
         url: "//localhost:3000/api/tokens",
@@ -24,10 +22,13 @@
         }),
         contentType: "application/json"
     })
-    .then(data => Farmbot({ token: data.token.encoded }), errorr)
-    .then(function(bot) {
-      bot.connect().then(function(bot){debugger;})
-    }, errorr)
+    .then(data => data.token.encoded)
+    .then(token => Farmbot({ token: token }))
+    .then(function(bot){
+      return bot.connect(function(){
+        debugger;
+      });
+    }, errorr);
 
     </script>
   </head>

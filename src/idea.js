@@ -157,7 +157,6 @@ var Farmbot = (function () {
         var msg = this.buildMessage(input);
         var label = msg.method + " " + JSON.stringify(msg.params);
         var time = that.getState("timeout");
-        debugger;
         that.client.publish(that.channel('request'), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
         that.on(msg.id, function (response) {
@@ -175,23 +174,20 @@ var Farmbot = (function () {
         this.emit(id || msg.name, msg);
     };
     ;
-    Farmbot.prototype.connect = function () {
+    Farmbot.prototype.connect = function (callback) {
         var that = this;
         that.client = mqtt_1.connect(that.getState("mqttServer"), {
-            email: that.getState("uuid"),
+            username: that.getState("uuid"),
             password: that.getState("token")
         });
-        var p = Farmbot.timerDefer(that.getState("timeout"), "connecting to MQTT");
-        that.client.on("connect", function () {
-            that.client.on("message", that._onmessage.bind(that));
-            that.client.subscribe([
-                that.channel("error"),
-                that.channel("response"),
-                that.channel("notification")
-            ]);
-            that.client && p.resolve(that);
-        });
-        return p;
+        that.client.subscribe([
+            that.channel("error"),
+            that.channel("response"),
+            that.channel("notification")
+        ]);
+        that.client.once("connect", callback);
+        that.client.on("message", that._onmessage);
+        return that;
     };
     Farmbot.defer = function (label) {
         var $reject, $resolve;
