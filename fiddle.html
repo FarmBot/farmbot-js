@@ -29,11 +29,13 @@
         }, errorr);
       });
     }
-
+    var bott;
     getToken('admin@admin.com', 'password123')
     .then(token => Farmbot({ token: token }).connect())
-    .then(function(bot){ bot.moveRelative({speed: 100, x: 50}); })
-    .then(function(bot){ debugger; });
+    .then(function(bot){
+      bott = bot;
+      bot.moveRelative({speed: 100, x: 50});
+    });
 
     </script>
   </head>

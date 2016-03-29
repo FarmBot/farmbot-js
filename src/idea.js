@@ -172,13 +172,13 @@ var Farmbot = (function () {
         var msg = JSON.parse(buffer.toString());
         var id = msg.id;
         console.dir(msg);
-        this.emit(id || msg.name, msg);
+        this.emit((id || msg.name), msg);
     };
     ;
     Farmbot.prototype.connect = function (callback) {
         var that = this;
         var timeout = that.getState("timeout");
-        var label = "MQTT Connect Attmpt";
+        var label = "MQTT Connect Atempt";
         var p = Farmbot.timerDefer(timeout, label);
         that.client = mqtt_1.connect(that.getState("mqttServer"), {
             username: that.getState("uuid"),
@@ -190,7 +190,7 @@ var Farmbot = (function () {
             that.channel("notification")
         ]);
         that.client.once("connect", function () { return p.resolve(that); });
-        that.client.on("message", that._onmessage);
+        that.client.on("message", that._onmessage.bind(that));
         return p;
     };
     Farmbot.defer = function (label) {

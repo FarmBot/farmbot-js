@@ -211,14 +211,13 @@ export class Farmbot {
       var msg = JSON.parse(buffer.toString());
       var id = msg.id;
       console.dir(msg);
-      // TODO: Are we actually emitting msg.name anymore?
-      this.emit(id || msg.name, msg);
+      this.emit((id || msg.name), msg);
     };
 
     connect(callback) {
       var that = this;
       var timeout = that.getState("timeout");
-      var label = "MQTT Connect Attmpt";
+      var label = "MQTT Connect Atempt";
       var p = Farmbot.timerDefer(timeout, label);
 
       that.client = connect(that.getState("mqttServer"), {
@@ -231,7 +230,7 @@ export class Farmbot {
         that.channel("notification")
       ]);
       that.client.once("connect", () => p.resolve(that));
-      that.client.on("message", that._onmessage);
+      that.client.on("message", that._onmessage.bind(that));
       return p;
     }
 
