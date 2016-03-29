@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="//code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8" src="/dist/farmbot.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/dist/farmbot-min.js"></script>
     <script>
     var datum;
 
@@ -31,11 +31,23 @@
     }
     var bott;
     getToken('admin@admin.com', 'password123')
-    .then(token => Farmbot({ token: token }).connect())
-    .then(function(bot){
-      bott = bot;
-      bot.moveRelative({speed: 100, x: 50});
-    });
+      .then(token => Farmbot({ token: token }).connect())
+      .then(function(bot){
+        console.log("Test 1: Moving x by 50");
+        return bot.moveRelative({speed: 100, x: 50});
+      })
+      .then(function(bot){
+        console.log("Test 2: Home All");
+        return bot.homeAll({speed: 123});
+      })
+      .then(function(bot){
+        console.log("Test 3: Read Status");
+        return bot.readStatus();
+      })
+      .then(function(bot){
+        // Status should be 0,0,0
+        debugger;
+      });
 
     </script>
   </head>

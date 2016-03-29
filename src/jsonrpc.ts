@@ -1,3 +1,4 @@
+// Some day, I will actually use these typings.
 export interface JSONRPCRequest {
     method: string;
     params: any;

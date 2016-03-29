@@ -61,26 +61,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	var mqtt_1 = __webpack_require__(1);
 	var Farmbot = (function () {
 	    function Farmbot(input) {
-	        if (!(this instanceof Farmbot)) {
+	        if (!(this instanceof Farmbot))
 	            return new Farmbot(input);
-	        }
-	        var emptyEvents = {};
-	        this.__events = emptyEvents;
-	        var state = {};
-	        Farmbot.extend(state, [Farmbot.config.defaultOptions, input]);
-	        Farmbot.requireKeys(state, Farmbot.config.requiredOptions);
-	        this.listState = function () { return Object.keys(state); };
-	        this.getState = function (key) { return state[key]; };
-	        this.setState = function (key, val) {
-	            if (val !== state[key]) {
-	                var old = state[key];
-	                state[key] = val;
-	                this.emit("change", { name: key, value: val, oldValue: old });
-	            }
-	            ;
-	            return val;
-	        };
+	        this._events = {};
+	        this._state = Farmbot.extend({}, [Farmbot.config.defaultOptions, input]);
+	        Farmbot.requireKeys(this._state, Farmbot.config.requiredOptions);
+	        this._decodeThatToken();
 	    }
+	    Farmbot.prototype._decodeThatToken = function () {
+	        var token;
+	        try {
+	            token = JSON.parse(atob((this.getState("token").split(".")[1])));
+	        }
+	        catch (e) {
+	            console.warn(e);
+	            throw new Error("Unable to parse token. Is it properly formatted?");
+	        }
+	        var mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
+	        this.setState("mqttServer", "ws://" + mqttUrl + ":3002");
+	        this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
+	    };
+	    Farmbot.prototype.listState = function () {
+	        return Object.keys(this._state);
+	    };
+	    ;
+	    Farmbot.prototype.getState = function (key) {
+	        return this._state[key];
+	    };
+	    ;
+	    Farmbot.prototype.setState = function (key, val) {
+	        if (val !== this._state[key]) {
+	            var old = this._state[key];
+	            this._state[key] = val;
+	            this.emit("change", { name: key, value: val, oldValue: old });
+	        }
+	        ;
+	        return val;
+	    };
+	    ;
 	    Farmbot.prototype.emergencyStop = function () {
 	        return this.send({
 	            params: {},
@@ -170,8 +188,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.send({ params: params || {}, method: "update_calibration" });
 	    };
 	    Farmbot.prototype.event = function (name) {
-	        this.__events[name] = this.__events[name] || [];
-	        return this.__events[name];
+	        this._events[name] = this._events[name] || [];
+	        return this._events[name];
 	    };
 	    ;
 	    Farmbot.prototype.on = function (event, callback) {
@@ -179,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ;
 	    Farmbot.prototype.emit = function (event, data) {
-	        [this.event(event), this.event('*')]
+	        [this.event(event), this.event("*")]
 	            .forEach(function (handlers) {
 	            handlers.forEach(function (handler) {
 	                try {
@@ -194,75 +212,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Farmbot.prototype.buildMessage = function (input) {
 	        var msg = input || {};
 	        var metaData = {
-	            devices: (msg.devices || this.getState("uuid")),
 	            id: (msg.id || Farmbot.uuid())
 	        };
 	        Farmbot.extend(msg, [metaData]);
-	        Farmbot.requireKeys(msg, ["params", "method", "devices", "id"]);
+	        Farmbot.requireKeys(msg, ["params", "method", "id"]);
 	        return msg;
 	    };
 	    ;
-	    Farmbot.prototype.sendRaw = function (input) {
-	        if (this.socket) {
-	            var msg = this.buildMessage(input);
-	            this.socket.send(JSON.stringify(["message", msg]));
-	            return msg;
-	        }
-	        else {
-	            throw new Error("You must connect() before sending data");
-	        }
-	        ;
+	    Farmbot.prototype.channel = function (name) {
+	        return "bot/" + this.getState("uuid") + "/" + name;
 	    };
 	    ;
 	    Farmbot.prototype.send = function (input) {
 	        var that = this;
-	        var msg = that.sendRaw(input);
-	        var promise = Farmbot.timerDefer(that.getState("timeout"), msg.method + " " + msg.params);
+	        var msg = this.buildMessage(input);
+	        var label = msg.method + " " + JSON.stringify(msg.params);
+	        var time = that.getState("timeout");
+	        that.client.publish(that.channel("request"), JSON.stringify(input));
+	        var p = Farmbot.timerDefer(time, label);
+	        console.log("Sent: " + input.id);
 	        that.on(msg.id, function (response) {
-	            var respond = (response && response.result) ? promise.resolve : promise.reject;
-	            respond(response);
+	            console.log("Got " + response.id);
+	            var hasResult = !!(response || {}).result;
+	            (hasResult) ? p.resolve(that) : p.reject(response);
 	        });
-	        return promise;
+	        return p;
 	    };
 	    ;
-	    Farmbot.prototype.__newSocket = function () {
-	        return new WebSocket("ws://" + this.getState("meshServer") + "/ws/v2");
+	    Farmbot.prototype._onmessage = function (channel, buffer, message) {
+	        var msg = JSON.parse(buffer.toString());
+	        var id = (msg.id || msg.name);
+	        this.emit(id, msg);
 	    };
 	    ;
-	    Farmbot.prototype.__onclose = function () {
-	        delete this.socket;
-	        this.emit('disconnect', this);
-	    };
-	    ;
-	    Farmbot.prototype.__onmessage = function (e) {
-	        var msg = Farmbot.decodeFrame(e.data);
-	        var id = (msg.message || {}).id;
-	        if (id) {
-	            this.emit(id, msg.message);
-	        }
-	        else {
-	            this.emit(msg.name, msg.message);
-	        }
-	        ;
-	    };
-	    ;
-	    Farmbot.prototype.__newConnection = function (credentials) {
+	    Farmbot.prototype.connect = function (callback) {
 	        var that = this;
-	        var promise = Farmbot.timerDefer(that.getState("timeout"), "__newConnection");
-	        var socket = that.__newSocket();
-	        socket.onopen = function (_e) {
-	            socket.send(Farmbot.encodeFrame("identity", credentials));
-	        };
-	        socket.onmessage = that.__onmessage.bind(that);
-	        socket.onclose = that.__onclose.bind(that);
-	        that.on("ready", function () {
-	            that.socket = socket;
-	            promise.resolve(that);
+	        var timeout = that.getState("timeout");
+	        var label = "MQTT Connect Atempt";
+	        var p = Farmbot.timerDefer(timeout, label);
+	        that.client = mqtt_1.connect(that.getState("mqttServer"), {
+	            username: that.getState("uuid"),
+	            password: that.getState("token")
 	        });
-	        return promise;
-	    };
-	    Farmbot.prototype.connect = function () {
-	        var client = mqtt_1.MqttConnection.connect("ws://localhost:3000");
+	        that.client.subscribe([
+	            that.channel("error"),
+	            that.channel("response"),
+	            that.channel("notification")
+	        ]);
+	        that.client.once("connect", function () { return p.resolve(that); });
+	        that.client.on("message", that._onmessage.bind(that));
+	        return p;
 	    };
 	    // a convinience promise wrapper.
 	    Farmbot.defer = function (label) {
@@ -301,44 +300,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return that;
 	    };
 	    ;
-	    Farmbot.encodeFrame = function (name, payload) {
-	        return JSON.stringify([name, payload]);
-	    };
-	    ;
-	    Farmbot.decodeFrame = function (frameString) {
-	        var raw = JSON.parse(frameString);
-	        return {
-	            name: raw[0],
-	            message: raw[1]
-	        };
-	    };
-	    ;
-	    Farmbot.__newXHR = function (timeOut, meshUrl) {
-	        var meshUrl = meshUrl || '//meshblu.octoblu.com';
-	        var timeOut = timeOut || Farmbot.config.defaultOptions.timeout;
-	        var request = new XMLHttpRequest();
-	        request.open('POST', meshUrl + '/devices?type=farmbotjs_client', true);
-	        return request;
-	    };
-	    Farmbot.registerDevice = function (timeOut, meshUrl) {
-	        if (timeOut === void 0) { timeOut = Farmbot.config.defaultOptions.timeout; }
-	        if (meshUrl === void 0) { meshUrl = Farmbot.config.defaultOptions.meshServer; }
-	        var timeOut = timeOut;
-	        var request = Farmbot.__newXHR(timeOut, meshUrl);
-	        var promise = Farmbot.timerDefer(timeOut, "Registeration of device");
-	        request.onload = function (data) {
-	            if (request.status >= 200 && request.status < 400) {
-	                return promise.resolve(JSON.parse(request.responseText));
-	            }
-	            else {
-	                return promise.reject(data);
-	            }
-	            ;
-	        };
-	        request.onerror = promise.reject;
-	        request.send();
-	        return promise;
-	    };
 	    Farmbot.extend = function (target, mixins) {
 	        mixins.forEach(function (mixin) {
 	            var iterate = function (prop) {
@@ -360,27 +321,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ;
 	    Farmbot.uuid = function () {
-	        var template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+	        var template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
 	        var replaceChar = function (c) {
 	            var r = Math.random() * 16 | 0;
-	            var v = c === 'x' ? r : r & 0x3 | 0x8;
+	            var v = c === "x" ? r : r & 0x3 | 0x8;
 	            return v.toString(16);
 	        };
 	        return template.replace(/[xy]/g, replaceChar);
-	    };
-	    ;
-	    // This function isn't clever enough.
-	    Farmbot.token = function () {
-	        var randomHex = function () {
-	            var num = (1 + Math.random()) * 0x10000;
-	            return Math.floor(num).toString(16).substring(1);
-	        };
-	        var i = 10;
-	        var results = [];
-	        while (i--) {
-	            results.push(randomHex());
-	        }
-	        return results.join('');
 	    };
 	    ;
 	    Farmbot.MeshErrorResponse = function (input) {
@@ -392,17 +339,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    };
 	    Farmbot.config = {
-	        requiredOptions: ["uuid", "token", "meshServer", "timeout"],
+	        requiredOptions: ["timeout", "token"],
 	        defaultOptions: {
 	            speed: 100,
-	            meshServer: 'meshblu.octoblu.com',
 	            timeout: 6000
 	        }
 	    };
 	    return Farmbot;
 	}());
 	exports.Farmbot = Farmbot;
-	// this.Farmbot = Farmbot;
 
 
 /***/ },

@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './src/idea.ts',
+  entry: './src/farmbot.ts',
   output: {
     libraryTarget: "umd",
     // library: "Farmbot",
