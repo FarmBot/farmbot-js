@@ -1,5 +1,5 @@
 "use strict";
-var mqtt_1 = require('mqtt');
+var mqtt_1 = require("mqtt");
 var Farmbot = (function () {
     function Farmbot(input) {
         if (!(this instanceof Farmbot))
@@ -10,8 +10,9 @@ var Farmbot = (function () {
         this._decodeThatToken();
     }
     Farmbot.prototype._decodeThatToken = function () {
+        var token;
         try {
-            var token = JSON.parse(atob((this.getState("token").split(".")[1])));
+            token = JSON.parse(atob((this.getState("token").split(".")[1])));
         }
         catch (e) {
             console.warn(e);
@@ -126,7 +127,7 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.prototype.emit = function (event, data) {
-        [this.event(event), this.event('*')]
+        [this.event(event), this.event("*")]
             .forEach(function (handlers) {
             handlers.forEach(function (handler) {
                 try {
@@ -157,7 +158,7 @@ var Farmbot = (function () {
         var msg = this.buildMessage(input);
         var label = msg.method + " " + JSON.stringify(msg.params);
         var time = that.getState("timeout");
-        that.client.publish(that.channel('request'), JSON.stringify(input));
+        that.client.publish(that.channel("request"), JSON.stringify(input));
         var p = Farmbot.timerDefer(time, label);
         console.log("Sent: " + input.id);
         that.on(msg.id, function (response) {
@@ -250,10 +251,10 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.uuid = function () {
-        var template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+        var template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
         var replaceChar = function (c) {
             var r = Math.random() * 16 | 0;
-            var v = c === 'x' ? r : r & 0x3 | 0x8;
+            var v = c === "x" ? r : r & 0x3 | 0x8;
             return v.toString(16);
         };
         return template.replace(/[xy]/g, replaceChar);

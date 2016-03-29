@@ -2,7 +2,7 @@
 /// <reference path="./mqttjs.d.ts"/>
 /// <reference path="../typings/main.d.ts"/>
 
-import { connect } from 'mqtt';
+import { connect } from "mqtt";
 
 export class Farmbot {
     private _events: { [key: string]: any; };
@@ -17,16 +17,17 @@ export class Farmbot {
         this._decodeThatToken();
     }
 
-    _decodeThatToken(){
-      try {
-        var token = JSON.parse(atob((this.getState("token").split(".")[1])))
-      } catch(e) {
-        console.warn(e);
-        throw new Error("Unable to parse token. Is it properly formatted?");
-      }
-      var mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
-      this.setState("mqttServer", `ws://${mqttUrl}:3002`);
-      this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
+    _decodeThatToken() {
+        let token;
+        try {
+            token = JSON.parse(atob((this.getState("token").split(".")[1])));
+        } catch (e) {
+            console.warn(e);
+            throw new Error("Unable to parse token. Is it properly formatted?");
+        }
+        let mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
+        this.setState("mqttServer", `ws://${mqttUrl}:3002`);
+        this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
     }
 
     listState() {
@@ -39,7 +40,7 @@ export class Farmbot {
 
     setState(key, val) {
         if (val !== this._state[key]) {
-            var old = this._state[key];
+            let old = this._state[key];
             this._state[key] = val;
             this.emit("change", { name: key, value: val, oldValue: old });
         };
@@ -153,7 +154,7 @@ export class Farmbot {
             speed: 100,
             timeout: 6000
         }
-    }
+    };
 
     event(name) {
         this._events[name] = this._events[name] || [];
@@ -165,7 +166,7 @@ export class Farmbot {
     };
 
     emit(event, data) {
-        [this.event(event), this.event('*')]
+        [this.event(event), this.event("*")]
             .forEach(function(handlers) {
                 handlers.forEach(function(handler) {
                     try {
@@ -173,13 +174,13 @@ export class Farmbot {
                     } catch (e) {
                         console.warn("Exception thrown while handling `" + event + "` event.");
                     }
-                })
+                });
             });
     }
 
     buildMessage(input) {
-        var msg = input || {};
-        var metaData = {
+        let msg = input || {};
+        let metaData = {
             id: (msg.id || Farmbot.uuid())
         };
         Farmbot.extend(msg, [metaData]);
@@ -188,79 +189,79 @@ export class Farmbot {
     };
 
     channel(name: String): string {
-      return `bot/${this.getState("uuid")}/${name}`;
+        return `bot/${this.getState("uuid")}/${name}`;
     };
 
     send(input) {
-        var that = this;
-        var msg = this.buildMessage(input);
-        var label = `${msg.method} ${JSON.stringify(msg.params)}`;
-        var time = that.getState("timeout");
-        that.client.publish(that.channel('request'), JSON.stringify(input));
-        var p = Farmbot.timerDefer(time, label);
-        console.log(`Sent: ${input.id}`)
+        let that = this;
+        let msg = this.buildMessage(input);
+        let label = `${msg.method} ${JSON.stringify(msg.params)}`;
+        let time = that.getState("timeout");
+        that.client.publish(that.channel("request"), JSON.stringify(input));
+        let p = Farmbot.timerDefer(time, label);
+        console.log(`Sent: ${input.id}`);
         that.on(msg.id, function(response) {
-          console.log(`Got ${response.id}`);
-          var respond = ((response || {}).result) ? p.resolve : p.reject;
-          respond(response);
-        })
+            console.log(`Got ${response.id}`);
+            let respond = ((response || {}).result) ? p.resolve : p.reject;
+            respond(response);
+        });
         return p;
     };
 
     _onmessage(channel: String, buffer: Uint8Array, message) {
-      var msg = JSON.parse(buffer.toString());
-      var id = msg.id;
-      console.dir(msg);
-      this.emit((id || msg.name), msg);
+        let msg = JSON.parse(buffer.toString());
+        let id = msg.id;
+        console.dir(msg);
+        this.emit((id || msg.name), msg);
     };
 
     connect(callback) {
-      var that = this;
-      var timeout = that.getState("timeout");
-      var label = "MQTT Connect Atempt";
-      var p = Farmbot.timerDefer(timeout, label);
+        let that = this;
+        let timeout = that.getState("timeout");
+        let label = "MQTT Connect Atempt";
+        let p = Farmbot.timerDefer(timeout, label);
 
-      that.client = connect(that.getState("mqttServer"), {
-        username: that.getState("uuid"),
-        password: that.getState("token")
-      });
-      that.client.subscribe([
-        that.channel("error"),
-        that.channel("response"),
-        that.channel("notification")
-      ]);
-      that.client.once("connect", () => p.resolve(that));
-      that.client.on("message", that._onmessage.bind(that));
-      return p;
+        that.client = connect(that.getState("mqttServer"), {
+            username: that.getState("uuid"),
+            password: that.getState("token")
+        });
+        that.client.subscribe([
+            that.channel("error"),
+            that.channel("response"),
+            that.channel("notification")
+        ]);
+        that.client.once("connect", () => p.resolve(that));
+        that.client.on("message", that._onmessage.bind(that));
+        return p;
     }
 
     // a convinience promise wrapper.
     static defer(label) {
-        var $reject, $resolve;
-        var that = new Promise(function(resolve, reject) {
+        let $reject, $resolve;
+        let that = new Promise(function(resolve, reject) {
             $reject = reject;
             $resolve = resolve;
         });
-        that.finished = false
+        that.finished = false;
         that.reject = function() {
             that.finished = true;
             $reject.apply(that, arguments);
-        }
+        };
         that.resolve = function() {
             that.finished = true;
             $resolve.apply(that, arguments);
-        }
+        };
         that.label = label || "a promise";
         return that;
     };
 
     static timerDefer(timeout: Number, label: String) {
         label = label || ("promise with " + timeout + " ms timeout");
-        var that = Farmbot.defer(label);
+        let that = Farmbot.defer(label);
         if (!timeout) { throw new Error("No timeout value set."); };
         setTimeout(function() {
             if (!that.finished) {
-                var failure = new Error("`" + label + "` did not execute in time");
+                let failure = new Error("`" + label + "` did not execute in time");
                 that.reject(failure);
             };
         }, timeout);
@@ -269,7 +270,7 @@ export class Farmbot {
 
     static extend(target, mixins) {
         mixins.forEach(function(mixin) {
-            var iterate = function(prop) {
+            let iterate = function(prop) {
                 target[prop] = mixin[prop];
             };
             Object.keys(mixin).forEach(iterate);
@@ -280,7 +281,7 @@ export class Farmbot {
 
     static requireKeys(input, required) {
         required.forEach(function(prop) {
-            var val = input[prop];
+            let val = input[prop];
             if (!val && (val !== 0)) { // FarmbotJS considers 0 to be truthy.
                 throw (new Error("Expected input object to have `" + prop +
                     "` property"));
@@ -289,10 +290,10 @@ export class Farmbot {
     };
 
     static uuid() {
-        var template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
-        var replaceChar = function(c) {
-            var r = Math.random() * 16 | 0;
-            var v = c === 'x' ? r : r & 0x3 | 0x8;
+        let template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+        let replaceChar = function(c) {
+            let r = Math.random() * 16 | 0;
+            let v = c === "x" ? r : r & 0x3 | 0x8;
             return v.toString(16);
         };
         return template.replace(/[xy]/g, replaceChar);
@@ -304,6 +305,6 @@ export class Farmbot {
                 method: "error",
                 error: input || "unspecified error"
             }
-        }
+        };
     }
 }
