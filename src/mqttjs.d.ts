@@ -6,6 +6,7 @@ declare class MqttClient {
   public on: (type: MQTTEventName, listener: any) => void;
   public once: (type: MQTTEventName, listener: any) => void;
 }
+
 interface IMQTTConnectOptions {
   keepalive?: Number;
   clientId?: String;
