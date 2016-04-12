@@ -7,8 +7,7 @@ export declare class Farmbot {
     client: MqttClient;
     constructor(input: any);
     _decodeThatToken(): void;
-    listState(): string[];
-    getState(key: any): any;
+    getState(key?: any): any;
     setState(key: any, val: any): any;
     emergencyStop(): Promise<{}>;
     execSequence(sequence: any): Promise<{}>;

@@ -30,12 +30,13 @@ export class Farmbot {
     this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
   }
 
-  listState() {
-    return Object.keys(this._state);
-  };
-
-  getState(key) {
-    return this._state[key];
+  getState(key?) {
+    if (key) {
+      return this._state[key];
+    } else {
+      // Create a copy of the state object to prevent accidental mutation.
+      return JSON.parse(JSON.stringify(this._state));
+    };
   };
 
   setState(key, val) {
@@ -203,7 +204,7 @@ export class Farmbot {
     that.on(msg.id, function(response) {
       console.log(`Got ${response.id}`);
       let hasResult = !!(response || {}).result;
-      (hasResult) ? p.resolve(that) : p.reject(response);
+      (hasResult) ? p.resolve(response) : p.reject(response);
     });
     return p;
   };

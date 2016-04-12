@@ -81,12 +81,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setState("mqttServer", "ws://" + mqttUrl + ":3002");
 	        this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
 	    };
-	    Farmbot.prototype.listState = function () {
-	        return Object.keys(this._state);
-	    };
-	    ;
 	    Farmbot.prototype.getState = function (key) {
-	        return this._state[key];
+	        if (key) {
+	            return this._state[key];
+	        }
+	        else {
+	            // Create a copy of the state object to prevent accidental mutation.
+	            return JSON.parse(JSON.stringify(this._state));
+	        }
+	        ;
 	    };
 	    ;
 	    Farmbot.prototype.setState = function (key, val) {
@@ -234,7 +237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        that.on(msg.id, function (response) {
 	            console.log("Got " + response.id);
 	            var hasResult = !!(response || {}).result;
-	            (hasResult) ? p.resolve(that) : p.reject(response);
+	            (hasResult) ? p.resolve(response) : p.reject(response);
 	        });
 	        return p;
 	    };
