@@ -159,3 +159,8 @@ bot.options.timeout = 5000 // 5 seconds
 
  - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
  - [ ] Get compliant with A+ promise spec.
+ - [ ] Track state changes when bot returns a status object.
+        - define an `isStatusUpdate` type guard.
+        - Add `maybeUpdateState` method.
+          - emit `change` event in there.
+          - Call it inside of `send()`.

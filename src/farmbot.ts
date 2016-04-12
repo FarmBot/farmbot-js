@@ -204,6 +204,7 @@ export class Farmbot {
     that.on(msg.id, function(response) {
       console.log(`Got ${response.id}`);
       let hasResult = !!(response || {}).result;
+      // TODO : If bot returns a status update, update bot's internal state.
       (hasResult) ? p.resolve(response) : p.reject(response);
     });
     return p;
