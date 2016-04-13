@@ -10,6 +10,7 @@ Works on any browser that supports:
 
  * [Native Promise objects](http://caniuse.com/#feat=promises).
  * [Websockets](http://caniuse.com/#feat=websockets).
+ * JSON (any browser made after 1942).
 
 ## Installation
 
@@ -20,8 +21,6 @@ npm install farmbot
 Raise an issue if you require support with other package managers such as Bower.
 
 ## Login with an API Token
-
-:+1:
 
 Login using your API token from the [Farmbot Web App](my.farmbot.io).
 
@@ -43,6 +42,10 @@ Example:
  * There's no need to mention the MQTT server, it's in the token.
  * There's no need to mention the bot's UUID, it's in the token.
 
+# Publishing
+
+0. `webpack`
+0. `npm publish`
 
 # Sending Commands to a Farmbot Object
 
@@ -68,16 +71,6 @@ To run it off of a private server, you will need to change the `meshServer` url 
 ```javascript
 var bot = Farmbot({uuid: "123", token: "456", meshServer: "//myMeshBluServer.org"});
 ```
-
-## Installation (Library Developers)
-
- 1. `git clone https://github.com/FarmBot/farmbot-js`
- 2. `cd farmbot-js`
- 3. `npm install` or `sudo npm install` if required
-
-To run tests: `npm test`
-
-To minify and convert to a [UMD module](https://github.com/umdjs/umd): `gulp build`
 
 ## Basic RPC Commands
 
@@ -144,29 +137,13 @@ Currently supported commands:
 
 The bot object keeps all state in one place for sanity. This includes things like configuration options, current position, etc. All updates to the bot's state are broadcast with a `change` event, that reports current and previous state value as it changes.
 
- * `bot.listState()`: See all relevant state record names.
+ * `bot.getState()`: Get copy of Farmbot status variables (read only).
  * `bot.getState(attribute_name)`: Fetch a state record such as `timeout` or `meshServer` URL.
  * `bot.setState(name, value)`: Set state value 'x' to 'y'. Ex: `bot.setState('uuid', '---')`. Emits a `change` event.
 
 ## Common Config Options
 
 If you are running your own servers, you may want to use other options.
-
-### meshServer (String)
-
-URL for the mesh server used by the bot. Defaults to `ws://mesh.farmbot.io`.
-
-```javascript
-
-var options = {
-  uuid: "123",
-  token: "456",
-  meshServer: 'wss://localhost:443'
-};
-
-var bot = Farmbot(options);
-
-```
 
 ### Timeout (Number)
 
@@ -184,18 +161,10 @@ bot.options.timeout = 5000 // 5 seconds
 
 ## TODO
 
- - [ ] Get feature parity with old version.
  - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
  - [ ] Get compliant with A+ promise spec.
- - [ ] Download REST server URL off of bot on connect (avoids un-DRY configuration)
- - [ ] Convert library to literate javascript?
- - [X] Add getState() amd getState(key) function
- - [X] Add setState(key, value) function
- - [X] Add support for UMD modules
- - [X] Add build tool / pre built `farmbot.min.js`
- - [X] Get off of socket.io after meshblu upgrade.
- - [X] Upgrade to support latest MeshBlu
- - [X] DRY up repetitious promise code via helper in `Farmbot.util`
- - [X] Ability to generate guest UUID / Token.
- - [X] Add test suite
- - [X] Add test coverage reporter
+ - [ ] Track state changes when bot returns a status object.
+        - define an `isStatusUpdate` type guard.
+        - Add `maybeUpdateState` method.
+          - emit `change` event in there.
+          - Call it inside of `send()`.

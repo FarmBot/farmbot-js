@@ -81,12 +81,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setState("mqttServer", "ws://" + mqttUrl + ":3002");
 	        this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
 	    };
-	    Farmbot.prototype.listState = function () {
-	        return Object.keys(this._state);
-	    };
-	    ;
 	    Farmbot.prototype.getState = function (key) {
-	        return this._state[key];
+	        if (key) {
+	            return this._state[key];
+	        }
+	        else {
+	            // Create a copy of the state object to prevent accidental mutation.
+	            return JSON.parse(JSON.stringify(this._state));
+	        }
+	        ;
 	    };
 	    ;
 	    Farmbot.prototype.setState = function (key, val) {
@@ -234,14 +237,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        that.on(msg.id, function (response) {
 	            console.log("Got " + response.id);
 	            var hasResult = !!(response || {}).result;
-	            (hasResult) ? p.resolve(that) : p.reject(response);
+	            // TODO : If bot returns a status update, update bot's internal state.
+	            // Probably can use a "type guard" for this sort of thing.
+	            (hasResult) ? p.resolve(response) : p.reject(response);
 	        });
 	        return p;
 	    };
 	    ;
 	    Farmbot.prototype._onmessage = function (channel, buffer, message) {
 	        var msg = JSON.parse(buffer.toString());
-	        var id = (msg.id || msg.name);
+	        var id = (msg.id || "*");
 	        this.emit(id, msg);
 	    };
 	    ;
