@@ -205,6 +205,7 @@ export class Farmbot {
       console.log(`Got ${response.id}`);
       let hasResult = !!(response || {}).result;
       // TODO : If bot returns a status update, update bot's internal state.
+      // Probably can use a "type guard" for this sort of thing.
       (hasResult) ? p.resolve(response) : p.reject(response);
     });
     return p;
@@ -212,7 +213,7 @@ export class Farmbot {
 
   _onmessage(channel: String, buffer: Uint8Array, message) {
     let msg = JSON.parse(buffer.toString());
-    let id = (msg.id || msg.name);
+    let id = (msg.id || "*");
     this.emit(id , msg);
   };
 
