@@ -42,6 +42,10 @@ Example:
  * There's no need to mention the MQTT server, it's in the token.
  * There's no need to mention the bot's UUID, it's in the token.
 
+# Publishing
+
+0. `webpack`
+0. `npm publish`
 
 # Sending Commands to a Farmbot Object
 

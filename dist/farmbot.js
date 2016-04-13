@@ -237,6 +237,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        that.on(msg.id, function (response) {
 	            console.log("Got " + response.id);
 	            var hasResult = !!(response || {}).result;
+	            // TODO : If bot returns a status update, update bot's internal state.
+	            // Probably can use a "type guard" for this sort of thing.
 	            (hasResult) ? p.resolve(response) : p.reject(response);
 	        });
 	        return p;
@@ -244,7 +246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ;
 	    Farmbot.prototype._onmessage = function (channel, buffer, message) {
 	        var msg = JSON.parse(buffer.toString());
-	        var id = (msg.id || msg.name);
+	        var id = (msg.id || "*");
 	        this.emit(id, msg);
 	    };
 	    ;
