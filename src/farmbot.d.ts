@@ -1,23 +1,22 @@
-/// <reference path="fbpromise.d.ts" />
-/// <reference path="mqttjs.d.ts" />
 /// <reference path="../typings/main.d.ts" />
+import { FB } from "./interfaces/interfaces";
 export declare class Farmbot {
     private _events;
     private _state;
     client: MqttClient;
-    constructor(input: any);
+    constructor(input: FB.ConstructorParams);
     _decodeThatToken(): void;
-    getState(key?: any): any;
-    setState(key: any, val: any): any;
+    getState(key?: string): any;
+    setState(key: string, val: string | number | boolean): string | number | boolean;
     emergencyStop(): Promise<{}>;
     execSequence(sequence: any): Promise<{}>;
-    homeAll(opts: any): Promise<{}>;
-    homeX(opts: any): Promise<{}>;
-    homeY(opts: any): Promise<{}>;
-    homeZ(opts: any): Promise<{}>;
-    moveAbsolute(opts: any): Promise<{}>;
-    moveRelative(opts: any): Promise<{}>;
-    pinWrite(opts: any): Promise<{}>;
+    homeAll(opts: FB.CommandOptions): Promise<{}>;
+    homeX(opts: FB.CommandOptions): Promise<{}>;
+    homeY(opts: FB.CommandOptions): Promise<{}>;
+    homeZ(opts: FB.CommandOptions): Promise<{}>;
+    moveAbsolute(opts: FB.CommandOptions): Promise<{}>;
+    moveRelative(opts: FB.CommandOptions): Promise<{}>;
+    pinWrite(opts: FB.CommandOptions): Promise<{}>;
     readStatus(): Promise<{}>;
     syncSequence(): Promise<{}>;
     updateCalibration(params: any): Promise<{}>;
@@ -28,23 +27,19 @@ export declare class Farmbot {
             timeout: number;
         };
     };
-    event(name: any): any;
+    event(name: any): Function[];
     on(event: any, callback: any): void;
     emit(event: any, data: any): void;
-    buildMessage(input: any): any;
-    channel(name: String): string;
-    send(input: any): Promise<{}>;
-    _onmessage(channel: String, buffer: Uint8Array, message: any): void;
-    connect(callback: any): Promise<{}>;
-    static defer(label: any): Promise<{}>;
-    static timerDefer(timeout: Number, label: String): Promise<{}>;
-    static extend(target: any, mixins: any): any;
-    static requireKeys(input: any, required: any): void;
+    /** Validates RPCPayloads. Also adds optional fields if missing. */
+    buildMessage(input: FB.RPCPayload): FB.RPCMessage;
+    channel(name: string): string;
+    send(input: FB.RPCPayload): Promise<{}>;
+    _onmessage(channel: string, buffer: Uint8Array, message: any): void;
+    connect(): Promise<{}>;
+    static defer(label: string): Promise<{}>;
+    static timerDefer(timeout: Number, label: string): Promise<{}>;
+    static extend(target: any, mixins: any[]): any;
+    static requireKeys(input: any, required: string[]): void;
     static uuid(): string;
-    static MeshErrorResponse(input: any): {
-        error: {
-            method: string;
-            error: any;
-        };
-    };
+    static VERSION: string;
 }

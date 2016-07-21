@@ -3,7 +3,9 @@
     "target": "es5",
     "sourceMap": true,
     "module": "commonjs",
-    "declaration": true
+    "declaration": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
   },
 
   "exclude": [

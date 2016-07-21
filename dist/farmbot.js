@@ -54,8 +54,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="./fbpromise.d.ts"/>
-	/// <reference path="./mqttjs.d.ts"/>
 	/// <reference path="../typings/main.d.ts"/>
 	"use strict";
 	var mqtt_1 = __webpack_require__(1);
@@ -212,8 +210,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        });
 	    };
+	    /** Validates RPCPayloads. Also adds optional fields if missing. */
 	    Farmbot.prototype.buildMessage = function (input) {
-	        var msg = input || {};
+	        var msg = (input || {});
 	        var metaData = {
 	            id: (msg.id || Farmbot.uuid())
 	        };
@@ -231,14 +230,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var msg = this.buildMessage(input);
 	        var label = msg.method + " " + JSON.stringify(msg.params);
 	        var time = that.getState("timeout");
-	        that.client.publish(that.channel("request"), JSON.stringify(input));
+	        if (that.client) {
+	            that.client.publish(that.channel("request"), JSON.stringify(input));
+	        }
+	        else {
+	            throw new Error("Not connected to server");
+	        }
 	        var p = Farmbot.timerDefer(time, label);
-	        console.log("Sent: " + input.id);
+	        console.log("Sent: " + msg.id);
 	        that.on(msg.id, function (response) {
 	            console.log("Got " + response.id);
 	            var hasResult = !!(response || {}).result;
 	            // TODO : If bot returns a status update, update bot's internal state.
 	            // Probably can use a "type guard" for this sort of thing.
+	            // TODO: This rejection appears to resolve strings rather than errors.
 	            (hasResult) ? p.resolve(response) : p.reject(response);
 	        });
 	        return p;
@@ -250,7 +255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.emit(id, msg);
 	    };
 	    ;
-	    Farmbot.prototype.connect = function (callback) {
+	    Farmbot.prototype.connect = function () {
 	        var that = this;
 	        var timeout = that.getState("timeout");
 	        var label = "MQTT Connect Atempt";
@@ -335,14 +340,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return template.replace(/[xy]/g, replaceChar);
 	    };
 	    ;
-	    Farmbot.MeshErrorResponse = function (input) {
-	        return {
-	            error: {
-	                method: "error",
-	                error: input || "unspecified error"
-	            }
-	        };
-	    };
 	    Farmbot.config = {
 	        requiredOptions: ["timeout", "token"],
 	        defaultOptions: {
@@ -350,6 +347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            timeout: 6000
 	        }
 	    };
+	    Farmbot.VERSION = "1.2.0";
 	    return Farmbot;
 	}());
 	exports.Farmbot = Farmbot;
@@ -511,6 +509,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -2085,14 +2086,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(10);
+	/* WEBPACK VAR INJECTION */(function(process) {exports = module.exports = __webpack_require__(10);
 	exports.Stream = __webpack_require__(7);
 	exports.Readable = exports;
 	exports.Writable = __webpack_require__(20);
 	exports.Duplex = __webpack_require__(19);
 	exports.Transform = __webpack_require__(22);
 	exports.PassThrough = __webpack_require__(23);
+	if (!process.browser && process.env.READABLE_STREAM === 'disable') {
+	  module.exports = __webpack_require__(7);
+	}
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 10 */
@@ -3073,6 +3078,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	/* eslint-disable no-proto */
 
+	'use strict'
+
 	var base64 = __webpack_require__(13)
 	var ieee754 = __webpack_require__(14)
 	var isArray = __webpack_require__(15)
@@ -3155,8 +3162,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new Buffer(arg)
 	  }
 
-	  this.length = 0
-	  this.parent = undefined
+	  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+	    this.length = 0
+	    this.parent = undefined
+	  }
 
 	  // Common case.
 	  if (typeof arg === 'number') {
@@ -3287,6 +3296,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	if (Buffer.TYPED_ARRAY_SUPPORT) {
 	  Buffer.prototype.__proto__ = Uint8Array.prototype
 	  Buffer.__proto__ = Uint8Array
+	} else {
+	  // pre-set for values that may exist in the future
+	  Buffer.prototype.length = undefined
+	  Buffer.prototype.parent = undefined
 	}
 
 	function allocate (that, length) {
@@ -3436,10 +3449,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	Buffer.byteLength = byteLength
-
-	// pre-set for values that may exist in the future
-	Buffer.prototype.length = undefined
-	Buffer.prototype.parent = undefined
 
 	function slowToString (encoding, start, end) {
 	  var loweredCase = false
@@ -4532,7 +4541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      // valid surrogate pair
-	      codePoint = leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00 | 0x10000
+	      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
 	    } else if (leadSurrogate) {
 	      // valid bmp char, but last char was a lead
 	      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
@@ -4836,38 +4845,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 15 */
 /***/ function(module, exports) {
 
-	
-	/**
-	 * isArray
-	 */
+	var toString = {}.toString;
 
-	var isArray = Array.isArray;
-
-	/**
-	 * toString
-	 */
-
-	var str = Object.prototype.toString;
-
-	/**
-	 * Whether or not the given `val`
-	 * is an array.
-	 *
-	 * example:
-	 *
-	 *        isArray([]);
-	 *        // > true
-	 *        isArray(arguments);
-	 *        // > false
-	 *        isArray('');
-	 *        // > false
-	 *
-	 * @param {mixed} val
-	 * @return {bool}
-	 */
-
-	module.exports = isArray || function (val) {
-	  return !! val && '[object Array]' == str.call(val);
+	module.exports = Array.isArray || function (arr) {
+	  return toString.call(arr) == '[object Array]';
 	};
 
 
@@ -4898,8 +4879,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// NOTE: These type checking functions intentionally don't use `instanceof`
 	// because it is fragile and can be easily faked with `Object.create()`.
-	function isArray(ar) {
-	  return Array.isArray(ar);
+
+	function isArray(arg) {
+	  if (Array.isArray) {
+	    return Array.isArray(arg);
+	  }
+	  return objectToString(arg) === '[object Array]';
 	}
 	exports.isArray = isArray;
 
@@ -4939,7 +4924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.isUndefined = isUndefined;
 
 	function isRegExp(re) {
-	  return isObject(re) && objectToString(re) === '[object RegExp]';
+	  return objectToString(re) === '[object RegExp]';
 	}
 	exports.isRegExp = isRegExp;
 
@@ -4949,13 +4934,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.isObject = isObject;
 
 	function isDate(d) {
-	  return isObject(d) && objectToString(d) === '[object Date]';
+	  return objectToString(d) === '[object Date]';
 	}
 	exports.isDate = isDate;
 
 	function isError(e) {
-	  return isObject(e) &&
-	      (objectToString(e) === '[object Error]' || e instanceof Error);
+	  return (objectToString(e) === '[object Error]' || e instanceof Error);
 	}
 	exports.isError = isError;
 
@@ -4974,14 +4958,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	exports.isPrimitive = isPrimitive;
 
-	function isBuffer(arg) {
-	  return Buffer.isBuffer(arg);
-	}
-	exports.isBuffer = isBuffer;
+	exports.isBuffer = Buffer.isBuffer;
 
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
 	}
+
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12).Buffer))
 
 /***/ },
