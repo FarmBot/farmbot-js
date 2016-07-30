@@ -13,8 +13,9 @@ interface Thenable<T> {
 
 declare class Promise<T> implements Thenable<T> {
   // TODO: Fix this to not be "any"
-  public resolve: (any) => any;
-  public reject: (any) => any;
+  // HINT: Use generics.
+  public resolve: (any: any) => any;
+  public reject: (any: any) => any;
   public finished: boolean;
   public label: string;
 

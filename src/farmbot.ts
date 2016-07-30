@@ -3,9 +3,6 @@
 import { connect } from "mqtt";
 import { FB } from "./interfaces/interfaces";
 
-// For non-module loader projects.
-window["Farmbot"] = Farmbot;
-
 export class Farmbot {
   private _events: FB.Dictionary<Function[]>;
   private _state: FB.Dictionary<any>;
@@ -59,7 +56,7 @@ export class Farmbot {
 
   // TODO create a `sequence` constructor that validates and enforces inputs, to
   // avoid confusion.
-  execSequence(sequence) {
+  execSequence(sequence: FB.Sequence) {
     return this.send({
       params: sequence,
       method: "exec_sequence"
@@ -138,7 +135,7 @@ export class Farmbot {
     });
   }
 
-  updateCalibration(params) {
+  updateCalibration(params: FB.CalibrationParams) {
     // Valid keys for `params` object: movement_timeout_x, movement_timeout_y,
     // movement_timeout_z, movement_invert_endpoints_x,
     // movement_invert_endpoints_y, movement_invert_endpoints_z,
@@ -159,16 +156,16 @@ export class Farmbot {
     }
   };
 
-  event(name) {
+  event(name: string) {
     this._events[name] = this._events[name] || [];
     return this._events[name];
   };
 
-  on(event, callback) {
+  on(event: string, callback: Function) {
     this.event(event).push(callback);
   };
 
-  emit(event, data) {
+  emit(event: string, data: any) {
     [this.event(event), this.event("*")]
       .forEach(function(handlers) {
         handlers.forEach(function(handler) {
@@ -207,7 +204,7 @@ export class Farmbot {
     }
     let p = Farmbot.timerDefer(time, label);
     console.log(`Sent: ${msg.id}`);
-    that.on(msg.id, function(response) {
+    that.on(msg.id, function(response?: any) {
       console.log(`Got ${response.id}`);
       let hasResult = !!(response || {}).result;
       // TODO : If bot returns a status update, update bot's internal state.
@@ -218,7 +215,7 @@ export class Farmbot {
     return p;
   };
 
-  _onmessage(channel: string, buffer: Uint8Array, message) {
+  _onmessage(channel: string, buffer: Uint8Array /*, message*/) {
     let msg = JSON.parse(buffer.toString());
     let id = (msg.id || "*");
     this.emit(id , msg);
@@ -246,7 +243,7 @@ export class Farmbot {
 
   // a convinience promise wrapper.
   static defer(label: string) {
-    let $reject, $resolve;
+    let $reject: Function, $resolve: Function;
     let that = new Promise(function(resolve, reject) {
       $reject = reject;
       $resolve = resolve;
@@ -279,7 +276,7 @@ export class Farmbot {
 
   static extend(target: any, mixins: any[]) {
     mixins.forEach(function(mixin) {
-      let iterate = function(prop) {
+      let iterate = function(prop: any) {
         target[prop] = mixin[prop];
       };
       Object.keys(mixin).forEach(iterate);

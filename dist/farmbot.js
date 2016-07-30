@@ -57,6 +57,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	/// <reference path="../typings/main.d.ts"/>
 	"use strict";
 	var mqtt_1 = __webpack_require__(1);
+	// For non-module loader projects.
+	window["Farmbot"] = Farmbot;
 	var Farmbot = (function () {
 	    function Farmbot(input) {
 	        if (!(this instanceof Farmbot))
@@ -249,7 +251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return p;
 	    };
 	    ;
-	    Farmbot.prototype._onmessage = function (channel, buffer, message) {
+	    Farmbot.prototype._onmessage = function (channel, buffer /*, message*/) {
 	        var msg = JSON.parse(buffer.toString());
 	        var id = (msg.id || "*");
 	        this.emit(id, msg);
