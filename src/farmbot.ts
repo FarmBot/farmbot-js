@@ -3,6 +3,9 @@
 import { connect } from "mqtt";
 import { FB } from "./interfaces/interfaces";
 
+// For non-module loader projects.
+window["Farmbot"] = Farmbot;
+
 export class Farmbot {
   private _events: FB.Dictionary<Function[]>;
   private _state: FB.Dictionary<any>;
