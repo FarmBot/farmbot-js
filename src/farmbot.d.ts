@@ -1,25 +1,25 @@
-/// <reference path="../typings/main.d.ts" />
 import { FB } from "./interfaces/interfaces";
+import { FBPromise } from "./fbpromise";
 export declare class Farmbot {
     private _events;
     private _state;
-    client: MqttClient;
+    client: FB.MqttClient;
     constructor(input: FB.ConstructorParams);
     _decodeThatToken(): void;
     getState(key?: string): any;
     setState(key: string, val: string | number | boolean): string | number | boolean;
-    emergencyStop(): Promise<{}>;
-    execSequence(sequence: FB.Sequence): Promise<{}>;
-    homeAll(opts: FB.CommandOptions): Promise<{}>;
-    homeX(opts: FB.CommandOptions): Promise<{}>;
-    homeY(opts: FB.CommandOptions): Promise<{}>;
-    homeZ(opts: FB.CommandOptions): Promise<{}>;
-    moveAbsolute(opts: FB.CommandOptions): Promise<{}>;
-    moveRelative(opts: FB.CommandOptions): Promise<{}>;
-    pinWrite(opts: FB.CommandOptions): Promise<{}>;
-    readStatus(): Promise<{}>;
-    syncSequence(): Promise<{}>;
-    updateCalibration(params: FB.CalibrationParams): Promise<{}>;
+    emergencyStop(): FBPromise<{}>;
+    execSequence(sequence: FB.Sequence): FBPromise<{}>;
+    homeAll(opts: FB.CommandOptions): FBPromise<{}>;
+    homeX(opts: FB.CommandOptions): FBPromise<{}>;
+    homeY(opts: FB.CommandOptions): FBPromise<{}>;
+    homeZ(opts: FB.CommandOptions): FBPromise<{}>;
+    moveAbsolute(opts: FB.CommandOptions): FBPromise<{}>;
+    moveRelative(opts: FB.CommandOptions): FBPromise<{}>;
+    pinWrite(opts: FB.CommandOptions): FBPromise<{}>;
+    readStatus(): FBPromise<{}>;
+    syncSequence(): FBPromise<{}>;
+    updateCalibration(params: FB.CalibrationParams): FBPromise<{}>;
     static config: {
         requiredOptions: string[];
         defaultOptions: {
@@ -33,11 +33,10 @@ export declare class Farmbot {
     /** Validates RPCPayloads. Also adds optional fields if missing. */
     buildMessage(input: FB.RPCPayload): FB.RPCMessage;
     channel(name: string): string;
-    send(input: FB.RPCPayload): Promise<{}>;
+    send(input: FB.RPCPayload): FBPromise<{}>;
     _onmessage(channel: string, buffer: Uint8Array): void;
-    connect(): Promise<{}>;
-    static defer(label: string): Promise<{}>;
-    static timerDefer(timeout: Number, label: string): Promise<{}>;
+    connect(): FBPromise<{}>;
+    static timerDefer<T>(timeout: Number, label?: string): FBPromise<T>;
     static extend(target: any, mixins: any[]): any;
     static requireKeys(input: any, required: string[]): void;
     static uuid(): string;

@@ -1,12 +1,13 @@
-/// <reference path="../typings/main.d.ts"/>
-
-import { connect } from "mqtt";
 import { FB } from "./interfaces/interfaces";
+import { FBPromise } from "./fbpromise";
+
+declare var require: any;
+var connect = require("mqtt").connect;
 
 export class Farmbot {
   private _events: FB.Dictionary<Function[]>;
   private _state: FB.Dictionary<any>;
-  public client: MqttClient;
+  public client: FB.MqttClient;
 
   constructor(input: FB.ConstructorParams) {
     if (!(this instanceof Farmbot)) return new Farmbot(input);
@@ -223,14 +224,12 @@ export class Farmbot {
 
   connect() {
     let that = this;
-    let timeout = that.getState("timeout");
-    let label = "MQTT Connect Atempt";
-    let p = Farmbot.timerDefer(timeout, label);
+    let p = Farmbot.timerDefer(that.getState("timeout"), "MQTT Connect Atempt");
 
     that.client = connect(that.getState("mqttServer"), {
       username: that.getState("uuid"),
       password: that.getState("token")
-    });
+    }) as FB.MqttClient;
     that.client.subscribe([
       that.channel("error"),
       that.channel("response"),
@@ -241,30 +240,9 @@ export class Farmbot {
     return p;
   }
 
-  // a convinience promise wrapper.
-  static defer(label: string) {
-    let $reject: Function, $resolve: Function;
-    let that = new Promise(function(resolve, reject) {
-      $reject = reject;
-      $resolve = resolve;
-    });
-    that.finished = false;
-    that.reject = function() {
-      that.finished = true;
-      $reject.apply(that, arguments);
-    };
-    that.resolve = function() {
-      that.finished = true;
-      $resolve.apply(that, arguments);
-    };
-    that.label = label || "a promise";
-    return that;
-  };
-
-  static timerDefer(timeout: Number, label: string) {
-    label = label || ("promise with " + timeout + " ms timeout");
-    let that = Farmbot.defer(label);
-    if (!timeout) { throw new Error("No timeout value set."); };
+  static timerDefer<T>(timeout: Number,
+                       label: string = ("promise with " + timeout + " ms timeout")) {
+    let that = new FBPromise<T>(label);
     setTimeout(function() {
       if (!that.finished) {
         let failure = new Error("`" + label + "` did not execute in time");
@@ -305,14 +283,5 @@ export class Farmbot {
     return template.replace(/[xy]/g, replaceChar);
   };
 
-  static VERSION = "1.2.0";
-
-  // static MeshErrorResponse(input: string) {
-  //   return {
-  //     error: {
-  //       method: "error",
-  //       error: input || "unspecified error"
-  //     }
-  //   };
-  // }
+  static VERSION = "1.3.1";
 }

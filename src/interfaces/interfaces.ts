@@ -1,4 +1,24 @@
+import "./fb_promise";
+
 export namespace FB {
+
+  // SORY FOR THE MESS LOL. -RC
+  // http://stackoverflow.com/a/38731120/1064917
+  export interface Thenable<T> {
+    then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
+    then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
+    catch<U>(onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
+  }
+
+  export type MQTTEventName = "connect" | "message";
+
+  export interface MqttClient {
+    publish: (channel: string, payload: any) => void;
+    subscribe: (channel: string | string[]) => void;
+    on: (type: MQTTEventName, listener: any) => void;
+    once: (type: MQTTEventName, listener: any) => void;
+  }
+
   export type userVariables = "x"
     | "y"
     | "z"
