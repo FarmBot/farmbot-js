@@ -283,5 +283,5 @@ export class Farmbot {
     return template.replace(/[xy]/g, replaceChar);
   };
 
-  static VERSION = "1.3.3";
+  static VERSION = "1.3.4";
 }
