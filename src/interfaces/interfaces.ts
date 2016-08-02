@@ -181,5 +181,6 @@ export namespace FB {
     speed?: number;
     mode?: number;
     message_type?: string;
+    value1: number;
   };
 };

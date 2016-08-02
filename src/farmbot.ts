@@ -224,7 +224,7 @@ export class Farmbot {
 
   connect() {
     let that = this;
-    let p = Farmbot.timerDefer(that.getState("timeout"), "MQTT Connect Atempt");
+    let p = Farmbot.timerDefer<Farmbot>(that.getState("timeout"), "MQTT Connect Atempt");
 
     that.client = connect(that.getState("mqttServer"), {
       username: that.getState("uuid"),
@@ -237,7 +237,7 @@ export class Farmbot {
     ]);
     that.client.once("connect", () => p.resolve(that));
     that.client.on("message", that._onmessage.bind(that));
-    return p;
+    return p.promise;
   }
 
   static timerDefer<T>(timeout: Number,
@@ -283,5 +283,5 @@ export class Farmbot {
     return template.replace(/[xy]/g, replaceChar);
   };
 
-  static VERSION = "1.3.2";
+  static VERSION = "1.3.3";
 }

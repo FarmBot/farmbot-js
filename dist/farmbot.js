@@ -269,7 +269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ]);
 	        that.client.once("connect", function () { return p.resolve(that); });
 	        that.client.on("message", that._onmessage.bind(that));
-	        return p;
+	        return p.promise;
 	    };
 	    Farmbot.timerDefer = function (timeout, label) {
 	        if (label === void 0) { label = ("promise with " + timeout + " ms timeout"); }
@@ -321,7 +321,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            timeout: 6000
 	        }
 	    };
-	    Farmbot.VERSION = "1.3.2";
+	    Farmbot.VERSION = "1.3.3";
 	    return Farmbot;
 	}());
 	exports.Farmbot = Farmbot;

@@ -35,7 +35,7 @@ export declare class Farmbot {
     channel(name: string): string;
     send(input: FB.RPCPayload): FB.Thenable<{}>;
     _onmessage(channel: string, buffer: Uint8Array): void;
-    connect(): FBPromise<{}>;
+    connect(): FB.Thenable<Farmbot>;
     static timerDefer<T>(timeout: Number, label?: string): FBPromise<T>;
     static extend(target: any, mixins: any[]): any;
     static requireKeys(input: any, required: string[]): void;
