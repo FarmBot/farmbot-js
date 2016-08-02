@@ -8,18 +8,18 @@ export declare class Farmbot {
     _decodeThatToken(): void;
     getState(key?: string): any;
     setState(key: string, val: string | number | boolean): string | number | boolean;
-    emergencyStop(): FBPromise<{}>;
-    execSequence(sequence: FB.Sequence): FBPromise<{}>;
-    homeAll(opts: FB.CommandOptions): FBPromise<{}>;
-    homeX(opts: FB.CommandOptions): FBPromise<{}>;
-    homeY(opts: FB.CommandOptions): FBPromise<{}>;
-    homeZ(opts: FB.CommandOptions): FBPromise<{}>;
-    moveAbsolute(opts: FB.CommandOptions): FBPromise<{}>;
-    moveRelative(opts: FB.CommandOptions): FBPromise<{}>;
-    pinWrite(opts: FB.CommandOptions): FBPromise<{}>;
-    readStatus(): FBPromise<{}>;
-    syncSequence(): FBPromise<{}>;
-    updateCalibration(params: FB.CalibrationParams): FBPromise<{}>;
+    emergencyStop(): FB.Thenable<{}>;
+    execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
+    homeAll(opts: FB.CommandOptions): FB.Thenable<{}>;
+    homeX(opts: FB.CommandOptions): FB.Thenable<{}>;
+    homeY(opts: FB.CommandOptions): FB.Thenable<{}>;
+    homeZ(opts: FB.CommandOptions): FB.Thenable<{}>;
+    moveAbsolute(opts: FB.CommandOptions): FB.Thenable<{}>;
+    moveRelative(opts: FB.CommandOptions): FB.Thenable<{}>;
+    pinWrite(opts: FB.CommandOptions): FB.Thenable<{}>;
+    readStatus(): FB.Thenable<{}>;
+    syncSequence(): FB.Thenable<{}>;
+    updateCalibration(params: FB.CalibrationParams): FB.Thenable<{}>;
     static config: {
         requiredOptions: string[];
         defaultOptions: {
@@ -33,7 +33,7 @@ export declare class Farmbot {
     /** Validates RPCPayloads. Also adds optional fields if missing. */
     buildMessage(input: FB.RPCPayload): FB.RPCMessage;
     channel(name: string): string;
-    send(input: FB.RPCPayload): FBPromise<{}>;
+    send(input: FB.RPCPayload): FB.Thenable<{}>;
     _onmessage(channel: string, buffer: Uint8Array): void;
     connect(): FBPromise<{}>;
     static timerDefer<T>(timeout: Number, label?: string): FBPromise<T>;

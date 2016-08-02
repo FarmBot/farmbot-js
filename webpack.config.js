@@ -5,6 +5,10 @@ module.exports = {
     // library: "Farmbot",
     filename: './dist/farmbot.js'
   },
+  // Want to try this:
+  externals: {
+    'mqtt': 'mqtt'
+  },
   resolve: {
     extensions: ['', '.js', '.ts']
   },

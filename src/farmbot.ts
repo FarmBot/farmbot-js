@@ -213,7 +213,7 @@ export class Farmbot {
       // TODO: This rejection appears to resolve strings rather than errors.
       (hasResult) ? p.resolve(response) : p.reject(response);
     });
-    return p;
+    return p.promise;
   };
 
   _onmessage(channel: string, buffer: Uint8Array /*, message*/) {
@@ -283,5 +283,5 @@ export class Farmbot {
     return template.replace(/[xy]/g, replaceChar);
   };
 
-  static VERSION = "1.3.1";
+  static VERSION = "1.3.2";
 }
