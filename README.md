@@ -81,7 +81,7 @@ Example:
 ```javascript
 
   bot
-    .home_x()
+    .homeX()
     .then(function(ack){
       console.log("X Axis is now at 0.");
     })

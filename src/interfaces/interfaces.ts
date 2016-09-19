@@ -139,8 +139,6 @@ export namespace FB {
     timeout?: number;
     /** Default physical speed for operations. (steps/s?) */
     speed?: number;
-    /** DEPRECATED. This information is now encoded into `token`. */
-    meshServer?: string;
   }
 
   export interface APIToken {
@@ -183,4 +181,6 @@ export namespace FB {
     message_type?: string;
     value1?: number;
   };
+
 };
+

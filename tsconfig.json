@@ -5,7 +5,9 @@
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": true
   },
   "exclude": [
     "node_modules"
