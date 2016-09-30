@@ -1,16 +1,21 @@
 import { FB } from "./interfaces/interfaces";
-import { FBPromise } from "./fbpromise";
+import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
+import { BotCommand } from "./interfaces/bot_commands";
+import { JSONRPC } from "./interfaces/jsonrpc";
+import { uuid, assign } from "./util";
 
 export class Farmbot {
+  static VERSION = "2.0.0";
+  static defaults = { speed: 100, timeout: 6000 };
+
   private _events: FB.Dictionary<Function[]>;
   private _state: FB.StateTree;
   public client: FB.MqttClient;
 
   constructor(input: FB.ConstructorParams) {
     this._events = {};
-    this._state = Farmbot.extend({}, [Farmbot.config.defaultOptions, input]);
-    Farmbot.requireKeys(this._state, Farmbot.config.requiredOptions);
+    this._state = assign({}, Farmbot.defaults, input);
     this._decodeThatToken();
   }
 
@@ -31,10 +36,10 @@ export class Farmbot {
   }
 
   getState(): FB.StateTree {
-      return JSON.parse(JSON.stringify(this._state));
+    return JSON.parse(JSON.stringify(this._state));
   };
 
-  setState(key: string, val: string|number|boolean) {
+  setState(key: string, val: string | number | boolean) {
     if (val !== this._state[key]) {
       let old = this._state[key];
       this._state[key] = val;
@@ -44,107 +49,113 @@ export class Farmbot {
   };
 
   emergencyStop() {
-    return this.send<Array<any>>("emergency_stop", []);
+    let p: BotCommand.EmergencyStopRequest = {
+      method: "emergency_stop",
+      params: [],
+      id: uuid()
+    }
+    return this.send(p);
   }
 
-  // TODO create a `sequence` constructor that validates and enforces inputs, to
-  // avoid confusion.
   execSequence(sequence: FB.Sequence) {
-    return this.send("exec_sequence", );
+    let p: BotCommand.ExecSequenceRequest = {
+      method: "exec_sequence",
+      params: [sequence],
+      id: uuid()
+    }
+    return this.send(p);
   }
 
-  homeAll(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["speed"]);
-    return this.send({
-      params: opts,
-      method: "single_command.HOME ALL"
-    });
+  homeAll(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeAllRequest = {
+      method: "home_all",
+      params: [i],
+      id: uuid()
+    }
+    return this.send(p);
   }
 
-  homeX(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["speed"]);
-    return this.send({
-      params: opts,
-      method: "single_command.HOME X"
-    });
+  homeX(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeXRequest = {
+      method: "home_x",
+      params: [i],
+      id: uuid()
+    }
+    return this.send(p);
   }
 
-  homeY(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["speed"]);
-    return this.send({
-      params: opts,
-      method: "single_command.HOME Y"
-    });
+  homeY(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeYRequest = {
+      method: "home_y",
+      params: [i],
+      id: uuid()
+    }
+    return this.send(p);
   }
 
-  homeZ(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["speed"]);
-    return this.send({
-      params: opts,
-      method: "single_command.HOME Z"
-    });
+  homeZ(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeZRequest = {
+      method: "home_z",
+      params: [i],
+      id: uuid()
+    }
+    return this.send(p);
   }
 
 
-  moveAbsolute(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["speed"]);
-    return this.send({
-      params: opts,
-      method: "single_command.MOVE ABSOLUTE"
-    });
+  moveAbsolute(i: BotCommand.Params.Speed) {
+    let p: BotCommand.MoveAbsoluteRequest = {
+      method: "move_absolute",
+      params: [i],
+      id: uuid()
+    }
+    this.send(p);
   }
 
-  moveRelative(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["speed"]);
-    return this.send({
-      params: opts,
-      method: "single_command.MOVE RELATIVE"
-    });
+  moveRelative(i: BotCommand.Params.Speed) {
+    let p: BotCommand.MoveRelativeRequest = {
+      method: "move_relative",
+      params: [i],
+      id: uuid()
+    }
+    this.send(p);
   }
 
-  pinWrite(opts: FB.CommandOptions) {
-    Farmbot.requireKeys(opts, ["pin", "value1", "mode"]);
-    return this.send({
-      params: opts,
-      method: "single_command.PIN WRITE"
-    });
+  writePin(i: BotCommand.WritePinParams) {
+    let p: BotCommand.WritePinRequest = {
+      method: "write_pin",
+      params: [i],
+      id: uuid()
+    }
+    this.send(p);
   }
 
   readStatus() {
-    return this.send({
-      params: {},
-      method: "read_status"
-    });
+    let p: BotCommand.ReadStatusRequest = {
+      method: "read_status",
+      params: [],
+      id: uuid()
+    }
+    this.send(p);
   }
 
   syncSequence() {
-    console.warn("Not yet implemented");
-    return this.send({
-      params: {},
-      method: "sync_sequence"
-    });
-  }
-
-  updateCalibration(params: FB.CalibrationParams) {
-    // Valid keys for `params` object: movement_timeout_x, movement_timeout_y,
-    // movement_timeout_z, movement_invert_endpoints_x,
-    // movement_invert_endpoints_y, movement_invert_endpoints_z,
-    // movement_invert_motor_x, movement_invert_motor_y, movement_invert_motor_z,
-    // movement_steps_acc_dec_x, movement_steps_acc_dec_y,
-    // movement_steps_acc_dec_z, movement_home_up_x, movement_home_up_y,
-    // movement_home_up_z, movement_min_spd_x, movement_min_spd_y,
-    // movement_min_spd_z, movement_max_spd_x, movement_max_spd_y,
-    // movement_max_spd_z
-    return this.send({ params: params || {}, method: "update_calibration" });
-  }
-
-  static config = {
-    requiredOptions: ["timeout", "token"],
-    defaultOptions: {
-      speed: 100,
-      timeout: 6000
+    let p: BotCommand.SyncRequest = {
+      method: "sync",
+      params: [],
+      id: uuid()
     }
-  };
+    this.send(p);
+  }
+
+  updateCalibration(i: BotCommand.Params.UpdateCalibration) {
+    let p: BotCommand.UpdateCalibrationRequest = {
+      method: "update_calibration",
+      params: [i],
+      id: uuid()
+    }
+    this.send(p);
+  }
 
   event(name: string) {
     this._events[name] = this._events[name] || [];
@@ -157,8 +168,8 @@ export class Farmbot {
 
   emit(event: string, data: any) {
     [this.event(event), this.event("*")]
-      .forEach(function(handlers) {
-        handlers.forEach(function(handler) {
+      .forEach(function (handlers) {
+        handlers.forEach(function (handler) {
           try {
             handler(data, event);
           } catch (e) {
@@ -167,110 +178,63 @@ export class Farmbot {
         });
       });
   }
-  /** Validates RPCPayloads. Also adds optional fields if missing. */
-  buildMessage(input: FB.RPCPayload): FB.RPCMessage {
-    let msg = (input || {}) as FB.RPCMessage;
-    let metaData = {
-      id: (msg.id || Farmbot.uuid())
-    };
-    Farmbot.extend(msg, [metaData]);
-    Farmbot.requireKeys(msg, ["params", "method", "id"]);
-    return msg;
-  };
 
-  channel(name: string): string {
-    return `bot/${this.getState("uuid")}/${name}`;
-  };
+  get channel() { return `bot/${this.getState()["uuid"] || "lost_and_found"}/rpc` }
 
-  send<T>(method: RPCMethod, args: T) {
-    let that = this;
-    let msg = this.buildMessage(input);
-    let label = `${msg.method} ${JSON.stringify(msg.params)}`;
-    let time = that.getState("timeout");
-    if (that.client) {
-      that.client.publish(that.channel("request"), JSON.stringify(input));
+  publish(msg: any): void {
+    if (this.client) {
+      this.client.publish(this.channel, JSON.stringify(msg));
     } else {
       throw new Error("Not connected to server");
     }
-    let p = Farmbot.timerDefer(time, label);
+  };
+
+  send<T extends Array<any>>(input: BotCommand.Request<T>) {
+    let that = this;
+    let msg = input;
+    let label = `${msg.method} ${JSON.stringify(msg.params)}`;
+    let time = that.getState()["timeout"] as number;
+    let p = timerDefer(time, label);
     console.log(`Sent: ${msg.id}`);
-    that.on(msg.id, function(response?: any) {
-      console.log(`Got ${response.id}`);
-      let hasResult = !!(response || {}).result;
-      // TODO : If bot returns a status update, update bot's internal state.
-      // Probably can use a "type guard" for this sort of thing.
-      // TODO: This rejection appears to resolve strings rather than errors.
-      (hasResult) ? p.resolve(response) : p.reject(response);
+    that.publish(msg);
+    that.on(msg.id, function (response: JSONRPC.Uncategorized) {
+      console.log(`Got ${response.id || "??"}`);
+      if (response && response.result) {
+        // Good method invocation.
+        p.resolve(response);
+      };
+      if (response && response.error) {
+        // Bad method invocation.
+        p.reject(response.error);
+      } else {
+        // It's not JSONRPC.
+        let e = new Error("Malformed response");
+        console.error(e);
+        console.dir(response);
+        p.reject(e);
+      }
     });
     return p.promise;
   };
 
-  _onmessage(channel: string, buffer: Uint8Array /*, message*/) {
+  _onmessage(_: string, buffer: Uint8Array /*, message*/) {
     let msg = JSON.parse(buffer.toString());
     let id = (msg.id || "*");
-    this.emit(id , msg);
+    this.emit(id, msg);
   };
 
   connect() {
     let that = this;
-    let p = Farmbot.timerDefer<Farmbot>(that.getState("timeout"), "MQTT Connect Atempt");
-
-    that.client = connect(that.getState("mqttServer"), {
-      username: that.getState("uuid"),
-      password: that.getState("token")
+    let { uuid, token, mqttServer, timeout } = that.getState();
+    let p = timerDefer<Farmbot>(<number>timeout, "MQTT Connect Atempt");
+    that.client = connect(<string>mqttServer, {
+      username: <string>uuid,
+      password: <string>token
     }) as FB.MqttClient;
-    that.client.subscribe([
-      that.channel("error"),
-      that.channel("response"),
-      that.channel("notification")
-    ]);
+    that.client.subscribe(that.channel);
     that.client.once("connect", () => p.resolve(that));
     that.client.on("message", that._onmessage.bind(that));
     return p.promise;
   }
 
-  static timerDefer<T>(timeout: Number,
-                       label: string = ("promise with " + timeout + " ms timeout")) {
-    let that = new FBPromise<T>(label);
-    setTimeout(function() {
-      if (!that.finished) {
-        let failure = new Error("`" + label + "` did not execute in time");
-        that.reject(failure);
-      };
-    }, timeout);
-    return that;
-  };
-
-  static extend(target: any, mixins: any[]) {
-    mixins.forEach(function(mixin) {
-      let iterate = function(prop: any) {
-        target[prop] = mixin[prop];
-      };
-      Object.keys(mixin).forEach(iterate);
-    });
-    return target;
-  };
-
-
-  static requireKeys(input: any, required: string[]) {
-    required.forEach(function(prop) {
-      let val = input[prop];
-      if (!val && (val !== 0)) { // FarmbotJS considers 0 to be truthy.
-        throw (new Error("Expected input object to have `" + prop +
-          "` property"));
-      }
-    });
-  };
-
-  static uuid() {
-    let template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-    let replaceChar = function(c: string) {
-      let r = Math.random() * 16 | 0;
-      let v = c === "x" ? r : r & 0x3 | 0x8;
-      return v.toString(16);
-    };
-    return template.replace(/[xy]/g, replaceChar);
-  };
-
-  static VERSION = "1.3.4";
 }

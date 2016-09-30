@@ -35,4 +35,7 @@ export namespace JSONRPC {
     };
     result: void;
   }
+
+  /** A JSONRPC response whose result (success, failure) is unknown.  */
+  export type Uncategorized = JSONRPC.Response<any[]>|JSONRPC.ErrorResponse;
 }

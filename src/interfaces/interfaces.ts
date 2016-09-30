@@ -134,9 +134,7 @@ export namespace FB {
     dirty?: Boolean;
   }
 
-  export interface CalibrationParams {
-    [key: string]: any;
-  }
+  export type CalibrationParams = Dictionary<any>;
 
   export interface ConstructorParams {
     /** API token which can be retrieved by logging into REST server or my.farmbot.io */
