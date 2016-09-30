@@ -44,19 +44,13 @@ export class Farmbot {
   };
 
   emergencyStop() {
-    return this.send({
-      params: {},
-      method: "single_command.EMERGENCY STOP"
-    });
+    return this.send<Array<any>>("emergency_stop", []);
   }
 
   // TODO create a `sequence` constructor that validates and enforces inputs, to
   // avoid confusion.
   execSequence(sequence: FB.Sequence) {
-    return this.send({
-      params: sequence,
-      method: "exec_sequence"
-    });
+    return this.send("exec_sequence", );
   }
 
   homeAll(opts: FB.CommandOptions) {

@@ -154,16 +154,4 @@ export namespace FB {
     bot: string;
   }
 
-  export interface CommandOptions {
-    x?: number;
-    y?: number;
-    z?: number;
-    pin?: number;
-    value?: string;
-    speed?: number;
-    mode?: number;
-    message_type?: string;
-    value1?: number;
-  };
-
 };
