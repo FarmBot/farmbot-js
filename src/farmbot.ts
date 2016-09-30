@@ -109,7 +109,7 @@ export class Farmbot {
       params: [i],
       id: uuid()
     }
-    this.send(p);
+    return this.send(p);
   }
 
   moveRelative(i: BotCommand.MovementRequest) {
@@ -118,7 +118,7 @@ export class Farmbot {
       params: [i],
       id: uuid()
     }
-    this.send(p);
+    return this.send(p);
   }
 
   writePin(i: BotCommand.WritePinParams) {
@@ -127,7 +127,7 @@ export class Farmbot {
       params: [i],
       id: uuid()
     }
-    this.send(p);
+    return this.send(p);
   }
 
   readStatus() {
@@ -136,7 +136,7 @@ export class Farmbot {
       params: [],
       id: uuid()
     }
-    this.send(p);
+    return this.send(p);
   }
 
   syncSequence() {
@@ -145,7 +145,7 @@ export class Farmbot {
       params: [],
       id: uuid()
     }
-    this.send(p);
+    return this.send(p);
   }
 
   updateCalibration(i: BotCommand.Params.UpdateCalibration) {
@@ -154,7 +154,7 @@ export class Farmbot {
       params: [i],
       id: uuid()
     }
-    this.send(p);
+    return this.send(p);
   }
 
   event(name: string) {

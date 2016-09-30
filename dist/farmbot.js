@@ -148,7 +148,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: [i],
 	            id: util_1.uuid()
 	        };
-	        this.send(p);
+	        return this.send(p);
 	    };
 	    Farmbot.prototype.moveRelative = function (i) {
 	        var p = {
@@ -156,7 +156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: [i],
 	            id: util_1.uuid()
 	        };
-	        this.send(p);
+	        return this.send(p);
 	    };
 	    Farmbot.prototype.writePin = function (i) {
 	        var p = {
@@ -164,7 +164,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: [i],
 	            id: util_1.uuid()
 	        };
-	        this.send(p);
+	        return this.send(p);
 	    };
 	    Farmbot.prototype.readStatus = function () {
 	        var p = {
@@ -172,7 +172,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: [],
 	            id: util_1.uuid()
 	        };
-	        this.send(p);
+	        return this.send(p);
 	    };
 	    Farmbot.prototype.syncSequence = function () {
 	        var p = {
@@ -180,7 +180,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: [],
 	            id: util_1.uuid()
 	        };
-	        this.send(p);
+	        return this.send(p);
 	    };
 	    Farmbot.prototype.updateCalibration = function (i) {
 	        var p = {
@@ -188,7 +188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            params: [i],
 	            id: util_1.uuid()
 	        };
-	        this.send(p);
+	        return this.send(p);
 	    };
 	    Farmbot.prototype.event = function (name) {
 	        this._events[name] = this._events[name] || [];
@@ -292,10 +292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function FBPromise(label) {
 	        var _this = this;
 	        var $reject, $resolve;
-	        this.promise = new Promise(function (res, rej) {
-	            return _a = [rej, res], $reject = _a[0], $resolve = _a[1], _a;
-	            var _a;
-	        });
+	        this.promise = new Promise(function (res, rej) { return (_a = [rej, res], $reject = _a[0], $resolve = _a[1], _a); var _a; });
 	        this.finished = false;
 	        this.reject = function (error) {
 	            _this.finished = true;
