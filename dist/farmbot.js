@@ -56,20 +56,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var fbpromise_1 = __webpack_require__(1);
-	var connect = __webpack_require__(2).connect;
+	var mqtt_1 = __webpack_require__(2);
+	var util_1 = __webpack_require__(3);
 	var Farmbot = (function () {
 	    function Farmbot(input) {
-	        if (!(this instanceof Farmbot))
-	            return new Farmbot(input);
 	        this._events = {};
-	        this._state = Farmbot.extend({}, [Farmbot.config.defaultOptions, input]);
-	        Farmbot.requireKeys(this._state, Farmbot.config.requiredOptions);
+	        this._state = util_1.assign({}, Farmbot.defaults, input);
 	        this._decodeThatToken();
 	    }
 	    Farmbot.prototype._decodeThatToken = function () {
 	        var token;
 	        try {
-	            token = JSON.parse(atob((this.getState("token").split(".")[1])));
+	            var str = this.getState()["token"];
+	            var base64 = str.split(".")[1];
+	            var plaintext = atob(base64);
+	            token = JSON.parse(plaintext);
 	        }
 	        catch (e) {
 	            console.warn(e);
@@ -79,15 +80,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setState("mqttServer", "ws://" + mqttUrl + ":3002");
 	        this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
 	    };
-	    Farmbot.prototype.getState = function (key) {
-	        if (key) {
-	            return this._state[key];
-	        }
-	        else {
-	            // Create a copy of the state object to prevent accidental mutation.
-	            return JSON.parse(JSON.stringify(this._state));
-	        }
-	        ;
+	    Farmbot.prototype.getState = function () {
+	        return JSON.parse(JSON.stringify(this._state));
 	    };
 	    ;
 	    Farmbot.prototype.setState = function (key, val) {
@@ -101,92 +95,100 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    ;
 	    Farmbot.prototype.emergencyStop = function () {
-	        return this.send({
-	            params: {},
-	            method: "single_command.EMERGENCY STOP"
-	        });
+	        var p = {
+	            method: "emergency_stop",
+	            params: [],
+	            id: util_1.uuid()
+	        };
+	        return this.send(p);
 	    };
-	    // TODO create a `sequence` constructor that validates and enforces inputs, to
-	    // avoid confusion.
 	    Farmbot.prototype.execSequence = function (sequence) {
-	        return this.send({
-	            params: sequence,
-	            method: "exec_sequence"
-	        });
+	        var p = {
+	            method: "exec_sequence",
+	            params: [sequence],
+	            id: util_1.uuid()
+	        };
+	        return this.send(p);
 	    };
-	    Farmbot.prototype.homeAll = function (opts) {
-	        Farmbot.requireKeys(opts, ["speed"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.HOME ALL"
-	        });
+	    Farmbot.prototype.homeAll = function (i) {
+	        var p = {
+	            method: "home_all",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        return this.send(p);
 	    };
-	    Farmbot.prototype.homeX = function (opts) {
-	        Farmbot.requireKeys(opts, ["speed"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.HOME X"
-	        });
+	    Farmbot.prototype.homeX = function (i) {
+	        var p = {
+	            method: "home_x",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        return this.send(p);
 	    };
-	    Farmbot.prototype.homeY = function (opts) {
-	        Farmbot.requireKeys(opts, ["speed"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.HOME Y"
-	        });
+	    Farmbot.prototype.homeY = function (i) {
+	        var p = {
+	            method: "home_y",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        return this.send(p);
 	    };
-	    Farmbot.prototype.homeZ = function (opts) {
-	        Farmbot.requireKeys(opts, ["speed"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.HOME Z"
-	        });
+	    Farmbot.prototype.homeZ = function (i) {
+	        var p = {
+	            method: "home_z",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        return this.send(p);
 	    };
-	    Farmbot.prototype.moveAbsolute = function (opts) {
-	        Farmbot.requireKeys(opts, ["speed"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.MOVE ABSOLUTE"
-	        });
+	    Farmbot.prototype.moveAbsolute = function (i) {
+	        var p = {
+	            method: "move_absolute",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        this.send(p);
 	    };
-	    Farmbot.prototype.moveRelative = function (opts) {
-	        Farmbot.requireKeys(opts, ["speed"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.MOVE RELATIVE"
-	        });
+	    Farmbot.prototype.moveRelative = function (i) {
+	        var p = {
+	            method: "move_relative",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        this.send(p);
 	    };
-	    Farmbot.prototype.pinWrite = function (opts) {
-	        Farmbot.requireKeys(opts, ["pin", "value1", "mode"]);
-	        return this.send({
-	            params: opts,
-	            method: "single_command.PIN WRITE"
-	        });
+	    Farmbot.prototype.writePin = function (i) {
+	        var p = {
+	            method: "write_pin",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        this.send(p);
 	    };
 	    Farmbot.prototype.readStatus = function () {
-	        return this.send({
-	            params: {},
-	            method: "read_status"
-	        });
+	        var p = {
+	            method: "read_status",
+	            params: [],
+	            id: util_1.uuid()
+	        };
+	        this.send(p);
 	    };
 	    Farmbot.prototype.syncSequence = function () {
-	        console.warn("Not yet implemented");
-	        return this.send({
-	            params: {},
-	            method: "sync_sequence"
-	        });
+	        var p = {
+	            method: "sync",
+	            params: [],
+	            id: util_1.uuid()
+	        };
+	        this.send(p);
 	    };
-	    Farmbot.prototype.updateCalibration = function (params) {
-	        // Valid keys for `params` object: movement_timeout_x, movement_timeout_y,
-	        // movement_timeout_z, movement_invert_endpoints_x,
-	        // movement_invert_endpoints_y, movement_invert_endpoints_z,
-	        // movement_invert_motor_x, movement_invert_motor_y, movement_invert_motor_z,
-	        // movement_steps_acc_dec_x, movement_steps_acc_dec_y,
-	        // movement_steps_acc_dec_z, movement_home_up_x, movement_home_up_y,
-	        // movement_home_up_z, movement_min_spd_x, movement_min_spd_y,
-	        // movement_min_spd_z, movement_max_spd_x, movement_max_spd_y,
-	        // movement_max_spd_z
-	        return this.send({ params: params || {}, method: "update_calibration" });
+	    Farmbot.prototype.updateCalibration = function (i) {
+	        var p = {
+	            method: "update_calibration",
+	            params: [i],
+	            id: util_1.uuid()
+	        };
+	        this.send(p);
 	    };
 	    Farmbot.prototype.event = function (name) {
 	        this._events[name] = this._events[name] || [];
@@ -210,46 +212,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        });
 	    };
-	    /** Validates RPCPayloads. Also adds optional fields if missing. */
-	    Farmbot.prototype.buildMessage = function (input) {
-	        var msg = (input || {});
-	        var metaData = {
-	            id: (msg.id || Farmbot.uuid())
-	        };
-	        Farmbot.extend(msg, [metaData]);
-	        Farmbot.requireKeys(msg, ["params", "method", "id"]);
-	        return msg;
-	    };
-	    ;
-	    Farmbot.prototype.channel = function (name) {
-	        return "bot/" + this.getState("uuid") + "/" + name;
-	    };
-	    ;
-	    Farmbot.prototype.send = function (input) {
-	        var that = this;
-	        var msg = this.buildMessage(input);
-	        var label = msg.method + " " + JSON.stringify(msg.params);
-	        var time = that.getState("timeout");
-	        if (that.client) {
-	            that.client.publish(that.channel("request"), JSON.stringify(input));
+	    Object.defineProperty(Farmbot.prototype, "channel", {
+	        get: function () { return "bot/" + (this.getState()["uuid"] || "lost_and_found") + "/rpc"; },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Farmbot.prototype.publish = function (msg) {
+	        if (this.client) {
+	            this.client.publish(this.channel, JSON.stringify(msg));
 	        }
 	        else {
 	            throw new Error("Not connected to server");
 	        }
-	        var p = Farmbot.timerDefer(time, label);
+	    };
+	    ;
+	    Farmbot.prototype.send = function (input) {
+	        var that = this;
+	        var msg = input;
+	        var label = msg.method + " " + JSON.stringify(msg.params);
+	        var time = that.getState()["timeout"];
+	        var p = fbpromise_1.timerDefer(time, label);
 	        console.log("Sent: " + msg.id);
+	        that.publish(msg);
 	        that.on(msg.id, function (response) {
-	            console.log("Got " + response.id);
-	            var hasResult = !!(response || {}).result;
-	            // TODO : If bot returns a status update, update bot's internal state.
-	            // Probably can use a "type guard" for this sort of thing.
-	            // TODO: This rejection appears to resolve strings rather than errors.
-	            (hasResult) ? p.resolve(response) : p.reject(response);
+	            console.log("Got " + (response.id || "??"));
+	            if (response && response.result) {
+	                // Good method invocation.
+	                p.resolve(response);
+	            }
+	            ;
+	            if (response && response.error) {
+	                // Bad method invocation.
+	                p.reject(response.error);
+	            }
+	            else {
+	                // It's not JSONRPC.
+	                var e = new Error("Malformed response");
+	                console.error(e);
+	                console.dir(response);
+	                p.reject(e);
+	            }
 	        });
 	        return p.promise;
 	    };
 	    ;
-	    Farmbot.prototype._onmessage = function (channel, buffer /*, message*/) {
+	    Farmbot.prototype._onmessage = function (_, buffer /*, message*/) {
 	        var msg = JSON.parse(buffer.toString());
 	        var id = (msg.id || "*");
 	        this.emit(id, msg);
@@ -257,71 +264,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ;
 	    Farmbot.prototype.connect = function () {
 	        var that = this;
-	        var p = Farmbot.timerDefer(that.getState("timeout"), "MQTT Connect Atempt");
-	        that.client = connect(that.getState("mqttServer"), {
-	            username: that.getState("uuid"),
-	            password: that.getState("token")
+	        var _a = that.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
+	        var p = fbpromise_1.timerDefer(timeout, "MQTT Connect Atempt");
+	        that.client = mqtt_1.connect(mqttServer, {
+	            username: uuid,
+	            password: token
 	        });
-	        that.client.subscribe([
-	            that.channel("error"),
-	            that.channel("response"),
-	            that.channel("notification")
-	        ]);
+	        that.client.subscribe(that.channel);
 	        that.client.once("connect", function () { return p.resolve(that); });
 	        that.client.on("message", that._onmessage.bind(that));
 	        return p.promise;
 	    };
-	    Farmbot.timerDefer = function (timeout, label) {
-	        if (label === void 0) { label = ("promise with " + timeout + " ms timeout"); }
-	        var that = new fbpromise_1.FBPromise(label);
-	        setTimeout(function () {
-	            if (!that.finished) {
-	                var failure = new Error("`" + label + "` did not execute in time");
-	                that.reject(failure);
-	            }
-	            ;
-	        }, timeout);
-	        return that;
-	    };
-	    ;
-	    Farmbot.extend = function (target, mixins) {
-	        mixins.forEach(function (mixin) {
-	            var iterate = function (prop) {
-	                target[prop] = mixin[prop];
-	            };
-	            Object.keys(mixin).forEach(iterate);
-	        });
-	        return target;
-	    };
-	    ;
-	    Farmbot.requireKeys = function (input, required) {
-	        required.forEach(function (prop) {
-	            var val = input[prop];
-	            if (!val && (val !== 0)) {
-	                throw (new Error("Expected input object to have `" + prop +
-	                    "` property"));
-	            }
-	        });
-	    };
-	    ;
-	    Farmbot.uuid = function () {
-	        var template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-	        var replaceChar = function (c) {
-	            var r = Math.random() * 16 | 0;
-	            var v = c === "x" ? r : r & 0x3 | 0x8;
-	            return v.toString(16);
-	        };
-	        return template.replace(/[xy]/g, replaceChar);
-	    };
-	    ;
-	    Farmbot.config = {
-	        requiredOptions: ["timeout", "token"],
-	        defaultOptions: {
-	            speed: 100,
-	            timeout: 6000
-	        }
-	    };
-	    Farmbot.VERSION = "1.3.3";
+	    Farmbot.VERSION = "2.0.0-rc.1";
+	    Farmbot.defaults = { speed: 100, timeout: 6000 };
 	    return Farmbot;
 	}());
 	exports.Farmbot = Farmbot;
@@ -352,6 +307,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return FBPromise;
 	}());
 	exports.FBPromise = FBPromise;
+	function timerDefer(timeout, label) {
+	    if (label === void 0) { label = ("promise with " + timeout + " ms timeout"); }
+	    var that = new FBPromise(label);
+	    setTimeout(function () {
+	        if (!that.finished) {
+	            var failure = new Error("`" + label + "` did not execute in time");
+	            that.reject(failure);
+	        }
+	        ;
+	    }, timeout);
+	    return that;
+	}
+	exports.timerDefer = timerDefer;
+	;
 
 
 /***/ },
@@ -359,6 +328,33 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function uuid() {
+	    var template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+	    var replaceChar = function (c) {
+	        var r = Math.random() * 16 | 0;
+	        var v = c === "x" ? r : r & 0x3 | 0x8;
+	        return v.toString(16);
+	    };
+	    return template.replace(/[xy]/g, replaceChar);
+	}
+	exports.uuid = uuid;
+	;
+	function assign(target) {
+	    var others = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        others[_i - 1] = arguments[_i];
+	    }
+	    others.forEach(function (key, value) { return target[key] = value; });
+	    return target;
+	}
+	exports.assign = assign;
+
 
 /***/ }
 /******/ ])

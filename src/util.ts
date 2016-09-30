@@ -1,4 +1,4 @@
-import { Dictionary } from "./interfaces/interfaces";
+import { FB } from "./interfaces/interfaces";
 
 export function uuid() {
   let template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
@@ -10,7 +10,7 @@ export function uuid() {
   return template.replace(/[xy]/g, replaceChar);
 };
 
-export function assign(target: Dictionary<any>, ...others: Dictionary<any>[]) {
-  others.forEach((key: string, value: any) => target[key] = value);
+export function assign(target: FB.Dictionary<any>, ...others: FB.Dictionary<any>[]) {
+  others.forEach((key: any, value: any) => target[key] = value);
   return target;
 }

@@ -6,7 +6,7 @@ import { JSONRPC } from "./interfaces/jsonrpc";
 import { uuid, assign } from "./util";
 
 export class Farmbot {
-  static VERSION = "2.0.0";
+  static VERSION = "2.0.0-rc.1";
   static defaults = { speed: 100, timeout: 6000 };
 
   private _events: FB.Dictionary<Function[]>;
@@ -103,7 +103,7 @@ export class Farmbot {
   }
 
 
-  moveAbsolute(i: BotCommand.Params.Speed) {
+  moveAbsolute(i: BotCommand.MovementRequest) {
     let p: BotCommand.MoveAbsoluteRequest = {
       method: "move_absolute",
       params: [i],
@@ -112,7 +112,7 @@ export class Farmbot {
     this.send(p);
   }
 
-  moveRelative(i: BotCommand.Params.Speed) {
+  moveRelative(i: BotCommand.MovementRequest) {
     let p: BotCommand.MoveRelativeRequest = {
       method: "move_relative",
       params: [i],

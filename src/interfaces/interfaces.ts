@@ -115,7 +115,8 @@ export namespace FB {
 
   /** Similar to "Step", but "position" isnt mandatory. */
   export interface UnplacedStep {
-    message_type: messageType;
+    // TODO: Is this correct?
+    message_type: stepType;
     position?: number;
     _id?: string;
     command: StepCommand;

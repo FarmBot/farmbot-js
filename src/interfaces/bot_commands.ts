@@ -66,8 +66,9 @@ export namespace BotCommand {
   export interface HomeXRequest extends Request<[Params.Speed]>{ method: "home_x"; }
   export interface HomeYRequest extends Request<[Params.Speed]>{ method: "home_y"; }
   export interface HomeZRequest extends Request<[Params.Speed]>{ method: "home_z"; }
-  export interface MoveAbsoluteRequest extends Request<[Params.Speed]>{ method: "move_absolute"; }
-  export interface MoveRelativeRequest extends Request<[Params.Speed]>{ method: "move_relative"; }
+  export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z { }
+  export interface MoveAbsoluteRequest extends Request<[MovementRequest]>{ method: "move_absolute"; }
+  export interface MoveRelativeRequest extends Request<[MovementRequest]>{ method: "move_relative"; }
   export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber {}
   export interface WritePinRequest extends Request<[WritePinParams]>{ method: "write_pin"; }
   export interface ReadStatusRequest extends Request<any>{ method: "read_status"; }

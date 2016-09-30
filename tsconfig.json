@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "sourceMap": true,
     "module": "commonjs",
     "declaration": true,
+    "sourceMap": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "outDir": "build"
   },
   "exclude": [
     "node_modules"
