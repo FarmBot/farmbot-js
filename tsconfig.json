@@ -8,8 +8,7 @@
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "outDir": "build"
+    "noUnusedLocals": true
   },
   "exclude": [
     "node_modules"
