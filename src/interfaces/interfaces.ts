@@ -70,7 +70,8 @@ export namespace FB {
     | "pin12"
     | "pin13";
 
-  export type messageType = "emergency_stop"
+  /** Names for a single step within a sequence. */
+  export type stepType = "emergency_stop"
     | "home_all"
     | "home_x"
     | "home_y"
@@ -86,19 +87,6 @@ export namespace FB {
     | "if_statement"
     | "read_pin"
     | "execute";
-
-  export type RPCMethod = "emergency_stop"
-    | "exec_sequence"
-    | "home_all"
-    | "home_x"
-    | "home_y"
-    | "home_z"
-    | "move_absolute"
-    | "move_relative"
-    | "pin_write"
-    | "read_status"
-    | "sync_sequence"
-    | "update_calibration";
 
   /** Color choices for sequence tiles. */
   export type Color = "blue"
@@ -164,31 +152,6 @@ export namespace FB {
     mqtt: string;
     /** UUID of current bot. */
     bot: string;
-  }
-
-  export interface Notification<T extends Array<any>> {
-    /** MUST BE NULL TO COMPLY WITH JSONRPC 1.0 */
-    id: void;
-    method: string;
-    params: T;
-  }
-
-  export interface Request<T extends Array<any>> {
-    id: string;
-    method: string;
-    params: T;
-  }
-
-  export interface Success<T extends Array<any>> {
-    id: string;
-    error: void;
-    result: T;
-  }
-
-  export interface Failure<T extends Array<any>> {
-    id: string;
-    error: T;
-    result: void;
   }
 
   export interface CommandOptions {

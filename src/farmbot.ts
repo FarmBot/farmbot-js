@@ -18,7 +18,9 @@ export class Farmbot {
     let token: FB.APIToken;
     try {
       let str = (this.getState()["token"] as string);
-      token = JSON.parse(atob((str.split(".")[1])));
+      let base64 = str.split(".")[1];
+      let plaintext = atob(base64);
+      token = JSON.parse(plaintext);
     } catch (e) {
       console.warn(e);
       throw new Error("Unable to parse token. Is it properly formatted?");
@@ -186,7 +188,7 @@ export class Farmbot {
     return `bot/${this.getState("uuid")}/${name}`;
   };
 
-  send<T>(input: FB.Request<T>) {
+  send<T>(method: RPCMethod, args: T) {
     let that = this;
     let msg = this.buildMessage(input);
     let label = `${msg.method} ${JSON.stringify(msg.params)}`;
