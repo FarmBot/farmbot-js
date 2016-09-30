@@ -19,6 +19,12 @@ export namespace FB {
     once: (type: MQTTEventName, listener: any) => void;
   }
 
+  export interface Dictionary<T> {
+    [key: string]: T;
+  }
+
+  export type StateTree = Dictionary<string|number|boolean>;
+
   export type userVariables = "x"
     | "y"
     | "z"
@@ -26,10 +32,7 @@ export namespace FB {
     | "busy"
     | "last"
     | "pins"
-    | "unknown_parameter_busy"
-    | "unknown_parameter_last"
     | "param_version"
-    | "unknown_parameter_unknown_parameter_1"
     | "movement_timeout_x"
     | "movement_timeout_y"
     | "movement_timeout_z"
@@ -51,7 +54,6 @@ export namespace FB {
     | "movement_max_spd_x"
     | "movement_max_spd_y"
     | "movement_max_spd_z"
-    | "unknown_parameter_1"
     | "time"
     | "pin0"
     | "pin1"
@@ -85,6 +87,29 @@ export namespace FB {
     | "read_pin"
     | "execute";
 
+  export type RPCMethod = "emergency_stop"
+    | "exec_sequence"
+    | "home_all"
+    | "home_x"
+    | "home_y"
+    | "home_z"
+    | "move_absolute"
+    | "move_relative"
+    | "pin_write"
+    | "read_status"
+    | "sync_sequence"
+    | "update_calibration";
+
+  /** Color choices for sequence tiles. */
+  export type Color = "blue"
+    | "green"
+    | "yellow"
+    | "orange"
+    | "purple"
+    | "pink"
+    | "gray"
+    | "red";
+
   export interface StepCommand {
     x?: number;
     y?: number;
@@ -112,8 +137,6 @@ export namespace FB {
   export interface Step extends UnplacedStep {
     position: number;
   };
-  /** Color choices for sequence tiles. */
-  export type Color = "blue" | "green" | "yellow" | "orange" | "purple" | "pink" | "gray" | "red";
 
   export interface Sequence {
     _id?: string;
@@ -125,11 +148,6 @@ export namespace FB {
 
   export interface CalibrationParams {
     [key: string]: any;
-  }
-
-
-  export interface Dictionary<T> {
-    [key: string]: T;
   }
 
   export interface ConstructorParams {
@@ -148,26 +166,29 @@ export namespace FB {
     bot: string;
   }
 
-  export type RPCMethod = "single_command.EMERGENCY STOP"
-    | "exec_sequence"
-    | "single_command.HOME ALL"
-    | "single_command.HOME X"
-    | "single_command.HOME Y"
-    | "single_command.HOME Z"
-    | "single_command.MOVE ABSOLUTE"
-    | "single_command.MOVE RELATIVE"
-    | "single_command.PIN WRITE"
-    | "read_status"
-    | "sync_sequence"
-    | "update_calibration";
-
-  export interface RPCPayload {
-    params: {};
-    method: RPCMethod;
+  export interface Notification<T extends Array<any>> {
+    /** MUST BE NULL TO COMPLY WITH JSONRPC 1.0 */
+    id: void;
+    method: string;
+    params: T;
   }
 
-  export interface RPCMessage extends RPCPayload {
+  export interface Request<T extends Array<any>> {
     id: string;
+    method: string;
+    params: T;
+  }
+
+  export interface Success<T extends Array<any>> {
+    id: string;
+    error: void;
+    result: T;
+  }
+
+  export interface Failure<T extends Array<any>> {
+    id: string;
+    error: T;
+    result: void;
   }
 
   export interface CommandOptions {
@@ -183,4 +204,3 @@ export namespace FB {
   };
 
 };
-

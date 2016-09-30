@@ -1,16 +1,13 @@
 import { FB } from "./interfaces/interfaces";
 import { FBPromise } from "./fbpromise";
-
-declare var require: any;
-var connect = require("mqtt").connect;
+import { connect } from "mqtt";
 
 export class Farmbot {
   private _events: FB.Dictionary<Function[]>;
-  private _state: FB.Dictionary<any>;
+  private _state: FB.StateTree;
   public client: FB.MqttClient;
 
   constructor(input: FB.ConstructorParams) {
-    if (!(this instanceof Farmbot)) return new Farmbot(input);
     this._events = {};
     this._state = Farmbot.extend({}, [Farmbot.config.defaultOptions, input]);
     Farmbot.requireKeys(this._state, Farmbot.config.requiredOptions);
@@ -20,7 +17,8 @@ export class Farmbot {
   _decodeThatToken() {
     let token: FB.APIToken;
     try {
-      token = JSON.parse(atob((this.getState("token").split(".")[1])));
+      let str = (this.getState()["token"] as string);
+      token = JSON.parse(atob((str.split(".")[1])));
     } catch (e) {
       console.warn(e);
       throw new Error("Unable to parse token. Is it properly formatted?");
@@ -30,13 +28,8 @@ export class Farmbot {
     this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
   }
 
-  getState(key?: string) {
-    if (key) {
-      return this._state[key];
-    } else {
-      // Create a copy of the state object to prevent accidental mutation.
+  getState(): FB.StateTree {
       return JSON.parse(JSON.stringify(this._state));
-    };
   };
 
   setState(key: string, val: string|number|boolean) {
@@ -193,7 +186,7 @@ export class Farmbot {
     return `bot/${this.getState("uuid")}/${name}`;
   };
 
-  send(input: FB.RPCPayload) {
+  send<T>(input: FB.Request<T>) {
     let that = this;
     let msg = this.buildMessage(input);
     let label = `${msg.method} ${JSON.stringify(msg.params)}`;
