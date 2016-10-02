@@ -6,7 +6,7 @@ import { JSONRPC } from "./interfaces/jsonrpc";
 import { uuid, assign } from "./util";
 
 export class Farmbot {
-  static VERSION = "2.0.0-rc.1";
+  static VERSION = "2.0.0-rc.9";
   static defaults = { speed: 100, timeout: 6000 };
 
   private _events: FB.Dictionary<Function[]>;

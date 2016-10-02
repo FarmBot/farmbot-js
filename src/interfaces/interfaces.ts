@@ -1,7 +1,7 @@
-import "./fb_promise";
+// import "./fb_promise";
 
 export namespace FB {
-
+  export let _ = "_";
   // SORY FOR THE MESS LOL. -RC
   // http://stackoverflow.com/a/38731120/1064917
   export interface Thenable<T> {

@@ -11,6 +11,10 @@ export function uuid() {
 };
 
 export function assign(target: FB.Dictionary<any>, ...others: FB.Dictionary<any>[]) {
-  others.forEach((key: any, value: any) => target[key] = value);
+  others.forEach(function(dict){
+    for(let k in dict) {
+      target[k] = dict[k];
+    };
+  });
   return target;
 }

@@ -1,40 +1,24 @@
 {
   "name": "farmbot",
-  "version": "2.0.0-rc.2",
-  "description": "Javascript wrapper for Farmbot's authentication and RPC instructions",
-  "main": "dist/farmbot.js",
-  "scripts": {
-    "test": "karma start karma.conf.js"
+  "version": "2.0.0-rc.9",
+  "description": "",
+  "scripts": {},
+  "author": "FarmBot.io, Rick Carlino",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.5.1",
+    "jasmine-node": "^1.14.5"
+  },
+  "main": "./build/entry.js",
+  "types": "./build/entry.d.ts",
+  "dependencies": {
+    "@types/mqtt": "0.0.32",
+    "mqtt": "^1.7.4",
+    "typescript": "^2.0.3"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FarmBot/farmbot-js.git"
   },
-  "keywords": [
-    "farmbot",
-    "farmbotjs",
-    "agriculture"
-  ],
-  "author": "Farmbot.io, Rick Carlino",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/FarmBot/farmbot-js/issues"
-  },
-  "homepage": "https://github.com/FarmBot/farmbot-js#readme",
-  "devDependencies": {
-    "jasmine-core": "^2.3.4",
-    "karma": "^0.13.15",
-    "karma-chrome-launcher": "^0.2.1",
-    "karma-coverage": "^0.5.3",
-    "karma-jasmine": "^0.3.6",
-    "karma-spec-reporter": "0.0.23",
-    "source-map": "^0.5.3",
-    "ts-loader": "^0.8.1"
-  },
-  "typings": "src/farmbot.d.ts",
-  "dependencies": {
-    "@types/mqtt": "0.0.32",
-    "mqtt": "^1.7.4",
-    "typescript": "^2.0.3"
-  }
+  "keywords": ["farming", "agriculture", "iot", "arduino", "typescript"]
 }

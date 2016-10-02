@@ -2,6 +2,7 @@ import { JSONRPC } from "./jsonrpc";
 
 /** Reference specification of all FarmBot RPC commands. */
 export namespace BotCommand {
+  export let JSON_RPC_VERSION = "1.0";
   /** All possible RPC parameters and their types. */
   export namespace Params {
     export interface X { x: number; }

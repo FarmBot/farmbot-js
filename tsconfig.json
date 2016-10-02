@@ -3,15 +3,17 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "sourceMap": true,
     "noImplicitAny": true,
+    "allowUnreachableCode": false,
     "strictNullChecks": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true
+    "outDir": "build",
+    "types": [
+      
+    ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "typings"
   ],
   "compileOnSave": false,
   "buildOnSave": false
