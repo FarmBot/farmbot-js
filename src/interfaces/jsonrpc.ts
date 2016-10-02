@@ -1,6 +1,3 @@
-export namespace JSONRPC {
-  export let JSON_RPC_VERSION = "1.0";
-
   /** JSON RPC 1.0 notification. http://json-rpc.org/wiki/specification#a1.3Notification */
   export interface Notification<T extends Array<any>> {
     /** MUST BE NULL TO COMPLY WITH JSONRPC 1.0 */
@@ -39,5 +36,4 @@ export namespace JSONRPC {
   }
 
   /** A JSONRPC response whose result (success, failure) is unknown.  */
-  export type Uncategorized = JSONRPC.Response<any[]>|JSONRPC.ErrorResponse;
-}
+  export type Uncategorized = Response<any[]>|ErrorResponse;

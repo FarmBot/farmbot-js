@@ -1,4 +1,4 @@
-import { FB } from "./interfaces/interfaces";
+import * as FB from "./interfaces/interfaces";
 declare var Promise: any;
 
 /** ES6 Promise wrapper that adds a label and a "finished" property. */

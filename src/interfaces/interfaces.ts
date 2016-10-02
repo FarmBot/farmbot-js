@@ -1,9 +1,3 @@
-// import "./fb_promise";
-
-export namespace FB {
-  export let _ = "_";
-  // SORY FOR THE MESS LOL. -RC
-  // http://stackoverflow.com/a/38731120/1064917
   export interface Thenable<T> {
     then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
     then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
@@ -152,5 +146,3 @@ export namespace FB {
     /** UUID of current bot. */
     bot: string;
   }
-
-};

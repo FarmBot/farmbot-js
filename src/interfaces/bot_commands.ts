@@ -1,7 +1,9 @@
-import { JSONRPC } from "./jsonrpc";
+import * as JSONRPC from "./jsonrpc";
 
-/** Reference specification of all FarmBot RPC commands. */
-export namespace BotCommand {
+/**
+ * Reference specification of all FarmBot RPC commands.
+ * */
+
   export let JSON_RPC_VERSION = "1.0";
   /** All possible RPC parameters and their types. */
   export namespace Params {
@@ -75,4 +77,3 @@ export namespace BotCommand {
   export interface ReadStatusRequest extends Request<any>{ method: "read_status"; }
   export interface SyncRequest extends Request<any>{ method: "sync"; }
   export interface UpdateCalibrationRequest extends Request<[Params.UpdateCalibration]>{ method: "update_calibration"; }
-}

@@ -1,8 +1,8 @@
-import { FB } from "./interfaces/interfaces";
+import * as FB from "./interfaces/interfaces";
+import * as JSONRPC from "./interfaces/jsonrpc";
+import * as BotCommand from "./interfaces/bot_commands";
 import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
-import { BotCommand } from "./interfaces/bot_commands";
-import { JSONRPC } from "./interfaces/jsonrpc";
 import { uuid, assign } from "./util";
 
 export class Farmbot {
@@ -169,7 +169,7 @@ export class Farmbot {
   emit(event: string, data: any) {
     [this.event(event), this.event("*")]
       .forEach(function (handlers) {
-        handlers.forEach(function (handler) {
+        handlers.forEach(function (handler: Function) {
           try {
             handler(data, event);
           } catch (e) {

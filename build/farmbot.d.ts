@@ -1,5 +1,5 @@
-import { FB } from "./interfaces/interfaces";
-import { BotCommand } from "./interfaces/bot_commands";
+import * as FB from "./interfaces/interfaces";
+import * as BotCommand from "./interfaces/bot_commands";
 export declare class Farmbot {
     static VERSION: string;
     static defaults: {

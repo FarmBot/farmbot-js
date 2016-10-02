@@ -1,9 +1,9 @@
-import * as farmbot from "./farmbot";
-import * as interfaces from "./interfaces/interfaces";
-import * as jsonrpc from "./interfaces/jsonrpc";
-import * as bot_commands from "./interfaces/bot_commands";
+import * as a from "./farmbot";
+import * as b from "./interfaces/interfaces";
+import * as c from "./interfaces/jsonrpc";
+import * as d from "./interfaces/bot_commands";
 
-export let { Farmbot } = farmbot;
-export let { FB } = interfaces;
-export let { JSONRPC } = jsonrpc;
-export let { BotCommand } = bot_commands;
+export let Farmbot = a;
+export let FB = b;
+export let JSONRPC = c;
+export let BotCommand = d;
