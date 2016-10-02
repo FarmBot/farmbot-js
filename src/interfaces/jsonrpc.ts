@@ -1,5 +1,5 @@
   /** JSON RPC 1.0 notification. http://json-rpc.org/wiki/specification#a1.3Notification */
-  export interface Notification<T extends Array<any>> {
+    export interface Notification<T extends Array<any>> {
     /** MUST BE NULL TO COMPLY WITH JSONRPC 1.0 */
     id: void;
     method: string;
