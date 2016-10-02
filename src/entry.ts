@@ -1,9 +1,252 @@
-import { Farmbot as a } from "./farmbot";
-import * as b from "./interfaces/interfaces";
-import * as c from "./interfaces/jsonrpc";
-import * as d from "./interfaces/bot_commands";
+import * as FB from "./interfaces/interfaces";
+import * as JSONRPC from "./interfaces/jsonrpc";
+import * as BotCommand from "./interfaces/bot_commands";
+import { timerDefer } from "./fbpromise";
+import { connect } from "mqtt";
+import { uuid, assign } from "./util";
 
-export let Farmbot = a;
-export let FB = b;
-export let JSONRPC = c;
-export let BotCommand = d;
+export class Farmbot {
+  static VERSION = "2.0.0-rc.9";
+  static defaults = { speed: 100, timeout: 6000 };
+
+  private _events: FB.Dictionary<Function[]>;
+  private _state: FB.StateTree;
+  public client: FB.MqttClient;
+
+  constructor(input: FB.ConstructorParams) {
+    this._events = {};
+    this._state = assign({}, Farmbot.defaults, input);
+    this._decodeThatToken();
+  }
+
+  _decodeThatToken() {
+    let token: FB.APIToken;
+    try {
+      let str = (this.getState()["token"] as string);
+      let base64 = str.split(".")[1];
+      let plaintext = atob(base64);
+      token = JSON.parse(plaintext);
+    } catch (e) {
+      console.warn(e);
+      throw new Error("Unable to parse token. Is it properly formatted?");
+    }
+    let mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
+    this.setState("mqttServer", `ws://${mqttUrl}:3002`);
+    this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
+  }
+
+  getState(): FB.StateTree {
+    return JSON.parse(JSON.stringify(this._state));
+  };
+
+  setState(key: string, val: string | number | boolean) {
+    if (val !== this._state[key]) {
+      let old = this._state[key];
+      this._state[key] = val;
+      this.emit("change", { name: key, value: val, oldValue: old });
+    };
+    return val;
+  };
+
+  emergencyStop() {
+    let p: BotCommand.EmergencyStopRequest = {
+      method: "emergency_stop",
+      params: [],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  execSequence(sequence: FB.Sequence) {
+    let p: BotCommand.ExecSequenceRequest = {
+      method: "exec_sequence",
+      params: [sequence],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  homeAll(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeAllRequest = {
+      method: "home_all",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  homeX(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeXRequest = {
+      method: "home_x",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  homeY(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeYRequest = {
+      method: "home_y",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  homeZ(i: BotCommand.Params.Speed) {
+    let p: BotCommand.HomeZRequest = {
+      method: "home_z",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+
+  moveAbsolute(i: BotCommand.MovementRequest) {
+    let p: BotCommand.MoveAbsoluteRequest = {
+      method: "move_absolute",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  moveRelative(i: BotCommand.MovementRequest) {
+    let p: BotCommand.MoveRelativeRequest = {
+      method: "move_relative",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  writePin(i: BotCommand.WritePinParams) {
+    let p: BotCommand.WritePinRequest = {
+      method: "write_pin",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  readStatus() {
+    let p: BotCommand.ReadStatusRequest = {
+      method: "read_status",
+      params: [],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  syncSequence() {
+    let p: BotCommand.SyncRequest = {
+      method: "sync",
+      params: [],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  updateCalibration(i: BotCommand.Params.UpdateCalibration) {
+    let p: BotCommand.UpdateCalibrationRequest = {
+      method: "update_calibration",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  event(name: string) {
+    this._events[name] = this._events[name] || [];
+    return this._events[name];
+  };
+
+  on(event: string, callback: Function) {
+    this.event(event).push(callback);
+  };
+
+  emit(event: string, data: any) {
+    [this.event(event), this.event("*")]
+      .forEach(function (handlers) {
+        handlers.forEach(function (handler: Function) {
+          try {
+            handler(data, event);
+          } catch (e) {
+            console.warn("Exception thrown while handling `" + event + "` event.");
+          }
+        });
+      });
+  }
+
+  get channel() { return `bot/${this.getState()["uuid"] || "lost_and_found"}/rpc` }
+
+  publish(msg: JSONRPC.Request<any>|JSONRPC.Notification<any>): void {
+    if (this.client) {
+      this.client.publish(this.channel, JSON.stringify(msg));
+    } else {
+      throw new Error("Not connected to server");
+    }
+  };
+
+  send<T extends Array<any>>(input: BotCommand.Request<T>) {
+    let that = this;
+    let msg = input;
+    let label = `${msg.method} ${JSON.stringify(msg.params)}`;
+    let time = that.getState()["timeout"] as number;
+    let p = timerDefer(time, label);
+    console.log(`Sent: ${msg.id}`);
+    that.publish(msg);
+    that.on(msg.id, function (response: JSONRPC.Uncategorized) {
+      console.log(`Got ${response.id || "??"}`);
+      if (response && response.result) {
+        // Good method invocation.
+        p.resolve(response);
+      };
+      if (response && response.error) {
+        // Bad method invocation.
+        p.reject(response.error);
+      } else {
+        // It's not JSONRPC.
+        let e = new Error("Malformed response");
+        console.error(e);
+        console.dir(response);
+        p.reject(e);
+      }
+    });
+    return p.promise;
+  };
+
+  _onmessage(_: string, buffer: Uint8Array /*, message*/) {
+    let msg = JSON.parse(buffer.toString());
+    let id = (msg.id || "*");
+    this.emit(id, msg);
+  };
+
+  connect() {
+    let that = this;
+    let { uuid, token, mqttServer, timeout } = that.getState();
+    let p = timerDefer<Farmbot>(<number>timeout, "MQTT Connect Atempt");
+    that.client = connect(<string>mqttServer, {
+      username: <string>uuid,
+      password: <string>token
+    }) as FB.MqttClient;
+    that.client.subscribe(that.channel);
+    that.client.once("connect", () => p.resolve(that));
+    that.client.on("message", that._onmessage.bind(that));
+    return p.promise;
+  }
+
+}

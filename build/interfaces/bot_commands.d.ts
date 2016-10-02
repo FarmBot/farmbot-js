@@ -1,7 +1,5 @@
 import * as JSONRPC from "./jsonrpc";
-/**
- * Reference specification of all FarmBot RPC commands.
- * */
+/** Reference specification of all FarmBot RPC commands. */
 export declare let JSON_RPC_VERSION: string;
 /** All possible RPC parameters and their types. */
 export declare namespace Params {
