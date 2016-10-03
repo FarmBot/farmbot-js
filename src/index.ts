@@ -194,8 +194,8 @@ export class Farmbot {
   get channel() {
     let uuid = this.getState()["uuid"] || "lost_and_found";
     return {
-      toDevice: `bot/${uuid}/inbound`,
-      toClient: `bot/${uuid}/outbound`
+      toDevice: `bot/${uuid}/from_clients`,
+      toClient: `bot/${uuid}/from_device`
     }
   }
 
