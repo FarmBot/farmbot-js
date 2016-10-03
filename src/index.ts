@@ -149,7 +149,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  syncSequence() {
+  sync() {
     let p: BotCommand.SyncRequest = {
       method: "sync",
       params: [],

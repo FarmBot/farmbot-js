@@ -118,7 +118,7 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.syncSequence = function () {
+    Farmbot.prototype.sync = function () {
         var p = {
             method: "sync",
             params: [],
