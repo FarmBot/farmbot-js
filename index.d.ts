@@ -30,8 +30,8 @@ export declare class Farmbot {
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;
     readonly channel: {
-        inbound: string;
-        outbound: string;
+        toDevice: string;
+        toClient: string;
     };
     publish(msg: JSONRPC.Request<any> | JSONRPC.Notification<any>): void;
     send<T extends Array<any>>(input: BotCommand.Request<T>): FB.Thenable<{}>;
