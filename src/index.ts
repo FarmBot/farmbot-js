@@ -1,6 +1,6 @@
-import * as FB from "./interfaces/interfaces";
-import * as JSONRPC from "./interfaces/jsonrpc";
-import * as BotCommand from "./interfaces/bot_commands";
+import * as FB from "./interfaces";
+import * as JSONRPC from "./jsonrpc";
+import * as BotCommand from "./bot_commands";
 import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";

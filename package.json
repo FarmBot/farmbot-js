@@ -9,10 +9,9 @@
     "jasmine": "^2.5.1",
     "jasmine-node": "^1.14.5"
   },
-  "main": "./build/entry.js",
+  "main": "./index.js",
   "types": [
-    "./build/entry.d.ts",
-    "./build/interfaces/bot_commands.d.ts"
+    "./index.d.ts"
   ],
   "dependencies": {
     "@types/mqtt": "0.0.32",
