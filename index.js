@@ -206,9 +206,22 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.prototype._onmessage = function (_, buffer /*, message*/) {
-        var msg = JSON.parse(buffer.toString());
-        var id = (msg.id || "*");
-        this.emit(id, msg);
+        try {
+            var msg = JSON.parse(buffer.toString());
+        }
+        catch (error) {
+            throw new Error("Could not parse inbound message from MQTT.");
+        }
+        if (msg && (msg.method && msg.params && (msg.id === null))) {
+            console.log("Notification");
+            this.emit("notification", msg);
+            return;
+        }
+        if (msg && (msg.id)) {
+            this.emit(msg.id, msg);
+            return;
+        }
+        throw new Error("Not a JSONRPC Compliant message");
     };
     ;
     Farmbot.prototype.connect = function () {

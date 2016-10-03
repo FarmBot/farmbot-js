@@ -196,10 +196,10 @@ export class Farmbot {
     return {
       toDevice: `bot/${uuid}/from_clients`,
       toClient: `bot/${uuid}/from_device`
-    }
+    };
   }
 
-  publish(msg: JSONRPC.Request<any>|JSONRPC.Notification<any>): void {
+  publish(msg: JSONRPC.Request<any> | JSONRPC.Notification<any>): void {
     if (this.client) {
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
@@ -239,9 +239,24 @@ export class Farmbot {
   };
 
   _onmessage(_: string, buffer: Uint8Array /*, message*/) {
-    let msg = JSON.parse(buffer.toString());
-    let id = (msg.id || "*");
-    this.emit(id, msg);
+    try {
+      var msg = JSON.parse(buffer.toString());
+    } catch (error) {
+      throw new Error("Could not parse inbound message from MQTT.");
+    }
+
+    if (msg && (msg.method && msg.params && (msg.id === null))) {
+      console.log("Notification");
+      this.emit("notification", msg);
+      return;
+    }
+
+    if (msg && (msg.id)) {
+      this.emit(msg.id, msg);
+      return;
+    }
+
+    throw new Error("Not a JSONRPC Compliant message");
   };
 
   connect() {
