@@ -159,7 +159,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  updateCalibration(i: BotCommand.Params.UpdateCalibration) {
+  updateCalibration(i: BotCommand.Params.CalibrationUpdate) {
     let p: BotCommand.UpdateCalibrationRequest = {
       method: "update_calibration",
       params: [i],

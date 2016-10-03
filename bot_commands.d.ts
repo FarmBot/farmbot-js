@@ -1,6 +1,5 @@
 import * as JSONRPC from "./jsonrpc";
-/** Reference specification of all FarmBot RPC commands. */
-export declare let JSON_RPC_VERSION: string;
+import { HardwareState } from "./interfaces";
 /** All possible RPC parameters and their types. */
 export declare namespace Params {
     interface X {
@@ -24,28 +23,7 @@ export declare namespace Params {
     interface Speed {
         speed: number;
     }
-    interface UpdateCalibration {
-        movement_timeout_x?: number;
-        movement_timeout_y?: number;
-        movement_timeout_z?: number;
-        movement_invert_endpoints_x?: number;
-        movement_invert_endpoints_y?: number;
-        movement_invert_endpoints_z?: number;
-        movement_invert_motor_x?: number;
-        movement_invert_motor_y?: number;
-        movement_invert_motor_z?: number;
-        movement_steps_acc_dec_x?: number;
-        movement_steps_acc_dec_y?: number;
-        movement_steps_acc_dec_z?: number;
-        movement_home_up_x?: number;
-        movement_home_up_y?: number;
-        movement_home_up_z?: number;
-        movement_min_spd_x?: number;
-        movement_min_spd_y?: number;
-        movement_min_spd_z?: number;
-        movement_max_spd_x?: number;
-        movement_max_spd_y?: number;
-        movement_max_spd_z?: number;
+    interface CalibrationUpdate extends HardwareState {
     }
 }
 /** Acceptable "method" names for JSON RPC messages to the bot. */
@@ -88,7 +66,7 @@ export interface ReadStatusRequest extends Request<any> {
 export interface SyncRequest extends Request<any> {
     method: "sync";
 }
-export interface UpdateCalibrationRequest extends Request<[Params.UpdateCalibration]> {
+export interface UpdateCalibrationRequest extends Request<[Params.CalibrationUpdate]> {
     method: "update_calibration";
 }
 export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z {
