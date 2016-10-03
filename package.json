@@ -2,7 +2,9 @@
   "name": "farmbot",
   "version": "2.0.0-rc.10",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "build": "rm ./*.d.ts; rm ./*.js; tsc"
+  },
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {

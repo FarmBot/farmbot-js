@@ -57,21 +57,52 @@ import * as JSONRPC from "./jsonrpc";
   /** Sent from bot when message is received and properly formed. */
   export interface Acknowledgement extends JSONRPC.Response<["OK"]> { }
 
-
-  
   export interface EmergencyStopRequest extends Request<any> {  method: "emergency_stop"; }
+
   // TODO: Change this to accept an array of steps as its only argument.
   // For now, leaving it as {steps: any[]} for legacy reasons.
-  export interface ExecSequenceRequest extends Request<[{steps: any[]}]>{ method: "exec_sequence"; }
+  export interface ExecSequenceRequest extends Request<[{steps: any[]}]> {
+    method: "exec_sequence";
+  }
+
   export interface HomeAllRequest extends Request<[Params.Speed]> { method: "home_all"; }
-  export interface HomeXRequest extends Request<[Params.Speed]>{ method: "home_x"; }
-  export interface HomeYRequest extends Request<[Params.Speed]>{ method: "home_y"; }
-  export interface HomeZRequest extends Request<[Params.Speed]>{ method: "home_z"; }
-  export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z { }
-  export interface MoveAbsoluteRequest extends Request<[MovementRequest]>{ method: "move_absolute"; }
-  export interface MoveRelativeRequest extends Request<[MovementRequest]>{ method: "move_relative"; }
+
+  export interface HomeXRequest extends Request<[Params.Speed]> {
+    method: "home_x";
+  }
+
+  export interface HomeYRequest extends Request<[Params.Speed]> {
+    method: "home_y";
+  }
+
+  export interface HomeZRequest extends Request<[Params.Speed]> {
+    method: "home_z";
+  }
+
   export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber {}
-  export interface WritePinRequest extends Request<[WritePinParams]>{ method: "write_pin"; }
-  export interface ReadStatusRequest extends Request<any>{ method: "read_status"; }
-  export interface SyncRequest extends Request<any>{ method: "sync"; }
-  export interface UpdateCalibrationRequest extends Request<[Params.UpdateCalibration]>{ method: "update_calibration"; }
+
+  export interface WritePinRequest extends Request<[WritePinParams]> {
+    method: "write_pin";
+  }
+
+  export interface ReadStatusRequest extends Request<any> {
+    method: "read_status";
+  }
+
+  export interface SyncRequest extends Request<any> {
+    method: "sync";
+  }
+
+  export interface UpdateCalibrationRequest extends Request<[Params.UpdateCalibration]> {
+    method: "update_calibration";
+  }
+
+  export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z { }
+
+  export interface MoveAbsoluteRequest extends Request<[MovementRequest]> {
+    method: "move_absolute";
+  }
+
+  export interface MoveRelativeRequest extends Request<[MovementRequest]> {
+    method: "move_relative";
+  }

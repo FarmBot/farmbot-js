@@ -1,4 +1,4 @@
-import * as FB from "./interfaces/interfaces";
+import * as FB from "./interfaces";
 
 export function uuid() {
   let template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";

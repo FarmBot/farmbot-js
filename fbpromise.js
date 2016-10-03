@@ -1,4 +1,6 @@
 "use strict";
+// TODO : REPLACE MOST OF THIS WITH `@types/promise`. This is a relic from when
+// external typings in NPM modules were hard to deal with.
 /** ES6 Promise wrapper that adds a label and a "finished" property. */
 var FBPromise = (function () {
     function FBPromise(label) {

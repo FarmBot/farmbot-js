@@ -77,14 +77,6 @@ export interface HomeYRequest extends Request<[Params.Speed]> {
 export interface HomeZRequest extends Request<[Params.Speed]> {
     method: "home_z";
 }
-export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z {
-}
-export interface MoveAbsoluteRequest extends Request<[MovementRequest]> {
-    method: "move_absolute";
-}
-export interface MoveRelativeRequest extends Request<[MovementRequest]> {
-    method: "move_relative";
-}
 export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber {
 }
 export interface WritePinRequest extends Request<[WritePinParams]> {
@@ -98,4 +90,12 @@ export interface SyncRequest extends Request<any> {
 }
 export interface UpdateCalibrationRequest extends Request<[Params.UpdateCalibration]> {
     method: "update_calibration";
+}
+export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z {
+}
+export interface MoveAbsoluteRequest extends Request<[MovementRequest]> {
+    method: "move_absolute";
+}
+export interface MoveRelativeRequest extends Request<[MovementRequest]> {
+    method: "move_relative";
 }
