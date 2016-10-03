@@ -1,5 +1,6 @@
-import { FB } from "./interfaces/interfaces";
-import { BotCommand } from "./interfaces/bot_commands";
+import * as FB from "./interfaces";
+import * as JSONRPC from "./jsonrpc";
+import * as BotCommand from "./bot_commands";
 export declare class Farmbot {
     static VERSION: string;
     static defaults: {
@@ -28,8 +29,11 @@ export declare class Farmbot {
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;
-    readonly channel: string;
-    publish(msg: any): void;
+    readonly channel: {
+        toDevice: string;
+        toClient: string;
+    };
+    publish(msg: JSONRPC.Request<any> | JSONRPC.Notification<any>): void;
     send<T extends Array<any>>(input: BotCommand.Request<T>): FB.Thenable<{}>;
     _onmessage(_: string, buffer: Uint8Array): void;
     connect(): FB.Thenable<Farmbot>;

@@ -157,13 +157,19 @@ var Farmbot = (function () {
         });
     };
     Object.defineProperty(Farmbot.prototype, "channel", {
-        get: function () { return "bot/" + (this.getState()["uuid"] || "lost_and_found") + "/rpc"; },
+        get: function () {
+            var uuid = this.getState()["uuid"] || "lost_and_found";
+            return {
+                toDevice: "bot/" + uuid + "/inbound",
+                toClient: "bot/" + uuid + "/outbound"
+            };
+        },
         enumerable: true,
         configurable: true
     });
     Farmbot.prototype.publish = function (msg) {
         if (this.client) {
-            this.client.publish(this.channel, JSON.stringify(msg));
+            this.client.publish(this.channel.toDevice, JSON.stringify(msg));
         }
         else {
             throw new Error("Not connected to server");
@@ -214,7 +220,7 @@ var Farmbot = (function () {
             username: uuid,
             password: token
         });
-        that.client.subscribe(that.channel);
+        that.client.subscribe(that.channel.toClient);
         that.client.once("connect", function () { return p.resolve(that); });
         that.client.on("message", that._onmessage.bind(that));
         return p.promise;

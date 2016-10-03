@@ -1,9 +1,4 @@
-// import "./fb_promise";
-
-export namespace FB {
-  export let _ = "_";
-  // SORY FOR THE MESS LOL. -RC
-  // http://stackoverflow.com/a/38731120/1064917
+  // TODO: Remove this and use interface in `@types/promise`.
   export interface Thenable<T> {
     then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
     then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
@@ -70,23 +65,26 @@ export namespace FB {
     | "pin12"
     | "pin13";
 
-  /** Names for a single step within a sequence. */
+  /** Names for a single step within a sequence.
+   *  Not to be confused with the names of JSON RPC commands.
+   * This is different. These names are only related to 
+   * the individual steps of a sequence object. */
   export type stepType = "emergency_stop"
-    | "home_all"
-    | "home_x"
-    | "home_y"
-    | "home_z"
-    | "move_absolute"
-    | "move_relative"
-    | "pin_write"
-    | "read_parameter"
-    | "read_status"
-    | "write_parameter"
-    | "wait"
-    | "send_message"
-    | "if_statement"
-    | "read_pin"
-    | "execute";
+                          | "home_all"
+                          | "home_x"
+                          | "home_y"
+                          | "home_z"
+                          | "move_absolute"
+                          | "move_relative"
+                          | "write_pin"
+                          | "read_parameter"
+                          | "read_status"
+                          | "write_parameter"
+                          | "wait"
+                          | "send_message"
+                          | "if_statement"
+                          | "read_pin"
+                          | "execute";
 
   /** Color choices for sequence tiles. */
   export type Color = "blue"
@@ -118,7 +116,7 @@ export namespace FB {
     // TODO: Is this correct?
     message_type: stepType;
     position?: number;
-    _id?: string;
+    id?: number;
     command: StepCommand;
   };
 
@@ -127,10 +125,21 @@ export namespace FB {
     position: number;
   };
 
+/** One step in a larger "Sequence". */
+export interface Step extends UnplacedStep {
+  position: number;
+};
+
+
+
+
+
+
+
   export interface Sequence {
-    _id?: string;
+    id?: number;
     color: Color;
-    name: String;
+    name: string;
     steps: Step[];
     dirty?: Boolean;
   }
@@ -152,5 +161,3 @@ export namespace FB {
     /** UUID of current bot. */
     bot: string;
   }
-
-};

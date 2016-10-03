@@ -153,6 +153,7 @@ bot.options.timeout = 5000 // 5 seconds
 
  - [ ] Convert hardcoded strings, "magic numbers" and event names to constants.
  - [ ] Get compliant with A+ promise spec.
+ - [ ] Start using `@types/promise` instead of re-writing custom interfaces.
  - [ ] Track state changes when bot returns a status object.
         - define an `isStatusUpdate` type guard.
         - Add `maybeUpdateState` method.

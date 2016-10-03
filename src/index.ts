@@ -1,8 +1,8 @@
-import { FB } from "./interfaces/interfaces";
+import * as FB from "./interfaces";
+import * as JSONRPC from "./jsonrpc";
+import * as BotCommand from "./bot_commands";
 import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
-import { BotCommand } from "./interfaces/bot_commands";
-import { JSONRPC } from "./interfaces/jsonrpc";
 import { uuid, assign } from "./util";
 
 export class Farmbot {
@@ -53,7 +53,8 @@ export class Farmbot {
       method: "emergency_stop",
       params: [],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -62,7 +63,8 @@ export class Farmbot {
       method: "exec_sequence",
       params: [sequence],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -71,7 +73,8 @@ export class Farmbot {
       method: "home_all",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -80,7 +83,8 @@ export class Farmbot {
       method: "home_x",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -89,7 +93,8 @@ export class Farmbot {
       method: "home_y",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -98,7 +103,8 @@ export class Farmbot {
       method: "home_z",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -108,7 +114,8 @@ export class Farmbot {
       method: "move_absolute",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -117,7 +124,8 @@ export class Farmbot {
       method: "move_relative",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -126,7 +134,8 @@ export class Farmbot {
       method: "write_pin",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -135,7 +144,8 @@ export class Farmbot {
       method: "read_status",
       params: [],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -144,7 +154,8 @@ export class Farmbot {
       method: "sync",
       params: [],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -153,7 +164,8 @@ export class Farmbot {
       method: "update_calibration",
       params: [i],
       id: uuid()
-    }
+    };
+
     return this.send(p);
   }
 
@@ -169,7 +181,7 @@ export class Farmbot {
   emit(event: string, data: any) {
     [this.event(event), this.event("*")]
       .forEach(function (handlers) {
-        handlers.forEach(function (handler) {
+        handlers.forEach(function (handler: Function) {
           try {
             handler(data, event);
           } catch (e) {
@@ -179,11 +191,17 @@ export class Farmbot {
       });
   }
 
-  get channel() { return `bot/${this.getState()["uuid"] || "lost_and_found"}/rpc` }
+  get channel() {
+    let uuid = this.getState()["uuid"] || "lost_and_found";
+    return {
+      toDevice: `bot/${uuid}/inbound`,
+      toClient: `bot/${uuid}/outbound`
+    }
+  }
 
-  publish(msg: any): void {
+  publish(msg: JSONRPC.Request<any>|JSONRPC.Notification<any>): void {
     if (this.client) {
-      this.client.publish(this.channel, JSON.stringify(msg));
+      this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
       throw new Error("Not connected to server");
     }
@@ -231,7 +249,7 @@ export class Farmbot {
       username: <string>uuid,
       password: <string>token
     }) as FB.MqttClient;
-    that.client.subscribe(that.channel);
+    that.client.subscribe(that.channel.toClient);
     that.client.once("connect", () => p.resolve(that));
     that.client.on("message", that._onmessage.bind(that));
     return p.promise;
