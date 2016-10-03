@@ -37,17 +37,21 @@ export interface StepCommand {
 export interface UnplacedStep {
     message_type: stepType;
     position?: number;
-    _id?: string;
+    id?: number;
     command: StepCommand;
 }
 /** One step in a larger "Sequence". */
 export interface Step extends UnplacedStep {
     position: number;
 }
+/** One step in a larger "Sequence". */
+export interface Step extends UnplacedStep {
+    position: number;
+}
 export interface Sequence {
-    _id?: string;
+    id?: number;
     color: Color;
-    name: String;
+    name: string;
     steps: Step[];
     dirty?: Boolean;
 }
