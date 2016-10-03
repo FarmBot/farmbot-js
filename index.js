@@ -157,7 +157,13 @@ var Farmbot = (function () {
         });
     };
     Object.defineProperty(Farmbot.prototype, "channel", {
-        get: function () { return "bot/" + (this.getState()["uuid"] || "lost_and_found") + "/rpc"; },
+        get: function () {
+            var uuid = this.getState()["uuid"] || "lost_and_found";
+            return {
+                inbound: "bot/" + uuid + "/inbound",
+                outbound: "bot/" + uuid + "/inbound"
+            };
+        },
         enumerable: true,
         configurable: true
     });

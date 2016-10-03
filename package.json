@@ -3,7 +3,7 @@
   "version": "2.0.0-rc.10",
   "description": "",
   "scripts": {
-    "build": "rm ./*.d.ts; rm ./*.js; tsc"
+    "build": "./build.sh"
   },
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",

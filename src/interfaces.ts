@@ -65,7 +65,10 @@
     | "pin12"
     | "pin13";
 
-  /** Names for a single step within a sequence. */
+  /** Names for a single step within a sequence.
+   *  Not to be confused with the names of JSON RPC commands.
+   * This is different. These names are only related to 
+   * the individual steps of a sequence object. */
   export type stepType = "emergency_stop"
                           | "home_all"
                           | "home_x"
@@ -73,7 +76,7 @@
                           | "home_z"
                           | "move_absolute"
                           | "move_relative"
-                          | "pin_write"
+                          | "write_pin"
                           | "read_parameter"
                           | "read_status"
                           | "write_parameter"

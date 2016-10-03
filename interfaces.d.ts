@@ -15,8 +15,11 @@ export interface Dictionary<T> {
 }
 export declare type StateTree = Dictionary<string | number | boolean>;
 export declare type userVariables = "x" | "y" | "z" | "s" | "busy" | "last" | "pins" | "param_version" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "time" | "pin0" | "pin1" | "pin2" | "pin3" | "pin4" | "pin5" | "pin6" | "pin7" | "pin8" | "pin9" | "pin10" | "pin11" | "pin12" | "pin13";
-/** Names for a single step within a sequence. */
-export declare type stepType = "emergency_stop" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "pin_write" | "read_parameter" | "read_status" | "write_parameter" | "wait" | "send_message" | "if_statement" | "read_pin" | "execute";
+/** Names for a single step within a sequence.
+ *  Not to be confused with the names of JSON RPC commands.
+ * This is different. These names are only related to
+ * the individual steps of a sequence object. */
+export declare type stepType = "emergency_stop" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_parameter" | "read_status" | "write_parameter" | "wait" | "send_message" | "if_statement" | "read_pin" | "execute";
 /** Color choices for sequence tiles. */
 export declare type Color = "blue" | "green" | "yellow" | "orange" | "purple" | "pink" | "gray" | "red";
 export interface StepCommand {
