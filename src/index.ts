@@ -220,17 +220,20 @@ export class Farmbot {
       if (response && response.result) {
         // Good method invocation.
         p.resolve(response);
-      };
+        return;
+      }
+
       if (response && response.error) {
         // Bad method invocation.
         p.reject(response.error);
-      } else {
-        // It's not JSONRPC.
-        let e = new Error("Malformed response");
-        console.error(e);
-        console.dir(response);
-        p.reject(e);
+        return;
       }
+
+      // It's not JSONRPC.
+      let e = new Error("Malformed response");
+      console.error(e);
+      console.dir(response);
+      p.reject(e);
     });
     return p.promise;
   };

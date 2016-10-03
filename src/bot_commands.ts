@@ -49,7 +49,8 @@ import * as JSONRPC from "./jsonrpc";
     | "write_pin"
     | "read_status"
     | "sync"
-    | "update_calibration";
+    | "update_calibration"
+    | "status_update" // notification only.;
 
   /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
   export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
