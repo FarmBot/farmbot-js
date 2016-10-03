@@ -73,9 +73,10 @@ export interface APIToken {
     /** UUID of current bot. */
     bot: string;
 }
+export declare type configKey = "speed" | "x" | "y" | "z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_version" | "pin0" | "pin1" | "pin2" | "pin3" | "pin4" | "pin5" | "pin6" | "pin7" | "pin8" | "pin9" | "pin10" | "pin11" | "pin12" | "pin13";
 /** Status registers for the bot's status */
 export interface HardwareState {
-    s?: number;
+    speed?: number;
     x?: number;
     y?: number;
     z?: number;
