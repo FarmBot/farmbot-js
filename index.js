@@ -189,19 +189,18 @@ var Farmbot = (function () {
             if (response && response.result) {
                 // Good method invocation.
                 p.resolve(response);
+                return;
             }
-            ;
             if (response && response.error) {
                 // Bad method invocation.
                 p.reject(response.error);
+                return;
             }
-            else {
-                // It's not JSONRPC.
-                var e = new Error("Malformed response");
-                console.error(e);
-                console.dir(response);
-                p.reject(e);
-            }
+            // It's not JSONRPC.
+            var e = new Error("Malformed response");
+            console.error(e);
+            console.dir(response);
+            p.reject(e);
         });
         return p.promise;
     };
