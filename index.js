@@ -38,6 +38,22 @@ var Farmbot = (function () {
         return val;
     };
     ;
+    Farmbot.prototype.powerOffBot = function () {
+        var p = {
+            method: "power_off_bot",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.rebootBot = function () {
+        var p = {
+            method: "reboot",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.checkUpdates = function () {
         var p = {
             method: "check_updates",
