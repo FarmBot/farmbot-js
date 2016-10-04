@@ -28,7 +28,7 @@ import { HardwareState } from "./interfaces";
     | "update_calibration"
     | "status_update" // notification only.;
     | "check_updates"
-    | "power_off_bot"
+    | "power_off"
     | "reboot"
 
   /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
@@ -88,7 +88,7 @@ import { HardwareState } from "./interfaces";
   }
 
   export interface PoweroffRequest extends Request<any> {
-    method: "power_off_bot";
+    method: "power_off";
   }
   export interface RebootRequest extends Request<any> {
     method: "reboot";

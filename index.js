@@ -40,7 +40,7 @@ var Farmbot = (function () {
     ;
     Farmbot.prototype.powerOffBot = function () {
         var p = {
-            method: "power_off_bot",
+            method: "power_off",
             params: [],
             id: util_1.uuid()
         };

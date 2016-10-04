@@ -50,7 +50,7 @@ export class Farmbot {
 
   powerOffBot() {
     let p: BotCommand.PoweroffRequest = {
-      method: "power_off_bot",
+      method: "power_off",
       params: [],
       id: uuid()
     };
