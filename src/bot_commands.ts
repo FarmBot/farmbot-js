@@ -27,6 +27,9 @@ import { HardwareState } from "./interfaces";
     | "sync"
     | "update_calibration"
     | "status_update" // notification only.;
+    | "check_updates"
+    | "power_off"
+    | "reboot"
 
   /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
   export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -82,4 +85,15 @@ import { HardwareState } from "./interfaces";
 
   export interface MoveRelativeRequest extends Request<[MovementRequest]> {
     method: "move_relative";
+  }
+
+  export interface PoweroffRequest extends Request<any> {
+    method: "power_off";
+  }
+  export interface RebootRequest extends Request<any> {
+    method: "reboot";
+  }
+
+  export interface CheckUpdatesRequest extends Request<any> {
+    method: "check_updates";
   }

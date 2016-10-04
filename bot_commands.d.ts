@@ -27,7 +27,7 @@ export declare namespace Params {
     }
 }
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "update_calibration" | "status_update";
+export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "update_calibration" | "status_update" | "check_updates" | "power_off" | "reboot";
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> {
     method: Method;
@@ -76,4 +76,13 @@ export interface MoveAbsoluteRequest extends Request<[MovementRequest]> {
 }
 export interface MoveRelativeRequest extends Request<[MovementRequest]> {
     method: "move_relative";
+}
+export interface PoweroffRequest extends Request<any> {
+    method: "power_off";
+}
+export interface RebootRequest extends Request<any> {
+    method: "reboot";
+}
+export interface CheckUpdatesRequest extends Request<any> {
+    method: "check_updates";
 }

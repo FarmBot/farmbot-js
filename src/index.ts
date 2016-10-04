@@ -48,6 +48,33 @@ export class Farmbot {
     return val;
   };
 
+  powerOff() {
+    let p: BotCommand.PoweroffRequest = {
+      method: "power_off",
+      params: [],
+      id: uuid()
+    };
+    return this.send(p);
+  }
+
+  reboot() {
+    let p: BotCommand.RebootRequest = {
+      method: "reboot",
+      params: [],
+      id: uuid()
+    };
+    return this.send(p);
+  }
+
+  checkUpdates() {
+    let p: BotCommand.CheckUpdatesRequest = {
+      method: "check_updates",
+      params: [],
+      id: uuid()
+    };
+    return this.send(p);
+  }
+
   emergencyStop() {
     let p: BotCommand.EmergencyStopRequest = {
       method: "emergency_stop",
