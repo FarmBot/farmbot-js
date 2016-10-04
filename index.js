@@ -38,7 +38,7 @@ var Farmbot = (function () {
         return val;
     };
     ;
-    Farmbot.prototype.powerOffBot = function () {
+    Farmbot.prototype.powerOff = function () {
         var p = {
             method: "power_off",
             params: [],
@@ -46,7 +46,7 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.rebootBot = function () {
+    Farmbot.prototype.reboot = function () {
         var p = {
             method: "reboot",
             params: [],

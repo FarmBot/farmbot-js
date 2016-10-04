@@ -48,7 +48,7 @@ export class Farmbot {
     return val;
   };
 
-  powerOffBot() {
+  powerOff() {
     let p: BotCommand.PoweroffRequest = {
       method: "power_off",
       params: [],
@@ -57,7 +57,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  rebootBot() {
+  reboot() {
     let p: BotCommand.RebootRequest = {
       method: "reboot",
       params: [],
