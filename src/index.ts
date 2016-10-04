@@ -48,6 +48,15 @@ export class Farmbot {
     return val;
   };
 
+  checkUpdates() {
+    let p: BotCommand.CheckUpdatesRequest = {
+      method: "check_updates",
+      params: [],
+      id: uuid()
+    };
+    return this.send(p);
+  }
+
   emergencyStop() {
     let p: BotCommand.EmergencyStopRequest = {
       method: "emergency_stop",

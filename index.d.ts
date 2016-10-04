@@ -14,6 +14,7 @@ export declare class Farmbot {
     _decodeThatToken(): void;
     getState(): FB.StateTree;
     setState(key: string, val: string | number | boolean): string | number | boolean;
+    checkUpdates(): FB.Thenable<{}>;
     emergencyStop(): FB.Thenable<{}>;
     execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
     homeAll(i: BotCommand.Params.Speed): FB.Thenable<{}>;
