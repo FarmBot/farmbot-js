@@ -24,8 +24,8 @@ export declare class Farmbot {
     moveRelative(i: BotCommand.MovementRequest): FB.Thenable<{}>;
     writePin(i: BotCommand.WritePinParams): FB.Thenable<{}>;
     readStatus(): FB.Thenable<{}>;
-    syncSequence(): FB.Thenable<{}>;
-    updateCalibration(i: BotCommand.Params.UpdateCalibration): FB.Thenable<{}>;
+    sync(): FB.Thenable<{}>;
+    updateCalibration(i: BotCommand.Params.CalibrationUpdate): FB.Thenable<{}>;
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;

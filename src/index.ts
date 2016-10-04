@@ -149,7 +149,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  syncSequence() {
+  sync() {
     let p: BotCommand.SyncRequest = {
       method: "sync",
       params: [],
@@ -159,7 +159,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  updateCalibration(i: BotCommand.Params.UpdateCalibration) {
+  updateCalibration(i: BotCommand.Params.CalibrationUpdate) {
     let p: BotCommand.UpdateCalibrationRequest = {
       method: "update_calibration",
       params: [i],
@@ -196,10 +196,10 @@ export class Farmbot {
     return {
       toDevice: `bot/${uuid}/from_clients`,
       toClient: `bot/${uuid}/from_device`
-    }
+    };
   }
 
-  publish(msg: JSONRPC.Request<any>|JSONRPC.Notification<any>): void {
+  publish(msg: JSONRPC.Request<any> | JSONRPC.Notification<any>): void {
     if (this.client) {
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
@@ -220,25 +220,43 @@ export class Farmbot {
       if (response && response.result) {
         // Good method invocation.
         p.resolve(response);
-      };
+        return;
+      }
+
       if (response && response.error) {
         // Bad method invocation.
         p.reject(response.error);
-      } else {
-        // It's not JSONRPC.
-        let e = new Error("Malformed response");
-        console.error(e);
-        console.dir(response);
-        p.reject(e);
+        return;
       }
+
+      // It's not JSONRPC.
+      let e = new Error("Malformed response");
+      console.error(e);
+      console.dir(response);
+      p.reject(e);
     });
     return p.promise;
   };
 
   _onmessage(_: string, buffer: Uint8Array /*, message*/) {
-    let msg = JSON.parse(buffer.toString());
-    let id = (msg.id || "*");
-    this.emit(id, msg);
+    try {
+      var msg = JSON.parse(buffer.toString());
+    } catch (error) {
+      throw new Error("Could not parse inbound message from MQTT.");
+    }
+
+    if (msg && (msg.method && msg.params && (msg.id === null))) {
+      console.log("Notification");
+      this.emit("notification", msg);
+      return;
+    }
+
+    if (msg && (msg.id)) {
+      this.emit(msg.id, msg);
+      return;
+    }
+
+    throw new Error("Not a JSONRPC Compliant message");
   };
 
   connect() {

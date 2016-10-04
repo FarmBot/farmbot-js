@@ -119,8 +119,9 @@ Currently supported commands:
  * `*`: Catch all events (for debugging).
  * `ready`: Client is connected and subscribed to bot.
  * `disconnect`: Connection lost. **Note: FarmbotJS won't auto-reconnect**.
- * `message`: When the bot gets a *non-rpc* command, it is regarded as a 'message'.
+ * `message`: When the bot gets a *non-rpc* command, it is regarded as a 'message'. Deprecated.
  * `change`: The bot object's internal state has changed.
+ * `notification`: The bot is sending you an "unsolicited" notification, such as a log notification or a status update.
  * `<random uuid>`: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request's UUID. Mostly for internal use.
 
 ## Internal State and Config
@@ -128,26 +129,7 @@ Currently supported commands:
 The bot object keeps all state in one place for sanity. This includes things like configuration options, current position, etc. All updates to the bot's state are broadcast with a `change` event, that reports current and previous state value as it changes.
 
  * `bot.getState()`: Get copy of Farmbot status variables (read only).
- * `bot.getState(attribute_name)`: Fetch a state record such as `timeout` or `meshServer` URL.
  * `bot.setState(name, value)`: Set state value 'x' to 'y'. Ex: `bot.setState('uuid', '---')`. Emits a `change` event.
-
-## Common Config Options
-
-If you are running your own servers, you may want to use other options.
-
-### Timeout (Number)
-
-Time (in milliseconds) to wait before deeming an RPC command to be unacknowledged. Relevant promise objects will be rejected if the bot does not respond in the timeframe provided. Defaults to `1000`.
-
-```javascript
-
-var bot = Farmbot({
-  uuid: "123",
-  token: "456"
-})
-bot.options.timeout = 5000 // 5 seconds
-
-```
 
 ## TODO
 

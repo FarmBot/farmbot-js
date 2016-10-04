@@ -73,3 +73,50 @@ export interface APIToken {
     /** UUID of current bot. */
     bot: string;
 }
+export declare type configKey = "speed" | "x" | "y" | "z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_version" | "pin0" | "pin1" | "pin2" | "pin3" | "pin4" | "pin5" | "pin6" | "pin7" | "pin8" | "pin9" | "pin10" | "pin11" | "pin12" | "pin13";
+/** Status registers for the bot's status */
+export interface HardwareState {
+    speed?: number;
+    x?: number;
+    y?: number;
+    z?: number;
+    movement_axis_nr_steps_x?: number;
+    movement_axis_nr_steps_y?: number;
+    movement_axis_nr_steps_z?: number;
+    movement_home_up_x?: number;
+    movement_home_up_y?: number;
+    movement_home_up_z?: number;
+    movement_invert_endpoints_x?: number;
+    movement_invert_endpoints_y?: number;
+    movement_invert_endpoints_z?: number;
+    movement_invert_motor_x?: number;
+    movement_invert_motor_y?: number;
+    movement_invert_motor_z?: number;
+    movement_max_spd_x?: number;
+    movement_max_spd_y?: number;
+    movement_max_spd_z?: number;
+    movement_min_spd_x?: number;
+    movement_min_spd_y?: number;
+    movement_min_spd_z?: number;
+    movement_steps_acc_dec_x?: number;
+    movement_steps_acc_dec_y?: number;
+    movement_steps_acc_dec_z?: number;
+    movement_timeout_x?: number;
+    movement_timeout_y?: number;
+    movement_timeout_z?: number;
+    param_version?: number;
+    pin0?: number;
+    pin1?: number;
+    pin2?: number;
+    pin3?: number;
+    pin4?: number;
+    pin5?: number;
+    pin6?: number;
+    pin7?: number;
+    pin8?: number;
+    pin9?: number;
+    pin10?: number;
+    pin11?: number;
+    pin12?: number;
+    pin13?: number;
+}

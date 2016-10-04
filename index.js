@@ -118,7 +118,7 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.syncSequence = function () {
+    Farmbot.prototype.sync = function () {
         var p = {
             method: "sync",
             params: [],
@@ -189,27 +189,39 @@ var Farmbot = (function () {
             if (response && response.result) {
                 // Good method invocation.
                 p.resolve(response);
+                return;
             }
-            ;
             if (response && response.error) {
                 // Bad method invocation.
                 p.reject(response.error);
+                return;
             }
-            else {
-                // It's not JSONRPC.
-                var e = new Error("Malformed response");
-                console.error(e);
-                console.dir(response);
-                p.reject(e);
-            }
+            // It's not JSONRPC.
+            var e = new Error("Malformed response");
+            console.error(e);
+            console.dir(response);
+            p.reject(e);
         });
         return p.promise;
     };
     ;
     Farmbot.prototype._onmessage = function (_, buffer /*, message*/) {
-        var msg = JSON.parse(buffer.toString());
-        var id = (msg.id || "*");
-        this.emit(id, msg);
+        try {
+            var msg = JSON.parse(buffer.toString());
+        }
+        catch (error) {
+            throw new Error("Could not parse inbound message from MQTT.");
+        }
+        if (msg && (msg.method && msg.params && (msg.id === null))) {
+            console.log("Notification");
+            this.emit("notification", msg);
+            return;
+        }
+        if (msg && (msg.id)) {
+            this.emit(msg.id, msg);
+            return;
+        }
+        throw new Error("Not a JSONRPC Compliant message");
     };
     ;
     Farmbot.prototype.connect = function () {

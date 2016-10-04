@@ -1,5 +1,4 @@
 #!/bin/bash
 
-rm ./*.d.ts
-rm ./*.js
+./clean.sh
 tsc

@@ -1,8 +1,6 @@
 import * as JSONRPC from "./jsonrpc";
+import { HardwareState } from "./interfaces";
 
-/** Reference specification of all FarmBot RPC commands. */
-
-  export let JSON_RPC_VERSION = "1.0";
   /** All possible RPC parameters and their types. */
   export namespace Params {
     export interface X { x: number; }
@@ -12,29 +10,7 @@ import * as JSONRPC from "./jsonrpc";
     export interface PinValue { pin_value: number; }
     export interface PinMode { pin_mode: number; }
     export interface Speed { speed: number; }
-    export interface UpdateCalibration {
-      movement_timeout_x?: number;
-      movement_timeout_y?: number;
-      movement_timeout_z?: number;
-      movement_invert_endpoints_x?: number;
-      movement_invert_endpoints_y?: number;
-      movement_invert_endpoints_z?: number;
-      movement_invert_motor_x?: number;
-      movement_invert_motor_y?: number;
-      movement_invert_motor_z?: number;
-      movement_steps_acc_dec_x?: number;
-      movement_steps_acc_dec_y?: number;
-      movement_steps_acc_dec_z?: number;
-      movement_home_up_x?: number;
-      movement_home_up_y?: number;
-      movement_home_up_z?: number;
-      movement_min_spd_x?: number;
-      movement_min_spd_y?: number;
-      movement_min_spd_z?: number;
-      movement_max_spd_x?: number;
-      movement_max_spd_y?: number;
-      movement_max_spd_z?: number;
-    }
+    export interface CalibrationUpdate extends HardwareState {}
   }
 
   /** Acceptable "method" names for JSON RPC messages to the bot. */
@@ -49,7 +25,8 @@ import * as JSONRPC from "./jsonrpc";
     | "write_pin"
     | "read_status"
     | "sync"
-    | "update_calibration";
+    | "update_calibration"
+    | "status_update" // notification only.;
 
   /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
   export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -93,7 +70,7 @@ import * as JSONRPC from "./jsonrpc";
     method: "sync";
   }
 
-  export interface UpdateCalibrationRequest extends Request<[Params.UpdateCalibration]> {
+  export interface UpdateCalibrationRequest extends Request<[Params.CalibrationUpdate]> {
     method: "update_calibration";
   }
 
