@@ -62,6 +62,14 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
+    Farmbot.prototype.checkArduinoUpdates = function () {
+        var p = {
+            method: "check_arduino_updates",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.emergencyStop = function () {
         var p = {
             method: "emergency_stop",

@@ -75,6 +75,15 @@ export class Farmbot {
     return this.send(p);
   }
 
+  checkArduinoUpdates() {
+    let p: BotCommand.CheckArduinoUpdatesRequest = {
+      method: "check_arduino_updates",
+      params: [],
+      id: uuid()
+    };
+    return this.send(p);
+  }
+
   emergencyStop() {
     let p: BotCommand.EmergencyStopRequest = {
       method: "emergency_stop",

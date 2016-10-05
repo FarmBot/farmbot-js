@@ -28,6 +28,7 @@ import { HardwareState } from "./interfaces";
     | "update_calibration"
     | "status_update" // notification only.;
     | "check_updates"
+    | "check_arduino_updates"
     | "power_off"
     | "reboot"
 
@@ -96,4 +97,8 @@ import { HardwareState } from "./interfaces";
 
   export interface CheckUpdatesRequest extends Request<any> {
     method: "check_updates";
+  }
+
+  export interface CheckArduinoUpdatesRequest extends Request<any> {
+    method: "check_arduino_updates";
   }
