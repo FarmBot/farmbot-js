@@ -1,4 +1,4 @@
 #!/bin/bash
-
+npm install
 ./clean.sh
-tsc
+node_modules/typescript/bin/tsc
