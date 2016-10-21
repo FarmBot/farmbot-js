@@ -27,7 +27,7 @@ export declare namespace Params {
     }
 }
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "update_calibration" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot";
+export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "update_calibration" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_os_auto_update" | "toggle_fw_auto_update";
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> {
     method: Method;
@@ -88,4 +88,10 @@ export interface CheckUpdatesRequest extends Request<any> {
 }
 export interface CheckArduinoUpdatesRequest extends Request<any> {
     method: "check_arduino_updates";
+}
+export interface ToggleOSUpdateRequest extends Request<any> {
+    method: "toggle_os_auto_update";
+}
+export interface ToggleFWUpdateRequest extends Request<any> {
+    method: "toggle_fw_auto_update";
 }

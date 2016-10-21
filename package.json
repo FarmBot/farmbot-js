@@ -18,11 +18,17 @@
   "dependencies": {
     "@types/mqtt": "0.0.32",
     "mqtt": "^1.7.4",
-    "typescript": "^2.0.3"
+    "typescript": "^2.1.0-dev.20161017"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FarmBot/farmbot-js.git"
   },
-  "keywords": ["farming", "agriculture", "iot", "arduino", "typescript"]
+  "keywords": [
+    "farming",
+    "agriculture",
+    "iot",
+    "arduino",
+    "typescript"
+  ]
 }

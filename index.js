@@ -62,6 +62,22 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
+    Farmbot.prototype.toggleOSAutoUpdate = function () {
+        var p = {
+            method: "toggle_os_auto_update",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.toggleFWAutoUpdate = function () {
+        var p = {
+            method: "toggle_fw_auto_update",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.checkArduinoUpdates = function () {
         var p = {
             method: "check_arduino_updates",
