@@ -17,6 +17,9 @@ export declare class Farmbot {
     powerOff(): FB.Thenable<{}>;
     reboot(): FB.Thenable<{}>;
     checkUpdates(): FB.Thenable<{}>;
+    toggleOSAutoUpdate(): FB.Thenable<{}>;
+    toggleFWAutoUpdate(): FB.Thenable<{}>;
+    checkArduinoUpdates(): FB.Thenable<{}>;
     emergencyStop(): FB.Thenable<{}>;
     execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
     homeAll(i: BotCommand.Params.Speed): FB.Thenable<{}>;

@@ -28,8 +28,11 @@ import { HardwareState } from "./interfaces";
     | "update_calibration"
     | "status_update" // notification only.;
     | "check_updates"
+    | "check_arduino_updates"
     | "power_off"
     | "reboot"
+    | "toggle_os_auto_update"
+    | "toggle_fw_auto_update"
 
   /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
   export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -96,4 +99,16 @@ import { HardwareState } from "./interfaces";
 
   export interface CheckUpdatesRequest extends Request<any> {
     method: "check_updates";
+  }
+
+  export interface CheckArduinoUpdatesRequest extends Request<any> {
+    method: "check_arduino_updates";
+  }
+
+  export interface ToggleOSUpdateRequest extends Request<any> {
+    method: "toggle_os_auto_update";
+  }
+
+  export interface ToggleFWUpdateRequest extends Request<any> {
+    method: "toggle_fw_auto_update";
   }
