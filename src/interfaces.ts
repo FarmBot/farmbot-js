@@ -1,3 +1,68 @@
+/** Everything the farmbot knows about itself at a given moment in time. */
+export interface BotStateTree {
+  /** Microcontroller configuration and settings. */
+  mcu_params: McuParams;
+  /** Cartesian coordinates of the bot. */
+  location: Location;
+  /** Lookup table, indexed by number for pin status */
+  pins: Pins;
+  /** User definable config settings.  */
+  configuration: Configuration;
+  /** READ ONLY meta data about the FarmBot device. */
+  readonly informational_settings: InformationalSettings;
+}
+
+/** Microcontroller configuration and settings. */
+export interface McuParams {
+  movement_invert_motor_y: number;
+  movement_timeout_x: number;
+  movement_min_spd_x: number;
+  movement_invert_endpoints_x: number;
+  movement_axis_nr_steps_z: number;
+  movement_max_spd_z: number;
+  movement_invert_motor_x: number;
+  movement_steps_acc_dec_x: number;
+  movement_home_up_x: number;
+  movement_min_spd_z: number;
+  movement_axis_nr_steps_y: number;
+  movement_timeout_z: number;
+  movement_steps_acc_dec_y: number;
+  movement_home_up_z: number;
+  movement_max_spd_x: number;
+  movement_invert_motor_z: number;
+  movement_steps_acc_dec_z: number;
+  movement_home_up_y: number;
+  movement_max_spd_y: number;
+  movement_invert_endpoints_y: number;
+  movement_invert_endpoints_z: number;
+  movement_timeout_y: number;
+  movement_min_spd_y: number;
+  movement_axis_nr_steps_x: number;
+  param_version: number;
+}
+
+export interface Location {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export interface Pin {
+  mode: number;
+  value: number;
+}
+
+export type Pins = { [num: string]: Pin | undefined };
+
+export interface Configuration {
+  os_auto_update: boolean;
+  fw_auto_update: boolean;
+}
+
+export interface InformationalSettings {
+  controller_version: string;
+}
+
 // TODO: Remove this and use interface in `@types/promise`.
 export interface Thenable<T> {
   then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
@@ -199,50 +264,3 @@ export type configKey = "speed"
   | "pin11"
   | "pin12"
   | "pin13";
-
-/** Status registers for the bot's status */
-export interface HardwareState {
-  speed?: number;
-  x?: number;
-  y?: number;
-  z?: number;
-  movement_axis_nr_steps_x?: number;
-  movement_axis_nr_steps_y?: number;
-  movement_axis_nr_steps_z?: number;
-  movement_home_up_x?: number;
-  movement_home_up_y?: number;
-  movement_home_up_z?: number;
-  movement_invert_endpoints_x?: number;
-  movement_invert_endpoints_y?: number;
-  movement_invert_endpoints_z?: number;
-  movement_invert_motor_x?: number;
-  movement_invert_motor_y?: number;
-  movement_invert_motor_z?: number;
-  movement_max_spd_x?: number;
-  movement_max_spd_y?: number;
-  movement_max_spd_z?: number;
-  movement_min_spd_x?: number;
-  movement_min_spd_y?: number;
-  movement_min_spd_z?: number;
-  movement_steps_acc_dec_x?: number;
-  movement_steps_acc_dec_y?: number;
-  movement_steps_acc_dec_z?: number;
-  movement_timeout_x?: number;
-  movement_timeout_y?: number;
-  movement_timeout_z?: number;
-  param_version?: number;
-  pin0?: number;
-  pin1?: number;
-  pin2?: number;
-  pin3?: number;
-  pin4?: number;
-  pin5?: number;
-  pin6?: number;
-  pin7?: number;
-  pin8?: number;
-  pin9?: number;
-  pin10?: number;
-  pin11?: number;
-  pin12?: number;
-  pin13?: number;
-}

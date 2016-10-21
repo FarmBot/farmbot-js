@@ -75,7 +75,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  toggleOSAutoUpdate(){
+  toggleOSAutoUpdate() {
     let p: BotCommand.ToggleOSUpdateRequest = {
       method: "toggle_os_auto_update",
       params: [],
@@ -84,7 +84,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  toggleFWAutoUpdate(){
+  toggleFWAutoUpdate() {
     let p: BotCommand.ToggleFWUpdateRequest = {
       method: "toggle_fw_auto_update",
       params: [],
@@ -213,9 +213,9 @@ export class Farmbot {
     return this.send(p);
   }
 
-  updateCalibration(i: BotCommand.Params.CalibrationUpdate) {
-    let p: BotCommand.UpdateCalibrationRequest = {
-      method: "update_calibration",
+  updateCalibration(i: BotCommand.Params.McuConfigUpdate) {
+    let p: BotCommand.McuConfigUpdateRequest = {
+      method: "mcu_config_update",
       params: [i],
       id: uuid()
     };
