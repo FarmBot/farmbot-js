@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh"
@@ -12,9 +12,7 @@
     "jasmine-node": "^1.14.5"
   },
   "main": "./dist/index.js",
-  "types": [
-    "./dist/index.d.ts"
-  ],
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@types/mqtt": "0.0.32",
     "mqtt": "^1.7.4",
