@@ -40,12 +40,8 @@ export interface McuParams {
   movement_axis_nr_steps_x: number;
   param_version: number;
 }
-
-export interface Location {
-  x: number;
-  y: number;
-  z: number;
-}
+/** Cartesian coords of the bot. X, Y, Z, respectively. */
+export type Location = [number, number, number];
 
 export interface Pin {
   mode: number;
