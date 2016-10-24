@@ -193,6 +193,17 @@ export class Farmbot {
     return this.send(p);
   }
 
+  togglePin(i: BotCommand.TogglePinParams) {
+    let p: BotCommand.TogglePinRequest = {
+      method: "toggle_pin",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+
   readStatus() {
     let p: BotCommand.ReadStatusRequest = {
       method: "read_status",

@@ -158,6 +158,14 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
+    Farmbot.prototype.togglePin = function (i) {
+        var p = {
+            method: "toggle_pin",
+            params: [i],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.readStatus = function () {
         var p = {
             method: "read_status",

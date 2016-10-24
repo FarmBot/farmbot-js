@@ -29,6 +29,7 @@ export declare class Farmbot {
     moveAbsolute(i: BotCommand.MovementRequest): FB.Thenable<{}>;
     moveRelative(i: BotCommand.MovementRequest): FB.Thenable<{}>;
     writePin(i: BotCommand.WritePinParams): FB.Thenable<{}>;
+    togglePin(i: BotCommand.TogglePinParams): FB.Thenable<{}>;
     readStatus(): FB.Thenable<{}>;
     sync(): FB.Thenable<{}>;
     updateCalibration(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;

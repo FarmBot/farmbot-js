@@ -27,7 +27,7 @@ export declare namespace Params {
     }
 }
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_os_auto_update" | "toggle_fw_auto_update";
+export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_os_auto_update" | "toggle_fw_auto_update" | "toggle_pin";
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> {
     method: Method;
@@ -57,8 +57,13 @@ export interface HomeZRequest extends Request<[Params.Speed]> {
 }
 export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber {
 }
+export interface TogglePinParams extends Params.PinNumber {
+}
 export interface WritePinRequest extends Request<[WritePinParams]> {
     method: "write_pin";
+}
+export interface TogglePinRequest extends Request<[TogglePinParams]> {
+    method: "toggle_pin";
 }
 export interface ReadStatusRequest extends Request<any> {
     method: "read_status";
