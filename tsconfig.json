@@ -6,8 +6,8 @@
     "noImplicitAny": true,
     "allowUnreachableCode": false,
     "strictNullChecks": true,
-    "outDir": ".",
-    "types": [ ]
+    "outDir": "./dist",
+    "types": []
   },
   "exclude": [
     "node_modules",
