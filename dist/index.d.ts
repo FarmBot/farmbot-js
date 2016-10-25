@@ -33,6 +33,8 @@ export declare class Farmbot {
     readStatus(): FB.Thenable<{}>;
     sync(): FB.Thenable<{}>;
     updateCalibration(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
+    startRegimen(id: number): FB.Thenable<{}>;
+    stopRegimen(id: number): FB.Thenable<{}>;
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;

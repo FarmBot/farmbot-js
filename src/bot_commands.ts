@@ -34,6 +34,8 @@ export type Method = "emergency_stop"
   | "toggle_os_auto_update"
   | "toggle_fw_auto_update"
   | "toggle_pin"
+  | "start_regimen"
+  | "stop_regimen"
 
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -66,13 +68,21 @@ export interface HomeZRequest extends Request<[Params.Speed]> {
 export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber { }
 
 export interface TogglePinParams extends Params.PinNumber { }
-
+export interface RegimenParams { regimen_id: number; }
 export interface WritePinRequest extends Request<[WritePinParams]> {
   method: "write_pin";
 }
 
 export interface TogglePinRequest extends Request<[TogglePinParams]> {
   method: "toggle_pin";
+}
+
+export interface StartRegimenRequest extends Request<[RegimenParams]> {
+  method: "start_regimen";
+}
+
+export interface StopRegimenRequest extends Request<[RegimenParams]> {
+  method: "stop_regimen";
 }
 
 export interface ReadStatusRequest extends Request<any> {

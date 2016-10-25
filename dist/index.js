@@ -190,6 +190,22 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
+    Farmbot.prototype.startRegimen = function (id) {
+        var p = {
+            method: "start_regimen",
+            params: [{ regimen_id: id }],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.stopRegimen = function (id) {
+        var p = {
+            method: "stop_regimen",
+            params: [{ regimen_id: id }],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.event = function (name) {
         this._events[name] = this._events[name] || [];
         return this._events[name];

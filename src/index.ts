@@ -234,6 +234,26 @@ export class Farmbot {
     return this.send(p);
   }
 
+  startRegimen(id: number) {
+    let p: BotCommand.StartRegimenRequest = {
+      method: "start_regimen",
+      params: [{ regimen_id: id }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  stopRegimen(id: number) {
+    let p: BotCommand.StopRegimenRequest = {
+      method: "stop_regimen",
+      params: [{ regimen_id: id }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
   event(name: string) {
     this._events[name] = this._events[name] || [];
     return this._events[name];
