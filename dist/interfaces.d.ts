@@ -22,7 +22,7 @@ export interface FarmEvents {
     paused_sequences: Sequence[];
     /** paused reqimens */
     paused_regimens: Regimen[];
-    current_sequence: Sequence;
+    current_sequence: Sequence | null;
 }
 /** Microcontroller configuration and settings. */
 export interface McuParams {

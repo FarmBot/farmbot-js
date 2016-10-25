@@ -16,14 +16,14 @@ export interface BotStateTree {
 
 export interface FarmEvents {
   /** The queue of sequences to run **/
-  sequence_log: Sequence[] | null;
+  sequence_log: Sequence[];
   /** Currently running Regimnes */
   running_regimens: Regimen[];
   /** Paused sequences */
   paused_sequences: Sequence[];
   /** paused reqimens */
   paused_regimens: Regimen[];
-  current_sequence: Sequence;
+  current_sequence: Sequence | null;
 }
 
 /** Microcontroller configuration and settings. */
