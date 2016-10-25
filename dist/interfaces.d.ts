@@ -10,6 +10,19 @@ export interface BotStateTree {
     configuration: Configuration;
     /** READ ONLY meta data about the FarmBot device. */
     readonly informational_settings: InformationalSettings;
+    /** Status of running regimens and sequences */
+    farm_events: FarmEvents;
+}
+export interface FarmEvents {
+    /** The queue of sequences to run **/
+    sequence_log: Sequence[];
+    /** Currently running Regimnes */
+    running_regimens: Regimen[];
+    /** Paused sequences */
+    paused_sequences: Sequence[];
+    /** paused reqimens */
+    paused_regimens: Regimen[];
+    current_sequence: Sequence;
 }
 /** Microcontroller configuration and settings. */
 export interface McuParams {
@@ -114,6 +127,12 @@ export interface Sequence {
     name: string;
     steps: Step[];
     dirty?: Boolean;
+}
+export interface Regimen {
+    id: number;
+    color: Color;
+    name: string;
+    device_id: number;
 }
 export declare type CalibrationParams = Dictionary<any>;
 export interface ConstructorParams {
