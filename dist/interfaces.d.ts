@@ -129,10 +129,12 @@ export interface Sequence {
     dirty?: Boolean;
 }
 export interface Regimen {
-    id: number;
-    color: Color;
+    id?: number;
+    /** Friendly identifier for humans to easily identify regimens. */
     name: string;
-    device_id: number;
+    color: Color;
+    regimen_items: Object[];
+    dirty?: boolean;
 }
 export declare type CalibrationParams = Dictionary<any>;
 export interface ConstructorParams {
