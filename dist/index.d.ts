@@ -32,7 +32,8 @@ export declare class Farmbot {
     togglePin(i: BotCommand.TogglePinParams): FB.Thenable<{}>;
     readStatus(): FB.Thenable<{}>;
     sync(): FB.Thenable<{}>;
-    updateCalibration(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
+    /** Update the arduino settings */
+    updateMcu(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
     startRegimen(id: number): FB.Thenable<{}>;
     stopRegimen(id: number): FB.Thenable<{}>;
     event(name: string): Function[];

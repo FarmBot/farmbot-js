@@ -117,10 +117,6 @@ export interface UnplacedStep {
 export interface Step extends UnplacedStep {
     position: number;
 }
-/** One step in a larger "Sequence". */
-export interface Step extends UnplacedStep {
-    position: number;
-}
 export interface Sequence {
     id?: number;
     color: Color;
@@ -136,7 +132,6 @@ export interface Regimen {
     regimen_items: Object[];
     dirty?: boolean;
 }
-export declare type CalibrationParams = Dictionary<any>;
 export interface ConstructorParams {
     /** API token which can be retrieved by logging into REST server or my.farmbot.io */
     token: string;

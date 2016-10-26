@@ -48,6 +48,7 @@ export interface EmergencyStopRequest extends Request<any> { method: "emergency_
 
 // TODO: Change this to accept an array of steps as its only argument.
 // For now, leaving it as {steps: any[]} for legacy reasons.
+// TODO: This is a celery script ast now. 
 export interface ExecSequenceRequest extends Request<[{ steps: any[] }]> {
   method: "exec_sequence";
 }

@@ -182,7 +182,8 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.updateCalibration = function (i) {
+    /** Update the arduino settings */
+    Farmbot.prototype.updateMcu = function (i) {
         var p = {
             method: "mcu_config_update",
             params: [i],

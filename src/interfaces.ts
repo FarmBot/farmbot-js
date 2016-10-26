@@ -193,17 +193,12 @@ export interface UnplacedStep {
   position?: number;
   id?: number;
   command: StepCommand;
-};
+}
 
 /** One step in a larger "Sequence". */
 export interface Step extends UnplacedStep {
   position: number;
-};
-
-/** One step in a larger "Sequence". */
-export interface Step extends UnplacedStep {
-  position: number;
-};
+}
 
 export interface Sequence {
   id?: number;
@@ -220,7 +215,7 @@ export interface Regimen {
   color: Color;
   regimen_items: Object[];
   dirty?: boolean;
-};
+}
 
 export interface ConstructorParams {
   /** API token which can be retrieved by logging into REST server or my.farmbot.io */

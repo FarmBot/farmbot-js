@@ -25,6 +25,9 @@ export declare namespace Params {
     }
     interface McuConfigUpdate extends McuParams {
     }
+    interface RegimenStartStop {
+        regimen_id: number;
+    }
 }
 /** Acceptable "method" names for JSON RPC messages to the bot. */
 export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_os_auto_update" | "toggle_fw_auto_update" | "toggle_pin" | "start_regimen" | "stop_regimen";
@@ -59,8 +62,7 @@ export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.
 }
 export interface TogglePinParams extends Params.PinNumber {
 }
-export interface RegimenParams {
-    regimen_id: number;
+export interface RegimenParams extends Params.RegimenStartStop {
 }
 export interface WritePinRequest extends Request<[WritePinParams]> {
     method: "write_pin";
