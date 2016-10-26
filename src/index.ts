@@ -224,10 +224,31 @@ export class Farmbot {
     return this.send(p);
   }
 
-  updateCalibration(i: BotCommand.Params.McuConfigUpdate) {
+  /** Update the arduino settings */
+  updateMcu(i: BotCommand.Params.McuConfigUpdate) {
     let p: BotCommand.McuConfigUpdateRequest = {
       method: "mcu_config_update",
       params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  startRegimen(id: number) {
+    let p: BotCommand.StartRegimenRequest = {
+      method: "start_regimen",
+      params: [{ regimen_id: id }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  stopRegimen(id: number) {
+    let p: BotCommand.StopRegimenRequest = {
+      method: "stop_regimen",
+      params: [{ regimen_id: id }],
       id: uuid()
     };
 

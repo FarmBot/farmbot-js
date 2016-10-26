@@ -96,7 +96,7 @@ Currently supported commands:
  * readStatus
  * send(commandObject)
  * syncSequence
- * updateCalibration
+ * updateMcu
  * send(messageObject)
 
 ## Using Events

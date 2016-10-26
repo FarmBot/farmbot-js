@@ -182,10 +182,27 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.updateCalibration = function (i) {
+    /** Update the arduino settings */
+    Farmbot.prototype.updateMcu = function (i) {
         var p = {
             method: "mcu_config_update",
             params: [i],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.startRegimen = function (id) {
+        var p = {
+            method: "start_regimen",
+            params: [{ regimen_id: id }],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.stopRegimen = function (id) {
+        var p = {
+            method: "stop_regimen",
+            params: [{ regimen_id: id }],
             id: util_1.uuid()
         };
         return this.send(p);

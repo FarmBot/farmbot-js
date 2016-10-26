@@ -11,6 +11,7 @@ export namespace Params {
   export interface PinMode { pin_mode: number; }
   export interface Speed { speed: number; }
   export interface McuConfigUpdate extends McuParams { }
+  export interface RegimenStartStop { regimen_id: number; }
 }
 
 /** Acceptable "method" names for JSON RPC messages to the bot. */
@@ -34,6 +35,8 @@ export type Method = "emergency_stop"
   | "toggle_os_auto_update"
   | "toggle_fw_auto_update"
   | "toggle_pin"
+  | "start_regimen"
+  | "stop_regimen"
 
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -45,6 +48,7 @@ export interface EmergencyStopRequest extends Request<any> { method: "emergency_
 
 // TODO: Change this to accept an array of steps as its only argument.
 // For now, leaving it as {steps: any[]} for legacy reasons.
+// TODO: This is a celery script ast now. 
 export interface ExecSequenceRequest extends Request<[{ steps: any[] }]> {
   method: "exec_sequence";
 }
@@ -66,13 +70,21 @@ export interface HomeZRequest extends Request<[Params.Speed]> {
 export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber { }
 
 export interface TogglePinParams extends Params.PinNumber { }
-
+export interface RegimenParams extends Params.RegimenStartStop { }
 export interface WritePinRequest extends Request<[WritePinParams]> {
   method: "write_pin";
 }
 
 export interface TogglePinRequest extends Request<[TogglePinParams]> {
   method: "toggle_pin";
+}
+
+export interface StartRegimenRequest extends Request<[RegimenParams]> {
+  method: "start_regimen";
+}
+
+export interface StopRegimenRequest extends Request<[RegimenParams]> {
+  method: "stop_regimen";
 }
 
 export interface ReadStatusRequest extends Request<any> {

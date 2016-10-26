@@ -10,6 +10,19 @@ export interface BotStateTree {
     configuration: Configuration;
     /** READ ONLY meta data about the FarmBot device. */
     readonly informational_settings: InformationalSettings;
+    /** Status of running regimens and sequences */
+    farm_events: FarmEvents;
+}
+export interface FarmEvents {
+    /** The queue of sequences to run **/
+    sequence_log: Sequence[];
+    /** Currently running Regimnes */
+    running_regimens: Regimen[];
+    /** Paused sequences */
+    paused_sequences: Sequence[];
+    /** paused reqimens */
+    paused_regimens: Regimen[];
+    current_sequence: Sequence | null;
 }
 /** Microcontroller configuration and settings. */
 export interface McuParams {
@@ -104,10 +117,6 @@ export interface UnplacedStep {
 export interface Step extends UnplacedStep {
     position: number;
 }
-/** One step in a larger "Sequence". */
-export interface Step extends UnplacedStep {
-    position: number;
-}
 export interface Sequence {
     id?: number;
     color: Color;
@@ -115,7 +124,14 @@ export interface Sequence {
     steps: Step[];
     dirty?: Boolean;
 }
-export declare type CalibrationParams = Dictionary<any>;
+export interface Regimen {
+    id?: number;
+    /** Friendly identifier for humans to easily identify regimens. */
+    name: string;
+    color: Color;
+    regimen_items: Object[];
+    dirty?: boolean;
+}
 export interface ConstructorParams {
     /** API token which can be retrieved by logging into REST server or my.farmbot.io */
     token: string;
