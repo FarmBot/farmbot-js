@@ -11,6 +11,7 @@ export namespace Params {
   export interface PinMode { pin_mode: number; }
   export interface Speed { speed: number; }
   export interface McuConfigUpdate extends McuParams { }
+  export interface RegimenStartStop { regimen_id: number; }
 }
 
 /** Acceptable "method" names for JSON RPC messages to the bot. */
@@ -68,7 +69,7 @@ export interface HomeZRequest extends Request<[Params.Speed]> {
 export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber { }
 
 export interface TogglePinParams extends Params.PinNumber { }
-export interface RegimenParams { regimen_id: number; }
+export interface RegimenParams extends Params.RegimenStartStop { }
 export interface WritePinRequest extends Request<[WritePinParams]> {
   method: "write_pin";
 }
