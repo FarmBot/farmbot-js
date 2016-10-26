@@ -221,7 +221,6 @@ export interface Regimen {
   regimen_items: Object[];
   dirty?: boolean;
 };
-export type CalibrationParams = Dictionary<any>;
 
 export interface ConstructorParams {
   /** API token which can be retrieved by logging into REST server or my.farmbot.io */

@@ -224,7 +224,8 @@ export class Farmbot {
     return this.send(p);
   }
 
-  updateCalibration(i: BotCommand.Params.McuConfigUpdate) {
+  /** Update the arduino settings */
+  updateMcu(i: BotCommand.Params.McuConfigUpdate) {
     let p: BotCommand.McuConfigUpdateRequest = {
       method: "mcu_config_update",
       params: [i],
