@@ -75,24 +75,6 @@ export class Farmbot {
     return this.send(p);
   }
 
-  toggleOSAutoUpdate() {
-    let p: BotCommand.ToggleOSUpdateRequest = {
-      method: "toggle_os_auto_update",
-      params: [],
-      id: uuid()
-    };
-    return this.send(p);
-  }
-
-  toggleFWAutoUpdate() {
-    let p: BotCommand.ToggleFWUpdateRequest = {
-      method: "toggle_fw_auto_update",
-      params: [],
-      id: uuid()
-    };
-    return this.send(p);
-  }
-
   checkArduinoUpdates() {
     let p: BotCommand.CheckArduinoUpdatesRequest = {
       method: "check_arduino_updates",
@@ -228,6 +210,17 @@ export class Farmbot {
   updateMcu(i: BotCommand.Params.McuConfigUpdate) {
     let p: BotCommand.McuConfigUpdateRequest = {
       method: "mcu_config_update",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  /** Update a config */
+  updateConfig(i: BotCommand.Params.BotConfigUpdate) {
+    let p: BotCommand.BotConfigUpdateRequest = {
+      method: "bot_config_update",
       params: [i],
       id: uuid()
     };

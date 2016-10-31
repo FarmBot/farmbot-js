@@ -67,7 +67,7 @@ export type Pins = { [num: string]: Pin | undefined };
 export interface Configuration {
   os_auto_update?: boolean | undefined;
   fw_auto_update?: boolean | undefined;
-  arbitrary_config?: string | undefined;
+  steps_per_mm?: number | undefined;
 }
 
 export interface InformationalSettings {
