@@ -64,6 +64,7 @@ export declare type Pins = {
 export interface Configuration {
     os_auto_update?: boolean | undefined;
     fw_auto_update?: boolean | undefined;
+    steps_per_mm?: number | undefined;
 }
 export interface InformationalSettings {
     controller_version?: string | undefined;

@@ -17,8 +17,6 @@ export declare class Farmbot {
     powerOff(): FB.Thenable<{}>;
     reboot(): FB.Thenable<{}>;
     checkUpdates(): FB.Thenable<{}>;
-    toggleOSAutoUpdate(): FB.Thenable<{}>;
-    toggleFWAutoUpdate(): FB.Thenable<{}>;
     checkArduinoUpdates(): FB.Thenable<{}>;
     emergencyStop(): FB.Thenable<{}>;
     execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
@@ -34,6 +32,8 @@ export declare class Farmbot {
     sync(): FB.Thenable<{}>;
     /** Update the arduino settings */
     updateMcu(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
+    /** Update a config */
+    updateConfig(i: BotCommand.Params.BotConfigUpdate): FB.Thenable<{}>;
     startRegimen(id: number): FB.Thenable<{}>;
     stopRegimen(id: number): FB.Thenable<{}>;
     event(name: string): Function[];

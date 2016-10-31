@@ -1,5 +1,5 @@
 import * as JSONRPC from "./jsonrpc";
-import { McuParams } from "./interfaces";
+import { McuParams, Configuration } from "./interfaces";
 
 /** All possible RPC parameters and their types. */
 export namespace Params {
@@ -11,6 +11,7 @@ export namespace Params {
   export interface PinMode { pin_mode: number; }
   export interface Speed { speed: number; }
   export interface McuConfigUpdate extends McuParams { }
+  export interface BotConfigUpdate extends Configuration { }
   export interface RegimenStartStop { regimen_id: number; }
 }
 
@@ -27,13 +28,12 @@ export type Method = "emergency_stop"
   | "read_status"
   | "sync"
   | "mcu_config_update"
+  | "bot_config_update"
   | "status_update" // notification only.;
   | "check_updates"
   | "check_arduino_updates"
   | "power_off"
   | "reboot"
-  | "toggle_os_auto_update"
-  | "toggle_fw_auto_update"
   | "toggle_pin"
   | "start_regimen"
   | "stop_regimen"
@@ -99,6 +99,11 @@ export interface McuConfigUpdateRequest extends Request<[Params.McuConfigUpdate]
   method: "mcu_config_update";
 }
 
+export interface BotConfigUpdateRequest extends Request<[Params.BotConfigUpdate]> {
+  method: "bot_config_update";
+}
+
+
 export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z { }
 
 export interface MoveAbsoluteRequest extends Request<[MovementRequest]> {
@@ -122,12 +127,4 @@ export interface CheckUpdatesRequest extends Request<any> {
 
 export interface CheckArduinoUpdatesRequest extends Request<any> {
   method: "check_arduino_updates";
-}
-
-export interface ToggleOSUpdateRequest extends Request<any> {
-  method: "toggle_os_auto_update";
-}
-
-export interface ToggleFWUpdateRequest extends Request<any> {
-  method: "toggle_fw_auto_update";
 }
