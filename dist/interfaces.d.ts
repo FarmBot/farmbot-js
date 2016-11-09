@@ -11,17 +11,24 @@ export interface BotStateTree {
     /** READ ONLY meta data about the FarmBot device. */
     readonly informational_settings: InformationalSettings;
     /** Status of running regimens and sequences */
-    farm_events: FarmEvents;
+    farm_scheduler: FarmScheduler;
 }
-export interface FarmEvents {
+export declare type runningStatus = "normal" | "paused" | "ready";
+/** The tuple on the elixir side gets converted to this. */
+export interface RegimenInfo {
+    regimen: Regimen;
+    info: {
+        start_time: number;
+        status: runningStatus;
+    };
+}
+export interface FarmScheduler {
     /** The queue of sequences to run **/
     sequence_log: Sequence[];
-    /** Currently running Regimnes */
-    running_regimens: Regimen[];
-    /** Paused sequences */
-    paused_sequences: Sequence[];
-    /** paused reqimens */
-    paused_regimens: Regimen[];
+    /** Currently alive Regimnes
+     *  They can be running or paused.
+     */
+    process_info: RegimenInfo[];
     current_sequence: Sequence | null;
 }
 /** Microcontroller configuration and settings. */

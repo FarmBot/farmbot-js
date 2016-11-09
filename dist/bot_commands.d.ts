@@ -32,7 +32,7 @@ export declare namespace Params {
     }
 }
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "bot_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_pin" | "start_regimen" | "stop_regimen";
+export declare type Method = "emergency_lock" | "emergency_unlock" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "bot_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_pin" | "start_regimen" | "stop_regimen";
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> {
     method: Method;
@@ -40,8 +40,11 @@ export interface Request<T extends any[]> extends JSONRPC.Request<T> {
 /** Sent from bot when message is received and properly formed. */
 export interface Acknowledgement extends JSONRPC.Response<["OK"]> {
 }
-export interface EmergencyStopRequest extends Request<any> {
-    method: "emergency_stop";
+export interface EmergencyLockRequest extends Request<any> {
+    method: "emergency_lock";
+}
+export interface EmergencyUnlockRequest extends Request<any> {
+    method: "emergency_unlock";
 }
 export interface ExecSequenceRequest extends Request<[{
     steps: any[];

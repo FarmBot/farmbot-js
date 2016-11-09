@@ -18,7 +18,12 @@ export declare class Farmbot {
     reboot(): FB.Thenable<{}>;
     checkUpdates(): FB.Thenable<{}>;
     checkArduinoUpdates(): FB.Thenable<{}>;
-    emergencyStop(): FB.Thenable<{}>;
+    /** Lock the bot from moving. This also will pause running regimens and cause
+     *  any running sequences to exit
+     */
+    emergencyLock(): FB.Thenable<{}>;
+    /** Unlock the bot when the user says it is safe. */
+    emergencyUnlock(): FB.Thenable<{}>;
     execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
     homeAll(i: BotCommand.Params.Speed): FB.Thenable<{}>;
     homeX(i: BotCommand.Params.Speed): FB.Thenable<{}>;
