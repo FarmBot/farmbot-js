@@ -70,9 +70,21 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.emergencyStop = function () {
+    /** Lock the bot from moving. This also will pause running regimens and cause
+     *  any running sequences to exit
+     */
+    Farmbot.prototype.emergencyLock = function () {
         var p = {
-            method: "emergency_stop",
+            method: "emergency_lock",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    /** Unlock the bot when the user says it is safe. */
+    Farmbot.prototype.emergencyUnlock = function () {
+        var p = {
+            method: "emergency_unlock",
             params: [],
             id: util_1.uuid()
         };

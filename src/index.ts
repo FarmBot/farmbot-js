@@ -84,9 +84,23 @@ export class Farmbot {
     return this.send(p);
   }
 
-  emergencyStop() {
-    let p: BotCommand.EmergencyStopRequest = {
-      method: "emergency_stop",
+  /** Lock the bot from moving. This also will pause running regimens and cause 
+   *  any running sequences to exit 
+   */
+  emergencyLock() {
+    let p: BotCommand.EmergencyLockRequest = {
+      method: "emergency_lock",
+      params: [],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  /** Unlock the bot when the user says it is safe. */
+  emergencyUnlock() {
+    let p: BotCommand.EmergencyUnlockRequest = {
+      method: "emergency_unlock",
       params: [],
       id: uuid()
     };

@@ -16,7 +16,8 @@ export namespace Params {
 }
 
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export type Method = "emergency_stop"
+export type Method = "emergency_lock"
+  | "emergency_unlock"
   | "exec_sequence"
   | "home_all"
   | "home_x"
@@ -44,7 +45,8 @@ export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: M
 /** Sent from bot when message is received and properly formed. */
 export interface Acknowledgement extends JSONRPC.Response<["OK"]> { }
 
-export interface EmergencyStopRequest extends Request<any> { method: "emergency_stop"; }
+export interface EmergencyLockRequest extends Request<any> { method: "emergency_lock"; }
+export interface EmergencyUnlockRequest extends Request<any> { method: "emergency_unlock"; }
 
 // TODO: Change this to accept an array of steps as its only argument.
 // For now, leaving it as {steps: any[]} for legacy reasons.
