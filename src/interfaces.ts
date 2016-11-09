@@ -79,6 +79,9 @@ export interface Configuration {
 
 export interface InformationalSettings {
   controller_version?: string | undefined;
+  throttled?: string | undefined;
+  private_ip?: string | undefined;
+  locked?: boolean | undefined;
 }
 
 // TODO: Remove this and use interface in `@types/promise`.
