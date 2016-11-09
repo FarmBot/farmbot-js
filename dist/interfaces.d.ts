@@ -75,6 +75,9 @@ export interface Configuration {
 }
 export interface InformationalSettings {
     controller_version?: string | undefined;
+    throttled?: string | undefined;
+    private_ip?: string | undefined;
+    locked?: boolean | undefined;
 }
 export interface Thenable<T> {
     then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
