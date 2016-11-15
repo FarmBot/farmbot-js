@@ -21,7 +21,10 @@ var Farmbot = (function () {
             throw new Error("Unable to parse token. Is it properly formatted?");
         }
         var mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
-        this.setState("mqttServer", "ws://" + mqttUrl + ":3002");
+        var isSecure = location.protocol === "https:";
+        var protocol = isSecure ? "wss://" : "ws://";
+        var port = isSecure ? 443 : 3002;
+        this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
         this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
     };
     Farmbot.prototype.getState = function () {
