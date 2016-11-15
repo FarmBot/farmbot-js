@@ -31,7 +31,10 @@ export class Farmbot {
       throw new Error("Unable to parse token. Is it properly formatted?");
     }
     let mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
-    this.setState("mqttServer", `ws://${mqttUrl}:3002`);
+    let isSecure = location.protocol === "https:";
+    let protocol = isSecure ? "wss://" : "ws://";
+    let port = isSecure ? 443 : 3002;
+    this.setState("mqttServer", `${protocol}${mqttUrl}:${port}`);
     this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
   }
 
