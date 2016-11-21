@@ -41,6 +41,7 @@ export declare class Farmbot {
     updateConfig(i: BotCommand.Params.BotConfigUpdate): FB.Thenable<{}>;
     startRegimen(id: number): FB.Thenable<{}>;
     stopRegimen(id: number): FB.Thenable<{}>;
+    clibrate(target: BotCommand.CalibrationTarget): FB.Thenable<{}>;
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;

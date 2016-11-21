@@ -11,6 +11,9 @@ export declare namespace Params {
     interface Z {
         z: number;
     }
+    interface Target {
+        target: CalibrationTarget;
+    }
     interface PinNumber {
         pin_number: number;
     }
@@ -31,8 +34,9 @@ export declare namespace Params {
         regimen_id: number;
     }
 }
+export declare type CalibrationTarget = "x" | "y" | "z";
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export declare type Method = "emergency_lock" | "emergency_unlock" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "bot_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_pin" | "start_regimen" | "stop_regimen";
+export declare type Method = "emergency_lock" | "emergency_unlock" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "bot_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_pin" | "start_regimen" | "stop_regimen" | "calibrate";
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> {
     method: Method;
@@ -112,4 +116,7 @@ export interface CheckUpdatesRequest extends Request<any> {
 }
 export interface CheckArduinoUpdatesRequest extends Request<any> {
     method: "check_arduino_updates";
+}
+export interface CalibrationRequest extends Request<[Params.Target]> {
+    method: "calibrate";
 }

@@ -265,6 +265,16 @@ export class Farmbot {
     return this.send(p);
   }
 
+  clibrate(target: BotCommand.CalibrationTarget) {
+    let p: BotCommand.CalibrationRequest = {
+      method: "calibrate",
+      params: [{ target }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
   event(name: string) {
     this._events[name] = this._events[name] || [];
     return this._events[name];

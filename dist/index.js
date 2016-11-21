@@ -215,6 +215,14 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
+    Farmbot.prototype.clibrate = function (target) {
+        var p = {
+            method: "calibrate",
+            params: [{ target: target }],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.event = function (name) {
         this._events[name] = this._events[name] || [];
         return this._events[name];
