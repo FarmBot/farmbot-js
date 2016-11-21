@@ -98,7 +98,7 @@ Currently supported commands:
  * syncSequence
  * updateMcu
  * send(messageObject)
-
+ * calibrate("x"|"y"|"z")
 ## Using Events
 
 ```
