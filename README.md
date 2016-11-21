@@ -96,9 +96,9 @@ Currently supported commands:
  * readStatus
  * send(commandObject)
  * syncSequence
- * updateCalibration
+ * updateMcu
  * send(messageObject)
-
+ * calibrate("x"|"y"|"z")
 ## Using Events
 
 ```

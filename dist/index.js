@@ -21,7 +21,10 @@ var Farmbot = (function () {
             throw new Error("Unable to parse token. Is it properly formatted?");
         }
         var mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
-        this.setState("mqttServer", "ws://" + mqttUrl + ":3002");
+        var isSecure = location.protocol === "https:";
+        var protocol = isSecure ? "wss://" : "ws://";
+        var port = isSecure ? 443 : 3002;
+        this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
         this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
     };
     Farmbot.prototype.getState = function () {
@@ -62,22 +65,6 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.toggleOSAutoUpdate = function () {
-        var p = {
-            method: "toggle_os_auto_update",
-            params: [],
-            id: util_1.uuid()
-        };
-        return this.send(p);
-    };
-    Farmbot.prototype.toggleFWAutoUpdate = function () {
-        var p = {
-            method: "toggle_fw_auto_update",
-            params: [],
-            id: util_1.uuid()
-        };
-        return this.send(p);
-    };
     Farmbot.prototype.checkArduinoUpdates = function () {
         var p = {
             method: "check_arduino_updates",
@@ -86,9 +73,21 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.emergencyStop = function () {
+    /** Lock the bot from moving. This also will pause running regimens and cause
+     *  any running sequences to exit
+     */
+    Farmbot.prototype.emergencyLock = function () {
         var p = {
-            method: "emergency_stop",
+            method: "emergency_lock",
+            params: [],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    /** Unlock the bot when the user says it is safe. */
+    Farmbot.prototype.emergencyUnlock = function () {
+        var p = {
+            method: "emergency_unlock",
             params: [],
             id: util_1.uuid()
         };
@@ -158,6 +157,14 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
+    Farmbot.prototype.togglePin = function (i) {
+        var p = {
+            method: "toggle_pin",
+            params: [i],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
     Farmbot.prototype.readStatus = function () {
         var p = {
             method: "read_status",
@@ -174,10 +181,44 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.updateCalibration = function (i) {
+    /** Update the arduino settings */
+    Farmbot.prototype.updateMcu = function (i) {
         var p = {
             method: "mcu_config_update",
             params: [i],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    /** Update a config */
+    Farmbot.prototype.updateConfig = function (i) {
+        var p = {
+            method: "bot_config_update",
+            params: [i],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.startRegimen = function (id) {
+        var p = {
+            method: "start_regimen",
+            params: [{ regimen_id: id }],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.stopRegimen = function (id) {
+        var p = {
+            method: "stop_regimen",
+            params: [{ regimen_id: id }],
+            id: util_1.uuid()
+        };
+        return this.send(p);
+    };
+    Farmbot.prototype.clibrate = function (target) {
+        var p = {
+            method: "calibrate",
+            params: [{ target: target }],
             id: util_1.uuid()
         };
         return this.send(p);

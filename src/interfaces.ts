@@ -10,35 +10,56 @@ export interface BotStateTree {
   configuration: Configuration;
   /** READ ONLY meta data about the FarmBot device. */
   readonly informational_settings: InformationalSettings;
+  /** Status of running regimens and sequences */
+  farm_scheduler: FarmScheduler;
+}
+
+export type runningStatus = "normal" | "paused" | "ready"
+/** The tuple on the elixir side gets converted to this. */
+export interface RegimenInfo {
+  regimen: Regimen;
+  info: {
+    start_time: number;
+    status: runningStatus;
+  };
+}
+export interface FarmScheduler {
+  /** The queue of sequences to run **/
+  sequence_log: Sequence[];
+  /** Currently alive Regimnes
+   *  They can be running or paused.
+   */
+  process_info: RegimenInfo[];
+  current_sequence: Sequence | null;
 }
 
 /** Microcontroller configuration and settings. */
 export interface McuParams {
-  movement_invert_motor_y: number;
-  movement_timeout_x: number;
-  movement_min_spd_x: number;
-  movement_invert_endpoints_x: number;
-  movement_axis_nr_steps_z: number;
-  movement_max_spd_z: number;
-  movement_invert_motor_x: number;
-  movement_steps_acc_dec_x: number;
-  movement_home_up_x: number;
-  movement_min_spd_z: number;
-  movement_axis_nr_steps_y: number;
-  movement_timeout_z: number;
-  movement_steps_acc_dec_y: number;
-  movement_home_up_z: number;
-  movement_max_spd_x: number;
-  movement_invert_motor_z: number;
-  movement_steps_acc_dec_z: number;
-  movement_home_up_y: number;
-  movement_max_spd_y: number;
-  movement_invert_endpoints_y: number;
-  movement_invert_endpoints_z: number;
-  movement_timeout_y: number;
-  movement_min_spd_y: number;
-  movement_axis_nr_steps_x: number;
-  param_version: number;
+  movement_invert_motor_y?: number | undefined;
+  movement_timeout_x?: number | undefined;
+  movement_min_spd_x?: number | undefined;
+  movement_invert_endpoints_x?: number | undefined;
+  movement_axis_nr_steps_z?: number | undefined;
+  movement_max_spd_z?: number | undefined;
+  movement_invert_motor_x?: number | undefined;
+  movement_steps_acc_dec_x?: number | undefined;
+  movement_home_up_x?: number | undefined;
+  movement_min_spd_z?: number | undefined;
+  movement_axis_nr_steps_y?: number | undefined;
+  movement_timeout_z?: number | undefined;
+  movement_steps_acc_dec_y?: number | undefined;
+  movement_home_up_z?: number | undefined;
+  movement_max_spd_x?: number | undefined;
+  movement_invert_motor_z?: number | undefined;
+  movement_steps_acc_dec_z?: number | undefined;
+  movement_home_up_y?: number | undefined;
+  movement_max_spd_y?: number | undefined;
+  movement_invert_endpoints_y?: number | undefined;
+  movement_invert_endpoints_z?: number | undefined;
+  movement_timeout_y?: number | undefined;
+  movement_min_spd_y?: number | undefined;
+  movement_axis_nr_steps_x?: number | undefined;
+  param_version?: number | undefined;
 }
 /** Cartesian coords of the bot. X, Y, Z, respectively. */
 export type Location = [number, number, number];
@@ -51,12 +72,16 @@ export interface Pin {
 export type Pins = { [num: string]: Pin | undefined };
 
 export interface Configuration {
-  os_auto_update: boolean;
-  fw_auto_update: boolean;
+  os_auto_update?: boolean | undefined;
+  fw_auto_update?: boolean | undefined;
+  steps_per_mm?: number | undefined;
 }
 
 export interface InformationalSettings {
-  controller_version: string;
+  controller_version?: string | undefined;
+  throttled?: string | undefined;
+  private_ip?: string | undefined;
+  locked?: boolean | undefined;
 }
 
 // TODO: Remove this and use interface in `@types/promise`.
@@ -179,17 +204,12 @@ export interface UnplacedStep {
   position?: number;
   id?: number;
   command: StepCommand;
-};
+}
 
 /** One step in a larger "Sequence". */
 export interface Step extends UnplacedStep {
   position: number;
-};
-
-/** One step in a larger "Sequence". */
-export interface Step extends UnplacedStep {
-  position: number;
-};
+}
 
 export interface Sequence {
   id?: number;
@@ -199,7 +219,14 @@ export interface Sequence {
   dirty?: Boolean;
 }
 
-export type CalibrationParams = Dictionary<any>;
+export interface Regimen {
+  id?: number;
+  /** Friendly identifier for humans to easily identify regimens. */
+  name: string;
+  color: Color;
+  regimen_items: Object[];
+  dirty?: boolean;
+}
 
 export interface ConstructorParams {
   /** API token which can be retrieved by logging into REST server or my.farmbot.io */

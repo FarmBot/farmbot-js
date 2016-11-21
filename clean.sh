@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm ./*.d.ts
-rm ./*.js
+rm ./dist/*.d.ts
+rm ./dist/*.js

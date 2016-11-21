@@ -1,5 +1,5 @@
 import * as JSONRPC from "./jsonrpc";
-import { McuParams } from "./interfaces";
+import { McuParams, Configuration } from "./interfaces";
 /** All possible RPC parameters and their types. */
 export declare namespace Params {
     interface X {
@@ -10,6 +10,9 @@ export declare namespace Params {
     }
     interface Z {
         z: number;
+    }
+    interface Target {
+        target: CalibrationTarget;
     }
     interface PinNumber {
         pin_number: number;
@@ -25,9 +28,15 @@ export declare namespace Params {
     }
     interface McuConfigUpdate extends McuParams {
     }
+    interface BotConfigUpdate extends Configuration {
+    }
+    interface RegimenStartStop {
+        regimen_id: number;
+    }
 }
+export declare type CalibrationTarget = "x" | "y" | "z";
 /** Acceptable "method" names for JSON RPC messages to the bot. */
-export declare type Method = "emergency_stop" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_os_auto_update" | "toggle_fw_auto_update";
+export declare type Method = "emergency_lock" | "emergency_unlock" | "exec_sequence" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_status" | "sync" | "mcu_config_update" | "bot_config_update" | "status_update" | "check_updates" | "check_arduino_updates" | "power_off" | "reboot" | "toggle_pin" | "start_regimen" | "stop_regimen" | "calibrate";
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> {
     method: Method;
@@ -35,8 +44,11 @@ export interface Request<T extends any[]> extends JSONRPC.Request<T> {
 /** Sent from bot when message is received and properly formed. */
 export interface Acknowledgement extends JSONRPC.Response<["OK"]> {
 }
-export interface EmergencyStopRequest extends Request<any> {
-    method: "emergency_stop";
+export interface EmergencyLockRequest extends Request<any> {
+    method: "emergency_lock";
+}
+export interface EmergencyUnlockRequest extends Request<any> {
+    method: "emergency_unlock";
 }
 export interface ExecSequenceRequest extends Request<[{
     steps: any[];
@@ -57,8 +69,21 @@ export interface HomeZRequest extends Request<[Params.Speed]> {
 }
 export interface WritePinParams extends Params.PinMode, Params.PinValue, Params.PinNumber {
 }
+export interface TogglePinParams extends Params.PinNumber {
+}
+export interface RegimenParams extends Params.RegimenStartStop {
+}
 export interface WritePinRequest extends Request<[WritePinParams]> {
     method: "write_pin";
+}
+export interface TogglePinRequest extends Request<[TogglePinParams]> {
+    method: "toggle_pin";
+}
+export interface StartRegimenRequest extends Request<[RegimenParams]> {
+    method: "start_regimen";
+}
+export interface StopRegimenRequest extends Request<[RegimenParams]> {
+    method: "stop_regimen";
 }
 export interface ReadStatusRequest extends Request<any> {
     method: "read_status";
@@ -68,6 +93,9 @@ export interface SyncRequest extends Request<any> {
 }
 export interface McuConfigUpdateRequest extends Request<[Params.McuConfigUpdate]> {
     method: "mcu_config_update";
+}
+export interface BotConfigUpdateRequest extends Request<[Params.BotConfigUpdate]> {
+    method: "bot_config_update";
 }
 export interface MovementRequest extends Params.Speed, Params.X, Params.Y, Params.Z {
 }
@@ -89,9 +117,6 @@ export interface CheckUpdatesRequest extends Request<any> {
 export interface CheckArduinoUpdatesRequest extends Request<any> {
     method: "check_arduino_updates";
 }
-export interface ToggleOSUpdateRequest extends Request<any> {
-    method: "toggle_os_auto_update";
-}
-export interface ToggleFWUpdateRequest extends Request<any> {
-    method: "toggle_fw_auto_update";
+export interface CalibrationRequest extends Request<[Params.Target]> {
+    method: "calibrate";
 }

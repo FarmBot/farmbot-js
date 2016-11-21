@@ -17,10 +17,13 @@ export declare class Farmbot {
     powerOff(): FB.Thenable<{}>;
     reboot(): FB.Thenable<{}>;
     checkUpdates(): FB.Thenable<{}>;
-    toggleOSAutoUpdate(): FB.Thenable<{}>;
-    toggleFWAutoUpdate(): FB.Thenable<{}>;
     checkArduinoUpdates(): FB.Thenable<{}>;
-    emergencyStop(): FB.Thenable<{}>;
+    /** Lock the bot from moving. This also will pause running regimens and cause
+     *  any running sequences to exit
+     */
+    emergencyLock(): FB.Thenable<{}>;
+    /** Unlock the bot when the user says it is safe. */
+    emergencyUnlock(): FB.Thenable<{}>;
     execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
     homeAll(i: BotCommand.Params.Speed): FB.Thenable<{}>;
     homeX(i: BotCommand.Params.Speed): FB.Thenable<{}>;
@@ -29,9 +32,16 @@ export declare class Farmbot {
     moveAbsolute(i: BotCommand.MovementRequest): FB.Thenable<{}>;
     moveRelative(i: BotCommand.MovementRequest): FB.Thenable<{}>;
     writePin(i: BotCommand.WritePinParams): FB.Thenable<{}>;
+    togglePin(i: BotCommand.TogglePinParams): FB.Thenable<{}>;
     readStatus(): FB.Thenable<{}>;
     sync(): FB.Thenable<{}>;
-    updateCalibration(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
+    /** Update the arduino settings */
+    updateMcu(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
+    /** Update a config */
+    updateConfig(i: BotCommand.Params.BotConfigUpdate): FB.Thenable<{}>;
+    startRegimen(id: number): FB.Thenable<{}>;
+    stopRegimen(id: number): FB.Thenable<{}>;
+    clibrate(target: BotCommand.CalibrationTarget): FB.Thenable<{}>;
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;

@@ -31,7 +31,10 @@ export class Farmbot {
       throw new Error("Unable to parse token. Is it properly formatted?");
     }
     let mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
-    this.setState("mqttServer", `ws://${mqttUrl}:3002`);
+    let isSecure = location.protocol === "https:";
+    let protocol = isSecure ? "wss://" : "ws://";
+    let port = isSecure ? 443 : 3002;
+    this.setState("mqttServer", `${protocol}${mqttUrl}:${port}`);
     this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
   }
 
@@ -75,24 +78,6 @@ export class Farmbot {
     return this.send(p);
   }
 
-  toggleOSAutoUpdate() {
-    let p: BotCommand.ToggleOSUpdateRequest = {
-      method: "toggle_os_auto_update",
-      params: [],
-      id: uuid()
-    };
-    return this.send(p);
-  }
-
-  toggleFWAutoUpdate() {
-    let p: BotCommand.ToggleFWUpdateRequest = {
-      method: "toggle_fw_auto_update",
-      params: [],
-      id: uuid()
-    };
-    return this.send(p);
-  }
-
   checkArduinoUpdates() {
     let p: BotCommand.CheckArduinoUpdatesRequest = {
       method: "check_arduino_updates",
@@ -102,9 +87,23 @@ export class Farmbot {
     return this.send(p);
   }
 
-  emergencyStop() {
-    let p: BotCommand.EmergencyStopRequest = {
-      method: "emergency_stop",
+  /** Lock the bot from moving. This also will pause running regimens and cause 
+   *  any running sequences to exit 
+   */
+  emergencyLock() {
+    let p: BotCommand.EmergencyLockRequest = {
+      method: "emergency_lock",
+      params: [],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  /** Unlock the bot when the user says it is safe. */
+  emergencyUnlock() {
+    let p: BotCommand.EmergencyUnlockRequest = {
+      method: "emergency_unlock",
       params: [],
       id: uuid()
     };
@@ -193,6 +192,17 @@ export class Farmbot {
     return this.send(p);
   }
 
+  togglePin(i: BotCommand.TogglePinParams) {
+    let p: BotCommand.TogglePinRequest = {
+      method: "toggle_pin",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+
   readStatus() {
     let p: BotCommand.ReadStatusRequest = {
       method: "read_status",
@@ -213,10 +223,52 @@ export class Farmbot {
     return this.send(p);
   }
 
-  updateCalibration(i: BotCommand.Params.McuConfigUpdate) {
+  /** Update the arduino settings */
+  updateMcu(i: BotCommand.Params.McuConfigUpdate) {
     let p: BotCommand.McuConfigUpdateRequest = {
       method: "mcu_config_update",
       params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  /** Update a config */
+  updateConfig(i: BotCommand.Params.BotConfigUpdate) {
+    let p: BotCommand.BotConfigUpdateRequest = {
+      method: "bot_config_update",
+      params: [i],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  startRegimen(id: number) {
+    let p: BotCommand.StartRegimenRequest = {
+      method: "start_regimen",
+      params: [{ regimen_id: id }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  stopRegimen(id: number) {
+    let p: BotCommand.StopRegimenRequest = {
+      method: "stop_regimen",
+      params: [{ regimen_id: id }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  clibrate(target: BotCommand.CalibrationTarget) {
+    let p: BotCommand.CalibrationRequest = {
+      method: "calibrate",
+      params: [{ target }],
       id: uuid()
     };
 
