@@ -215,7 +215,7 @@ var Farmbot = (function () {
         };
         return this.send(p);
     };
-    Farmbot.prototype.clibrate = function (target) {
+    Farmbot.prototype.calibrate = function (target) {
         var p = {
             method: "calibrate",
             params: [{ target: target }],

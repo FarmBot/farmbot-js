@@ -265,7 +265,7 @@ export class Farmbot {
     return this.send(p);
   }
 
-  clibrate(target: BotCommand.CalibrationTarget) {
+  calibrate(target: BotCommand.CalibrationTarget) {
     let p: BotCommand.CalibrationRequest = {
       method: "calibrate",
       params: [{ target }],
