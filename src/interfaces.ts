@@ -289,4 +289,7 @@ export type configKey = "speed"
   | "pin10"
   | "pin11"
   | "pin12"
-  | "pin13";
+  | "pin13"
+  | "encoder_enabled_z"
+  | "encoder_enabled_y"
+  | "encoder_enabled_x";
