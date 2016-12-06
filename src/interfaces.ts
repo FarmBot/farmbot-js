@@ -60,6 +60,9 @@ export interface McuParams {
   movement_min_spd_y?: number | undefined;
   movement_axis_nr_steps_x?: number | undefined;
   param_version?: number | undefined;
+  encoder_enabled_x?: number | undefined;
+  encoder_enabled_y?: number | undefined;
+  encoder_enabled_z?: number | undefined;
 }
 /** Cartesian coords of the bot. X, Y, Z, respectively. */
 export type Location = [number, number, number];
@@ -286,4 +289,7 @@ export type configKey = "speed"
   | "pin10"
   | "pin11"
   | "pin12"
-  | "pin13";
+  | "pin13"
+  | "encoder_enabled_z"
+  | "encoder_enabled_y"
+  | "encoder_enabled_x";
