@@ -87,8 +87,8 @@ export class Farmbot {
     return this.send(p);
   }
 
-  /** Lock the bot from moving. This also will pause running regimens and cause 
-   *  any running sequences to exit 
+  /** Lock the bot from moving. This also will pause running regimens and cause
+   *  any running sequences to exit
    */
   emergencyLock() {
     let p: BotCommand.EmergencyLockRequest = {
@@ -269,6 +269,16 @@ export class Farmbot {
     let p: BotCommand.CalibrationRequest = {
       method: "calibrate",
       params: [{ target }],
+      id: uuid()
+    };
+
+    return this.send(p);
+  }
+
+  logDump() {
+    let p: BotCommand.DumpLogsRequest = {
+      method: "dump_logs",
+      params: [{}],
       id: uuid()
     };
 

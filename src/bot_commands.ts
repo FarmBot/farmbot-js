@@ -41,6 +41,7 @@ export type Method = "emergency_lock"
     | "start_regimen"
     | "stop_regimen"
     | "calibrate"
+    | "dump_logs"
 
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -53,7 +54,7 @@ export interface EmergencyUnlockRequest extends Request<any> { method: "emergenc
 
 // TODO: Change this to accept an array of steps as its only argument.
 // For now, leaving it as {steps: any[]} for legacy reasons.
-// TODO: This is a celery script ast now. 
+// TODO: This is a celery script ast now.
 export interface ExecSequenceRequest extends Request<[{ steps: any[] }]> {
     method: "exec_sequence";
 }
@@ -137,4 +138,8 @@ export interface CheckArduinoUpdatesRequest extends Request<any> {
 
 export interface CalibrationRequest extends Request<[Params.Target]> {
     method: "calibrate";
+}
+
+export interface DumpLogsRequest extends Request<[{}]> {
+    method: "dump_logs";
 }
