@@ -225,7 +225,7 @@ var Farmbot = (function () {
     };
     Farmbot.prototype.logDump = function () {
         var p = {
-            method: "log_dump",
+            method: "dump_logs",
             params: [{}],
             id: util_1.uuid()
         };

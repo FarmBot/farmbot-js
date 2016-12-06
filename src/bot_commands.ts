@@ -41,7 +41,7 @@ export type Method = "emergency_lock"
     | "start_regimen"
     | "stop_regimen"
     | "calibrate"
-    | "log_dump"
+    | "dump_logs"
 
 /** A JSON RPC method invocation for one of the allowed FarmBot methods. */
 export interface Request<T extends any[]> extends JSONRPC.Request<T> { method: Method; }
@@ -140,6 +140,6 @@ export interface CalibrationRequest extends Request<[Params.Target]> {
     method: "calibrate";
 }
 
-export interface LogDumpRequest extends Request<[{}]> {
-    method: "log_dump";
+export interface DumpLogsRequest extends Request<[{}]> {
+    method: "dump_logs";
 }

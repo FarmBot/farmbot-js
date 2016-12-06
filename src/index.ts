@@ -276,8 +276,8 @@ export class Farmbot {
   }
 
   logDump() {
-    let p: BotCommand.LogDumpRequest = {
-      method: "log_dump",
+    let p: BotCommand.DumpLogsRequest = {
+      method: "dump_logs",
       params: [{}],
       id: uuid()
     };
