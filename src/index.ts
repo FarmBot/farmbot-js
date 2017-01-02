@@ -1,10 +1,16 @@
 import * as FB from "./interfaces";
-import * as JSONRPC from "./jsonrpc";
-import * as BotCommand from "./bot_commands";
+import * as Corpus from "./corpus"
 import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";
 
+function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
+  return { kind: "coordinate", args: { x, y, z } };
+}
+
+function rpcRequest(): Corpus.RpcRequest {
+  return { kind: "rpc_request", args: { data_label: uuid() } };
+}
 export class Farmbot {
   static VERSION = "2.0.0-rc.9";
   static defaults = { speed: 100, timeout: 6000 };
@@ -52,38 +58,27 @@ export class Farmbot {
   };
 
   powerOff() {
-    let p: BotCommand.PoweroffRequest = {
-      method: "power_off",
-      params: [],
-      id: uuid()
-    };
+    let p = rpcRequest();
+    p.body = [{ kind: "power_off", args: {} }];
     return this.send(p);
   }
 
   reboot() {
-    let p: BotCommand.RebootRequest = {
-      method: "reboot",
-      params: [],
-      id: uuid()
-    };
+    let p = rpcRequest();
+    p.body = [{ kind: "reboot", args: {} }];
     return this.send(p);
   }
 
   checkUpdates() {
-    let p: BotCommand.CheckUpdatesRequest = {
-      method: "check_updates",
-      params: [],
-      id: uuid()
-    };
+    let p = rpcRequest();
+    p.body = [{ kind: "check_updates", args: { package: "farmbot_os" } }];
     return this.send(p);
   }
 
+  // TODO: Merge this (legacy) method with #checkUpdates().
   checkArduinoUpdates() {
-    let p: BotCommand.CheckArduinoUpdatesRequest = {
-      method: "check_arduino_updates",
-      params: [],
-      id: uuid()
-    };
+    let p = rpcRequest();
+    p.body = [{ kind: "check_updates", args: { package: "arduino_firmware" } }];
     return this.send(p);
   }
 
@@ -91,197 +86,125 @@ export class Farmbot {
    *  any running sequences to exit
    */
   emergencyLock() {
-    let p: BotCommand.EmergencyLockRequest = {
-      method: "emergency_lock",
-      params: [],
-      id: uuid()
-    };
-
+    let p = rpcRequest();
+    p.body = [{ kind: "emergency_lock", args: {} }];
     return this.send(p);
   }
 
   /** Unlock the bot when the user says it is safe. */
   emergencyUnlock() {
-    let p: BotCommand.EmergencyUnlockRequest = {
-      method: "emergency_unlock",
-      params: [],
-      id: uuid()
-    };
-
+    let p = rpcRequest();
+    p.body = [{ kind: "emergency_unlock", args: {} }];
     return this.send(p);
   }
 
-  execSequence(sequence: FB.Sequence) {
-    let p: BotCommand.ExecSequenceRequest = {
-      method: "exec_sequence",
-      params: [sequence],
-      id: uuid()
-    };
-
+  execSequence(sub_sequence_id: number) {
+    let p = rpcRequest();
+    p.body = [{ kind: "execute", args: { sub_sequence_id } }];
     return this.send(p);
   }
 
-  homeAll(i: BotCommand.Params.Speed) {
-    let p: BotCommand.HomeAllRequest = {
-      method: "home_all",
-      params: [i],
-      id: uuid()
-    };
-
+  home(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
+    let p = rpcRequest();
+    p.body = [{ kind: "home", args }];
     return this.send(p);
   }
 
-  homeX(i: BotCommand.Params.Speed) {
-    let p: BotCommand.HomeXRequest = {
-      method: "home_x",
-      params: [i],
-      id: uuid()
-    };
-
+  moveAbsolute(args: { x: number, y: number, z: number, speed?: number }) {
+    let p = rpcRequest();
+    let {x, y, z, speed} = args;
+    speed = speed || 100;
+    p.body = [
+      {
+        kind: "move_absolute",
+        args: {
+          location: coordinate(x, y, z),
+          offset: coordinate(0, 0, 0),
+          speed
+        }
+      }
+    ];
     return this.send(p);
   }
 
-  homeY(i: BotCommand.Params.Speed) {
-    let p: BotCommand.HomeYRequest = {
-      method: "home_y",
-      params: [i],
-      id: uuid()
-    };
-
+  moveRelative(args: { x: number, y: number, z: number, speed?: number }) {
+    let p = rpcRequest();
+    let {x, y, z, speed} = args;
+    speed = speed || 100;
+    p.body = [{ kind: "move_relative", args: { x, y, z, speed } }];
     return this.send(p);
   }
 
-  homeZ(i: BotCommand.Params.Speed) {
-    let p: BotCommand.HomeZRequest = {
-      method: "home_z",
-      params: [i],
-      id: uuid()
-    };
-
+  writePin(args: { pin_number: number; pin_value: number; pin_mode: number; }) {
+    let p = rpcRequest();
+    p.body = [{ kind: "write_pin", args }];
     return this.send(p);
   }
 
-
-  moveAbsolute(i: BotCommand.MovementRequest) {
-    let p: BotCommand.MoveAbsoluteRequest = {
-      method: "move_absolute",
-      params: [i],
-      id: uuid()
-    };
-
+  togglePin(args: { pin_number: number; }) {
+    let p = rpcRequest();
+    p.body = [{ kind: "toggle_pin", args }];
     return this.send(p);
   }
 
-  moveRelative(i: BotCommand.MovementRequest) {
-    let p: BotCommand.MoveRelativeRequest = {
-      method: "move_relative",
-      params: [i],
-      id: uuid()
-    };
-
+  readStatus(args = {}) {
+    let p = rpcRequest();
+    p.body = [{ kind: "read_status", args }];
     return this.send(p);
   }
 
-  writePin(i: BotCommand.WritePinParams) {
-    let p: BotCommand.WritePinRequest = {
-      method: "write_pin",
-      params: [i],
-      id: uuid()
-    };
-
-    return this.send(p);
-  }
-
-  togglePin(i: BotCommand.TogglePinParams) {
-    let p: BotCommand.TogglePinRequest = {
-      method: "toggle_pin",
-      params: [i],
-      id: uuid()
-    };
-
-    return this.send(p);
-  }
-
-
-  readStatus() {
-    let p: BotCommand.ReadStatusRequest = {
-      method: "read_status",
-      params: [],
-      id: uuid()
-    };
-
-    return this.send(p);
-  }
-
-  sync() {
-    let p: BotCommand.SyncRequest = {
-      method: "sync",
-      params: [],
-      id: uuid()
-    };
-
+  sync(args = {}) {
+    let p = rpcRequest();
+    p.body = [{ kind: "sync", args }];
     return this.send(p);
   }
 
   /** Update the arduino settings */
-  updateMcu(i: BotCommand.Params.McuConfigUpdate) {
-    let p: BotCommand.McuConfigUpdateRequest = {
-      method: "mcu_config_update",
-      params: [i],
-      id: uuid()
-    };
-
+  updateMcu(args = {}) {
+    let p = rpcRequest();
+    p.body = [{ kind: "WHY_WHY_WHY", args }];
     return this.send(p);
   }
 
   /** Update a config */
-  updateConfig(i: BotCommand.Params.BotConfigUpdate) {
-    let p: BotCommand.BotConfigUpdateRequest = {
-      method: "bot_config_update",
-      params: [i],
-      id: uuid()
-    };
-
+  updateConfig(args = {}) {
+    let p = rpcRequest();
+    p.body = [{ kind: "WHY_WHY_WHY", args }];
     return this.send(p);
   }
 
-  startRegimen(id: number) {
-    let p: BotCommand.StartRegimenRequest = {
-      method: "start_regimen",
-      params: [{ regimen_id: id }],
-      id: uuid()
-    };
-
+  startRegimen(args: { regimen_id: number }) {
+    let p = rpcRequest();
+    p.body = [
+      {
+        kind: "start_regimen",
+        args: {
+          regimen_id: args.regimen_id,
+          data_label: uuid()
+        }
+      }
+    ];
     return this.send(p);
   }
 
-  stopRegimen(id: number) {
-    let p: BotCommand.StopRegimenRequest = {
-      method: "stop_regimen",
-      params: [{ regimen_id: id }],
-      id: uuid()
-    };
-
+  stopRegimen(args: { regimen_id: number }) {
+    let p = rpcRequest();
+    p.body = [
+      {
+        kind: "stop_regimen",
+        args: {
+          // HACK: The way start/stop regimen works right now is actually broke.
+          //       We don't want to fix until the JSON RPC upgrade is complete.
+          data_label: args.regimen_id.toString()
+        }
+      }
+    ];
     return this.send(p);
   }
 
-  calibrate(target: BotCommand.CalibrationTarget) {
-    let p: BotCommand.CalibrationRequest = {
-      method: "calibrate",
-      params: [{ target }],
-      id: uuid()
-    };
-
-    return this.send(p);
-  }
-
-  logDump() {
-    let p: BotCommand.DumpLogsRequest = {
-      method: "dump_logs",
-      params: [{}],
-      id: uuid()
-    };
-
+  calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
+    let p = rpcRequest();
+    p.body = [{ kind: "calibrate", args }];
     return this.send(p);
   }
 
@@ -308,14 +231,17 @@ export class Farmbot {
   }
 
   get channel() {
+    thisIsReallyBroke();
     let uuid = this.getState()["uuid"] || "lost_and_found";
     return {
       toDevice: `bot/${uuid}/from_clients`,
-      toClient: `bot/${uuid}/from_device`
+      toClient: `bot/${uuid}/from_device`,
+      status: `bot/${uuid}/status`,
+      logs: `bot/${uuid}/logs`
     };
   }
 
-  publish(msg: JSONRPC.Request<any> | JSONRPC.Notification<any>): void {
+  publish(msg: Corpus.RpcRequest): void {
     if (this.client) {
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
@@ -323,34 +249,28 @@ export class Farmbot {
     }
   };
 
-  send<T extends Array<any>>(input: BotCommand.Request<T>) {
+  send(input: Corpus.RpcRequest) {
     let that = this;
     let msg = input;
-    let label = `${msg.method} ${JSON.stringify(msg.params)}`;
+    let rpcs = (input.body || []).map(x => x.kind).join(", ");
+    let label = `${rpcs} ${JSON.stringify(input.body || [])}`;
     let time = that.getState()["timeout"] as number;
     let p = timerDefer(time, label);
-    console.log(`Sent: ${msg.id}`);
+    console.log(`Sent: ${msg.args.data_label}`);
     that.publish(msg);
-    that.on(msg.id, function (response: JSONRPC.Uncategorized) {
-      console.log(`Got ${response.id || "??"}`);
-      if (response && response.result) {
-        // Good method invocation.
-        p.resolve(response);
-        return;
+    that.on(msg.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+      console.log(`Got ${response.args.data_label || "??"}`);
+      switch (response.kind) {
+        case "rpc_ok": return p.resolve(response);
+        case "rpc_error":
+          let reason = (response.body || []).map(x => x.args.message).join(", ");
+          return p.reject(new Error("Problem sending RPC command: " + reason));
+        default:
+          console.dir(response);
+          throw new Error("Got a bad CeleryScript node.");
       }
-
-      if (response && response.error) {
-        // Bad method invocation.
-        p.reject(response.error);
-        return;
-      }
-
-      // It's not JSONRPC.
-      let e = new Error("Malformed response");
-      console.error(e);
-      console.dir(response);
-      p.reject(e);
     });
+
     return p.promise;
   };
 
