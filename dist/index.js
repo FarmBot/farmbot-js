@@ -2,6 +2,12 @@
 var fbpromise_1 = require("./fbpromise");
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
+function coordinate(x, y, z) {
+    return { kind: "coordinate", args: { x: x, y: y, z: z } };
+}
+function rpcRequest() {
+    return { kind: "rpc_request", args: { data_label: util_1.uuid() } };
+}
 var Farmbot = (function () {
     function Farmbot(input) {
         this._events = {};
@@ -42,193 +48,139 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.prototype.powerOff = function () {
-        var p = {
-            method: "power_off",
-            params: [],
-            id: util_1.uuid()
-        };
+        var p = rpcRequest();
+        p.body = [{ kind: "power_off", args: {} }];
         return this.send(p);
     };
     Farmbot.prototype.reboot = function () {
-        var p = {
-            method: "reboot",
-            params: [],
-            id: util_1.uuid()
-        };
+        var p = rpcRequest();
+        p.body = [{ kind: "reboot", args: {} }];
         return this.send(p);
     };
     Farmbot.prototype.checkUpdates = function () {
-        var p = {
-            method: "check_updates",
-            params: [],
-            id: util_1.uuid()
-        };
+        var p = rpcRequest();
+        p.body = [{ kind: "check_updates", args: { package: "farmbot_os" } }];
         return this.send(p);
     };
+    // TODO: Merge this (legacy) method with #checkUpdates().
     Farmbot.prototype.checkArduinoUpdates = function () {
-        var p = {
-            method: "check_arduino_updates",
-            params: [],
-            id: util_1.uuid()
-        };
+        var p = rpcRequest();
+        p.body = [{ kind: "check_updates", args: { package: "arduino_firmware" } }];
         return this.send(p);
     };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
     Farmbot.prototype.emergencyLock = function () {
-        var p = {
-            method: "emergency_lock",
-            params: [],
-            id: util_1.uuid()
-        };
+        var p = rpcRequest();
+        p.body = [{ kind: "emergency_lock", args: {} }];
         return this.send(p);
     };
     /** Unlock the bot when the user says it is safe. */
     Farmbot.prototype.emergencyUnlock = function () {
-        var p = {
-            method: "emergency_unlock",
-            params: [],
-            id: util_1.uuid()
-        };
+        var p = rpcRequest();
+        p.body = [{ kind: "emergency_unlock", args: {} }];
         return this.send(p);
     };
-    Farmbot.prototype.execSequence = function (sequence) {
-        var p = {
-            method: "exec_sequence",
-            params: [sequence],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.execSequence = function (sub_sequence_id) {
+        var p = rpcRequest();
+        p.body = [{ kind: "execute", args: { sub_sequence_id: sub_sequence_id } }];
         return this.send(p);
     };
-    Farmbot.prototype.homeAll = function (i) {
-        var p = {
-            method: "home_all",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.home = function (args) {
+        var p = rpcRequest();
+        p.body = [{ kind: "home", args: args }];
         return this.send(p);
     };
-    Farmbot.prototype.homeX = function (i) {
-        var p = {
-            method: "home_x",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.moveAbsolute = function (args) {
+        var p = rpcRequest();
+        var x = args.x, y = args.y, z = args.z, speed = args.speed;
+        speed = speed || 100;
+        p.body = [
+            {
+                kind: "move_absolute",
+                args: {
+                    location: coordinate(x, y, z),
+                    offset: coordinate(0, 0, 0),
+                    speed: speed
+                }
+            }
+        ];
         return this.send(p);
     };
-    Farmbot.prototype.homeY = function (i) {
-        var p = {
-            method: "home_y",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.moveRelative = function (args) {
+        var p = rpcRequest();
+        var x = args.x, y = args.y, z = args.z, speed = args.speed;
+        speed = speed || 100;
+        p.body = [{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }];
         return this.send(p);
     };
-    Farmbot.prototype.homeZ = function (i) {
-        var p = {
-            method: "home_z",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.writePin = function (args) {
+        var p = rpcRequest();
+        p.body = [{ kind: "write_pin", args: args }];
         return this.send(p);
     };
-    Farmbot.prototype.moveAbsolute = function (i) {
-        var p = {
-            method: "move_absolute",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.togglePin = function (args) {
+        var p = rpcRequest();
+        p.body = [{ kind: "toggle_pin", args: args }];
         return this.send(p);
     };
-    Farmbot.prototype.moveRelative = function (i) {
-        var p = {
-            method: "move_relative",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.readStatus = function (args) {
+        if (args === void 0) { args = {}; }
+        var p = rpcRequest();
+        p.body = [{ kind: "read_status", args: args }];
         return this.send(p);
     };
-    Farmbot.prototype.writePin = function (i) {
-        var p = {
-            method: "write_pin",
-            params: [i],
-            id: util_1.uuid()
-        };
-        return this.send(p);
-    };
-    Farmbot.prototype.togglePin = function (i) {
-        var p = {
-            method: "toggle_pin",
-            params: [i],
-            id: util_1.uuid()
-        };
-        return this.send(p);
-    };
-    Farmbot.prototype.readStatus = function () {
-        var p = {
-            method: "read_status",
-            params: [],
-            id: util_1.uuid()
-        };
-        return this.send(p);
-    };
-    Farmbot.prototype.sync = function () {
-        var p = {
-            method: "sync",
-            params: [],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.sync = function (args) {
+        if (args === void 0) { args = {}; }
+        var p = rpcRequest();
+        p.body = [{ kind: "sync", args: args }];
         return this.send(p);
     };
     /** Update the arduino settings */
-    Farmbot.prototype.updateMcu = function (i) {
-        var p = {
-            method: "mcu_config_update",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.updateMcu = function (args) {
+        if (args === void 0) { args = {}; }
+        var p = rpcRequest();
+        // p.body = [{ kind: "WHY_WHY_WHY", args }];
         return this.send(p);
     };
     /** Update a config */
-    Farmbot.prototype.updateConfig = function (i) {
-        var p = {
-            method: "bot_config_update",
-            params: [i],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.updateConfig = function (args) {
+        if (args === void 0) { args = {}; }
+        var p = rpcRequest();
+        // p.body = [{ kind: "WHY_WHY_WHY", args }];
         return this.send(p);
     };
-    Farmbot.prototype.startRegimen = function (id) {
-        var p = {
-            method: "start_regimen",
-            params: [{ regimen_id: id }],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.startRegimen = function (args) {
+        var p = rpcRequest();
+        p.body = [
+            {
+                kind: "start_regimen",
+                args: {
+                    regimen_id: args.regimen_id,
+                    data_label: util_1.uuid()
+                }
+            }
+        ];
         return this.send(p);
     };
-    Farmbot.prototype.stopRegimen = function (id) {
-        var p = {
-            method: "stop_regimen",
-            params: [{ regimen_id: id }],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.stopRegimen = function (args) {
+        var p = rpcRequest();
+        p.body = [
+            {
+                kind: "stop_regimen",
+                args: {
+                    // HACK: The way start/stop regimen works right now is actually broke.
+                    //       We don't want to fix until the JSON RPC upgrade is complete.
+                    data_label: args.regimen_id.toString()
+                }
+            }
+        ];
         return this.send(p);
     };
-    Farmbot.prototype.calibrate = function (target) {
-        var p = {
-            method: "calibrate",
-            params: [{ target: target }],
-            id: util_1.uuid()
-        };
-        return this.send(p);
-    };
-    Farmbot.prototype.logDump = function () {
-        var p = {
-            method: "dump_logs",
-            params: [{}],
-            id: util_1.uuid()
-        };
+    Farmbot.prototype.calibrate = function (args) {
+        var p = rpcRequest();
+        p.body = [{ kind: "calibrate", args: args }];
         return this.send(p);
     };
     Farmbot.prototype.event = function (name) {
@@ -258,7 +210,9 @@ var Farmbot = (function () {
             var uuid = this.getState()["uuid"] || "lost_and_found";
             return {
                 toDevice: "bot/" + uuid + "/from_clients",
-                toClient: "bot/" + uuid + "/from_device"
+                toClient: "bot/" + uuid + "/from_device",
+                status: "bot/" + uuid + "/status",
+                logs: "bot/" + uuid + "/logs"
             };
         },
         enumerable: true,
@@ -276,49 +230,41 @@ var Farmbot = (function () {
     Farmbot.prototype.send = function (input) {
         var that = this;
         var msg = input;
-        var label = msg.method + " " + JSON.stringify(msg.params);
+        var rpcs = (input.body || []).map(function (x) { return x.kind; }).join(", ");
+        var label = rpcs + " " + JSON.stringify(input.body || []);
         var time = that.getState()["timeout"];
         var p = fbpromise_1.timerDefer(time, label);
-        console.log("Sent: " + msg.id);
+        console.log("Sent: " + msg.args.data_label);
         that.publish(msg);
-        that.on(msg.id, function (response) {
-            console.log("Got " + (response.id || "??"));
-            if (response && response.result) {
-                // Good method invocation.
-                p.resolve(response);
-                return;
+        that.on(msg.args.data_label, function (response) {
+            console.log("Got " + (response.args.data_label || "??"));
+            switch (response.kind) {
+                case "rpc_ok": return p.resolve(response);
+                case "rpc_error":
+                    var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
+                    return p.reject(new Error("Problem sending RPC command: " + reason));
+                default:
+                    console.dir(response);
+                    throw new Error("Got a bad CeleryScript node.");
             }
-            if (response && response.error) {
-                // Bad method invocation.
-                p.reject(response.error);
-                return;
-            }
-            // It's not JSONRPC.
-            var e = new Error("Malformed response");
-            console.error(e);
-            console.dir(response);
-            p.reject(e);
         });
         return p.promise;
     };
     ;
-    Farmbot.prototype._onmessage = function (_, buffer /*, message*/) {
+    Farmbot.prototype._onmessage = function (chan, buffer /*, message*/) {
         try {
+            /** UNSAFE CODE: TODO: Add user defined type guards? */
             var msg = JSON.parse(buffer.toString());
         }
         catch (error) {
             throw new Error("Could not parse inbound message from MQTT.");
         }
-        if (msg && (msg.method && msg.params && (msg.id === null))) {
-            console.log("Notification");
-            this.emit("notification", msg);
-            return;
+        switch (chan) {
+            case this.channel.logs: return this.emit("logs", msg);
+            case this.channel.status: return this.emit("status", msg);
+            case this.channel.toClient: return this.emit(msg.args.data_label, msg);
+            default: throw new Error("Never should see this.");
         }
-        if (msg && (msg.id)) {
-            this.emit(msg.id, msg);
-            return;
-        }
-        throw new Error("Not a JSONRPC Compliant message");
     };
     ;
     Farmbot.prototype.connect = function () {
@@ -330,6 +276,8 @@ var Farmbot = (function () {
             password: token
         });
         that.client.subscribe(that.channel.toClient);
+        that.client.subscribe(that.channel.logs);
+        that.client.subscribe(that.channel.status);
         that.client.once("connect", function () { return p.resolve(that); });
         that.client.on("message", that._onmessage.bind(that));
         return p.promise;

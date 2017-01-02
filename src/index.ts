@@ -162,14 +162,14 @@ export class Farmbot {
   /** Update the arduino settings */
   updateMcu(args = {}) {
     let p = rpcRequest();
-    p.body = [{ kind: "WHY_WHY_WHY", args }];
+    // p.body = [{ kind: "WHY_WHY_WHY", args }];
     return this.send(p);
   }
 
   /** Update a config */
   updateConfig(args = {}) {
     let p = rpcRequest();
-    p.body = [{ kind: "WHY_WHY_WHY", args }];
+    // p.body = [{ kind: "WHY_WHY_WHY", args }];
     return this.send(p);
   }
 
@@ -231,7 +231,6 @@ export class Farmbot {
   }
 
   get channel() {
-    thisIsReallyBroke();
     let uuid = this.getState()["uuid"] || "lost_and_found";
     return {
       toDevice: `bot/${uuid}/from_clients`,
@@ -274,25 +273,19 @@ export class Farmbot {
     return p.promise;
   };
 
-  _onmessage(_: string, buffer: Uint8Array /*, message*/) {
+  _onmessage(chan: string, buffer: Uint8Array /*, message*/) {
     try {
-      var msg = JSON.parse(buffer.toString());
+      /** UNSAFE CODE: TODO: Add user defined type guards? */
+      var msg = JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
     } catch (error) {
       throw new Error("Could not parse inbound message from MQTT.");
     }
-
-    if (msg && (msg.method && msg.params && (msg.id === null))) {
-      console.log("Notification");
-      this.emit("notification", msg);
-      return;
+    switch (chan) {
+      case this.channel.logs: return this.emit("logs", msg);
+      case this.channel.status: return this.emit("status", msg);
+      case this.channel.toClient: return this.emit(msg.args.data_label, msg);
+      default: throw new Error("Never should see this.");
     }
-
-    if (msg && (msg.id)) {
-      this.emit(msg.id, msg);
-      return;
-    }
-
-    throw new Error("Not a JSONRPC Compliant message");
   };
 
   connect() {
@@ -304,6 +297,8 @@ export class Farmbot {
       password: <string>token
     }) as FB.MqttClient;
     that.client.subscribe(that.channel.toClient);
+    that.client.subscribe(that.channel.logs);
+    that.client.subscribe(that.channel.status);
     that.client.once("connect", () => p.resolve(that));
     that.client.on("message", that._onmessage.bind(that));
     return p.promise;

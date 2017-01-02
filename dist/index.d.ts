@@ -1,6 +1,5 @@
 import * as FB from "./interfaces";
-import * as JSONRPC from "./jsonrpc";
-import * as BotCommand from "./bot_commands";
+import * as Corpus from "./corpus";
 export declare class Farmbot {
     static VERSION: string;
     static defaults: {
@@ -24,34 +23,57 @@ export declare class Farmbot {
     emergencyLock(): FB.Thenable<{}>;
     /** Unlock the bot when the user says it is safe. */
     emergencyUnlock(): FB.Thenable<{}>;
-    execSequence(sequence: FB.Sequence): FB.Thenable<{}>;
-    homeAll(i: BotCommand.Params.Speed): FB.Thenable<{}>;
-    homeX(i: BotCommand.Params.Speed): FB.Thenable<{}>;
-    homeY(i: BotCommand.Params.Speed): FB.Thenable<{}>;
-    homeZ(i: BotCommand.Params.Speed): FB.Thenable<{}>;
-    moveAbsolute(i: BotCommand.MovementRequest): FB.Thenable<{}>;
-    moveRelative(i: BotCommand.MovementRequest): FB.Thenable<{}>;
-    writePin(i: BotCommand.WritePinParams): FB.Thenable<{}>;
-    togglePin(i: BotCommand.TogglePinParams): FB.Thenable<{}>;
-    readStatus(): FB.Thenable<{}>;
-    sync(): FB.Thenable<{}>;
+    execSequence(sub_sequence_id: number): FB.Thenable<{}>;
+    home(args: {
+        speed: number;
+        axis: Corpus.ALLOWED_AXIS;
+    }): FB.Thenable<{}>;
+    moveAbsolute(args: {
+        x: number;
+        y: number;
+        z: number;
+        speed?: number;
+    }): FB.Thenable<{}>;
+    moveRelative(args: {
+        x: number;
+        y: number;
+        z: number;
+        speed?: number;
+    }): FB.Thenable<{}>;
+    writePin(args: {
+        pin_number: number;
+        pin_value: number;
+        pin_mode: number;
+    }): FB.Thenable<{}>;
+    togglePin(args: {
+        pin_number: number;
+    }): FB.Thenable<{}>;
+    readStatus(args?: {}): FB.Thenable<{}>;
+    sync(args?: {}): FB.Thenable<{}>;
     /** Update the arduino settings */
-    updateMcu(i: BotCommand.Params.McuConfigUpdate): FB.Thenable<{}>;
+    updateMcu(args?: {}): FB.Thenable<{}>;
     /** Update a config */
-    updateConfig(i: BotCommand.Params.BotConfigUpdate): FB.Thenable<{}>;
-    startRegimen(id: number): FB.Thenable<{}>;
-    stopRegimen(id: number): FB.Thenable<{}>;
-    calibrate(target: BotCommand.CalibrationTarget): FB.Thenable<{}>;
-    logDump(): FB.Thenable<{}>;
+    updateConfig(args?: {}): FB.Thenable<{}>;
+    startRegimen(args: {
+        regimen_id: number;
+    }): FB.Thenable<{}>;
+    stopRegimen(args: {
+        regimen_id: number;
+    }): FB.Thenable<{}>;
+    calibrate(args: {
+        axis: Corpus.ALLOWED_AXIS;
+    }): FB.Thenable<{}>;
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;
     readonly channel: {
         toDevice: string;
         toClient: string;
+        status: string;
+        logs: string;
     };
-    publish(msg: JSONRPC.Request<any> | JSONRPC.Notification<any>): void;
-    send<T extends Array<any>>(input: BotCommand.Request<T>): FB.Thenable<{}>;
-    _onmessage(_: string, buffer: Uint8Array): void;
+    publish(msg: Corpus.RpcRequest): void;
+    send(input: Corpus.RpcRequest): FB.Thenable<{}>;
+    _onmessage(chan: string, buffer: Uint8Array): void;
     connect(): FB.Thenable<Farmbot>;
 }
