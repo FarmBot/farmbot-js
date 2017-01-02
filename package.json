@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "2.5.0rc1",
+  "version": "2.5.0rc2",
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh"
@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/mqtt": "0.0.32",
     "mqtt": "^1.7.4",
-    "typescript": "^2.1.0-dev.20161017"
+    "typescript": "^2.1.4"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import * as FB from "./interfaces";
 /** ES6 Promise wrapper that adds a label and a "finished" property. */
 export declare class FBPromise<T> {

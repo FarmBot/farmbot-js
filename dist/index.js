@@ -138,17 +138,28 @@ var Farmbot = (function () {
         return this.send(p);
     };
     /** Update the arduino settings */
-    Farmbot.prototype.updateMcu = function (args) {
-        if (args === void 0) { args = {}; }
+    Farmbot.prototype.updateMcu = function (key, value) {
         var p = rpcRequest();
-        // p.body = [{ kind: "WHY_WHY_WHY", args }];
+        p.body = [
+            {
+                kind: "mcu_config_update",
+                args: {
+                    number: value,
+                    data_label: key
+                }
+            }
+        ];
         return this.send(p);
     };
     /** Update a config */
-    Farmbot.prototype.updateConfig = function (args) {
-        if (args === void 0) { args = {}; }
+    Farmbot.prototype.updateConfig = function (key, value) {
         var p = rpcRequest();
-        // p.body = [{ kind: "WHY_WHY_WHY", args }];
+        p.body = [
+            {
+                kind: "bot_config_update",
+                args: {}
+            }
+        ];
         return this.send(p);
     };
     Farmbot.prototype.startRegimen = function (args) {
@@ -284,6 +295,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-exports.Farmbot = Farmbot;
 Farmbot.VERSION = "2.0.0-rc.9";
 Farmbot.defaults = { speed: 100, timeout: 6000 };
+exports.Farmbot = Farmbot;

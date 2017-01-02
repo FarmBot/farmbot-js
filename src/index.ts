@@ -3,6 +3,7 @@ import * as Corpus from "./corpus"
 import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";
+import { McuParams, Configuration } from "./interfaces";
 
 function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
   return { kind: "coordinate", args: { x, y, z } };
@@ -160,16 +161,29 @@ export class Farmbot {
   }
 
   /** Update the arduino settings */
-  updateMcu(args = {}) {
+  updateMcu(key: keyof McuParams, value: number) {
     let p = rpcRequest();
-    // p.body = [{ kind: "WHY_WHY_WHY", args }];
+    p.body = [
+      {
+        kind: "mcu_config_update",
+        args: {
+          number: value,
+          data_label: key
+        }
+      }
+    ];
     return this.send(p);
   }
 
   /** Update a config */
-  updateConfig(args = {}) {
+  updateConfig(key: keyof Configuration, value: number) {
     let p = rpcRequest();
-    // p.body = [{ kind: "WHY_WHY_WHY", args }];
+    p.body = [
+      {
+        kind: "bot_config_update",
+        args: {}
+      }
+    ];
     return this.send(p);
   }
 

@@ -1,5 +1,6 @@
 import * as FB from "./interfaces";
 import * as Corpus from "./corpus";
+import { McuParams, Configuration } from "./interfaces";
 export declare class Farmbot {
     static VERSION: string;
     static defaults: {
@@ -51,9 +52,9 @@ export declare class Farmbot {
     readStatus(args?: {}): FB.Thenable<{}>;
     sync(args?: {}): FB.Thenable<{}>;
     /** Update the arduino settings */
-    updateMcu(args?: {}): FB.Thenable<{}>;
+    updateMcu(key: keyof McuParams, value: number): FB.Thenable<{}>;
     /** Update a config */
-    updateConfig(args?: {}): FB.Thenable<{}>;
+    updateConfig(key: keyof Configuration, value: number): FB.Thenable<{}>;
     startRegimen(args: {
         regimen_id: number;
     }): FB.Thenable<{}>;

@@ -156,7 +156,7 @@ export type userVariables = "x"
 
 /** Names for a single step within a sequence.
  *  Not to be confused with the names of JSON RPC commands.
- * This is different. These names are only related to 
+ * This is different. These names are only related to
  * the individual steps of a sequence object. */
 export type stepType = "emergency_stop"
   | "home_all"
