@@ -2,6 +2,7 @@
 var fbpromise_1 = require("./fbpromise");
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
+var util_2 = require("./util");
 function coordinate(x, y, z) {
     return { kind: "coordinate", args: { x: x, y: y, z: z } };
 }
@@ -138,28 +139,31 @@ var Farmbot = (function () {
         return this.send(p);
     };
     /** Update the arduino settings */
-    Farmbot.prototype.updateMcu = function (key, value) {
+    Farmbot.prototype.updateMcu = function (update) {
         var p = rpcRequest();
-        p.body = [
-            {
+        p.body = [];
+        Object
+            .keys(update)
+            .forEach(function (key) {
+            (p.body || []).push({
                 kind: "mcu_config_update",
-                args: {
-                    number: value,
-                    data_label: key
-                }
-            }
-        ];
+                args: { number: util_2.pick(update, key, 0), data_label: key }
+            });
+        });
         return this.send(p);
     };
     /** Update a config */
-    Farmbot.prototype.updateConfig = function (key, value) {
+    Farmbot.prototype.updateConfig = function (update) {
         var p = rpcRequest();
-        p.body = [
-            {
+        p.body = [];
+        Object
+            .keys(update)
+            .forEach(function (key) {
+            (p.body || []).push({
                 kind: "bot_config_update",
-                args: {}
-            }
-        ];
+                args: { number: util_2.pick(update, key, 0), data_label: key }
+            });
+        });
         return this.send(p);
     };
     Farmbot.prototype.startRegimen = function (args) {

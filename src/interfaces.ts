@@ -75,8 +75,8 @@ export interface Pin {
 export type Pins = { [num: string]: Pin | undefined };
 
 export interface Configuration {
-  os_auto_update?: boolean | undefined;
-  fw_auto_update?: boolean | undefined;
+  os_auto_update?: number | undefined;
+  fw_auto_update?: number | undefined;
   steps_per_mm?: number | undefined;
 }
 
@@ -293,3 +293,5 @@ export type configKey = "speed"
   | "encoder_enabled_z"
   | "encoder_enabled_y"
   | "encoder_enabled_x";
+
+export type Partial<T> = {[P in (keyof T)]?: T[P]; };

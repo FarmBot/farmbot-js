@@ -3,7 +3,8 @@ import * as Corpus from "./corpus"
 import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";
-import { McuParams, Configuration } from "./interfaces";
+import { McuParams, Configuration, Partial } from "./interfaces";
+import { pick } from "./util";
 
 function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
   return { kind: "coordinate", args: { x, y, z } };
@@ -161,29 +162,32 @@ export class Farmbot {
   }
 
   /** Update the arduino settings */
-  updateMcu(key: keyof McuParams, value: number) {
+  updateMcu(update: Partial<McuParams>) {
     let p = rpcRequest();
-    p.body = [
-      {
-        kind: "mcu_config_update",
-        args: {
-          number: value,
-          data_label: key
-        }
-      }
-    ];
+    p.body = [];
+    Object
+      .keys(update)
+      .forEach(function (key) {
+        (p.body || []).push({
+          kind: "mcu_config_update",
+          args: { number: pick(update, key, 0), data_label: key }
+        });
+      });
     return this.send(p);
   }
 
   /** Update a config */
-  updateConfig(key: keyof Configuration, value: number) {
+  updateConfig(update: Partial<Configuration>) {
     let p = rpcRequest();
-    p.body = [
-      {
-        kind: "bot_config_update",
-        args: {}
-      }
-    ];
+    p.body = [];
+    Object
+      .keys(update)
+      .forEach(function (key) {
+        (p.body || []).push({
+          kind: "bot_config_update",
+          args: { number: pick(update, key, 0), data_label: key }
+        });
+      });
     return this.send(p);
   }
 
@@ -317,5 +321,4 @@ export class Farmbot {
     that.client.on("message", that._onmessage.bind(that));
     return p.promise;
   }
-
 }

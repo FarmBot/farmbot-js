@@ -10,6 +10,10 @@ function uuid() {
 }
 exports.uuid = uuid;
 ;
+function pick(target, value, fallback) {
+    return target[value] || fallback;
+}
+exports.pick = pick;
 function assign(target) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
