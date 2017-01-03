@@ -30,10 +30,23 @@ function assign(target) {
 }
 exports.assign = assign;
 function isCeleryScript(x) {
-    // REMEBER: (typeof null === "object"). PS: Sorry :(
+    // REMEMBER: (typeof null === "object"). PS: Sorry :(
     var isObj = function (o) { return o && JSON.stringify(o)[0] === "{"; };
     var hasKind = function (o) { return typeof o.kind === "string"; };
     var hasArgs = function (o) { return isObj(o) && !!o.args; };
     return isObj(x) && hasKind(x) && hasArgs(x);
 }
 exports.isCeleryScript = isCeleryScript;
+function coordinate(x, y, z) {
+    return { kind: "coordinate", args: { x: x, y: y, z: z } };
+}
+exports.coordinate = coordinate;
+function rpcRequest() {
+    return {
+        kind: "rpc_request",
+        args: {
+            data_label: uuid()
+        }
+    };
+}
+exports.rpcRequest = rpcRequest;

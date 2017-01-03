@@ -1,24 +1,24 @@
 import * as Corpus from "./corpus"
 import { connect } from "mqtt";
-import { uuid, assign } from "./util";
-// import { McuParams, Configuration, Partial } from "./interfaces";
+import {
+  uuid,
+  assign,
+  rpcRequest,
+  coordinate
+} from "./util";
+import {
+  StateTree,
+  MqttClient,
+  Dictionary,
+  ConstructorParams,
+  APIToken,
+  McuParams,
+  Configuration
+} from "./interfaces";
 import { pick, isCeleryScript } from "./util";
 
-function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
-  return { kind: "coordinate", args: { x, y, z } };
-}
-
-function rpcRequest(): Corpus.RpcRequest {
-  return {
-    kind: "rpc_request",
-    args: {
-      data_label: uuid()
-    }
-  };
-}
-
 export class Farmbot {
-  static VERSION = "2.5.0rc6";
+  static VERSION = "2.5.0rc7";
   static defaults = { speed: 100, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -279,12 +279,18 @@ export class Farmbot {
 
   send(input: Corpus.RpcRequest) {
     let that = this;
-    let label = (input.body || []).map(x => x.kind).join(", ");
-    let time = that.getState()["timeout"] as number;
     let done = false;
     return new Promise(function (resolve, reject) {
       console.log(`Sent: ${input.args.data_label}`);
       that.publish(input);
+      let label = (input.body || []).map(x => x.kind).join(", ");
+      let time = that.getState()["timeout"] as number;
+      setTimeout(function () {
+        if (!done) {
+          reject(new Error(`${label} timeout after ${time} ms.`));
+        }
+      }, time);
+
       that.on(input.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
         console.log(`Got ${response.args.data_label || "??"}`);
         done = true;

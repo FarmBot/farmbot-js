@@ -1,19 +1,7 @@
 "use strict";
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
-// import { McuParams, Configuration, Partial } from "./interfaces";
 var util_2 = require("./util");
-function coordinate(x, y, z) {
-    return { kind: "coordinate", args: { x: x, y: y, z: z } };
-}
-function rpcRequest() {
-    return {
-        kind: "rpc_request",
-        args: {
-            data_label: util_1.uuid()
-        }
-    };
-}
 var Farmbot = (function () {
     function Farmbot(input) {
         this._events = {};
@@ -54,23 +42,23 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.prototype.powerOff = function () {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "power_off", args: {} }];
         return this.send(p);
     };
     Farmbot.prototype.reboot = function () {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "reboot", args: {} }];
         return this.send(p);
     };
     Farmbot.prototype.checkUpdates = function () {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "check_updates", args: { package: "farmbot_os" } }];
         return this.send(p);
     };
     // TODO: Merge this (legacy) method with #checkUpdates().
     Farmbot.prototype.checkArduinoUpdates = function () {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "check_updates", args: { package: "arduino_firmware" } }];
         return this.send(p);
     };
@@ -78,36 +66,36 @@ var Farmbot = (function () {
      *  any running sequences to exit
      */
     Farmbot.prototype.emergencyLock = function () {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "emergency_lock", args: {} }];
         return this.send(p);
     };
     /** Unlock the bot when the user says it is safe. */
     Farmbot.prototype.emergencyUnlock = function () {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "emergency_unlock", args: {} }];
         return this.send(p);
     };
     Farmbot.prototype.execSequence = function (sub_sequence_id) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "execute", args: { sub_sequence_id: sub_sequence_id } }];
         return this.send(p);
     };
     Farmbot.prototype.home = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "home", args: args }];
         return this.send(p);
     };
     Farmbot.prototype.moveAbsolute = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
         speed = speed || 100;
         p.body = [
             {
                 kind: "move_absolute",
                 args: {
-                    location: coordinate(x, y, z),
-                    offset: coordinate(0, 0, 0),
+                    location: util_1.coordinate(x, y, z),
+                    offset: util_1.coordinate(0, 0, 0),
                     speed: speed
                 }
             }
@@ -115,37 +103,37 @@ var Farmbot = (function () {
         return this.send(p);
     };
     Farmbot.prototype.moveRelative = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
         speed = speed || 100;
         p.body = [{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }];
         return this.send(p);
     };
     Farmbot.prototype.writePin = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "write_pin", args: args }];
         return this.send(p);
     };
     Farmbot.prototype.togglePin = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "toggle_pin", args: args }];
         return this.send(p);
     };
     Farmbot.prototype.readStatus = function (args) {
         if (args === void 0) { args = {}; }
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "read_status", args: args }];
         return this.send(p);
     };
     Farmbot.prototype.sync = function (args) {
         if (args === void 0) { args = {}; }
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "sync", args: args }];
         return this.send(p);
     };
     /** Update the arduino settings */
     Farmbot.prototype.updateMcu = function (update) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [];
         Object
             .keys(update)
@@ -159,7 +147,7 @@ var Farmbot = (function () {
     };
     /** Update a config */
     Farmbot.prototype.updateConfig = function (update) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [];
         Object
             .keys(update)
@@ -172,7 +160,7 @@ var Farmbot = (function () {
         return this.send(p);
     };
     Farmbot.prototype.startRegimen = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [
             {
                 kind: "start_regimen",
@@ -185,7 +173,7 @@ var Farmbot = (function () {
         return this.send(p);
     };
     Farmbot.prototype.stopRegimen = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [
             {
                 kind: "stop_regimen",
@@ -199,7 +187,7 @@ var Farmbot = (function () {
         return this.send(p);
     };
     Farmbot.prototype.calibrate = function (args) {
-        var p = rpcRequest();
+        var p = util_1.rpcRequest();
         p.body = [{ kind: "calibrate", args: args }];
         return this.send(p);
     };
@@ -255,12 +243,17 @@ var Farmbot = (function () {
     ;
     Farmbot.prototype.send = function (input) {
         var that = this;
-        var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
-        var time = that.getState()["timeout"];
         var done = false;
         return new Promise(function (resolve, reject) {
             console.log("Sent: " + input.args.data_label);
             that.publish(input);
+            var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
+            var time = that.getState()["timeout"];
+            setTimeout(function () {
+                if (!done) {
+                    reject(new Error(label + " timeout after " + time + " ms."));
+                }
+            }, time);
             that.on(input.args.data_label, function (response) {
                 console.log("Got " + (response.args.data_label || "??"));
                 done = true;
@@ -324,6 +317,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "2.5.0rc6";
+Farmbot.VERSION = "2.5.0rc7";
 Farmbot.defaults = { speed: 100, timeout: 6000 };
 exports.Farmbot = Farmbot;
