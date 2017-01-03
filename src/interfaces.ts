@@ -11,8 +11,29 @@ export interface BotStateTree {
   /** READ ONLY meta data about the FarmBot device. */
   readonly informational_settings: InformationalSettings;
   /** Status of running regimens and sequences */
-  farm_scheduler: DeprecatedSchedulerInfo[];
+  farm_scheduler: DeprecatedFarmScheduler;
 };
+
+/** Going away soon. */
+export interface DeprecatedFarmScheduler {
+  /** Currently alive Regimnes
+   *  They can be running or paused.
+   */
+  process_info: DeprecatedSchedulerInfo[];
+}
+
+/** Going away soon. */
+export interface DeprecatedSchedulerInfo {
+  process_info: {
+    regimen: {
+      id?: number;
+    };
+    info: {
+      start_time: number;
+      status: "normal" | "paused" | "ready";
+    };
+  };
+}
 
 /** Going away soon. */
 export interface DeprecatedSchedulerInfo {
