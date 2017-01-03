@@ -1,4 +1,3 @@
-import * as FB from "./interfaces";
 import * as Corpus from "./corpus"
 
 export function uuid() {
