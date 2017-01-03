@@ -4,7 +4,7 @@ import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";
 import { McuParams, Configuration, Partial } from "./interfaces";
-import { pick } from "./util";
+import { pick, isCeleryScript } from "./util";
 
 function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
   return { kind: "coordinate", args: { x, y, z } };

@@ -278,7 +278,7 @@ var Farmbot = (function () {
             case this.channel.logs: return this.emit("logs", msg);
             case this.channel.status: return this.emit("status", msg);
             case this.channel.toClient:
-                if (isCeleryScript(msg)) {
+                if (util_2.isCeleryScript(msg)) {
                     return this.emit(msg.args.data_label, msg);
                 }
                 else {
