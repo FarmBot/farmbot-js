@@ -3,7 +3,7 @@ export interface BotStateTree {
   /** Microcontroller configuration and settings. */
   mcu_params: McuParams;
   /** Cartesian coordinates of the bot. */
-  location: Location;
+  location: [number, number, number];
   /** Lookup table, indexed by number for pin status */
   pins: Pins;
   /** User definable config settings.  */
@@ -11,14 +11,19 @@ export interface BotStateTree {
   /** READ ONLY meta data about the FarmBot device. */
   readonly informational_settings: InformationalSettings;
   /** Status of running regimens and sequences */
-  farm_scheduler: {
-    process_info: {
-      regimen: { id?: number };
-      info: {
-        start_time: number;
-        status: "normal" | "paused" | "ready";
-      };
-    }[];
+  farm_scheduler: DeprecatedSchedulerInfo[];
+};
+
+/** Going away soon. */
+export interface DeprecatedSchedulerInfo {
+  process_info: {
+    regimen: {
+      id?: number
+    };
+    info: {
+      start_time: number;
+      status: "normal" | "paused" | "ready";
+    };
   };
 }
 
