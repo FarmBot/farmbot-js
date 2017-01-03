@@ -1,5 +1,5 @@
 /** Everything the farmbot knows about itself at a given moment in time. */
-export interface BotStateTree {
+interface BotStateTree {
   /** Microcontroller configuration and settings. */
   mcu_params: McuParams;
   /** Cartesian coordinates of the bot. */
@@ -14,10 +14,10 @@ export interface BotStateTree {
   farm_scheduler: FarmScheduler;
 }
 
-export type runningStatus = "normal" | "paused" | "ready"
+type runningStatus = "normal" | "paused" | "ready"
 /** The tuple on the elixir side gets converted to this. */
 
-export interface RegimenInfo {
+interface RegimenInfo {
   regimen: Regimen;
   info: {
     start_time: number;
@@ -25,7 +25,7 @@ export interface RegimenInfo {
   };
 }
 
-export interface FarmScheduler {
+interface FarmScheduler {
   /** The queue of sequences to run **/
   sequence_log: Sequence[];
   /** Currently alive Regimnes
@@ -36,7 +36,7 @@ export interface FarmScheduler {
 }
 
 /** Microcontroller configuration and settings. */
-export interface McuParams {
+interface McuParams {
   movement_invert_motor_y?: number | undefined;
   movement_timeout_x?: number | undefined;
   movement_min_spd_x?: number | undefined;
@@ -66,52 +66,43 @@ export interface McuParams {
   encoder_enabled_y?: number | undefined;
   encoder_enabled_z?: number | undefined;
 }
-/** Cartesian coords of the bot. X, Y, Z, respectively. */
-export type Location = [number, number, number];
 
-export interface Pin {
+interface Pin {
   mode: number;
   value: number;
 }
 
-export type Pins = { [num: string]: Pin | undefined };
+type Pins = { [num: string]: Pin | undefined };
 
-export interface Configuration {
+interface Configuration {
   os_auto_update?: number | undefined;
   fw_auto_update?: number | undefined;
   steps_per_mm?: number | undefined;
 }
 
-export interface InformationalSettings {
+interface InformationalSettings {
   controller_version?: string | undefined;
   throttled?: string | undefined;
   private_ip?: string | undefined;
   locked?: boolean | undefined;
 }
 
-// TODO: Remove this and use interface in `@types/promise`.
-export interface Thenable<T> {
-  then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
-  then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
-  catch<U>(onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
-}
+type MQTTEventName = "connect" | "message";
 
-export type MQTTEventName = "connect" | "message";
-
-export interface MqttClient {
+interface MqttClient {
   publish: (channel: string, payload: any) => void;
   subscribe: (channel: string | string[]) => void;
   on: (type: MQTTEventName, listener: any) => void;
   once: (type: MQTTEventName, listener: any) => void;
 }
 
-export interface Dictionary<T> {
+interface Dictionary<T> {
   [key: string]: T;
 }
 
-export type StateTree = Dictionary<string | number | boolean>;
+type StateTree = Dictionary<string | number | boolean>;
 
-export type userVariables = "x"
+type userVariables = "x"
   | "y"
   | "z"
   | "s"
@@ -160,7 +151,7 @@ export type userVariables = "x"
  *  Not to be confused with the names of JSON RPC commands.
  * This is different. These names are only related to
  * the individual steps of a sequence object. */
-export type stepType = "emergency_stop"
+type stepType = "emergency_stop"
   | "home_all"
   | "home_x"
   | "home_y"
@@ -178,7 +169,7 @@ export type stepType = "emergency_stop"
   | "execute";
 
 /** Color choices for sequence tiles. */
-export type Color = "blue"
+type Color = "blue"
   | "green"
   | "yellow"
   | "orange"
@@ -187,7 +178,7 @@ export type Color = "blue"
   | "gray"
   | "red";
 
-export interface StepCommand {
+interface StepCommand {
   x?: number;
   y?: number;
   z?: number;
@@ -204,7 +195,7 @@ export interface StepCommand {
 
 // // /** Similar to "Step", but "position" isnt mandatory. */
 // // THIS IS SO WRONG GET RID OF IT!!
-export interface UnplacedStep {
+interface UnplacedStep {
   // TODO: Is this correct?
   message_type: stepType;
   position?: number;
@@ -213,11 +204,11 @@ export interface UnplacedStep {
 }
 
 // // /** One step in a larger "Sequence". */
-export interface Step extends UnplacedStep {
+interface Step extends UnplacedStep {
   position: number;
 }
 
-export interface Sequence {
+interface Sequence {
   id?: number;
   color: Color;
   name: string;
@@ -226,7 +217,7 @@ export interface Sequence {
 }
 
 // // TODO: Don't duplicate this interface- use an auto generated interface.
-export interface Regimen {
+interface Regimen {
   id?: number;
   /** Friendly identifier for humans to easily identify regimens. */
   name: string;
@@ -235,7 +226,7 @@ export interface Regimen {
   dirty?: boolean;
 }
 
-export interface ConstructorParams {
+interface ConstructorParams {
   /** API token which can be retrieved by logging into REST server or my.farmbot.io */
   token: string;
   /** Default time to wait (ms) before considering operation a failure. */
@@ -244,11 +235,9 @@ export interface ConstructorParams {
   speed?: number;
 }
 
-export interface APIToken {
+interface APIToken {
   /** URL of MQTT server. REST server is not the same as MQTT server. */
   mqtt: string;
   /** UUID of current bot. */
   bot: string;
 }
-
-export type Partial<T> = {[P in (keyof T)]?: T[P]; };

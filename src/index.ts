@@ -1,8 +1,7 @@
-import * as FB from "./interfaces";
 import * as Corpus from "./corpus"
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";
-import { McuParams, Configuration, Partial } from "./interfaces";
+// import { McuParams, Configuration, Partial } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
 
 function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
@@ -23,18 +22,18 @@ export class Farmbot {
   static defaults = { speed: 100, timeout: 6000 };
 
   /** Storage area for all event handlers */
-  private _events: FB.Dictionary<Function[]>;
-  private _state: FB.StateTree;
-  public client: FB.MqttClient;
+  private _events: Dictionary<Function[]>;
+  private _state: StateTree;
+  public client: MqttClient;
 
-  constructor(input: FB.ConstructorParams) {
+  constructor(input: ConstructorParams) {
     this._events = {};
     this._state = assign({}, Farmbot.defaults, input);
     this._decodeThatToken();
   }
 
   _decodeThatToken() {
-    let token: FB.APIToken;
+    let token: APIToken;
     try {
       let str = (this.getState()["token"] as string);
       let base64 = str.split(".")[1];
@@ -52,7 +51,7 @@ export class Farmbot {
     this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
   }
 
-  getState(): FB.StateTree {
+  getState(): StateTree {
     return JSON.parse(JSON.stringify(this._state));
   };
 
@@ -331,7 +330,7 @@ export class Farmbot {
     that.client = connect(<string>mqttServer, {
       username: <string>uuid,
       password: <string>token
-    }) as FB.MqttClient;
+    }) as MqttClient;
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);

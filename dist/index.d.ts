@@ -1,6 +1,4 @@
-import * as FB from "./interfaces";
 import * as Corpus from "./corpus";
-import { McuParams, Configuration, Partial } from "./interfaces";
 export declare class Farmbot {
     static VERSION: string;
     static defaults: {
@@ -10,10 +8,10 @@ export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
     private _state;
-    client: FB.MqttClient;
-    constructor(input: FB.ConstructorParams);
+    client: MqttClient;
+    constructor(input: ConstructorParams);
     _decodeThatToken(): void;
-    getState(): FB.StateTree;
+    getState(): StateTree;
     setState(key: string, val: string | number | boolean): string | number | boolean;
     powerOff(): Promise<{}>;
     reboot(): Promise<{}>;

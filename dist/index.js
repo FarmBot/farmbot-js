@@ -1,6 +1,7 @@
 "use strict";
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
+// import { McuParams, Configuration, Partial } from "./interfaces";
 var util_2 = require("./util");
 function coordinate(x, y, z) {
     return { kind: "coordinate", args: { x: x, y: y, z: z } };
