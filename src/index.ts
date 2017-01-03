@@ -305,8 +305,8 @@ export class Farmbot {
         if (isCeleryScript(msg)) {
           return this.emit(msg.args.data_label, msg);
         } else {
-          let m = "Noncompliant message received. Is FarmBot OS up-to-date?";
-          console.warn(m);
+          return console.warn("Noncompliant message received. " +
+            "Is FarmBot OS up-to-date?");
         }
       default: throw new Error("Never should see this.");
     }
