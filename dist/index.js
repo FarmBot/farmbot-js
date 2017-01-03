@@ -1,5 +1,4 @@
 "use strict";
-var fbpromise_1 = require("./fbpromise");
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
@@ -255,25 +254,26 @@ var Farmbot = (function () {
     ;
     Farmbot.prototype.send = function (input) {
         var that = this;
-        var rpcs = (input.body || []).map(function (x) { return x.kind; }).join(", ");
-        var label = rpcs + " " + JSON.stringify(input.body || []);
+        var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
         var time = that.getState()["timeout"];
-        var p = fbpromise_1.timerDefer(time, label);
-        console.log("Sent: " + input.args.data_label);
-        that.publish(input);
-        that.on(input.args.data_label, function (response) {
-            console.log("Got " + (response.args.data_label || "??"));
-            switch (response.kind) {
-                case "rpc_ok": return p.resolve(response);
-                case "rpc_error":
-                    var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
-                    return p.reject(new Error("Problem sending RPC command: " + reason));
-                default:
-                    console.dir(response);
-                    throw new Error("Got a bad CeleryScript node.");
-            }
+        var done = false;
+        return new Promise(function (resolve, reject) {
+            console.log("Sent: " + input.args.data_label);
+            that.publish(input);
+            that.on(input.args.data_label, function (response) {
+                console.log("Got " + (response.args.data_label || "??"));
+                done = true;
+                switch (response.kind) {
+                    case "rpc_ok": return resolve(response);
+                    case "rpc_error":
+                        var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
+                        return reject(new Error("Problem sending RPC command: " + reason));
+                    default:
+                        console.dir(response);
+                        throw new Error("Got a bad CeleryScript node.");
+                }
+            });
         });
-        return p.promise;
     };
     ;
     /** Main entry point for all MQTT packets. */
@@ -303,7 +303,6 @@ var Farmbot = (function () {
     Farmbot.prototype.connect = function () {
         var that = this;
         var _a = that.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
-        var p = fbpromise_1.timerDefer(timeout, "MQTT Connect Atempt");
         that.client = mqtt_1.connect(mqttServer, {
             username: uuid,
             password: token
@@ -311,9 +310,16 @@ var Farmbot = (function () {
         that.client.subscribe(that.channel.toClient);
         that.client.subscribe(that.channel.logs);
         that.client.subscribe(that.channel.status);
-        that.client.once("connect", function () { return p.resolve(that); });
         that.client.on("message", that._onmessage.bind(that));
-        return p.promise;
+        var done = false;
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                if (!done) {
+                    reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
+                }
+            }, timeout);
+            that.client.once("connect", function () { return resolve(that); });
+        });
     };
     return Farmbot;
 }());

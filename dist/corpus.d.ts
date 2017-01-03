@@ -260,3 +260,4 @@ export declare type ALLOWED_DATA_TYPES = "string" | "integer";
 export declare type ALLOWED_OPS = "<" | ">" | "is" | "not";
 export declare type ALLOWED_PACKAGES = "farmbot_os" | "arduino_firmware";
 export declare type ALLOWED_AXIS = "x" | "y" | "z" | "all";
+export declare type Color = "blue" | "green" | "yellow" | "orange" | "purple" | "pink" | "gray" | "red";

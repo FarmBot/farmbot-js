@@ -15,56 +15,56 @@ export declare class Farmbot {
     _decodeThatToken(): void;
     getState(): FB.StateTree;
     setState(key: string, val: string | number | boolean): string | number | boolean;
-    powerOff(): FB.Thenable<{}>;
-    reboot(): FB.Thenable<{}>;
-    checkUpdates(): FB.Thenable<{}>;
-    checkArduinoUpdates(): FB.Thenable<{}>;
+    powerOff(): Promise<{}>;
+    reboot(): Promise<{}>;
+    checkUpdates(): Promise<{}>;
+    checkArduinoUpdates(): Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
-    emergencyLock(): FB.Thenable<{}>;
+    emergencyLock(): Promise<{}>;
     /** Unlock the bot when the user says it is safe. */
-    emergencyUnlock(): FB.Thenable<{}>;
-    execSequence(sub_sequence_id: number): FB.Thenable<{}>;
+    emergencyUnlock(): Promise<{}>;
+    execSequence(sub_sequence_id: number): Promise<{}>;
     home(args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     moveAbsolute(args: {
         x: number;
         y: number;
         z: number;
         speed?: number;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     moveRelative(args: {
         x: number;
         y: number;
         z: number;
         speed?: number;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     writePin(args: {
         pin_number: number;
         pin_value: number;
         pin_mode: number;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     togglePin(args: {
         pin_number: number;
-    }): FB.Thenable<{}>;
-    readStatus(args?: {}): FB.Thenable<{}>;
-    sync(args?: {}): FB.Thenable<{}>;
+    }): Promise<{}>;
+    readStatus(args?: {}): Promise<{}>;
+    sync(args?: {}): Promise<{}>;
     /** Update the arduino settings */
-    updateMcu(update: Partial<McuParams>): FB.Thenable<{}>;
+    updateMcu(update: Partial<McuParams>): Promise<{}>;
     /** Update a config */
-    updateConfig(update: Partial<Configuration>): FB.Thenable<{}>;
+    updateConfig(update: Partial<Configuration>): Promise<{}>;
     startRegimen(args: {
         regimen_id: number;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     stopRegimen(args: {
         regimen_id: number;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     calibrate(args: {
         axis: Corpus.ALLOWED_AXIS;
-    }): FB.Thenable<{}>;
+    }): Promise<{}>;
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
@@ -78,8 +78,8 @@ export declare class Farmbot {
         logs: string;
     };
     publish(msg: Corpus.RpcRequest): void;
-    send(input: Corpus.RpcRequest): FB.Thenable<{}>;
+    send(input: Corpus.RpcRequest): Promise<{}>;
     /** Main entry point for all MQTT packets. */
     _onmessage(chan: string, buffer: Uint8Array): void;
-    connect(): FB.Thenable<Farmbot>;
+    connect(): Promise<{}>;
 }

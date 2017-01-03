@@ -1,6 +1,5 @@
 import * as FB from "./interfaces";
 import * as Corpus from "./corpus"
-import { timerDefer } from "./fbpromise";
 import { connect } from "mqtt";
 import { uuid, assign } from "./util";
 import { McuParams, Configuration, Partial } from "./interfaces";
@@ -281,26 +280,26 @@ export class Farmbot {
 
   send(input: Corpus.RpcRequest) {
     let that = this;
-    let rpcs = (input.body || []).map(x => x.kind).join(", ");
-    let label = `${rpcs} ${JSON.stringify(input.body || [])}`;
+    let label = (input.body || []).map(x => x.kind).join(", ");
     let time = that.getState()["timeout"] as number;
-    let p = timerDefer(time, label);
-    console.log(`Sent: ${input.args.data_label}`);
-    that.publish(input);
-    that.on(input.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
-      console.log(`Got ${response.args.data_label || "??"}`);
-      switch (response.kind) {
-        case "rpc_ok": return p.resolve(response);
-        case "rpc_error":
-          let reason = (response.body || []).map(x => x.args.message).join(", ");
-          return p.reject(new Error("Problem sending RPC command: " + reason));
-        default:
-          console.dir(response);
-          throw new Error("Got a bad CeleryScript node.");
-      }
+    let done = false;
+    return new Promise(function (resolve, reject) {
+      console.log(`Sent: ${input.args.data_label}`);
+      that.publish(input);
+      that.on(input.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+        console.log(`Got ${response.args.data_label || "??"}`);
+        done = true;
+        switch (response.kind) {
+          case "rpc_ok": return resolve(response);
+          case "rpc_error":
+            let reason = (response.body || []).map(x => x.args.message).join(", ");
+            return reject(new Error("Problem sending RPC command: " + reason));
+          default:
+            console.dir(response);
+            throw new Error("Got a bad CeleryScript node.");
+        }
+      });
     });
-
-    return p.promise;
   };
 
   /** Main entry point for all MQTT packets. */
@@ -329,7 +328,6 @@ export class Farmbot {
   connect() {
     let that = this;
     let { uuid, token, mqttServer, timeout } = that.getState();
-    let p = timerDefer<Farmbot>(<number>timeout, "MQTT Connect Atempt");
     that.client = connect(<string>mqttServer, {
       username: <string>uuid,
       password: <string>token
@@ -337,8 +335,15 @@ export class Farmbot {
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);
-    that.client.once("connect", () => p.resolve(that));
     that.client.on("message", that._onmessage.bind(that));
-    return p.promise;
+    let done = false;
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        if (!done) {
+          reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
+        }
+      }, timeout);
+      that.client.once("connect", () => resolve(that));
+    });
   }
 }
