@@ -6,7 +6,10 @@ var FBPromise = (function () {
     function FBPromise(label) {
         var _this = this;
         var $reject, $resolve;
-        this.promise = new Promise(function (res, rej) { return (_a = [rej, res], $reject = _a[0], $resolve = _a[1], _a); var _a; });
+        this.promise = new Promise(function (res, rej) {
+            return _a = [rej, res], $reject = _a[0], $resolve = _a[1], _a;
+            var _a;
+        });
         this.finished = false;
         this.reject = function (error) {
             _this.finished = true;

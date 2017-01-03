@@ -16,7 +16,6 @@ function rpcRequest() {
 }
 var Farmbot = (function () {
     function Farmbot(input) {
-        // I SENT A BOT MESSAGE WITH UUID OF 480293480293840298340298434289
         this._events = {};
         this._state = util_1.assign({}, Farmbot.defaults, input);
         this._decodeThatToken();
@@ -277,6 +276,7 @@ var Farmbot = (function () {
         return p.promise;
     };
     ;
+    /** Main entry point for all MQTT packets. */
     Farmbot.prototype._onmessage = function (chan, buffer) {
         try {
             /** UNSAFE CODE: TODO: Add user defined type guards? */
@@ -315,8 +315,8 @@ var Farmbot = (function () {
         that.client.on("message", that._onmessage.bind(that));
         return p.promise;
     };
-    Farmbot.VERSION = "2.5.0rc6";
-    Farmbot.defaults = { speed: 100, timeout: 6000 };
     return Farmbot;
 }());
+Farmbot.VERSION = "2.5.0rc6";
+Farmbot.defaults = { speed: 100, timeout: 6000 };
 exports.Farmbot = Farmbot;

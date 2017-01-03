@@ -79,6 +79,7 @@ export declare class Farmbot {
     };
     publish(msg: Corpus.RpcRequest): void;
     send(input: Corpus.RpcRequest): FB.Thenable<{}>;
+    /** Main entry point for all MQTT packets. */
     _onmessage(chan: string, buffer: Uint8Array): void;
     connect(): FB.Thenable<Farmbot>;
 }

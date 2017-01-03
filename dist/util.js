@@ -30,8 +30,9 @@ function assign(target) {
 }
 exports.assign = assign;
 function isCeleryScript(x) {
+    // REMEBER: (typeof null === "object"). PS: Sorry :(
     var isObj = function (o) { return o && JSON.stringify(o)[0] === "{"; };
-    var hasKind = function (o) { return !!x.kind && JSON.stringify(o)[0] === '"'; };
+    var hasKind = function (o) { return typeof o.kind === "string"; };
     var hasArgs = function (o) { return isObj(o) && !!o.args; };
     return isObj(x) && hasKind(x) && hasArgs(x);
 }
