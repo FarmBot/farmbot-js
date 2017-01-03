@@ -1,4 +1,5 @@
 import * as FB from "./interfaces";
+import * as Corpus from "./corpus"
 
 export function uuid() {
   let template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
@@ -23,4 +24,12 @@ export function assign(target: FB.Dictionary<any>, ...others: FB.Dictionary<any>
     };
   });
   return target;
+}
+
+export function isCeleryScript(x: any): x is Corpus.CeleryNode {
+  let isObj = (o: any) => o && JSON.stringify(o)[0] === "{";
+  let hasKind = (o: any) => !!x.kind && JSON.stringify(o)[0] === '"';
+  let hasArgs = (o: any) => isObj(o) && !!o.args;
+
+  return isObj(x) && hasKind(x) && hasArgs(x);
 }

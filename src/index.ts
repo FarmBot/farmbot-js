@@ -291,7 +291,7 @@ export class Farmbot {
     return p.promise;
   };
 
-  _onmessage(chan: string, buffer: Uint8Array /*, message*/) {
+  _onmessage(chan: string, buffer: Uint8Array) {
     try {
       /** UNSAFE CODE: TODO: Add user defined type guards? */
       var msg = JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
@@ -301,7 +301,13 @@ export class Farmbot {
     switch (chan) {
       case this.channel.logs: return this.emit("logs", msg);
       case this.channel.status: return this.emit("status", msg);
-      case this.channel.toClient: return this.emit(msg.args.data_label, msg);
+      case this.channel.toClient:
+        if (isCeleryScript(msg)) {
+          return this.emit(msg.args.data_label, msg);
+        } else {
+          let m = "Noncompliant message received. Is FarmBot OS up-to-date?";
+          console.warn(m);
+        }
       default: throw new Error("Never should see this.");
     }
   };

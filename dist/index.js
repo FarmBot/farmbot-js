@@ -266,7 +266,7 @@ var Farmbot = (function () {
         return p.promise;
     };
     ;
-    Farmbot.prototype._onmessage = function (chan, buffer /*, message*/) {
+    Farmbot.prototype._onmessage = function (chan, buffer) {
         try {
             /** UNSAFE CODE: TODO: Add user defined type guards? */
             var msg = JSON.parse(buffer.toString());
@@ -277,7 +277,14 @@ var Farmbot = (function () {
         switch (chan) {
             case this.channel.logs: return this.emit("logs", msg);
             case this.channel.status: return this.emit("status", msg);
-            case this.channel.toClient: return this.emit(msg.args.data_label, msg);
+            case this.channel.toClient:
+                if (isCeleryScript(msg)) {
+                    return this.emit(msg.args.data_label, msg);
+                }
+                else {
+                    var m = "Noncompliant message received. Is FarmBot OS up-to-date?";
+                    console.warn(m);
+                }
             default: throw new Error("Never should see this.");
         }
     };
