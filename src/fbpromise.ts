@@ -40,10 +40,10 @@ export function timerDefer<T>(timeout: Number,
     label: string = ("promise with " + timeout + " ms timeout")) {
     let that = new FBPromise<T>(label);
     setTimeout(function () {
-      if (!that.finished) {
-        let failure = new Error("`" + label + "` did not execute in time");
-        that.reject(failure);
-      };
+        if (!that.finished) {
+            let failure = new Error("`" + label + "` did not execute in time");
+            that.reject(failure);
+        };
     }, timeout);
     return that;
-  };
+};

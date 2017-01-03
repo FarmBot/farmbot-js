@@ -17,6 +17,7 @@ export function pick<T>(target: { [k: string]: T | undefined },
   return target[value] || fallback;
 }
 
+// TODO: Make this a generic.
 export function assign(target: FB.Dictionary<any>, ...others: FB.Dictionary<any>[]) {
   others.forEach(function (dict) {
     for (let k in dict) {
@@ -27,8 +28,9 @@ export function assign(target: FB.Dictionary<any>, ...others: FB.Dictionary<any>
 }
 
 export function isCeleryScript(x: any): x is Corpus.CeleryNode {
+  // REMEBER: (typeof null === "object"). PS: Sorry :(
   let isObj = (o: any) => o && JSON.stringify(o)[0] === "{";
-  let hasKind = (o: any) => !!x.kind && JSON.stringify(o)[0] === '"';
+  let hasKind = (o: any) => typeof o.kind === "string";
   let hasArgs = (o: any) => isObj(o) && !!o.args;
 
   return isObj(x) && hasKind(x) && hasArgs(x);

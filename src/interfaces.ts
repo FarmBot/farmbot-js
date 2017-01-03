@@ -16,6 +16,7 @@ export interface BotStateTree {
 
 export type runningStatus = "normal" | "paused" | "ready"
 /** The tuple on the elixir side gets converted to this. */
+
 export interface RegimenInfo {
   regimen: Regimen;
   info: {
@@ -23,6 +24,7 @@ export interface RegimenInfo {
     status: runningStatus;
   };
 }
+
 export interface FarmScheduler {
   /** The queue of sequences to run **/
   sequence_log: Sequence[];
@@ -200,7 +202,8 @@ export interface StepCommand {
   sub_sequence_id?: string;
 }
 
-/** Similar to "Step", but "position" isnt mandatory. */
+// // /** Similar to "Step", but "position" isnt mandatory. */
+// // THIS IS SO WRONG GET RID OF IT!!
 export interface UnplacedStep {
   // TODO: Is this correct?
   message_type: stepType;
@@ -209,7 +212,7 @@ export interface UnplacedStep {
   command: StepCommand;
 }
 
-/** One step in a larger "Sequence". */
+// // /** One step in a larger "Sequence". */
 export interface Step extends UnplacedStep {
   position: number;
 }
@@ -222,6 +225,7 @@ export interface Sequence {
   dirty?: Boolean;
 }
 
+// // TODO: Don't duplicate this interface- use an auto generated interface.
 export interface Regimen {
   id?: number;
   /** Friendly identifier for humans to easily identify regimens. */

@@ -11,12 +11,19 @@ function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
 }
 
 function rpcRequest(): Corpus.RpcRequest {
-  return { kind: "rpc_request", args: { data_label: uuid() } };
+  return {
+    kind: "rpc_request",
+    args: {
+      data_label: uuid()
+    }
+  };
 }
+
 export class Farmbot {
-  static VERSION = "2.0.0-rc.9";
+  static VERSION = "2.5.0rc6";
   static defaults = { speed: 100, timeout: 6000 };
 
+  /** Storage area for all event handlers */
   private _events: FB.Dictionary<Function[]>;
   private _state: FB.StateTree;
   public client: FB.MqttClient;
@@ -226,6 +233,9 @@ export class Farmbot {
     return this.send(p);
   }
 
+  /** Retrieves all of the event handlers for a particular event.
+   * Returns an empty array if the event did not exist.
+    */
   event(name: string) {
     this._events[name] = this._events[name] || [];
     return this._events[name];
@@ -251,7 +261,9 @@ export class Farmbot {
   get channel() {
     let uuid = this.getState()["uuid"] || "lost_and_found";
     return {
+      /** From the browser, usually. */
       toDevice: `bot/${uuid}/from_clients`,
+      /** From farmbot */
       toClient: `bot/${uuid}/from_device`,
       status: `bot/${uuid}/status`,
       logs: `bot/${uuid}/logs`
@@ -260,6 +272,7 @@ export class Farmbot {
 
   publish(msg: Corpus.RpcRequest): void {
     if (this.client) {
+      /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
       throw new Error("Not connected to server");
@@ -268,14 +281,13 @@ export class Farmbot {
 
   send(input: Corpus.RpcRequest) {
     let that = this;
-    let msg = input;
     let rpcs = (input.body || []).map(x => x.kind).join(", ");
     let label = `${rpcs} ${JSON.stringify(input.body || [])}`;
     let time = that.getState()["timeout"] as number;
     let p = timerDefer(time, label);
-    console.log(`Sent: ${msg.args.data_label}`);
-    that.publish(msg);
-    that.on(msg.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+    console.log(`Sent: ${input.args.data_label}`);
+    that.publish(input);
+    that.on(input.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
       console.log(`Got ${response.args.data_label || "??"}`);
       switch (response.kind) {
         case "rpc_ok": return p.resolve(response);
@@ -291,6 +303,7 @@ export class Farmbot {
     return p.promise;
   };
 
+  /** Main entry point for all MQTT packets. */
   _onmessage(chan: string, buffer: Uint8Array) {
     try {
       /** UNSAFE CODE: TODO: Add user defined type guards? */
@@ -298,6 +311,7 @@ export class Farmbot {
     } catch (error) {
       throw new Error("Could not parse inbound message from MQTT.");
     }
+
     switch (chan) {
       case this.channel.logs: return this.emit("logs", msg);
       case this.channel.status: return this.emit("status", msg);

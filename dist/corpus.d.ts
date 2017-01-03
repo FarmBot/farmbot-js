@@ -250,9 +250,9 @@ export interface BotConfigUpdate {
     body?: undefined;
 }
 export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | McuConfigUpdate | BotConfigUpdate;
-export declare const LATEST_VERSION = 3;
-export declare const DIGITAL = 0;
-export declare const ANALOG = 1;
+export declare const LATEST_VERSION: number;
+export declare const DIGITAL: number;
+export declare const ANALOG: number;
 export declare type ALLOWED_PIN_MODES = 0 | 1;
 export declare type ALLOWED_MESSAGE_TYPES = "success" | "busy" | "warn" | "error" | "info" | "fun";
 export declare type ALLOWED_CHANNEL_NAMES = "ticker" | "toast";

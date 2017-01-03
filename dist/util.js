@@ -14,6 +14,7 @@ function pick(target, value, fallback) {
     return target[value] || fallback;
 }
 exports.pick = pick;
+// TODO: Make this a generic.
 function assign(target) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {

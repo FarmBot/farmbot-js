@@ -7,10 +7,16 @@ function coordinate(x, y, z) {
     return { kind: "coordinate", args: { x: x, y: y, z: z } };
 }
 function rpcRequest() {
-    return { kind: "rpc_request", args: { data_label: util_1.uuid() } };
+    return {
+        kind: "rpc_request",
+        args: {
+            data_label: util_1.uuid()
+        }
+    };
 }
 var Farmbot = (function () {
     function Farmbot(input) {
+        // I SENT A BOT MESSAGE WITH UUID OF 480293480293840298340298434289
         this._events = {};
         this._state = util_1.assign({}, Farmbot.defaults, input);
         this._decodeThatToken();
@@ -198,6 +204,9 @@ var Farmbot = (function () {
         p.body = [{ kind: "calibrate", args: args }];
         return this.send(p);
     };
+    /** Retrieves all of the event handlers for a particular event.
+     * Returns an empty array if the event did not exist.
+      */
     Farmbot.prototype.event = function (name) {
         this._events[name] = this._events[name] || [];
         return this._events[name];
@@ -224,7 +233,9 @@ var Farmbot = (function () {
         get: function () {
             var uuid = this.getState()["uuid"] || "lost_and_found";
             return {
+                /** From the browser, usually. */
                 toDevice: "bot/" + uuid + "/from_clients",
+                /** From farmbot */
                 toClient: "bot/" + uuid + "/from_device",
                 status: "bot/" + uuid + "/status",
                 logs: "bot/" + uuid + "/logs"
@@ -235,6 +246,7 @@ var Farmbot = (function () {
     });
     Farmbot.prototype.publish = function (msg) {
         if (this.client) {
+            /** SEE: https://github.com/mqttjs/MQTT.js#client */
             this.client.publish(this.channel.toDevice, JSON.stringify(msg));
         }
         else {
@@ -244,14 +256,13 @@ var Farmbot = (function () {
     ;
     Farmbot.prototype.send = function (input) {
         var that = this;
-        var msg = input;
         var rpcs = (input.body || []).map(function (x) { return x.kind; }).join(", ");
         var label = rpcs + " " + JSON.stringify(input.body || []);
         var time = that.getState()["timeout"];
         var p = fbpromise_1.timerDefer(time, label);
-        console.log("Sent: " + msg.args.data_label);
-        that.publish(msg);
-        that.on(msg.args.data_label, function (response) {
+        console.log("Sent: " + input.args.data_label);
+        that.publish(input);
+        that.on(input.args.data_label, function (response) {
             console.log("Got " + (response.args.data_label || "??"));
             switch (response.kind) {
                 case "rpc_ok": return p.resolve(response);
@@ -304,8 +315,8 @@ var Farmbot = (function () {
         that.client.on("message", that._onmessage.bind(that));
         return p.promise;
     };
+    Farmbot.VERSION = "2.5.0rc6";
+    Farmbot.defaults = { speed: 100, timeout: 6000 };
     return Farmbot;
 }());
-Farmbot.VERSION = "2.0.0-rc.9";
-Farmbot.defaults = { speed: 100, timeout: 6000 };
 exports.Farmbot = Farmbot;

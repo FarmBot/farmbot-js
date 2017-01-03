@@ -7,6 +7,7 @@ export declare class Farmbot {
         speed: number;
         timeout: number;
     };
+    /** Storage area for all event handlers */
     private _events;
     private _state;
     client: FB.MqttClient;
@@ -64,6 +65,9 @@ export declare class Farmbot {
     calibrate(args: {
         axis: Corpus.ALLOWED_AXIS;
     }): FB.Thenable<{}>;
+    /** Retrieves all of the event handlers for a particular event.
+     * Returns an empty array if the event did not exist.
+      */
     event(name: string): Function[];
     on(event: string, callback: Function): void;
     emit(event: string, data: any): void;
