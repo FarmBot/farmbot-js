@@ -18,7 +18,7 @@ import {
 import { pick, isCeleryScript } from "./util";
 
 export class Farmbot {
-    static VERSION = "2.5.0rc11";
+    static VERSION = "2.5.0rc12";
     static defaults = { speed: 100, timeout: 6000 };
 
     /** Storage area for all event handlers */
