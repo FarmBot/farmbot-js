@@ -1,3 +1,4 @@
+/** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
     /** Microcontroller configuration and settings. */
     mcu_params: McuParams;
@@ -9,6 +10,18 @@ export interface BotStateTree {
     configuration: Configuration;
     /** READ ONLY meta data about the FarmBot device. */
     readonly informational_settings: InformationalSettings;
+    /** Status of running regimens and sequences */
+    farm_scheduler: {
+        process_info: {
+            regimen: {
+                id?: number;
+            };
+            info: {
+                start_time: number;
+                status: "normal" | "paused" | "ready";
+            };
+        }[];
+    };
 }
 export interface McuParams {
     movement_invert_motor_y?: number | undefined;
