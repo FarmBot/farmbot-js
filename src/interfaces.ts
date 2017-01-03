@@ -24,14 +24,12 @@ export interface DeprecatedFarmScheduler {
 
 /** Going away soon. */
 export interface DeprecatedSchedulerInfo {
-  process_info: {
-    regimen: {
-      id?: number;
-    };
-    info: {
-      start_time: number;
-      status: "normal" | "paused" | "ready";
-    };
+  regimen: {
+    id?: number;
+  };
+  info: {
+    start_time: number;
+    status: "normal" | "paused" | "ready";
   };
 }
 
