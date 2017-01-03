@@ -282,8 +282,8 @@ var Farmbot = (function () {
                     return this.emit(msg.args.data_label, msg);
                 }
                 else {
-                    return console.warn("Noncompliant message received. " +
-                        "Is FarmBot OS up-to-date?");
+                    console.warn("Got malformed message. Out of date firmware?");
+                    return this.emit("malformed", msg);
                 }
             default: throw new Error("Never should see this.");
         }
