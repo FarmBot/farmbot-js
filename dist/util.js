@@ -11,7 +11,13 @@ function uuid() {
 exports.uuid = uuid;
 ;
 function pick(target, value, fallback) {
-    return target[value] || fallback;
+    var result = target[value];
+    if (typeof result === undefined) {
+        return fallback;
+    }
+    else {
+        return result;
+    }
 }
 exports.pick = pick;
 // TODO: Make this a generic.
@@ -44,9 +50,7 @@ exports.coordinate = coordinate;
 function rpcRequest() {
     return {
         kind: "rpc_request",
-        args: {
-            data_label: uuid()
-        }
+        args: { label: uuid() }
     };
 }
 exports.rpcRequest = rpcRequest;

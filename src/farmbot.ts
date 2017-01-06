@@ -18,7 +18,7 @@ import {
 import { pick, isCeleryScript } from "./util";
 
 export class Farmbot {
-    static VERSION = "2.5.0rc12";
+    static VERSION = "2.5.0rc13";
     static defaults = { speed: 100, timeout: 6000 };
 
     /** Storage area for all event handlers */
@@ -105,9 +105,9 @@ export class Farmbot {
         return this.send(p);
     }
 
-    execSequence(sub_sequence_id: number) {
+    execSequence(sequence_id: number) {
         let p = rpcRequest();
-        p.body = [{ kind: "execute", args: { sub_sequence_id } }];
+        p.body = [{ kind: "execute", args: { sequence_id } }];
         return this.send(p);
     }
 
@@ -172,10 +172,17 @@ export class Farmbot {
         p.body = [];
         Object
             .keys(update)
-            .forEach(function (key) {
+            .forEach(function (label) {
+                let value = pick<string | number | boolean>(update, label, "ERROR") || "ERROR!";
                 (p.body || []).push({
-                    kind: "mcu_config_update",
-                    args: { number: pick(update, key, 0), data_label: key }
+                    kind: "config_update",
+                    args: { package: "arduino_firmware" },
+                    body: [
+                        {
+                            kind: "pair",
+                            args: { value, label }
+                        }
+                    ]
                 });
             });
         return this.send(p);
@@ -187,10 +194,17 @@ export class Farmbot {
         p.body = [];
         Object
             .keys(update)
-            .forEach(function (key) {
+            .forEach(function (label) {
+                let value = pick<string | number | boolean>(update, label, "ERROR") || "ERROR!";
                 (p.body || []).push({
-                    kind: "bot_config_update",
-                    args: { number: pick(update, key, 0), data_label: key }
+                    kind: "config_update",
+                    args: { package: "farmbot_os" },
+                    body: [
+                        {
+                            kind: "pair",
+                            args: { value, label }
+                        }
+                    ]
                 });
             });
         return this.send(p);
@@ -203,7 +217,7 @@ export class Farmbot {
                 kind: "start_regimen",
                 args: {
                     regimen_id: args.regimen_id,
-                    data_label: uuid()
+                    label: uuid()
                 }
             }
         ];
@@ -218,7 +232,7 @@ export class Farmbot {
                 args: {
                     // HACK: The way start/stop regimen works right now is actually broke.
                     //       We don't want to fix until the JSON RPC upgrade is complete.
-                    data_label: args.regimen_id.toString()
+                    label: args.regimen_id.toString()
                 }
             }
         ];
@@ -281,7 +295,7 @@ export class Farmbot {
         let that = this;
         let done = false;
         return new Promise(function (resolve, reject) {
-            console.log(`Sent: ${input.args.data_label}`);
+            console.log(`Sent: ${input.args.label}`);
             that.publish(input);
             let label = (input.body || []).map(x => x.kind).join(", ");
             let time = that.getState()["timeout"] as number;
@@ -291,8 +305,8 @@ export class Farmbot {
                 }
             }, time);
 
-            that.on(input.args.data_label, function (response: Corpus.RpcOk | Corpus.RpcError) {
-                console.log(`Got ${response.args.data_label || "??"}`);
+            that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+                console.log(`Got ${response.args.label || "??"}`);
                 done = true;
                 switch (response.kind) {
                     case "rpc_ok": return resolve(response);
@@ -321,7 +335,7 @@ export class Farmbot {
             case this.channel.status: return this.emit("status", msg);
             case this.channel.toClient:
                 if (isCeleryScript(msg)) {
-                    return this.emit(msg.args.data_label, msg);
+                    return this.emit(msg.args.label, msg);
                 } else {
                     console.warn("Got malformed message. Out of date firmware?");
                     return this.emit("malformed", msg);

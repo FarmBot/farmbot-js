@@ -57,7 +57,7 @@ export interface ReadPin {
     kind: "read_pin";
     args: {
         pin_number: number;
-        data_label: string;
+        label: string;
         pin_mode: number;
     };
     comment?: string | undefined;
@@ -91,7 +91,7 @@ export interface SendMessage {
 export interface Execute {
     kind: "execute";
     args: {
-        sub_sequence_id: number;
+        sequence_id: number;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -181,7 +181,7 @@ export interface StartRegimen {
     kind: "start_regimen";
     args: {
         regimen_id: number;
-        data_label: string;
+        label: string;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -189,7 +189,7 @@ export interface StartRegimen {
 export interface StopRegimen {
     kind: "stop_regimen";
     args: {
-        data_label: string;
+        label: string;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -205,15 +205,15 @@ export interface Explanation {
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
-        data_label: string;
+        label: string;
     };
     comment?: string | undefined;
-    body?: (Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | McuConfigUpdate | Calibrate | BotConfigUpdate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage)[] | undefined;
+    body?: (Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage)[] | undefined;
 }
 export interface RpcOk {
     kind: "rpc_ok";
     args: {
-        data_label: string;
+        label: string;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -221,7 +221,7 @@ export interface RpcOk {
 export interface RpcError {
     kind: "rpc_error";
     args: {
-        data_label: string;
+        label: string;
     };
     comment?: string | undefined;
     body?: (Explanation)[] | undefined;
@@ -234,23 +234,25 @@ export interface Calibrate {
     comment?: string | undefined;
     body?: undefined;
 }
-export interface McuConfigUpdate {
-    kind: "mcu_config_update";
+export interface Pair {
+    kind: "pair";
     args: {
-        number: number;
-        data_label: string;
+        label: string;
+        value: string | number | Boolean;
     };
     comment?: string | undefined;
     body?: undefined;
 }
-export interface BotConfigUpdate {
-    kind: "bot_config_update";
-    args: {};
+export interface ConfigUpdate {
+    kind: "config_update";
+    args: {
+        package: string;
+    };
     comment?: string | undefined;
-    body?: undefined;
+    body?: (Pair)[] | undefined;
 }
-export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | McuConfigUpdate | BotConfigUpdate;
-export declare const LATEST_VERSION = 3;
+export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate;
+export declare const LATEST_VERSION = 4;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
 export declare type ALLOWED_PIN_MODES = 0 | 1;

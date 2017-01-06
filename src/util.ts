@@ -14,7 +14,12 @@ export function uuid() {
 export function pick<T>(target: { [k: string]: T | undefined },
   value: string,
   fallback: T) {
-  return target[value] || fallback;
+  let result = target[value];
+  if (typeof result === undefined) {
+    return fallback;
+  } else {
+    return result;
+  }
 }
 
 // TODO: Make this a generic.
@@ -43,8 +48,6 @@ export function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
 export function rpcRequest(): Corpus.RpcRequest {
   return {
     kind: "rpc_request",
-    args: {
-      data_label: uuid()
-    }
+    args: { label: uuid() }
   };
 }

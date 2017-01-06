@@ -76,9 +76,9 @@ var Farmbot = (function () {
         p.body = [{ kind: "emergency_unlock", args: {} }];
         return this.send(p);
     };
-    Farmbot.prototype.execSequence = function (sub_sequence_id) {
+    Farmbot.prototype.execSequence = function (sequence_id) {
         var p = util_1.rpcRequest();
-        p.body = [{ kind: "execute", args: { sub_sequence_id: sub_sequence_id } }];
+        p.body = [{ kind: "execute", args: { sequence_id: sequence_id } }];
         return this.send(p);
     };
     Farmbot.prototype.home = function (args) {
@@ -137,10 +137,17 @@ var Farmbot = (function () {
         p.body = [];
         Object
             .keys(update)
-            .forEach(function (key) {
+            .forEach(function (label) {
+            var value = util_2.pick(update, label, "ERROR") || "ERROR!";
             (p.body || []).push({
-                kind: "mcu_config_update",
-                args: { number: util_2.pick(update, key, 0), data_label: key }
+                kind: "config_update",
+                args: { package: "arduino_firmware" },
+                body: [
+                    {
+                        kind: "pair",
+                        args: { value: value, label: label }
+                    }
+                ]
             });
         });
         return this.send(p);
@@ -151,10 +158,17 @@ var Farmbot = (function () {
         p.body = [];
         Object
             .keys(update)
-            .forEach(function (key) {
+            .forEach(function (label) {
+            var value = util_2.pick(update, label, "ERROR") || "ERROR!";
             (p.body || []).push({
-                kind: "bot_config_update",
-                args: { number: util_2.pick(update, key, 0), data_label: key }
+                kind: "config_update",
+                args: { package: "farmbot_os" },
+                body: [
+                    {
+                        kind: "pair",
+                        args: { value: value, label: label }
+                    }
+                ]
             });
         });
         return this.send(p);
@@ -166,7 +180,7 @@ var Farmbot = (function () {
                 kind: "start_regimen",
                 args: {
                     regimen_id: args.regimen_id,
-                    data_label: util_1.uuid()
+                    label: util_1.uuid()
                 }
             }
         ];
@@ -180,7 +194,7 @@ var Farmbot = (function () {
                 args: {
                     // HACK: The way start/stop regimen works right now is actually broke.
                     //       We don't want to fix until the JSON RPC upgrade is complete.
-                    data_label: args.regimen_id.toString()
+                    label: args.regimen_id.toString()
                 }
             }
         ];
@@ -245,7 +259,7 @@ var Farmbot = (function () {
         var that = this;
         var done = false;
         return new Promise(function (resolve, reject) {
-            console.log("Sent: " + input.args.data_label);
+            console.log("Sent: " + input.args.label);
             that.publish(input);
             var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
             var time = that.getState()["timeout"];
@@ -254,8 +268,8 @@ var Farmbot = (function () {
                     reject(new Error(label + " timeout after " + time + " ms."));
                 }
             }, time);
-            that.on(input.args.data_label, function (response) {
-                console.log("Got " + (response.args.data_label || "??"));
+            that.on(input.args.label, function (response) {
+                console.log("Got " + (response.args.label || "??"));
                 done = true;
                 switch (response.kind) {
                     case "rpc_ok": return resolve(response);
@@ -284,7 +298,7 @@ var Farmbot = (function () {
             case this.channel.status: return this.emit("status", msg);
             case this.channel.toClient:
                 if (util_2.isCeleryScript(msg)) {
-                    return this.emit(msg.args.data_label, msg);
+                    return this.emit(msg.args.label, msg);
                 }
                 else {
                     console.warn("Got malformed message. Out of date firmware?");
@@ -317,6 +331,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "2.5.0rc12";
+Farmbot.VERSION = "2.5.0rc13";
 Farmbot.defaults = { speed: 100, timeout: 6000 };
 exports.Farmbot = Farmbot;

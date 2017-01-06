@@ -24,7 +24,7 @@ export declare class Farmbot {
     emergencyLock(): Promise<{}>;
     /** Unlock the bot when the user says it is safe. */
     emergencyUnlock(): Promise<{}>;
-    execSequence(sub_sequence_id: number): Promise<{}>;
+    execSequence(sequence_id: number): Promise<{}>;
     home(args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
