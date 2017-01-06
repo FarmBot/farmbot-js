@@ -138,7 +138,7 @@ var Farmbot = (function () {
         Object
             .keys(update)
             .forEach(function (label) {
-            var value = util_2.pick(update, label, "ERROR") || "ERROR!";
+            var value = util_2.pick(update, label, "ERROR");
             (p.body || []).push({
                 kind: "config_update",
                 args: { package: "arduino_firmware" },
@@ -159,7 +159,7 @@ var Farmbot = (function () {
         Object
             .keys(update)
             .forEach(function (label) {
-            var value = util_2.pick(update, label, "ERROR") || "ERROR!";
+            var value = util_2.pick(update, label, "ERROR");
             (p.body || []).push({
                 kind: "config_update",
                 args: { package: "farmbot_os" },

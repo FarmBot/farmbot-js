@@ -12,12 +12,7 @@ exports.uuid = uuid;
 ;
 function pick(target, value, fallback) {
     var result = target[value];
-    if (typeof result === undefined) {
-        return fallback;
-    }
-    else {
-        return result;
-    }
+    return (typeof result === undefined) ? fallback : result;
 }
 exports.pick = pick;
 // TODO: Make this a generic.

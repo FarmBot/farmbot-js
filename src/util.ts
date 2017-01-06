@@ -11,15 +11,9 @@ export function uuid() {
   return template.replace(/[xy]/g, replaceChar);
 };
 
-export function pick<T>(target: { [k: string]: T | undefined },
-  value: string,
-  fallback: T) {
+export function pick<T>(target: any, value: string, fallback: T) {
   let result = target[value];
-  if (typeof result === undefined) {
-    return fallback;
-  } else {
-    return result;
-  }
+  return (typeof result === undefined) ? fallback : result;
 }
 
 // TODO: Make this a generic.

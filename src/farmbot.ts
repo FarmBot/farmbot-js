@@ -16,7 +16,7 @@ import {
     Configuration
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
-
+type Primitive = string | number | boolean;
 export class Farmbot {
     static VERSION = "2.5.0rc13";
     static defaults = { speed: 100, timeout: 6000 };
@@ -173,7 +173,7 @@ export class Farmbot {
         Object
             .keys(update)
             .forEach(function (label) {
-                let value = pick<string | number | boolean>(update, label, "ERROR") || "ERROR!";
+                let value = pick<Primitive>(update, label, "ERROR");
                 (p.body || []).push({
                     kind: "config_update",
                     args: { package: "arduino_firmware" },
@@ -195,7 +195,7 @@ export class Farmbot {
         Object
             .keys(update)
             .forEach(function (label) {
-                let value = pick<string | number | boolean>(update, label, "ERROR") || "ERROR!";
+                let value = pick<Primitive>(update, label, "ERROR");
                 (p.body || []).push({
                     kind: "config_update",
                     args: { package: "farmbot_os" },
