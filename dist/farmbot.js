@@ -256,6 +256,7 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.prototype.send = function (input) {
+        console.dir(input);
         var that = this;
         var done = false;
         return new Promise(function (resolve, reject) {

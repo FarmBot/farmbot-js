@@ -292,6 +292,7 @@ export class Farmbot {
     };
 
     send(input: Corpus.RpcRequest) {
+        console.dir(input);
         let that = this;
         let done = false;
         return new Promise(function (resolve, reject) {
