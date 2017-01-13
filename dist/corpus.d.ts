@@ -251,7 +251,13 @@ export interface ConfigUpdate {
     comment?: string | undefined;
     body?: (Pair)[] | undefined;
 }
-export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate;
+export interface TakePhoto {
+    kind: "take_photo";
+    args: {};
+    comment?: string | undefined;
+    body?: undefined;
+}
+export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | TakePhoto;
 export declare const LATEST_VERSION = 4;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
