@@ -292,11 +292,9 @@ export class Farmbot {
     };
 
     send(input: Corpus.RpcRequest) {
-        console.dir(input);
         let that = this;
         let done = false;
         return new Promise(function (resolve, reject) {
-            console.log(`Sent: ${input.args.label}`);
             that.publish(input);
             let label = (input.body || []).map(x => x.kind).join(", ");
             let time = that.getState()["timeout"] as number;
@@ -307,7 +305,6 @@ export class Farmbot {
             }, time);
 
             that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
-                console.log(`Got ${response.args.label || "??"}`);
                 done = true;
                 switch (response.kind) {
                     case "rpc_ok": return resolve(response);
