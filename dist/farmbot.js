@@ -256,11 +256,9 @@ var Farmbot = (function () {
     };
     ;
     Farmbot.prototype.send = function (input) {
-        console.dir(input);
         var that = this;
         var done = false;
         return new Promise(function (resolve, reject) {
-            console.log("Sent: " + input.args.label);
             that.publish(input);
             var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
             var time = that.getState()["timeout"];
@@ -270,7 +268,6 @@ var Farmbot = (function () {
                 }
             }, time);
             that.on(input.args.label, function (response) {
-                console.log("Got " + (response.args.label || "??"));
                 done = true;
                 switch (response.kind) {
                     case "rpc_ok": return resolve(response);
