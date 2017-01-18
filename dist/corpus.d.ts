@@ -208,7 +208,7 @@ export interface RpcRequest {
         label: string;
     };
     comment?: string | undefined;
-    body?: (Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage)[] | undefined;
+    body?: (Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | TakePhoto | FactoryReset)[] | undefined;
 }
 export interface RpcOk {
     kind: "rpc_ok";
@@ -257,7 +257,13 @@ export interface TakePhoto {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | TakePhoto;
+export interface FactoryReset {
+    kind: "factory_reset";
+    args: {};
+    comment?: string | undefined;
+    body?: undefined;
+}
+export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | TakePhoto | FactoryReset;
 export declare const LATEST_VERSION = 4;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;

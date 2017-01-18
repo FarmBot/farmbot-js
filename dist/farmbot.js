@@ -62,6 +62,18 @@ var Farmbot = (function () {
         p.body = [{ kind: "check_updates", args: { package: "arduino_firmware" } }];
         return this.send(p);
     };
+    /** THIS WILL RESET EVERYTHING! Be careful!! */
+    Farmbot.prototype.factoryReset = function () {
+        var p = util_1.rpcRequest();
+        p.body = [{ kind: "factory_reset", args: {} }];
+        return this.send(p);
+    };
+    /** Shoot a photo from the boroscope and upload to cloud storage. */
+    Farmbot.prototype.takePhoto = function () {
+        var p = util_1.rpcRequest();
+        p.body = [{ kind: "take_photo", args: {} }];
+        return this.send(p);
+    };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
