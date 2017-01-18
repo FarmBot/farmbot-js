@@ -78,7 +78,8 @@ export interface McuParams {
   encoder_enabled_z?: number | undefined;
 }
 
-export interface Coordinate {
+/** 3 dimensional vector. */
+export interface Vector3 {
   x: number;
   y: number;
   z: number;
@@ -94,7 +95,7 @@ export type Pins = Dictionary<Pin | undefined>;
 export interface Configuration {
   os_auto_update?: boolean | undefined;
   fw_auto_update?: boolean | undefined;
-  steps_per_mm?: Partial<Coordinate>;
+  steps_per_mm?: Partial<Vector3>;
 }
 
 export interface InformationalSettings {
