@@ -78,6 +78,12 @@ export interface McuParams {
   encoder_enabled_z?: number | undefined;
 }
 
+export interface Coordinate {
+  x: number;
+  y: number;
+  z: number;
+}
+
 export interface Pin {
   mode: number;
   value: number;
@@ -88,7 +94,7 @@ export type Pins = Dictionary<Pin | undefined>;
 export interface Configuration {
   os_auto_update?: boolean | undefined;
   fw_auto_update?: boolean | undefined;
-  steps_per_mm?: number | undefined;
+  steps_per_mm?: Partial<Coordinate>;
 }
 
 export interface InformationalSettings {
