@@ -3,7 +3,7 @@ export interface BotStateTree {
     /** Microcontroller configuration and settings. */
     mcu_params: McuParams;
     /** Cartesian coordinates of the bot. */
-    location: Location;
+    location: [number, number, number];
     /** Lookup table, indexed by number for pin status */
     pins: Pins;
     /** User definable config settings.  */
@@ -11,27 +11,37 @@ export interface BotStateTree {
     /** READ ONLY meta data about the FarmBot device. */
     readonly informational_settings: InformationalSettings;
     /** Status of running regimens and sequences */
-    farm_scheduler: FarmScheduler;
+    farm_scheduler: DeprecatedFarmScheduler;
 }
-export declare type runningStatus = "normal" | "paused" | "ready";
-/** The tuple on the elixir side gets converted to this. */
-export interface RegimenInfo {
-    regimen: Regimen;
-    info: {
-        start_time: number;
-        status: runningStatus;
-    };
-}
-export interface FarmScheduler {
-    /** The queue of sequences to run **/
-    sequence_log: Sequence[];
+/** Going away soon. */
+export interface DeprecatedFarmScheduler {
     /** Currently alive Regimnes
      *  They can be running or paused.
      */
-    process_info: RegimenInfo[];
-    current_sequence: Sequence | null;
+    process_info: DeprecatedSchedulerInfo[];
 }
-/** Microcontroller configuration and settings. */
+/** Going away soon. */
+export interface DeprecatedSchedulerInfo {
+    regimen: {
+        id?: number;
+    };
+    info: {
+        start_time: number;
+        status: "normal" | "paused" | "ready";
+    };
+}
+/** Going away soon. */
+export interface DeprecatedSchedulerInfo {
+    process_info: {
+        regimen: {
+            id?: number;
+        };
+        info: {
+            start_time: number;
+            status: "normal" | "paused" | "ready";
+        };
+    };
+}
 export interface McuParams {
     movement_invert_motor_y?: number | undefined;
     movement_timeout_x?: number | undefined;
@@ -58,31 +68,31 @@ export interface McuParams {
     movement_min_spd_y?: number | undefined;
     movement_axis_nr_steps_x?: number | undefined;
     param_version?: number | undefined;
+    encoder_enabled_x?: number | undefined;
+    encoder_enabled_y?: number | undefined;
+    encoder_enabled_z?: number | undefined;
 }
-/** Cartesian coords of the bot. X, Y, Z, respectively. */
-export declare type Location = [number, number, number];
+/** 3 dimensional vector. */
+export interface Vector3 {
+    x: number;
+    y: number;
+    z: number;
+}
 export interface Pin {
     mode: number;
     value: number;
 }
-export declare type Pins = {
-    [num: string]: Pin | undefined;
-};
+export declare type Pins = Dictionary<Pin | undefined>;
 export interface Configuration {
     os_auto_update?: boolean | undefined;
     fw_auto_update?: boolean | undefined;
-    steps_per_mm?: number | undefined;
+    steps_per_mm?: Partial<Vector3>;
 }
 export interface InformationalSettings {
     controller_version?: string | undefined;
     throttled?: string | undefined;
     private_ip?: string | undefined;
     locked?: boolean | undefined;
-}
-export interface Thenable<T> {
-    then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
-    then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
-    catch<U>(onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface MqttClient {
@@ -95,54 +105,6 @@ export interface Dictionary<T> {
     [key: string]: T;
 }
 export declare type StateTree = Dictionary<string | number | boolean>;
-export declare type userVariables = "x" | "y" | "z" | "s" | "busy" | "last" | "pins" | "param_version" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "time" | "pin0" | "pin1" | "pin2" | "pin3" | "pin4" | "pin5" | "pin6" | "pin7" | "pin8" | "pin9" | "pin10" | "pin11" | "pin12" | "pin13";
-/** Names for a single step within a sequence.
- *  Not to be confused with the names of JSON RPC commands.
- * This is different. These names are only related to
- * the individual steps of a sequence object. */
-export declare type stepType = "emergency_stop" | "home_all" | "home_x" | "home_y" | "home_z" | "move_absolute" | "move_relative" | "write_pin" | "read_parameter" | "read_status" | "write_parameter" | "wait" | "send_message" | "if_statement" | "read_pin" | "execute";
-/** Color choices for sequence tiles. */
-export declare type Color = "blue" | "green" | "yellow" | "orange" | "purple" | "pink" | "gray" | "red";
-export interface StepCommand {
-    x?: number;
-    y?: number;
-    z?: number;
-    speed?: number;
-    delay?: number;
-    pin?: number;
-    mode?: number;
-    position?: number;
-    value?: string;
-    operator?: ">" | "<" | "!=" | "==";
-    variable?: userVariables;
-    sub_sequence_id?: string;
-}
-/** Similar to "Step", but "position" isnt mandatory. */
-export interface UnplacedStep {
-    message_type: stepType;
-    position?: number;
-    id?: number;
-    command: StepCommand;
-}
-/** One step in a larger "Sequence". */
-export interface Step extends UnplacedStep {
-    position: number;
-}
-export interface Sequence {
-    id?: number;
-    color: Color;
-    name: string;
-    steps: Step[];
-    dirty?: Boolean;
-}
-export interface Regimen {
-    id?: number;
-    /** Friendly identifier for humans to easily identify regimens. */
-    name: string;
-    color: Color;
-    regimen_items: Object[];
-    dirty?: boolean;
-}
 export interface ConstructorParams {
     /** API token which can be retrieved by logging into REST server or my.farmbot.io */
     token: string;
@@ -157,4 +119,3 @@ export interface APIToken {
     /** UUID of current bot. */
     bot: string;
 }
-export declare type configKey = "speed" | "x" | "y" | "z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_version" | "pin0" | "pin1" | "pin2" | "pin3" | "pin4" | "pin5" | "pin6" | "pin7" | "pin8" | "pin9" | "pin10" | "pin11" | "pin12" | "pin13";

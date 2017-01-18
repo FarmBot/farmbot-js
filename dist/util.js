@@ -10,6 +10,12 @@ function uuid() {
 }
 exports.uuid = uuid;
 ;
+function pick(target, value, fallback) {
+    var result = target[value];
+    return (typeof result === undefined) ? fallback : result;
+}
+exports.pick = pick;
+// TODO: Make this a generic.
 function assign(target) {
     var others = [];
     for (var _i = 1; _i < arguments.length; _i++) {
@@ -24,3 +30,22 @@ function assign(target) {
     return target;
 }
 exports.assign = assign;
+function isCeleryScript(x) {
+    // REMEMBER: (typeof null === "object"). PS: Sorry :(
+    var isObj = function (o) { return o && JSON.stringify(o)[0] === "{"; };
+    var hasKind = function (o) { return typeof o.kind === "string"; };
+    var hasArgs = function (o) { return isObj(o) && !!o.args; };
+    return isObj(x) && hasKind(x) && hasArgs(x);
+}
+exports.isCeleryScript = isCeleryScript;
+function coordinate(x, y, z) {
+    return { kind: "coordinate", args: { x: x, y: y, z: z } };
+}
+exports.coordinate = coordinate;
+function rpcRequest() {
+    return {
+        kind: "rpc_request",
+        args: { label: uuid() }
+    };
+}
+exports.rpcRequest = rpcRequest;

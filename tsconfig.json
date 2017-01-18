@@ -7,7 +7,10 @@
     "allowUnreachableCode": false,
     "strictNullChecks": true,
     "outDir": "./dist",
-    "types": []
+    "lib": [
+      "es2015",
+      "dom"
+    ]
   },
   "exclude": [
     "node_modules",
