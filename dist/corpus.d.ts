@@ -79,6 +79,7 @@ export interface Wait {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type SendMessageBodyItem = Channel;
 export interface SendMessage {
     kind: "send_message";
     args: {
@@ -86,7 +87,7 @@ export interface SendMessage {
         message_type: string;
     };
     comment?: string | undefined;
-    body?: (Channel)[] | undefined;
+    body?: SendMessageBodyItem[] | undefined;
 }
 export interface Execute {
     kind: "execute";
@@ -108,13 +109,14 @@ export interface If {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If;
 export interface Sequence {
     kind: "sequence";
     args: {
         version: number;
     };
     comment?: string | undefined;
-    body?: (MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If)[] | undefined;
+    body?: SequenceBodyItem[] | undefined;
 }
 export interface Home {
     kind: "home";
@@ -202,13 +204,14 @@ export interface Explanation {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | TakePhoto | FactoryReset;
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
         label: string;
     };
     comment?: string | undefined;
-    body?: (Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | TakePhoto | FactoryReset)[] | undefined;
+    body?: RpcRequestBodyItem[] | undefined;
 }
 export interface RpcOk {
     kind: "rpc_ok";
@@ -218,13 +221,14 @@ export interface RpcOk {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type RpcErrorBodyItem = Explanation;
 export interface RpcError {
     kind: "rpc_error";
     args: {
         label: string;
     };
     comment?: string | undefined;
-    body?: (Explanation)[] | undefined;
+    body?: RpcErrorBodyItem[] | undefined;
 }
 export interface Calibrate {
     kind: "calibrate";
@@ -243,13 +247,14 @@ export interface Pair {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type ConfigUpdateBodyItem = Pair;
 export interface ConfigUpdate {
     kind: "config_update";
     args: {
         package: string;
     };
     comment?: string | undefined;
-    body?: (Pair)[] | undefined;
+    body?: ConfigUpdateBodyItem[] | undefined;
 }
 export interface TakePhoto {
     kind: "take_photo";
