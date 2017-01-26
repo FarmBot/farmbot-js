@@ -1,3 +1,4 @@
+
 /*
 
 THIS INTERFACE WAS AUTO GENERATED ON 2017-01-26
@@ -248,8 +249,6 @@ export type RpcRequestBodyItem = Home
   | PowerOff
   | Reboot
   | TogglePin
-  | StartRegimen
-  | StopRegimen
   | ConfigUpdate
   | Calibrate
   | Execute
@@ -259,8 +258,8 @@ export type RpcRequestBodyItem = Home
   | Wait
   | ReadPin
   | SendMessage
-  | TakePhoto
-  | FactoryReset;
+  | FactoryReset
+  | ExecuteScript;
 
 export interface RpcRequest {
   kind: "rpc_request";

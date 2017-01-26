@@ -96,13 +96,6 @@ export class Farmbot {
         return this.send(p);
     }
 
-    /** Shoot a photo from the boroscope and upload to cloud storage. */
-    takePhoto() {
-        let p = rpcRequest();
-        p.body = [{ kind: "take_photo", args: {} }];
-        return this.send(p);
-    }
-
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
@@ -122,6 +115,14 @@ export class Farmbot {
     execSequence(sequence_id: number) {
         let p = rpcRequest();
         p.body = [{ kind: "execute", args: { sequence_id } }];
+        return this.send(p);
+    }
+
+    execScript(/** Filename of the script */label: string,
+        /** Optional ENV vars to pass the script */
+        envVars?: Corpus.Pair[] | undefined) {
+        let p = rpcRequest();
+        p.body = [{ kind: "execute_script", args: { label }, body: envVars }];
         return this.send(p);
     }
 
@@ -221,35 +222,6 @@ export class Farmbot {
                     ]
                 });
             });
-        return this.send(p);
-    }
-
-    startRegimen(args: { regimen_id: number }) {
-        let p = rpcRequest();
-        p.body = [
-            {
-                kind: "start_regimen",
-                args: {
-                    regimen_id: args.regimen_id,
-                    label: uuid()
-                }
-            }
-        ];
-        return this.send(p);
-    }
-
-    stopRegimen(args: { regimen_id: number }) {
-        let p = rpcRequest();
-        p.body = [
-            {
-                kind: "stop_regimen",
-                args: {
-                    // HACK: The way start/stop regimen works right now is actually broke.
-                    //       We don't want to fix until the JSON RPC upgrade is complete.
-                    label: args.regimen_id.toString()
-                }
-            }
-        ];
         return this.send(p);
     }
 

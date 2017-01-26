@@ -68,12 +68,6 @@ var Farmbot = (function () {
         p.body = [{ kind: "factory_reset", args: {} }];
         return this.send(p);
     };
-    /** Shoot a photo from the boroscope and upload to cloud storage. */
-    Farmbot.prototype.takePhoto = function () {
-        var p = util_1.rpcRequest();
-        p.body = [{ kind: "take_photo", args: {} }];
-        return this.send(p);
-    };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
@@ -91,6 +85,13 @@ var Farmbot = (function () {
     Farmbot.prototype.execSequence = function (sequence_id) {
         var p = util_1.rpcRequest();
         p.body = [{ kind: "execute", args: { sequence_id: sequence_id } }];
+        return this.send(p);
+    };
+    Farmbot.prototype.execScript = function (/** Filename of the script */ label, 
+        /** Optional ENV vars to pass the script */
+        envVars) {
+        var p = util_1.rpcRequest();
+        p.body = [{ kind: "execute_script", args: { label: label }, body: envVars }];
         return this.send(p);
     };
     Farmbot.prototype.home = function (args) {
@@ -183,33 +184,6 @@ var Farmbot = (function () {
                 ]
             });
         });
-        return this.send(p);
-    };
-    Farmbot.prototype.startRegimen = function (args) {
-        var p = util_1.rpcRequest();
-        p.body = [
-            {
-                kind: "start_regimen",
-                args: {
-                    regimen_id: args.regimen_id,
-                    label: util_1.uuid()
-                }
-            }
-        ];
-        return this.send(p);
-    };
-    Farmbot.prototype.stopRegimen = function (args) {
-        var p = util_1.rpcRequest();
-        p.body = [
-            {
-                kind: "stop_regimen",
-                args: {
-                    // HACK: The way start/stop regimen works right now is actually broke.
-                    //       We don't want to fix until the JSON RPC upgrade is complete.
-                    label: args.regimen_id.toString()
-                }
-            }
-        ];
         return this.send(p);
     };
     Farmbot.prototype.calibrate = function (args) {
