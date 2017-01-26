@@ -1,4 +1,3 @@
-
 /*
 
 THIS INTERFACE WAS AUTO GENERATED ON 2017-01-26
@@ -144,7 +143,8 @@ export type SequenceBodyItem = MoveAbsolute
   | Wait
   | SendMessage
   | Execute
-  | If;
+  | If
+  | ExecuteScript;
 
 export interface Sequence {
   kind: "sequence";

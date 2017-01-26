@@ -18,7 +18,7 @@ import {
 import { pick, isCeleryScript } from "./util";
 type Primitive = string | number | boolean;
 export class Farmbot {
-    static VERSION = "3.1.0";
+    static VERSION = "3.1.2";
     static defaults = { speed: 800, timeout: 6000 };
 
     /** Storage area for all event handlers */

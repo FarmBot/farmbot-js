@@ -109,7 +109,7 @@ export interface If {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If;
+export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript;
 export interface Sequence {
     kind: "sequence";
     args: {
