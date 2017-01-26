@@ -101,7 +101,7 @@ var Farmbot = (function () {
     Farmbot.prototype.moveAbsolute = function (args) {
         var p = util_1.rpcRequest();
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
-        speed = speed || 100;
+        speed = speed || Farmbot.defaults.speed;
         p.body = [
             {
                 kind: "move_absolute",
@@ -117,7 +117,7 @@ var Farmbot = (function () {
     Farmbot.prototype.moveRelative = function (args) {
         var p = util_1.rpcRequest();
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
-        speed = speed || 100;
+        speed = speed || Farmbot.defaults.speed;
         p.body = [{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }];
         return this.send(p);
     };
@@ -342,5 +342,5 @@ var Farmbot = (function () {
     return Farmbot;
 }());
 Farmbot.VERSION = "2.5.0rc14";
-Farmbot.defaults = { speed: 100, timeout: 6000 };
+Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
