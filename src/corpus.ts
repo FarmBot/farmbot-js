@@ -40,7 +40,7 @@ export interface MoveAbsolute {
   kind: "move_absolute";
   args: {
     location: Tool
-          | Coordinate;
+    | Coordinate;
     speed: number;
     offset: Coordinate;
   };
@@ -128,22 +128,22 @@ export interface If {
     op: string;
     rhs: number;
     _then: Execute
-          | Nothing;
+    | Nothing;
     _else: Execute
-          | Nothing;
+    | Nothing;
   };
   comment?: string | undefined;
   body?: undefined;
 }
 
 export type SequenceBodyItem = MoveAbsolute
-          | MoveRelative
-          | WritePin
-          | ReadPin
-          | Wait
-          | SendMessage
-          | Execute
-          | If;
+  | MoveRelative
+  | WritePin
+  | ReadPin
+  | Wait
+  | SendMessage
+  | Execute
+  | If;
 
 export interface Sequence {
   kind: "sequence";
@@ -230,25 +230,6 @@ export interface TogglePin {
   body?: undefined;
 }
 
-export interface StartRegimen {
-  kind: "start_regimen";
-  args: {
-    regimen_id: number;
-    label: string;
-  };
-  comment?: string | undefined;
-  body?: undefined;
-}
-
-export interface StopRegimen {
-  kind: "stop_regimen";
-  args: {
-    label: string;
-  };
-  comment?: string | undefined;
-  body?: undefined;
-}
-
 export interface Explanation {
   kind: "explanation";
   args: {
@@ -259,27 +240,27 @@ export interface Explanation {
 }
 
 export type RpcRequestBodyItem = Home
-          | EmergencyLock
-          | EmergencyUnlock
-          | ReadStatus
-          | Sync
-          | CheckUpdates
-          | PowerOff
-          | Reboot
-          | TogglePin
-          | StartRegimen
-          | StopRegimen
-          | ConfigUpdate
-          | Calibrate
-          | Execute
-          | MoveAbsolute
-          | MoveRelative
-          | WritePin
-          | Wait
-          | ReadPin
-          | SendMessage
-          | TakePhoto
-          | FactoryReset;
+  | EmergencyLock
+  | EmergencyUnlock
+  | ReadStatus
+  | Sync
+  | CheckUpdates
+  | PowerOff
+  | Reboot
+  | TogglePin
+  | StartRegimen
+  | StopRegimen
+  | ConfigUpdate
+  | Calibrate
+  | Execute
+  | MoveAbsolute
+  | MoveRelative
+  | WritePin
+  | Wait
+  | ReadPin
+  | SendMessage
+  | TakePhoto
+  | FactoryReset;
 
 export interface RpcRequest {
   kind: "rpc_request";
@@ -324,8 +305,8 @@ export interface Pair {
   args: {
     label: string;
     value: string
-          | number
-          | Boolean;
+    | number
+    | Boolean;
   };
   comment?: string | undefined;
   body?: undefined;
@@ -342,14 +323,6 @@ export interface ConfigUpdate {
   body?: ConfigUpdateBodyItem[] | undefined;
 }
 
-export interface TakePhoto {
-  kind: "take_photo";
-  args: {
-  };
-  comment?: string | undefined;
-  body?: undefined;
-}
-
 export interface FactoryReset {
   kind: "factory_reset";
   args: {
@@ -358,69 +331,78 @@ export interface FactoryReset {
   body?: undefined;
 }
 
+export type ExecuteScriptBodyItem = Pair;
+
+export interface ExecuteScript {
+  kind: "execute_script";
+  args: {
+    label: string;
+  };
+  comment?: string | undefined;
+  body?: ExecuteScriptBodyItem[] | undefined;
+}
+
 export type CeleryNode = Nothing
-          | Tool
-          | Coordinate
-          | MoveAbsolute
-          | MoveRelative
-          | WritePin
-          | ReadPin
-          | Channel
-          | Wait
-          | SendMessage
-          | Execute
-          | If
-          | Sequence
-          | Home
-          | EmergencyLock
-          | EmergencyUnlock
-          | ReadStatus
-          | Sync
-          | CheckUpdates
-          | PowerOff
-          | Reboot
-          | TogglePin
-          | StartRegimen
-          | StopRegimen
-          | Explanation
-          | RpcRequest
-          | RpcOk
-          | RpcError
-          | Calibrate
-          | Pair
-          | ConfigUpdate
-          | TakePhoto
-          | FactoryReset;
+  | Tool
+  | Coordinate
+  | MoveAbsolute
+  | MoveRelative
+  | WritePin
+  | ReadPin
+  | Channel
+  | Wait
+  | SendMessage
+  | Execute
+  | If
+  | Sequence
+  | Home
+  | EmergencyLock
+  | EmergencyUnlock
+  | ReadStatus
+  | Sync
+  | CheckUpdates
+  | PowerOff
+  | Reboot
+  | TogglePin
+  | Explanation
+  | RpcRequest
+  | RpcOk
+  | RpcError
+  | Calibrate
+  | Pair
+  | ConfigUpdate
+  | FactoryReset
+  | ExecuteScript;
 export const LATEST_VERSION = 4;
 export const DIGITAL = 0;
 export const ANALOG = 1;
 export type ALLOWED_PIN_MODES = 0
-          | 1;
+  | 1;
 export type ALLOWED_MESSAGE_TYPES = "success"
-          | "busy"
-          | "warn"
-          | "error"
-          | "info"
-          | "fun";
+  | "busy"
+  | "warn"
+  | "error"
+  | "info"
+  | "fun";
 export type ALLOWED_CHANNEL_NAMES = "ticker"
-          | "toast";
+  | "toast";
 export type ALLOWED_DATA_TYPES = "string"
-          | "integer";
+  | "integer";
 export type ALLOWED_OPS = "<"
-          | ">"
-          | "is"
-          | "not";
+  | ">"
+  | "is"
+  | "not";
 export type ALLOWED_PACKAGES = "farmbot_os"
-          | "arduino_firmware";
+  | "arduino_firmware";
 export type ALLOWED_AXIS = "x"
-          | "y"
-          | "z"
-          | "all";
+  | "y"
+  | "z"
+  | "all";
 export type Color = "blue"
-          | "green"
-          | "yellow"
-          | "orange"
-          | "purple"
-          | "pink"
-          | "gray"
-          | "red";
+  | "green"
+  | "yellow"
+  | "orange"
+  | "purple"
+  | "pink"
+  | "gray"
+  | "red";
