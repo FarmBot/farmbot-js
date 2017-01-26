@@ -20,8 +20,6 @@ export declare class Farmbot {
     checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET EVERYTHING! Be careful!! */
     factoryReset(): Promise<{}>;
-    /** Shoot a photo from the boroscope and upload to cloud storage. */
-    takePhoto(): Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
@@ -29,6 +27,9 @@ export declare class Farmbot {
     /** Unlock the bot when the user says it is safe. */
     emergencyUnlock(): Promise<{}>;
     execSequence(sequence_id: number): Promise<{}>;
+    execScript(/** Filename of the script */ label: string, 
+        /** Optional ENV vars to pass the script */
+        envVars?: Corpus.Pair[] | undefined): Promise<{}>;
     home(args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
@@ -59,12 +60,6 @@ export declare class Farmbot {
     updateMcu(update: Partial<McuParams>): Promise<{}>;
     /** Update a config */
     updateConfig(update: Partial<Configuration>): Promise<{}>;
-    startRegimen(args: {
-        regimen_id: number;
-    }): Promise<{}>;
-    stopRegimen(args: {
-        regimen_id: number;
-    }): Promise<{}>;
     calibrate(args: {
         axis: Corpus.ALLOWED_AXIS;
     }): Promise<{}>;

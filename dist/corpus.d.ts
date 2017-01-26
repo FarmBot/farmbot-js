@@ -79,6 +79,7 @@ export interface Wait {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type SendMessageBodyItem = Channel;
 export interface SendMessage {
     kind: "send_message";
     args: {
@@ -86,7 +87,7 @@ export interface SendMessage {
         message_type: string;
     };
     comment?: string | undefined;
-    body?: (Channel)[] | undefined;
+    body?: SendMessageBodyItem[] | undefined;
 }
 export interface Execute {
     kind: "execute";
@@ -108,13 +109,14 @@ export interface If {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript;
 export interface Sequence {
     kind: "sequence";
     args: {
         version: number;
     };
     comment?: string | undefined;
-    body?: (MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If)[] | undefined;
+    body?: SequenceBodyItem[] | undefined;
 }
 export interface Home {
     kind: "home";
@@ -177,23 +179,6 @@ export interface TogglePin {
     comment?: string | undefined;
     body?: undefined;
 }
-export interface StartRegimen {
-    kind: "start_regimen";
-    args: {
-        regimen_id: number;
-        label: string;
-    };
-    comment?: string | undefined;
-    body?: undefined;
-}
-export interface StopRegimen {
-    kind: "stop_regimen";
-    args: {
-        label: string;
-    };
-    comment?: string | undefined;
-    body?: undefined;
-}
 export interface Explanation {
     kind: "explanation";
     args: {
@@ -202,13 +187,14 @@ export interface Explanation {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | FactoryReset | ExecuteScript;
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
         label: string;
     };
     comment?: string | undefined;
-    body?: (Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | TakePhoto | FactoryReset)[] | undefined;
+    body?: RpcRequestBodyItem[] | undefined;
 }
 export interface RpcOk {
     kind: "rpc_ok";
@@ -218,13 +204,14 @@ export interface RpcOk {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type RpcErrorBodyItem = Explanation;
 export interface RpcError {
     kind: "rpc_error";
     args: {
         label: string;
     };
     comment?: string | undefined;
-    body?: (Explanation)[] | undefined;
+    body?: RpcErrorBodyItem[] | undefined;
 }
 export interface Calibrate {
     kind: "calibrate";
@@ -243,19 +230,14 @@ export interface Pair {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type ConfigUpdateBodyItem = Pair;
 export interface ConfigUpdate {
     kind: "config_update";
     args: {
         package: string;
     };
     comment?: string | undefined;
-    body?: (Pair)[] | undefined;
-}
-export interface TakePhoto {
-    kind: "take_photo";
-    args: {};
-    comment?: string | undefined;
-    body?: undefined;
+    body?: ConfigUpdateBodyItem[] | undefined;
 }
 export interface FactoryReset {
     kind: "factory_reset";
@@ -263,7 +245,16 @@ export interface FactoryReset {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | StartRegimen | StopRegimen | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | TakePhoto | FactoryReset;
+export declare type ExecuteScriptBodyItem = Pair;
+export interface ExecuteScript {
+    kind: "execute_script";
+    args: {
+        label: string;
+    };
+    comment?: string | undefined;
+    body?: ExecuteScriptBodyItem[] | undefined;
+}
+export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | FactoryReset | ExecuteScript;
 export declare const LATEST_VERSION = 4;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
