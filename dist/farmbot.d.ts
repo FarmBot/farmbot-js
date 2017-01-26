@@ -18,6 +18,10 @@ export declare class Farmbot {
     reboot(): Promise<{}>;
     checkUpdates(): Promise<{}>;
     checkArduinoUpdates(): Promise<{}>;
+    /** THIS WILL RESET EVERYTHING! Be careful!! */
+    factoryReset(): Promise<{}>;
+    /** Shoot a photo from the boroscope and upload to cloud storage. */
+    takePhoto(): Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */

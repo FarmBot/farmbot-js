@@ -43,34 +43,34 @@ export interface DeprecatedSchedulerInfo {
     };
 }
 export interface McuParams {
-    movement_invert_motor_y?: number | undefined;
-    movement_timeout_x?: number | undefined;
-    movement_min_spd_x?: number | undefined;
-    movement_invert_endpoints_x?: number | undefined;
-    movement_axis_nr_steps_z?: number | undefined;
-    movement_max_spd_z?: number | undefined;
-    movement_invert_motor_x?: number | undefined;
-    movement_steps_acc_dec_x?: number | undefined;
-    movement_home_up_x?: number | undefined;
-    movement_min_spd_z?: number | undefined;
-    movement_axis_nr_steps_y?: number | undefined;
-    movement_timeout_z?: number | undefined;
-    movement_steps_acc_dec_y?: number | undefined;
-    movement_home_up_z?: number | undefined;
-    movement_max_spd_x?: number | undefined;
-    movement_invert_motor_z?: number | undefined;
-    movement_steps_acc_dec_z?: number | undefined;
-    movement_home_up_y?: number | undefined;
-    movement_max_spd_y?: number | undefined;
-    movement_invert_endpoints_y?: number | undefined;
-    movement_invert_endpoints_z?: number | undefined;
-    movement_timeout_y?: number | undefined;
-    movement_min_spd_y?: number | undefined;
-    movement_axis_nr_steps_x?: number | undefined;
-    param_version?: number | undefined;
     encoder_enabled_x?: number | undefined;
     encoder_enabled_y?: number | undefined;
     encoder_enabled_z?: number | undefined;
+    movement_axis_nr_steps_x?: number | undefined;
+    movement_axis_nr_steps_y?: number | undefined;
+    movement_axis_nr_steps_z?: number | undefined;
+    movement_home_up_x?: number | undefined;
+    movement_home_up_y?: number | undefined;
+    movement_home_up_z?: number | undefined;
+    movement_invert_endpoints_x?: number | undefined;
+    movement_invert_endpoints_y?: number | undefined;
+    movement_invert_endpoints_z?: number | undefined;
+    movement_invert_motor_x?: number | undefined;
+    movement_invert_motor_y?: number | undefined;
+    movement_invert_motor_z?: number | undefined;
+    movement_max_spd_x?: number | undefined;
+    movement_max_spd_y?: number | undefined;
+    movement_max_spd_z?: number | undefined;
+    movement_min_spd_x?: number | undefined;
+    movement_min_spd_y?: number | undefined;
+    movement_min_spd_z?: number | undefined;
+    movement_steps_acc_dec_x?: number | undefined;
+    movement_steps_acc_dec_y?: number | undefined;
+    movement_steps_acc_dec_z?: number | undefined;
+    movement_timeout_x?: number | undefined;
+    movement_timeout_y?: number | undefined;
+    movement_timeout_z?: number | undefined;
+    param_version?: number | undefined;
 }
 /** 3 dimensional vector. */
 export interface Vector3 {

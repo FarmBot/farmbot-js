@@ -62,6 +62,18 @@ var Farmbot = (function () {
         p.body = [{ kind: "check_updates", args: { package: "arduino_firmware" } }];
         return this.send(p);
     };
+    /** THIS WILL RESET EVERYTHING! Be careful!! */
+    Farmbot.prototype.factoryReset = function () {
+        var p = util_1.rpcRequest();
+        p.body = [{ kind: "factory_reset", args: {} }];
+        return this.send(p);
+    };
+    /** Shoot a photo from the boroscope and upload to cloud storage. */
+    Farmbot.prototype.takePhoto = function () {
+        var p = util_1.rpcRequest();
+        p.body = [{ kind: "take_photo", args: {} }];
+        return this.send(p);
+    };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
@@ -89,7 +101,7 @@ var Farmbot = (function () {
     Farmbot.prototype.moveAbsolute = function (args) {
         var p = util_1.rpcRequest();
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
-        speed = speed || 100;
+        speed = speed || Farmbot.defaults.speed;
         p.body = [
             {
                 kind: "move_absolute",
@@ -105,7 +117,7 @@ var Farmbot = (function () {
     Farmbot.prototype.moveRelative = function (args) {
         var p = util_1.rpcRequest();
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
-        speed = speed || 100;
+        speed = speed || Farmbot.defaults.speed;
         p.body = [{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }];
         return this.send(p);
     };
@@ -330,5 +342,5 @@ var Farmbot = (function () {
     return Farmbot;
 }());
 Farmbot.VERSION = "2.5.0rc14";
-Farmbot.defaults = { speed: 100, timeout: 6000 };
+Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;

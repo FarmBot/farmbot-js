@@ -19,7 +19,7 @@ import { pick, isCeleryScript } from "./util";
 type Primitive = string | number | boolean;
 export class Farmbot {
     static VERSION = "2.5.0rc14";
-    static defaults = { speed: 100, timeout: 6000 };
+    static defaults = { speed: 800, timeout: 6000 };
 
     /** Storage area for all event handlers */
     private _events: Dictionary<Function[]>;
@@ -89,6 +89,20 @@ export class Farmbot {
         return this.send(p);
     }
 
+    /** THIS WILL RESET EVERYTHING! Be careful!! */
+    factoryReset() {
+        let p = rpcRequest();
+        p.body = [{ kind: "factory_reset", args: {} }];
+        return this.send(p);
+    }
+
+    /** Shoot a photo from the boroscope and upload to cloud storage. */
+    takePhoto() {
+        let p = rpcRequest();
+        p.body = [{ kind: "take_photo", args: {} }];
+        return this.send(p);
+    }
+
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit
      */
@@ -120,7 +134,7 @@ export class Farmbot {
     moveAbsolute(args: { x: number, y: number, z: number, speed?: number }) {
         let p = rpcRequest();
         let {x, y, z, speed} = args;
-        speed = speed || 100;
+        speed = speed || Farmbot.defaults.speed;
         p.body = [
             {
                 kind: "move_absolute",
@@ -137,7 +151,7 @@ export class Farmbot {
     moveRelative(args: { x: number, y: number, z: number, speed?: number }) {
         let p = rpcRequest();
         let {x, y, z, speed} = args;
-        speed = speed || 100;
+        speed = speed || Farmbot.defaults.speed;
         p.body = [{ kind: "move_relative", args: { x, y, z, speed } }];
         return this.send(p);
     }
