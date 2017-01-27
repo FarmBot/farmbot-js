@@ -1,5 +1,6 @@
 import * as Corpus from "./corpus";
-import { StateTree, MqttClient, ConstructorParams, McuParams, Configuration } from "./interfaces";
+import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
+export declare const NULL = "null";
 export declare class Farmbot {
     static VERSION: string;
     static defaults: {
@@ -58,6 +59,10 @@ export declare class Farmbot {
     sync(args?: {}): Promise<{}>;
     /** Update the arduino settings */
     updateMcu(update: Partial<McuParams>): Promise<{}>;
+    /** Set user ENV vars (usually used by 3rd party scripts).
+     * Set value to `undefined` to unset.
+     */
+    setUserEnv(configs: Dictionary<(string | undefined)>): Promise<{}>;
     /** Update a config */
     updateConfig(update: Partial<Configuration>): Promise<{}>;
     calibrate(args: {

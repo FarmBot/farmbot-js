@@ -17,6 +17,8 @@ import {
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
 type Primitive = string | number | boolean;
+export const NULL = "null";
+
 export class Farmbot {
     static VERSION = "3.1.4";
     static defaults = { speed: 800, timeout: 6000 };
@@ -200,6 +202,23 @@ export class Farmbot {
                     ]
                 });
             });
+        return this.send(p);
+    }
+
+    /** Set user ENV vars (usually used by 3rd party scripts).
+     * Set value to `undefined` to unset.
+     */
+    setUserEnv(configs: Dictionary<(string | undefined)>) {
+        let p = rpcRequest();
+        let body = Object
+            .keys(configs)
+            .map(function (label): Corpus.Pair {
+                return {
+                    kind: "pair",
+                    args: { label, value: (configs[label] || NULL) }
+                };
+            });
+        p.body = [{ kind: "set_user_env", args: {}, body }];
         return this.send(p);
     }
 
