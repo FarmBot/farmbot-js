@@ -11,7 +11,7 @@ export interface BotStateTree {
     /** READ ONLY meta data about the FarmBot device. */
     readonly informational_settings: InformationalSettings;
     /** Bag of misc. settings that any script author can use. */
-    user_env: Map<string, (string | undefined)>;
+    user_env: Dictionary<(string | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
         farm_events: ProcessInfo[];
