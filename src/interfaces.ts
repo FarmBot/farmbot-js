@@ -10,40 +10,20 @@ export interface BotStateTree {
   configuration: Configuration;
   /** READ ONLY meta data about the FarmBot device. */
   readonly informational_settings: InformationalSettings;
-  /** Status of running regimens and sequences */
-  farm_scheduler: DeprecatedFarmScheduler;
+  /** Bag of misc. settings that any script author can use. */
+  user_env: Dictionary<(string | undefined)>;
+  /** List of user accessible processes running on the bot. */
+  process_info: {
+    farm_events: ProcessInfo[];
+    regimens: ProcessInfo[];
+    farmwares: ProcessInfo[];
+  };
 };
 
-/** Going away soon. */
-export interface DeprecatedFarmScheduler {
-  /** Currently alive Regimnes
-   *  They can be running or paused.
-   */
-  process_info: DeprecatedSchedulerInfo[];
-}
-
-/** Going away soon. */
-export interface DeprecatedSchedulerInfo {
-  regimen: {
-    id?: number;
-  };
-  info: {
-    start_time: number;
-    status: "normal" | "paused" | "ready";
-  };
-}
-
-/** Going away soon. */
-export interface DeprecatedSchedulerInfo {
-  process_info: {
-    regimen: {
-      id?: number
-    };
-    info: {
-      start_time: number;
-      status: "normal" | "paused" | "ready";
-    };
-  };
+export interface ProcessInfo {
+  name: string;
+  uuid: string;
+  status: string;
 }
 
 // /** Microcontroller configuration and settings. */

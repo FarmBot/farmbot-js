@@ -2,6 +2,7 @@
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
+exports.NULL = "null";
 var Farmbot = (function () {
     function Farmbot(input) {
         this._events = {};
@@ -165,6 +166,22 @@ var Farmbot = (function () {
         });
         return this.send(p);
     };
+    /** Set user ENV vars (usually used by 3rd party scripts).
+     * Set value to `undefined` to unset.
+     */
+    Farmbot.prototype.setUserEnv = function (configs) {
+        var p = util_1.rpcRequest();
+        var body = Object
+            .keys(configs)
+            .map(function (label) {
+            return {
+                kind: "pair",
+                args: { label: label, value: (configs[label] || exports.NULL) }
+            };
+        });
+        p.body = [{ kind: "set_user_env", args: {}, body: body }];
+        return this.send(p);
+    };
     /** Update a config */
     Farmbot.prototype.updateConfig = function (update) {
         var p = util_1.rpcRequest();
@@ -315,6 +332,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.1.2";
+Farmbot.VERSION = "3.1.6";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
