@@ -20,7 +20,7 @@ type Primitive = string | number | boolean;
 export const NULL = "null";
 
 export class Farmbot {
-    static VERSION = "3.1.6";
+    static VERSION = "3.1.7";
     static defaults = { speed: 800, timeout: 6000 };
 
     /** Storage area for all event handlers */
