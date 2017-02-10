@@ -139,6 +139,12 @@ var Farmbot = (function () {
         p.body = [{ kind: "read_status", args: args }];
         return this.send(p);
     };
+    Farmbot.prototype.takePhoto = function (args) {
+        if (args === void 0) { args = {}; }
+        var p = util_1.rpcRequest();
+        p.body = [{ kind: "take_photo", args: args }];
+        return this.send(p);
+    };
     Farmbot.prototype.sync = function (args) {
         if (args === void 0) { args = {}; }
         var p = util_1.rpcRequest();

@@ -177,6 +177,12 @@ export class Farmbot {
         return this.send(p);
     }
 
+    takePhoto(args = {}) {
+        let p = rpcRequest();
+        p.body = [{ kind: "take_photo", args }];
+        return this.send(p);
+    }
+
     sync(args = {}) {
         let p = rpcRequest();
         p.body = [{ kind: "sync", args }];
