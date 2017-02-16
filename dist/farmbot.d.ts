@@ -56,6 +56,7 @@ export declare class Farmbot {
         pin_number: number;
     }): Promise<{}>;
     readStatus(args?: {}): Promise<{}>;
+    takePhoto(args?: {}): Promise<{}>;
     sync(args?: {}): Promise<{}>;
     /** Update the arduino settings */
     updateMcu(update: Partial<McuParams>): Promise<{}>;

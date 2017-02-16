@@ -1,3 +1,27 @@
+export interface InstallFarmware {
+    kind: "install_farmware";
+    args: {
+        url: string;
+    };
+    comment?: string | undefined;
+    body?: undefined;
+}
+export interface UpdateFarmware {
+    kind: "update_farmware";
+    args: {
+        package: string;
+    };
+    comment?: string | undefined;
+    body?: undefined;
+}
+export interface RemoveFarmware {
+    kind: "remove_farmware";
+    args: {
+        package: string;
+    };
+    comment?: string | undefined;
+    body?: undefined;
+}
 export interface Nothing {
     kind: "nothing";
     args: {};
@@ -109,7 +133,7 @@ export interface If {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript;
+export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript | TakePhoto;
 export interface Sequence {
     kind: "sequence";
     args: {
@@ -187,7 +211,7 @@ export interface Explanation {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv;
+export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | Wait | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | TakePhoto | AddPoint;
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
@@ -261,7 +285,22 @@ export interface SetUserEnv {
     comment?: string | undefined;
     body?: SetUserEnvBodyItem[] | undefined;
 }
-export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | FactoryReset | ExecuteScript | SetUserEnv;
+export declare type AddPointBodyItem = Pair;
+export interface AddPoint {
+    kind: "add_point";
+    args: {
+        location: Tool | Coordinate;
+    };
+    comment?: string | undefined;
+    body?: AddPointBodyItem[] | undefined;
+}
+export interface TakePhoto {
+    kind: "take_photo";
+    args: {};
+    comment?: string | undefined;
+    body?: undefined;
+}
+export declare type CeleryNode = InstallFarmware | UpdateFarmware | RemoveFarmware | Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | FactoryReset | ExecuteScript | SetUserEnv | AddPoint | TakePhoto;
 export declare const LATEST_VERSION = 4;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
@@ -273,6 +312,6 @@ export declare type ALLOWED_OPS = "<" | ">" | "is" | "not";
 export declare type ALLOWED_PACKAGES = "farmbot_os" | "arduino_firmware";
 export declare type ALLOWED_AXIS = "x" | "y" | "z" | "all";
 export declare type Color = "blue" | "green" | "yellow" | "orange" | "purple" | "pink" | "gray" | "red";
-export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "label" | "lhs" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_mode" | "pin_number" | "pin_value" | "rhs" | "sequence_id" | "speed" | "tool_id" | "value" | "version" | "x" | "y" | "z";
-export declare type LegalKindString = "_if" | "calibrate" | "channel" | "check_updates" | "config_update" | "coordinate" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "explanation" | "factory_reset" | "home" | "move_absolute" | "move_relative" | "nothing" | "pair" | "power_off" | "read_pin" | "read_status" | "reboot" | "rpc_error" | "rpc_ok" | "rpc_request" | "send_message" | "sequence" | "set_user_env" | "sync" | "toggle_pin" | "tool" | "wait" | "write_pin";
-export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "wait" | "write_pin";
+export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "label" | "lhs" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_mode" | "pin_number" | "pin_value" | "radius" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
+export declare type LegalKindString = "_if" | "add_point" | "calibrate" | "channel" | "check_updates" | "config_update" | "coordinate" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "explanation" | "factory_reset" | "home" | "install_farmware" | "move_absolute" | "move_relative" | "nothing" | "pair" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "rpc_error" | "rpc_ok" | "rpc_request" | "send_message" | "sequence" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "tool" | "update_farmware" | "wait" | "write_pin";
+export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "take_photo" | "wait" | "write_pin";
