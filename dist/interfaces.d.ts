@@ -70,11 +70,19 @@ export interface Configuration {
     fw_auto_update?: boolean | undefined;
     steps_per_mm?: Partial<Vector3>;
 }
+/** The possible values for the sync_msg property on informational_settings */
+export declare type SyncStatus = "synced" | "sync now" | "syncing" | "sync error" | "unknown";
 export interface InformationalSettings {
+    /** Current version of Farmbot OS */
     controller_version?: string | undefined;
+    /** If the rpi is throttled. (and having wifi issues) */
     throttled?: string | undefined;
+    /** Farmbot's private Ip address */
     private_ip?: string | undefined;
+    /** In a locked state */
     locked?: boolean | undefined;
+    /** The message to be displayed on the frontend for sync status. */
+    sync_status?: SyncStatus | undefined;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface MqttClient {
