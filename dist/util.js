@@ -42,10 +42,11 @@ function coordinate(x, y, z) {
     return { kind: "coordinate", args: { x: x, y: y, z: z } };
 }
 exports.coordinate = coordinate;
-function rpcRequest() {
+function rpcRequest(body) {
     return {
         kind: "rpc_request",
-        args: { label: uuid() }
+        args: { label: uuid() },
+        body: body
     };
 }
 exports.rpcRequest = rpcRequest;

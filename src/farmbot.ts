@@ -65,79 +65,85 @@ export class Farmbot {
     return val;
   };
 
+  installFarmware(url: string) {
+    return this.send(rpcRequest([{
+      kind: "install_farmware",
+      args: { url }
+    }]));
+  }
+
+  updateFarmware(pkg: string) {
+    return this.send(rpcRequest([{
+      kind: "update_farmware",
+      args: { package: pkg }
+    }]));
+  }
+
+  removeFarmware(pkg: string) {
+    return this.send(rpcRequest([{
+      kind: "remove_farmware",
+      args: { package: pkg }
+    }]));
+  }
+
   powerOff() {
-    let p = rpcRequest();
-    p.body = [{ kind: "power_off", args: {} }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "power_off", args: {} }]));
   }
 
   reboot() {
-    let p = rpcRequest();
-    p.body = [{ kind: "reboot", args: {} }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "reboot", args: {} }]));
   }
 
   checkUpdates() {
-    let p = rpcRequest();
-    p.body = [{ kind: "check_updates", args: { package: "farmbot_os" } }];
-    return this.send(p);
+    return this.send(rpcRequest([
+      { kind: "check_updates", args: { package: "farmbot_os" } }
+    ]));
   }
 
   // TODO: Merge this (legacy) method with #checkUpdates().
   checkArduinoUpdates() {
-    let p = rpcRequest();
-    p.body = [{ kind: "check_updates", args: { package: "arduino_firmware" } }];
-    return this.send(p);
+    return this.send(rpcRequest([
+      { kind: "check_updates", args: { package: "arduino_firmware" } }
+    ]));
   }
 
   /** THIS WILL RESET EVERYTHING! Be careful!! */
   factoryReset() {
-    let p = rpcRequest();
-    p.body = [{ kind: "factory_reset", args: {} }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "factory_reset", args: {} }]));
   }
 
   /** Lock the bot from moving. This also will pause running regimens and cause
    *  any running sequences to exit
    */
   emergencyLock() {
-    let p = rpcRequest();
-    p.body = [{ kind: "emergency_lock", args: {} }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "emergency_lock", args: {} }]));
   }
 
   /** Unlock the bot when the user says it is safe. */
   emergencyUnlock() {
-    let p = rpcRequest();
-    p.body = [{ kind: "emergency_unlock", args: {} }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
   }
 
   execSequence(sequence_id: number) {
-    let p = rpcRequest();
-    p.body = [{ kind: "execute", args: { sequence_id } }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "execute", args: { sequence_id } }]));
   }
 
   execScript(/** Filename of the script */label: string,
     /** Optional ENV vars to pass the script */
     envVars?: Corpus.Pair[] | undefined) {
-    let p = rpcRequest();
-    p.body = [{ kind: "execute_script", args: { label }, body: envVars }];
-    return this.send(p);
+    return this.send(rpcRequest([
+      { kind: "execute_script", args: { label }, body: envVars }
+    ]));
   }
 
   home(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
-    let p = rpcRequest();
-    p.body = [{ kind: "home", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "home", args }]));
   }
 
   moveAbsolute(args: { x: number, y: number, z: number, speed?: number }) {
-    let p = rpcRequest();
     let {x, y, z, speed} = args;
     speed = speed || Farmbot.defaults.speed;
-    p.body = [
+    return this.send(rpcRequest([
       {
         kind: "move_absolute",
         args: {
@@ -146,57 +152,43 @@ export class Farmbot {
           speed
         }
       }
-    ];
-    return this.send(p);
+    ]));
   }
 
   moveRelative(args: { x: number, y: number, z: number, speed?: number }) {
-    let p = rpcRequest();
     let {x, y, z, speed} = args;
     speed = speed || Farmbot.defaults.speed;
-    p.body = [{ kind: "move_relative", args: { x, y, z, speed } }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "move_relative", args: { x, y, z, speed } }]));
   }
 
   writePin(args: { pin_number: number; pin_value: number; pin_mode: number; }) {
-    let p = rpcRequest();
-    p.body = [{ kind: "write_pin", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "write_pin", args }]));
   }
 
   togglePin(args: { pin_number: number; }) {
-    let p = rpcRequest();
-    p.body = [{ kind: "toggle_pin", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "toggle_pin", args }]));
   }
 
   readStatus(args = {}) {
-    let p = rpcRequest();
-    p.body = [{ kind: "read_status", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "read_status", args }]));
   }
 
   takePhoto(args = {}) {
-    let p = rpcRequest();
-    p.body = [{ kind: "take_photo", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "take_photo", args }]));
   }
 
   sync(args = {}) {
-    let p = rpcRequest();
-    p.body = [{ kind: "sync", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "sync", args }]));
   }
 
   /** Update the arduino settings */
   updateMcu(update: Partial<McuParams>) {
-    let p = rpcRequest();
-    p.body = [];
+    let body: Corpus.RpcRequestBodyItem[] = [];
     Object
       .keys(update)
       .forEach(function (label) {
         let value = pick<Primitive>(update, label, "ERROR");
-        (p.body || []).push({
+        body.push({
           kind: "config_update",
           args: { package: "arduino_firmware" },
           body: [
@@ -207,14 +199,13 @@ export class Farmbot {
           ]
         });
       });
-    return this.send(p);
+    return this.send(rpcRequest(body));
   }
 
   /** Set user ENV vars (usually used by 3rd party scripts).
    * Set value to `undefined` to unset.
    */
   setUserEnv(configs: Dictionary<(string | undefined)>) {
-    let p = rpcRequest();
     let body = Object
       .keys(configs)
       .map(function (label): Corpus.Pair {
@@ -223,36 +214,27 @@ export class Farmbot {
           args: { label, value: (configs[label] || NULL) }
         };
       });
-    p.body = [{ kind: "set_user_env", args: {}, body }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
   }
 
   /** Update a config */
   updateConfig(update: Partial<Configuration>) {
-    let p = rpcRequest();
-    p.body = [];
-    Object
+    let body = Object
       .keys(update)
-      .forEach(function (label) {
+      .map((label): Corpus.Pair => {
         let value = pick<Primitive>(update, label, "ERROR");
-        (p.body || []).push({
-          kind: "config_update",
-          args: { package: "farmbot_os" },
-          body: [
-            {
-              kind: "pair",
-              args: { value, label }
-            }
-          ]
-        });
+        return { kind: "pair", args: { value, label } };
       });
-    return this.send(p);
+
+    return this.send(rpcRequest([{
+      kind: "config_update",
+      args: { package: "farmbot_os" },
+      body
+    }]));
   }
 
   calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
-    let p = rpcRequest();
-    p.body = [{ kind: "calibrate", args }];
-    return this.send(p);
+    return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
 
   /** Retrieves all of the event handlers for a particular event.

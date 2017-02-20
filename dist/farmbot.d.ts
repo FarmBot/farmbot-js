@@ -15,6 +15,9 @@ export declare class Farmbot {
     _decodeThatToken(): void;
     getState(): StateTree;
     setState(key: string, val: string | number | boolean): string | number | boolean;
+    installFarmware(url: string): Promise<{}>;
+    updateFarmware(pkg: string): Promise<{}>;
+    removeFarmware(pkg: string): Promise<{}>;
     powerOff(): Promise<{}>;
     reboot(): Promise<{}>;
     checkUpdates(): Promise<{}>;

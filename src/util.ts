@@ -39,9 +39,10 @@ export function coordinate(x: number, y: number, z: number): Corpus.Coordinate {
   return { kind: "coordinate", args: { x, y, z } };
 }
 
-export function rpcRequest(): Corpus.RpcRequest {
+export function rpcRequest(body: Corpus.RpcRequestBodyItem[]): Corpus.RpcRequest {
   return {
     kind: "rpc_request",
-    args: { label: uuid() }
+    args: { label: uuid() },
+    body
   };
 }
