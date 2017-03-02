@@ -46,3 +46,15 @@ export function rpcRequest(body: Corpus.RpcRequestBodyItem[]): Corpus.RpcRequest
     body
   };
 }
+
+export function toPairs(input: Dictionary<string | number | boolean | undefined>): Corpus.Pair[] {
+  return Object.keys(input).map(function (key): Corpus.Pair {
+    return {
+      kind: "pair",
+      args: {
+        label: key,
+        value: input[key] || "null"
+      }
+    };
+  });
+}

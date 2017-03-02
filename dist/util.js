@@ -50,3 +50,15 @@ function rpcRequest(body) {
     };
 }
 exports.rpcRequest = rpcRequest;
+function toPairs(input) {
+    return Object.keys(input).map(function (key) {
+        return {
+            kind: "pair",
+            args: {
+                label: key,
+                value: input[key] || "null"
+            }
+        };
+    });
+}
+exports.toPairs = toPairs;

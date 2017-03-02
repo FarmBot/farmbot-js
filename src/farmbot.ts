@@ -3,7 +3,8 @@ import { connect } from "mqtt";
 import {
   assign,
   rpcRequest,
-  coordinate
+  coordinate,
+  toPairs
 } from "./util";
 import {
   StateTree,
@@ -19,7 +20,7 @@ type Primitive = string | number | boolean;
 export const NULL = "null";
 
 export class Farmbot {
-  static VERSION = "3.1.9";
+  static VERSION = "3.2.0";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -235,6 +236,19 @@ export class Farmbot {
 
   calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
+  }
+
+  /** Lets the bot know that some resources it has in cache are no longer valid.
+   *
+   * Hopefully, some day we will not need this. Ideally, sending this message
+   * would be handled by the API, but currently the API is REST only and does
+   * not support push state messaging.
+   */
+  dataUpdate(value: Corpus.DataChangeType,
+    input: Partial<Record<Corpus.ResourceName, string>>) {
+    let body = toPairs(input);
+    let args = { value };
+    return this.send(rpcRequest([{ kind: "data_update", body, args }]));
   }
 
   /** Retrieves all of the event handlers for a particular event.

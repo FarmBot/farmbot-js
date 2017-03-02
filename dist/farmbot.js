@@ -192,6 +192,17 @@ var Farmbot = (function () {
     Farmbot.prototype.calibrate = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "calibrate", args: args }]));
     };
+    /** Lets the bot know that some resources it has in cache are no longer valid.
+     *
+     * Hopefully, some day we will not need this. Ideally, sending this message
+     * would be handled by the API, but currently the API is REST only and does
+     * not support push state messaging.
+     */
+    Farmbot.prototype.dataUpdate = function (value, input) {
+        var body = util_1.toPairs(input);
+        var args = { value: value };
+        return this.send(util_1.rpcRequest([{ kind: "data_update", body: body, args: args }]));
+    };
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
@@ -316,6 +327,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.1.9";
+Farmbot.VERSION = "3.2.0";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
