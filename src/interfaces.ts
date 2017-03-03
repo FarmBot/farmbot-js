@@ -80,9 +80,9 @@ export interface Configuration {
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus = "synced" |
-  "sync now" |
+  "sync_now" |
   "syncing" |
-  "sync error" |
+  "sync_error" |
   "unknown";
 
 export interface InformationalSettings {

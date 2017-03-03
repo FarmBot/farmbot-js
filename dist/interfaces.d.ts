@@ -71,7 +71,7 @@ export interface Configuration {
     steps_per_mm?: Partial<Vector3>;
 }
 /** The possible values for the sync_msg property on informational_settings */
-export declare type SyncStatus = "synced" | "sync now" | "syncing" | "sync error" | "unknown";
+export declare type SyncStatus = "synced" | "sync_now" | "syncing" | "sync_error" | "unknown";
 export interface InformationalSettings {
     /** Current version of Farmbot OS */
     controller_version?: string | undefined;
