@@ -26,44 +26,44 @@ export interface ProcessInfo {
   status: string;
 }
 
+export type McuParamName =
+  | "encoder_enabled_x"
+  | "encoder_enabled_y"
+  | "encoder_enabled_z"
+  | "movement_axis_nr_steps_x"
+  | "movement_axis_nr_steps_y"
+  | "movement_axis_nr_steps_z"
+  | "movement_enable_endpoints_x"
+  | "movement_enable_endpoints_y"
+  | "movement_enable_endpoints_z"
+  | "movement_home_up_x"
+  | "movement_home_up_y"
+  | "movement_home_up_z"
+  | "movement_invert_endpoints_x"
+  | "movement_invert_endpoints_y"
+  | "movement_invert_endpoints_z"
+  | "movement_invert_motor_x"
+  | "movement_invert_motor_y"
+  | "movement_invert_motor_z"
+  | "movement_max_spd_x"
+  | "movement_max_spd_y"
+  | "movement_max_spd_z"
+  | "movement_min_spd_x"
+  | "movement_min_spd_y"
+  | "movement_min_spd_z"
+  | "movement_steps_acc_dec_x"
+  | "movement_steps_acc_dec_y"
+  | "movement_steps_acc_dec_z"
+  | "movement_timeout_x"
+  | "movement_timeout_y"
+  | "movement_timeout_z"
+  | "param_version";
+
 // /** Microcontroller configuration and settings. */
-export interface McuParams {
-  encoder_enabled_x?: number | undefined;
-  encoder_enabled_y?: number | undefined;
-  encoder_enabled_z?: number | undefined;
-  movement_axis_nr_steps_x?: number | undefined;
-  movement_axis_nr_steps_y?: number | undefined;
-  movement_axis_nr_steps_z?: number | undefined;
-  movement_home_up_x?: number | undefined;
-  movement_home_up_y?: number | undefined;
-  movement_home_up_z?: number | undefined;
-  movement_invert_endpoints_x?: number | undefined;
-  movement_invert_endpoints_y?: number | undefined;
-  movement_invert_endpoints_z?: number | undefined;
-  movement_invert_motor_x?: number | undefined;
-  movement_invert_motor_y?: number | undefined;
-  movement_invert_motor_z?: number | undefined;
-  movement_max_spd_x?: number | undefined;
-  movement_max_spd_y?: number | undefined;
-  movement_max_spd_z?: number | undefined;
-  movement_min_spd_x?: number | undefined;
-  movement_min_spd_y?: number | undefined;
-  movement_min_spd_z?: number | undefined;
-  movement_steps_acc_dec_x?: number | undefined;
-  movement_steps_acc_dec_y?: number | undefined;
-  movement_steps_acc_dec_z?: number | undefined;
-  movement_timeout_x?: number | undefined;
-  movement_timeout_y?: number | undefined;
-  movement_timeout_z?: number | undefined;
-  param_version?: number | undefined;
-}
+export type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
 
 /** 3 dimensional vector. */
-export interface Vector3 {
-  x: number;
-  y: number;
-  z: number;
-}
+export interface Vector3 { x: number; y: number; z: number; }
 
 export interface Pin {
   mode: number;
@@ -88,6 +88,8 @@ export type SyncStatus = "synced" |
 export interface InformationalSettings {
   /** Current version of Farmbot OS */
   controller_version?: string | undefined;
+  /** Arduino firmware version. */
+  firmware_version?: string | undefined;
   /** If the rpi is throttled. (and having wifi issues) */
   throttled?: string | undefined;
   /** Farmbot's private Ip address */

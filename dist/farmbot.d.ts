@@ -78,7 +78,7 @@ export declare class Farmbot {
      * would be handled by the API, but currently the API is REST only and does
      * not support push state messaging.
      */
-    dataUpdate(value: Corpus.DataChangeType, input: Partial<Record<Corpus.ResourceName, string>>): Promise<{}>;
+    dataUpdate(value: Corpus.DataChangeType, input: Partial<Record<Corpus.ResourceName, string>>): void;
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */

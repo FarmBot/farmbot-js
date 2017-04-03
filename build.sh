@@ -8,6 +8,4 @@ rm ./dist/*.js
 node_modules/typescript/bin/tsc
 
 # Commit
-git add -A
-git commit -am 'Automated build.'
-npm version patch
+echo "Now commit this and push up. Then `npm publish`"

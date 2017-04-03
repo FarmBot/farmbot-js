@@ -20,7 +20,7 @@ type Primitive = string | number | boolean;
 export const NULL = "null";
 
 export class Farmbot {
-  static VERSION = "3.1.13";
+  static VERSION = "3.2.0";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -248,7 +248,9 @@ export class Farmbot {
     input: Partial<Record<Corpus.ResourceName, string>>) {
     let body = toPairs(input);
     let args = { value };
-    return this.send(rpcRequest([{ kind: "data_update", body, args }]));
+    // I'm using .publish() instead of .send() because confirmation requests are
+    // of less importance right now - RC 2 APR 17.
+    return this.publish(rpcRequest([{ kind: "data_update", body, args }]));
   }
 
   /** Retrieves all of the event handlers for a particular event.
