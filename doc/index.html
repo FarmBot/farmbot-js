@@ -72,6 +72,7 @@
 					<li><a href="http://caniuse.com/#feat=websockets">Websockets</a>.</li>
 					<li>JSON (any browser made after 1942).</li>
 				</ul>
+				<p>It is theoretically possible to run FarmBotJS in a Node environment, but we do not test against Node based setups.</p>
 				<h2 id="installation">Installation</h2>
 				<pre><code>npm <span class="hljs-keyword">install</span> farmbot
 </code></pre><p>Raise an issue if you require support with other package managers such as Bower. We don&#39;t support them currently, but can if there is a need.</p>
@@ -85,65 +86,45 @@
 <span class="hljs-keyword">var</span> SUPER_SECRET_TOKEN = <span class="hljs-string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTIzQHRlc3QuY29tIiwiaWF0IjoxNDU5MTA5NzI4LCJqdGkiOiI5MjJhNWEwZC0wYjNhLTQ3NjctOTMxOC0xZTQxYWU2MDAzNTIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvIiwiZXhwIjoxNDU5NDU1MzI4LCJtcXR0IjoibG9jYWxob3N0IiwiYm90IjoiYWE3YmIzN2YtNWJhMy00NjU0LWIyZTQtNThlZDU3NDY1MDhjIn0.KpkNGR9YH68AF3iHP48GormqXzspBJrDGm23aMFGyL_eRIN8iKzy4gw733SaJgFjmebJOqZkz3cly9P5ZpCKwlaxAyn9RvfjQgFcUK0mywWAAvKp5lHfOFLhBBGICTW1r4HcZBgY1zTzVBw4BqS4zM7Y0BAAsflYRdl4dDRG_236p9ETCj0MSYxFagfLLLq0W63943jSJtNwv_nzfqi3TTi0xASB14k5vYMzUDXrC-Z2iBdgmwAYUZUVTi2HsfzkIkRcTZGE7l-rF6lvYKIiKpYx23x_d7xGjnQb8hqbDmLDRXZJnSBY3zGY7oEURxncGBMUp4F_Yaf3ftg4Ry7CiA"</span>;
 
 <span class="hljs-keyword">let</span> bot = <span class="hljs-keyword">new</span> Farmbot({ <span class="hljs-attr">token</span>: SUPER_SECRET_TOKEN });
+
 bot
   .connect()
-  .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">bot</span>) </span>{
-      <span class="hljs-keyword">return</span> bot.moveRelative({<span class="hljs-attr">x</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">z</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">speed</span>: <span class="hljs-number">100</span>});
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> bot.moveRelative({ <span class="hljs-attr">x</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">z</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">speed</span>: <span class="hljs-number">100</span> });
   });
 </code></pre>
-				<h1 id="publishing">Publishing</h1>
-				<ol>
-					<li><code>webpack</code></li>
-					<li><code>npm publish</code></li>
-				</ol>
 				<h1 id="sending-commands-to-a-farmbot-object">Sending Commands to a Farmbot Object</h1>
 				<pre><code class="lang-javascript">
 bot
   .connect()
   .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">bot</span>)</span>{
-    alert(<span class="hljs-string">"Bot online!"</span>);
-    bot.emergencyStop(); <span class="hljs-comment">// You can chain commands.</span>
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Bot online!"</span>);
+    <span class="hljs-keyword">return</span> bot.emergencyStop(); <span class="hljs-comment">// You can chain commands.</span>
   })
   .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">bot</span>)</span>{
-    alert(<span class="hljs-string">"Bot has stopped!"</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Bot has stopped!"</span>);
   })
   .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
-    alert(<span class="hljs-string">"Something went wrong :("</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Something went wrong :("</span>);
   });
 </code></pre>
 				<h2 id="basic-rpc-commands">Basic RPC Commands</h2>
-				<p>Call RPC commands using the corresponding method on <code>bot</code>. All RPC commands return a promise. Timeout is set at <code>1000 ms</code> by default and can be reconfigured by changing the bot <code>timeout</code> propery on instantiation or via <code>bot.setState(&quot;timeout&quot;, 999)</code>.</p>
+				<p>Call RPC commands using the corresponding method on <code>bot</code>. All RPC commands return a promise. Timeout is set at <code>6000 ms</code> by default and can be reconfigured by changing the bot <code>timeout</code> propery on instantiation or via <code>bot.setState(&quot;timeout&quot;, 999)</code>.</p>
 				<p>Example:</p>
 				<pre><code class="lang-javascript">
-  bot
-    .homeX()
-    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ack</span>)</span>{
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"X Axis is now at 0."</span>);
-    })
-    .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>)</span>{
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Failed to bring X axis home."</span>);
-    })
+bot
+  .home({ <span class="hljs-attr">axis</span>: <span class="hljs-string">"x"</span>, <span class="hljs-attr">speed</span>: <span class="hljs-number">800</span> })
+  .then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">ack</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"X Axis is now at 0."</span>);
+  })
+  .catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Failed to bring X axis home."</span>);
+  })
 </code></pre>
 				<p>Currently supported commands:</p>
-				<ul>
-					<li>emergencyStop</li>
-					<li>execSequence</li>
-					<li>homeAll</li>
-					<li>homeX</li>
-					<li>homeY</li>
-					<li>homeZ</li>
-					<li>moveAbsolute({x:, y:, z:})</li>
-					<li>moveRelative({x:, y:, z:})</li>
-					<li>pinWrite(num, val, mode)</li>
-					<li>readStatus</li>
-					<li>send(commandObject)</li>
-					<li>sync</li>
-					<li>updateMcu</li>
-					<li>send(messageObject)</li>
-					<li>calibrate(&quot;x&quot;|&quot;y&quot;|&quot;z&quot;)<h2 id="using-events">Using Events</h2>
-					</li>
-				</ul>
-				<pre><code>  <span class="hljs-keyword">var</span> bot = Farmbot({<span class="hljs-attr">uuid</span>: <span class="hljs-string">'---'</span>, <span class="hljs-attr">token</span>: <span class="hljs-string">'---'</span>});
+				<p>:star:<a href="https://cdn.rawgit.com/FarmBot/farmbot-js/master/doc/classes/_farmbot_.farmbot.html">See the documentation</a>:star:</p>
+				<h2 id="using-events">Using Events</h2>
+				<pre><code class="lang-javascript">  <span class="hljs-keyword">var</span> bot = Farmbot({<span class="hljs-attr">uuid</span>: <span class="hljs-string">'---'</span>, <span class="hljs-attr">token</span>: <span class="hljs-string">'---'</span>});
   bot.on(<span class="hljs-string">"eventName"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data, eventName</span>) </span>{
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"I just got an"</span> + eventName + <span class="hljs-string">" event!"</span>);
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"This is the payload: "</span> + data);
@@ -153,32 +134,23 @@ bot
   bot.emit(<span class="hljs-string">"eventName"</span>, <span class="hljs-string">"any javascript object or primitive"</span>);
   <span class="hljs-keyword">var</span> eventHandlers = bot.event(<span class="hljs-string">"eventName"</span>);
    <span class="hljs-comment">// [function(){...}]</span>
-</code></pre><h2 id="common-events">Common Events</h2>
+</code></pre>
+				<h2 id="common-events">Common Events</h2>
 				<ul>
+					<li><code>status</code>: Most important. When the REMOTE state changes (eg: &quot;x&quot; goes from 0 to 100), the bot will emit this event.</li>
 					<li><code>*</code>: Catch all events (for debugging).</li>
 					<li><code>ready</code>: Client is connected and subscribed to bot.</li>
-					<li><code>disconnect</code>: Connection lost. <strong>Note: FarmbotJS won&#39;t auto-reconnect</strong>.</li>
-					<li><code>message</code>: When the bot gets a <em>non-rpc</em> command, it is regarded as a &#39;message&#39;. Deprecated.</li>
-					<li><code>change</code>: The bot object&#39;s internal state has changed.</li>
-					<li><code>notification</code>: The bot is sending you an &quot;unsolicited&quot; notification, such as a log notification or a status update.</li>
+					<li><code>logs</code>: The bot will send logs to this channel, usually from <code>STDOUT</code> on the device.</li>
+					<li><code>disconnect</code>: Connection lost. <strong>Note: FarmbotJS will try to auto-reconnect</strong>.</li>
+					<li><code>malformed</code>: When the bot gets a bad RPC command, it will notify you via this channel.</li>
+					<li><code>change</code>: The bot object&#39;s (local) internal state has changed, usually as a result of FarmBotJS configuration updates.</li>
 					<li><code>&lt;random uuid&gt;</code>: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request&#39;s UUID. Mostly for internal use.</li>
 				</ul>
 				<h2 id="internal-state-and-config">Internal State and Config</h2>
 				<p>The bot object keeps all state in one place for sanity. This includes things like configuration options, current position, etc. All updates to the bot&#39;s state are broadcast with a <code>change</code> event, that reports current and previous state value as it changes.</p>
 				<ul>
 					<li><code>bot.getState()</code>: Get copy of Farmbot status variables (read only).</li>
-					<li><code>bot.setState(name, value)</code>: Set state value &#39;x&#39; to &#39;y&#39;. Ex: <code>bot.setState(&#39;uuid&#39;, &#39;---&#39;)</code>. Emits a <code>change</code> event.</li>
-				</ul>
-				<h2 id="todo">TODO</h2>
-				<ul>
-					<li>[ ] Convert hardcoded strings, &quot;magic numbers&quot; and event names to constants.</li>
-					<li>[ ] Get compliant with A+ promise spec.</li>
-					<li>[ ] Start using <code>@types/promise</code> instead of re-writing custom interfaces.</li>
-					<li>[ ] Track state changes when bot returns a status object.<pre><code> - define an `isStatusUpdate` <span class="hljs-keyword">type</span> guard.
- - <span class="hljs-keyword">Add</span> `maybeUpdateState` <span class="hljs-function"><span class="hljs-keyword">method</span>.
-   - <span class="hljs-title">emit</span> `<span class="hljs-title">change</span>` <span class="hljs-title">event</span> <span class="hljs-title">in</span> <span class="hljs-title">there</span>.
-   - <span class="hljs-title">Call</span> <span class="hljs-title">it</span> <span class="hljs-title">inside</span> <span class="hljs-title">of</span> `<span class="hljs-title">send</span><span class="hljs-params">()</span>`.</span>
-</code></pre></li>
+					<li><code>bot.setState(name, value)</code>: Set state configuration &#39;A&#39; to value &#39;B&#39;. Ex: <code>bot.setState(&#39;uuid&#39;, &#39;---&#39;)</code>. Emits a <code>change</code> event.</li>
 				</ul>
 			</div>
 		</div>
@@ -189,19 +161,22 @@ bot
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_corpus_.html">"corpus"</a>
+						<a href="modules/_scratchpad_.html">"scratchpad"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_farmbot_.html">"farmbot"</a>
+						<a href="modules/_src_corpus_.html">"src/corpus"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_index_.html">"index"</a>
+						<a href="modules/_src_farmbot_.html">"src/farmbot"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_interfaces_.html">"interfaces"</a>
+						<a href="modules/_src_index_.html">"src/index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_util_.html">"util"</a>
+						<a href="modules/_src_interfaces_.html">"src/interfaces"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_src_util_.html">"src/util"</a>
 					</li>
 				</ul>
 			</nav>
