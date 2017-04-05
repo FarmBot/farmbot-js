@@ -34,7 +34,7 @@ export class Farmbot {
     this._decodeThatToken();
   }
 
-  _decodeThatToken() {
+  private _decodeThatToken() {
     let token: APIToken;
     try {
       let str = (this.getState()["token"] as string);
@@ -328,7 +328,7 @@ export class Farmbot {
   };
 
   /** Main entry point for all MQTT packets. */
-  _onmessage(chan: string, buffer: Uint8Array) {
+  private _onmessage(chan: string, buffer: Uint8Array) {
     try {
       /** UNSAFE CODE: TODO: Add user defined type guards? */
       var msg = JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;

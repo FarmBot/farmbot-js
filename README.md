@@ -95,7 +95,7 @@ Currently supported commands:
  * pinWrite(num, val, mode)
  * readStatus
  * send(commandObject)
- * syncSequence
+ * sync
  * updateMcu
  * send(messageObject)
  * calibrate("x"|"y"|"z")
