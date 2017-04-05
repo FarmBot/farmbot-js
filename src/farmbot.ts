@@ -18,6 +18,10 @@ import {
 import { pick, isCeleryScript } from "./util";
 type Primitive = string | number | boolean;
 export const NULL = "null";
+const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
+const ERR_MISSING_UUID = "MISSING_UUID";
+const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
+const UUID = "uuid";
 
 export class Farmbot {
   static VERSION = "3.2.0";
@@ -43,14 +47,14 @@ export class Farmbot {
       token = JSON.parse(plaintext);
     } catch (e) {
       console.warn(e);
-      throw new Error("Unable to parse token. Is it properly formatted?");
+      throw new Error(ERR_TOKEN_PARSE);
     }
-    let mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
+    let mqttUrl = token.mqtt || ERR_MISSING_MQTT;
     let isSecure = location.protocol === "https:";
     let protocol = isSecure ? "wss://" : "ws://";
     let port = isSecure ? 443 : 3002;
     this.setState("mqttServer", `${protocol}${mqttUrl}:${port}`);
-    this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
+    this.setState(UUID, token.bot || ERR_MISSING_UUID);
   }
 
   getState(): StateTree {
@@ -279,7 +283,7 @@ export class Farmbot {
   }
 
   get channel() {
-    let uuid = this.getState()["uuid"] || "lost_and_found";
+    let uuid = this.getState()[UUID] || ERR_MISSING_UUID;
     return {
       /** From the browser, usually. */
       toDevice: `bot/${uuid}/from_clients`,
