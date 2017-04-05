@@ -82,7 +82,7 @@ bot
 
 Currently supported commands:
 
-[See the documentation](https://cdn.rawgit.com/FarmBot/farmbot-js/master/doc/index.html)
+:star:[See the documentation](https://cdn.rawgit.com/FarmBot/farmbot-js/master/doc/classes/_farmbot_.farmbot.html):star:
 
 ## Using Events
 
@@ -101,13 +101,13 @@ Currently supported commands:
 
 ## Common Events
 
+ * `status`: Most important. When the REMOTE state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
  * `*`: Catch all events (for debugging).
  * `ready`: Client is connected and subscribed to bot.
- * `disconnect`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
- * `change`: The bot object's (local) internal state has changed, usually as a result of FarmBotJS configuration updates.
  * `logs`: The bot will send logs to this channel, usually from `STDOUT` on the device.
- * `status`: Most important. When the REMOTE state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
+ * `disconnect`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
  * `malformed`: When the bot gets a bad RPC command, it will notify you via this channel.
+ * `change`: The bot object's (local) internal state has changed, usually as a result of FarmBotJS configuration updates.
  * `<random uuid>`: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request's UUID. Mostly for internal use.
 
 ## Internal State and Config
