@@ -3,6 +3,10 @@ var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
 exports.NULL = "null";
+var ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
+var ERR_MISSING_UUID = "MISSING_UUID";
+var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
+var UUID = "uuid";
 var Farmbot = (function () {
     function Farmbot(input) {
         this._events = {};
@@ -19,19 +23,23 @@ var Farmbot = (function () {
         }
         catch (e) {
             console.warn(e);
-            throw new Error("Unable to parse token. Is it properly formatted?");
+            throw new Error(ERR_TOKEN_PARSE);
         }
-        var mqttUrl = token.mqtt || "MQTT SERVER MISSING FROM TOKEN";
+        var mqttUrl = token.mqtt || ERR_MISSING_MQTT;
         var isSecure = location.protocol === "https:";
         var protocol = isSecure ? "wss://" : "ws://";
         var port = isSecure ? 443 : 3002;
         this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
-        this.setState("uuid", token.bot || "UUID MISSING FROM TOKEN");
+        this.setState(UUID, token.bot || ERR_MISSING_UUID);
     };
+    /** Returns a READ ONLY copy of the local configuration. */
     Farmbot.prototype.getState = function () {
         return JSON.parse(JSON.stringify(this._state));
     };
     ;
+    /** Write a configuration value for local use.
+     * Eg: setState("timeout", 999)
+     */
     Farmbot.prototype.setState = function (key, val) {
         if (val !== this._state[key]) {
             var old = this._state[key];
@@ -42,58 +50,71 @@ var Farmbot = (function () {
         return val;
     };
     ;
+    /** Installs a "Farmware" (plugin) onto the bot's SD card.
+     * URL must point to a valid Farmware manifest JSON document.
+     */
     Farmbot.prototype.installFarmware = function (url) {
         return this.send(util_1.rpcRequest([{
                 kind: "install_farmware",
                 args: { url: url }
             }]));
     };
+    /** Checks for updates on a particular Farmware plugin when given the name of
+     * a farmware. `updateFarmware("take-photo")`
+     */
     Farmbot.prototype.updateFarmware = function (pkg) {
         return this.send(util_1.rpcRequest([{
                 kind: "update_farmware",
                 args: { package: pkg }
             }]));
     };
+    /** Uninstall a Farmware plugin. */
     Farmbot.prototype.removeFarmware = function (pkg) {
         return this.send(util_1.rpcRequest([{
                 kind: "remove_farmware",
                 args: { package: pkg }
             }]));
     };
+    /** Deactivate FarmBot OS completely. */
     Farmbot.prototype.powerOff = function () {
         return this.send(util_1.rpcRequest([{ kind: "power_off", args: {} }]));
     };
+    /** Cycle device power. */
     Farmbot.prototype.reboot = function () {
         return this.send(util_1.rpcRequest([{ kind: "reboot", args: {} }]));
     };
+    /** Check for new versions of FarmBot OS. */
     Farmbot.prototype.checkUpdates = function () {
         return this.send(util_1.rpcRequest([
             { kind: "check_updates", args: { package: "farmbot_os" } }
         ]));
     };
-    // TODO: Merge this (legacy) method with #checkUpdates().
+    /** @deprecated
+     * No longer required, as FarmBot OS and Firmware are now bundled. */
     Farmbot.prototype.checkArduinoUpdates = function () {
         return this.send(util_1.rpcRequest([
             { kind: "check_updates", args: { package: "arduino_firmware" } }
         ]));
     };
-    /** THIS WILL RESET EVERYTHING! Be careful!! */
+    /** THIS WILL RESET THE SD CARD! Be careful!! */
     Farmbot.prototype.factoryReset = function () {
         return this.send(util_1.rpcRequest([{ kind: "factory_reset", args: {} }]));
     };
     /** Lock the bot from moving. This also will pause running regimens and cause
-     *  any running sequences to exit
-     */
+     *  any running sequences to exit */
     Farmbot.prototype.emergencyLock = function () {
         return this.send(util_1.rpcRequest([{ kind: "emergency_lock", args: {} }]));
     };
-    /** Unlock the bot when the user says it is safe. */
+    /** Unlock the bot when the user says it is safe. Currently experiencing
+     * issues. Consider reboot() instead. */
     Farmbot.prototype.emergencyUnlock = function () {
         return this.send(util_1.rpcRequest([{ kind: "emergency_unlock", args: {} }]));
     };
+    /** Execute a sequence by its ID on the API. */
     Farmbot.prototype.execSequence = function (sequence_id) {
         return this.send(util_1.rpcRequest([{ kind: "execute", args: { sequence_id: sequence_id } }]));
     };
+    /** Run a preloaded Farmware / script on the SD Card. */
     Farmbot.prototype.execScript = function (/** Filename of the script */ label, 
         /** Optional ENV vars to pass the script */
         envVars) {
@@ -101,9 +122,11 @@ var Farmbot = (function () {
             { kind: "execute_script", args: { label: label }, body: envVars }
         ]));
     };
+    /** Bring a particular axis (or all of them) to position 0. */
     Farmbot.prototype.home = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "home", args: args }]));
     };
+    /** Move gantry to an absolute point. */
     Farmbot.prototype.moveAbsolute = function (args) {
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
         speed = speed || Farmbot.defaults.speed;
@@ -118,30 +141,39 @@ var Farmbot = (function () {
             }
         ]));
     };
+    /** Move gantry to position relative to its current position. */
     Farmbot.prototype.moveRelative = function (args) {
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
         speed = speed || Farmbot.defaults.speed;
         return this.send(util_1.rpcRequest([{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }]));
     };
+    /** Set a GPIO pin to a particular value. */
     Farmbot.prototype.writePin = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "write_pin", args: args }]));
     };
+    /** Reverse the value of a digital pin. */
     Farmbot.prototype.togglePin = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "toggle_pin", args: args }]));
     };
+    /** Read the status of the bot. Should not be needed unless you are first
+     * logging in to the device, since the device pushes new states out on
+     * every update. */
     Farmbot.prototype.readStatus = function (args) {
         if (args === void 0) { args = {}; }
         return this.send(util_1.rpcRequest([{ kind: "read_status", args: args }]));
     };
+    /** Snap a photo and send to the API for post processing. */
     Farmbot.prototype.takePhoto = function (args) {
         if (args === void 0) { args = {}; }
         return this.send(util_1.rpcRequest([{ kind: "take_photo", args: args }]));
     };
+    /** Download all of the latest JSON resources (plants, account info...)
+     * from the FarmBot API. */
     Farmbot.prototype.sync = function (args) {
         if (args === void 0) { args = {}; }
         return this.send(util_1.rpcRequest([{ kind: "sync", args: args }]));
     };
-    /** Update the arduino settings */
+    /** Update the Arduino settings */
     Farmbot.prototype.updateMcu = function (update) {
         var body = [];
         Object
@@ -161,9 +193,8 @@ var Farmbot = (function () {
         });
         return this.send(util_1.rpcRequest(body));
     };
-    /** Set user ENV vars (usually used by 3rd party scripts).
-     * Set value to `undefined` to unset.
-     */
+    /** Set user ENV vars (usually used by 3rd party Farmware scripts).
+     * Set value to `undefined` to unset. */
     Farmbot.prototype.setUserEnv = function (configs) {
         var body = Object
             .keys(configs)
@@ -175,7 +206,7 @@ var Farmbot = (function () {
         });
         return this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
     };
-    /** Update a config */
+    /** Update a config option for FarmBot OS. */
     Farmbot.prototype.updateConfig = function (update) {
         var body = Object
             .keys(update)
@@ -189,10 +220,11 @@ var Farmbot = (function () {
                 body: body
             }]));
     };
+    /** (under development April 2017) Calibrate device length. */
     Farmbot.prototype.calibrate = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "calibrate", args: args }]));
     };
-    /** Lets the bot know that some resources it has in cache are no longer valid.
+    /** Let the bot know that some resources it has in cache are no longer valid.
      *
      * Hopefully, some day we will not need this. Ideally, sending this message
      * would be handled by the API, but currently the API is REST only and does
@@ -231,8 +263,9 @@ var Farmbot = (function () {
         });
     };
     Object.defineProperty(Farmbot.prototype, "channel", {
+        /** Dictionary of all relevant MQTT channels the bot uses. */
         get: function () {
-            var uuid = this.getState()["uuid"] || "lost_and_found";
+            var uuid = this.getState()[UUID] || ERR_MISSING_UUID;
             return {
                 /** From the browser, usually. */
                 toDevice: "bot/" + uuid + "/from_clients",
@@ -245,6 +278,8 @@ var Farmbot = (function () {
         enumerable: true,
         configurable: true
     });
+    /** Low level means of sending MQTT packets. Does not check format. Does not
+     * acknowledge confirmation. Probably not the one you want. */
     Farmbot.prototype.publish = function (msg) {
         if (this.client) {
             /** SEE: https://github.com/mqttjs/MQTT.js#client */
@@ -255,6 +290,10 @@ var Farmbot = (function () {
         }
     };
     ;
+    /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
+     * receipt of message, but does not check formatting. Consider using higher
+     * level methods like .moveRelative(), .calibrate(), etc....
+    */
     Farmbot.prototype.send = function (input) {
         var that = this;
         var done = false;
@@ -306,6 +345,7 @@ var Farmbot = (function () {
         }
     };
     ;
+    /** Bootstrap the device onto the MQTT broker. */
     Farmbot.prototype.connect = function () {
         var that = this;
         var _a = that.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
@@ -329,6 +369,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.2.0";
+Farmbot.VERSION = "3.2.1";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
