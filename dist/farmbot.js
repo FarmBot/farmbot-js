@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
@@ -97,8 +98,11 @@ var Farmbot = (function () {
         ]));
     };
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    Farmbot.prototype.factoryReset = function () {
-        return this.send(util_1.rpcRequest([{ kind: "factory_reset", args: {} }]));
+    Farmbot.prototype.factoryReset = function (_package) {
+        if (_package === void 0) { _package = "farmbot_os"; }
+        return this.send(util_1.rpcRequest([
+            { kind: "factory_reset", args: { package: _package } }
+        ]));
     };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
@@ -172,6 +176,13 @@ var Farmbot = (function () {
     Farmbot.prototype.sync = function (args) {
         if (args === void 0) { args = {}; }
         return this.send(util_1.rpcRequest([{ kind: "sync", args: args }]));
+    };
+    /** Set the position of the given axis to 0 at the current position of said
+     * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+     * 255 to 0. */
+    Farmbot.prototype.setZero = function (axis) {
+        console.warn("THIS METHOD IS A STUB");
+        return this.send(util_1.rpcRequest([]));
     };
     /** Update the Arduino settings */
     Farmbot.prototype.updateMcu = function (update) {
@@ -369,6 +380,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.2.1";
+Farmbot.VERSION = "3.3.0";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;

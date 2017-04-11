@@ -1,5 +1,5 @@
 import * as Corpus from "./corpus";
-import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
+import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration, Xyz } from "./interfaces";
 export declare const NULL = "null";
 export declare class Farmbot {
     static VERSION: string;
@@ -39,7 +39,7 @@ export declare class Farmbot {
      * No longer required, as FarmBot OS and Firmware are now bundled. */
     checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    factoryReset(): Promise<{}>;
+    factoryReset(_package?: string): Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
     emergencyLock(): Promise<{}>;
@@ -90,6 +90,10 @@ export declare class Farmbot {
     /** Download all of the latest JSON resources (plants, account info...)
      * from the FarmBot API. */
     sync(args?: {}): Promise<{}>;
+    /** Set the position of the given axis to 0 at the current position of said
+     * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+     * 255 to 0. */
+    setZero(axis: Xyz): Promise<{}>;
     /** Update the Arduino settings */
     updateMcu(update: Partial<McuParams>): Promise<{}>;
     /** Set user ENV vars (usually used by 3rd party Farmware scripts).

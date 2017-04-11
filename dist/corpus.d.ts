@@ -265,7 +265,9 @@ export interface ConfigUpdate {
 }
 export interface FactoryReset {
     kind: "factory_reset";
-    args: {};
+    args: {
+        package: string;
+    };
     comment?: string | undefined;
     body?: undefined;
 }

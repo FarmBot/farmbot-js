@@ -24,14 +24,16 @@ export interface ProcessInfo {
     uuid: string;
     status: string;
 }
-export declare type McuParamName = "encoder_enabled_x" | "encoder_enabled_y" | "encoder_enabled_z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_enable_endpoints_x" | "movement_enable_endpoints_y" | "movement_enable_endpoints_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_version";
-export declare type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
-/** 3 dimensional vector. */
-export interface Vector3 {
-    x: number;
-    y: number;
-    z: number;
+export declare enum Encoder {
+    unknown = -1,
+    quadrature = 0,
+    differential = 1,
 }
+export declare type McuParamName = "encoder_enabled_x" | "encoder_enabled_y" | "encoder_enabled_z" | "encoder_scaling_x" | "encoder_scaling_y" | "encoder_scaling_z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_enable_endpoints_x" | "movement_enable_endpoints_y" | "movement_enable_endpoints_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_secondary_motor_invert_x" | "movement_secondary_motor_x" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_version";
+export declare type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
+export declare type Xyz = "x" | "y" | "z";
+/** 3 dimensional vector. */
+export declare type Vector3 = Record<Xyz, number>;
 export interface Pin {
     mode: number;
     value: number;

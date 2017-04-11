@@ -13,7 +13,8 @@ import {
   ConstructorParams,
   APIToken,
   McuParams,
-  Configuration
+  Configuration,
+  Xyz
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
 type Primitive = string | number | boolean;
@@ -24,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.2.1";
+  static VERSION = "3.3.0";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -128,8 +129,10 @@ export class Farmbot {
   }
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
-  factoryReset() {
-    return this.send(rpcRequest([{ kind: "factory_reset", args: {} }]));
+  factoryReset(_package = "farmbot_os") {
+    return this.send(rpcRequest([
+      { kind: "factory_reset", args: { package: _package } }
+    ]));
   }
 
   /** Lock the bot from moving. This also will pause running regimens and cause
@@ -165,7 +168,7 @@ export class Farmbot {
 
   /** Move gantry to an absolute point. */
   moveAbsolute(args: { x: number, y: number, z: number, speed?: number }) {
-    let {x, y, z, speed} = args;
+    let { x, y, z, speed } = args;
     speed = speed || Farmbot.defaults.speed;
     return this.send(rpcRequest([
       {
@@ -181,7 +184,7 @@ export class Farmbot {
 
   /** Move gantry to position relative to its current position. */
   moveRelative(args: { x: number, y: number, z: number, speed?: number }) {
-    let {x, y, z, speed} = args;
+    let { x, y, z, speed } = args;
     speed = speed || Farmbot.defaults.speed;
     return this.send(rpcRequest([{ kind: "move_relative", args: { x, y, z, speed } }]));
   }
@@ -212,6 +215,14 @@ export class Farmbot {
    * from the FarmBot API. */
   sync(args = {}) {
     return this.send(rpcRequest([{ kind: "sync", args }]));
+  }
+
+  /** Set the position of the given axis to 0 at the current position of said
+   * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+   * 255 to 0. */
+  setZero(axis: Xyz) {
+    console.warn("THIS METHOD IS A STUB");
+    return this.send(rpcRequest([]));
   }
 
   /** Update the Arduino settings */

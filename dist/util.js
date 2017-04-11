@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function uuid() {
     var template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
     var replaceChar = function (c) {
