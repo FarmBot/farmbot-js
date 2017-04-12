@@ -1,5 +1,5 @@
 import * as Corpus from "./corpus";
-import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration, Xyz } from "./interfaces";
+import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
 export declare const NULL = "null";
 export declare class Farmbot {
     static VERSION: string;
@@ -93,7 +93,7 @@ export declare class Farmbot {
     /** Set the position of the given axis to 0 at the current position of said
      * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
      * 255 to 0. */
-    setZero(axis: Xyz): Promise<{}>;
+    setZero(axis: Corpus.ALLOWED_AXIS): Promise<{}>;
     /** Update the Arduino settings */
     updateMcu(update: Partial<McuParams>): Promise<{}>;
     /** Set user ENV vars (usually used by 3rd party Farmware scripts).

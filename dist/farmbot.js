@@ -181,8 +181,10 @@ var Farmbot = (function () {
      * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
      * 255 to 0. */
     Farmbot.prototype.setZero = function (axis) {
-        console.warn("THIS METHOD IS A STUB");
-        return this.send(util_1.rpcRequest([]));
+        return this.send(util_1.rpcRequest([{
+                kind: "zero",
+                args: { axis: axis }
+            }]));
     };
     /** Update the Arduino settings */
     Farmbot.prototype.updateMcu = function (update) {
@@ -380,6 +382,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.3.2";
+Farmbot.VERSION = "3.3.3";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;

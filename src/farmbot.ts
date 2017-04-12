@@ -25,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.3.2";
+  static VERSION = "3.3.3";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -220,9 +220,11 @@ export class Farmbot {
   /** Set the position of the given axis to 0 at the current position of said
    * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
    * 255 to 0. */
-  setZero(axis: Xyz) {
-    console.warn("THIS METHOD IS A STUB");
-    return this.send(rpcRequest([]));
+  setZero(axis: Corpus.ALLOWED_AXIS) {
+    return this.send(rpcRequest([{
+      kind: "zero",
+      args: { axis }
+    }]));
   }
 
   /** Update the Arduino settings */
