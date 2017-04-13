@@ -87,11 +87,14 @@ export interface Pin {
 
 export type Pins = Dictionary<Pin | undefined>;
 
-export interface Configuration {
-  os_auto_update?: boolean | undefined;
-  fw_auto_update?: boolean | undefined;
-  steps_per_mm?: Partial<Vector3>;
-}
+export type ConfigurationName =
+  | "os_auto_update"
+  | "fw_auto_update"
+  | "steps_per_mm_x"
+  | "steps_per_mm_y"
+  | "steps_per_mm_z";
+
+export type Configuration = Record<ConfigurationName, (number | undefined)>;
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus = "synced" |
