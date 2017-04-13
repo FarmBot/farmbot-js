@@ -40,7 +40,7 @@ export interface Pin {
 }
 export declare type Pins = Dictionary<Pin | undefined>;
 export declare type ConfigurationName = "os_auto_update" | "fw_auto_update" | "steps_per_mm_x" | "steps_per_mm_y" | "steps_per_mm_z";
-export declare type Configuration = Record<ConfigurationName, (number | undefined)>;
+export declare type Configuration = Partial<Record<ConfigurationName, (number | undefined)>>;
 /** The possible values for the sync_msg property on informational_settings */
 export declare type SyncStatus = "synced" | "sync_now" | "syncing" | "sync_error" | "unknown";
 export interface InformationalSettings {
