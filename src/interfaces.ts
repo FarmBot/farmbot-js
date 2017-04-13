@@ -94,7 +94,8 @@ export type ConfigurationName =
   | "steps_per_mm_y"
   | "steps_per_mm_z";
 
-export type Configuration = Record<ConfigurationName, (number | undefined)>;
+export type Configuration =
+  Partial<Record<ConfigurationName, (number | undefined)>>;
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus = "synced" |
