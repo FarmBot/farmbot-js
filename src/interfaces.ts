@@ -26,10 +26,22 @@ export interface ProcessInfo {
   status: string;
 }
 
+export enum Encoder {
+  unknown = -1,
+  quadrature,
+  differential
+}
+
 export type McuParamName =
   | "encoder_enabled_x"
   | "encoder_enabled_y"
   | "encoder_enabled_z"
+  | "encoder_scaling_x"
+  | "encoder_scaling_y"
+  | "encoder_scaling_z"
+  | "encoder_type_x"
+  | "encoder_type_y"
+  | "encoder_type_z"
   | "movement_axis_nr_steps_x"
   | "movement_axis_nr_steps_y"
   | "movement_axis_nr_steps_z"
@@ -51,6 +63,8 @@ export type McuParamName =
   | "movement_min_spd_x"
   | "movement_min_spd_y"
   | "movement_min_spd_z"
+  | "movement_secondary_motor_invert_x"
+  | "movement_secondary_motor_x"
   | "movement_steps_acc_dec_x"
   | "movement_steps_acc_dec_y"
   | "movement_steps_acc_dec_z"
@@ -62,8 +76,9 @@ export type McuParamName =
 // /** Microcontroller configuration and settings. */
 export type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
 
+export type Xyz = "x" | "y" | "z";
 /** 3 dimensional vector. */
-export interface Vector3 { x: number; y: number; z: number; }
+export type Vector3 = Record<Xyz, number>;
 
 export interface Pin {
   mode: number;
@@ -72,11 +87,15 @@ export interface Pin {
 
 export type Pins = Dictionary<Pin | undefined>;
 
-export interface Configuration {
-  os_auto_update?: boolean | undefined;
-  fw_auto_update?: boolean | undefined;
-  steps_per_mm?: Partial<Vector3>;
-}
+export type ConfigurationName =
+  | "os_auto_update"
+  | "fw_auto_update"
+  | "steps_per_mm_x"
+  | "steps_per_mm_y"
+  | "steps_per_mm_z";
+
+export type Configuration =
+  Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus = "synced" |
