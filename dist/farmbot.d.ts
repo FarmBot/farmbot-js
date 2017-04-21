@@ -57,6 +57,12 @@ export declare class Farmbot {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }): Promise<{}>;
+    /** Use end stops or encoders to figure out where 0,0,0 is.
+     *  WON'T WORK WITHOUT ENCODERS OR ENDSTOPS! */
+    findHome(args: {
+        speed: number;
+        axis: Corpus.ALLOWED_AXIS;
+    }): Promise<{}>;
     /** Move gantry to an absolute point. */
     moveAbsolute(args: {
         x: number;
