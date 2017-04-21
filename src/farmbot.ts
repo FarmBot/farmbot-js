@@ -25,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.4.2";
+  static VERSION = "3.5.0";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -164,6 +164,12 @@ export class Farmbot {
   /** Bring a particular axis (or all of them) to position 0. */
   home(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
     return this.send(rpcRequest([{ kind: "home", args }]));
+  }
+
+  /** Use end stops or encoders to figure out where 0,0,0 is.
+   *  WON'T WORK WITHOUT ENCODERS OR ENDSTOPS! */
+  findHome(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
+    return this.send(rpcRequest([{ kind: "find_home", args }]));
   }
 
   /** Move gantry to an absolute point. */
