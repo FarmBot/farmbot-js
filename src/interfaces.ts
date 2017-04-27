@@ -80,6 +80,9 @@ export type McuParamName =
   | "movement_timeout_x"
   | "movement_timeout_y"
   | "movement_timeout_z"
+  | "encoder_missed_steps_decay_x"
+  | "encoder_missed_steps_decay_y"
+  | "encoder_missed_steps_decay_z"
   | "param_version";
 
 // /** Microcontroller configuration and settings. */

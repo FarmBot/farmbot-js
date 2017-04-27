@@ -25,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.5.4";
+  static VERSION = "3.5.5";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
