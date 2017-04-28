@@ -17,7 +17,6 @@ import {
   Xyz
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
-import { IPromise } from "promise";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
@@ -26,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.5.7";
+  static VERSION = "3.6.0";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -130,7 +129,7 @@ export class Farmbot {
   }
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
-  factoryReset(_package: Corpus.ALLOWED_PACKAGES = "farmbot_os") {
+  factoryReset(_package: Corpus.ALLOWED_PACKAGES = "farmbot_os"): void {
     let packet = rpcRequest([
       { kind: "factory_reset", args: { package: _package } }
     ]);
@@ -140,8 +139,7 @@ export class Farmbot {
     // SOLUTION: Send the packet raw over MQTT (via `publish`) and don't worry.
     // about confirmation messages.
     let fn = (_package === "farmbot_os") ? this.publish : this.send;
-    let p: IPromise | undefined = fn.call(this, [packet]);
-    return p || Promise.resolve({});
+    fn.call(this, [packet]);
   }
 
   /** Lock the bot from moving. This also will pause running regimens and cause
