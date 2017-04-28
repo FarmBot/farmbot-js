@@ -109,8 +109,7 @@ var Farmbot = (function () {
         // SOLUTION: Send the packet raw over MQTT (via `publish`) and don't worry.
         // about confirmation messages.
         var fn = (_package === "farmbot_os") ? this.publish : this.send;
-        var p = fn.call(this, [packet]);
-        return p || Promise.resolve({});
+        fn.call(this, [packet]);
     };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
@@ -395,6 +394,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.5.7";
+Farmbot.VERSION = "3.6.0";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
