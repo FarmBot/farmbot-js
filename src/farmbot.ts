@@ -17,6 +17,7 @@ import {
   Xyz
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
+import { IPromise } from "promise";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
@@ -25,7 +26,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.5.6";
+  static VERSION = "3.5.7";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -139,7 +140,8 @@ export class Farmbot {
     // SOLUTION: Send the packet raw over MQTT (via `publish`) and don't worry.
     // about confirmation messages.
     let fn = (_package === "farmbot_os") ? this.publish : this.send;
-    fn.call(this, [packet]);
+    let p: IPromise | undefined = fn.call(this, [packet]);
+    return p || Promise.resolve({});
   }
 
   /** Lock the bot from moving. This also will pause running regimens and cause

@@ -1,5 +1,7 @@
+/// <reference types="promise" />
 import * as Corpus from "./corpus";
 import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
+import { IPromise } from "promise";
 export declare const NULL = "null";
 export declare class Farmbot {
     static VERSION: string;
@@ -39,7 +41,7 @@ export declare class Farmbot {
      * No longer required, as FarmBot OS and Firmware are now bundled. */
     checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    factoryReset(_package?: Corpus.ALLOWED_PACKAGES): void;
+    factoryReset(_package?: Corpus.ALLOWED_PACKAGES): IPromise | Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
     emergencyLock(): Promise<{}>;
