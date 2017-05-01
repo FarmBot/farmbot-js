@@ -25,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.6.0";
+  static VERSION = "3.7.0";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -129,17 +129,16 @@ export class Farmbot {
   }
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
-  factoryReset(_package: Corpus.ALLOWED_PACKAGES = "farmbot_os"): void {
-    let packet = rpcRequest([
-      { kind: "factory_reset", args: { package: _package } }
-    ]);
-    // PROBLEM: Using `send()` for a actory reset on FBOS causes a
-    // chicken-and-egg situation- reseting the OS makes a confirmation message
-    // impossible to receive.
-    // SOLUTION: Send the packet raw over MQTT (via `publish`) and don't worry.
-    // about confirmation messages.
-    let fn = (_package === "farmbot_os") ? this.publish : this.send;
-    fn.call(this, [packet]);
+  resetOS() {
+    this.send(rpcRequest([
+      { kind: "factory_reset", args: { package: "farmbot_os" } }
+    ]));
+  }
+
+  resetMCU() {
+    this.publish(rpcRequest([
+      { kind: "factory_reset", args: { package: "arduino_firmware" } }
+    ]));
   }
 
   /** Lock the bot from moving. This also will pause running regimens and cause

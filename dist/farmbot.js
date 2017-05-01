@@ -98,18 +98,15 @@ var Farmbot = (function () {
         ]));
     };
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    Farmbot.prototype.factoryReset = function (_package) {
-        if (_package === void 0) { _package = "farmbot_os"; }
-        var packet = util_1.rpcRequest([
-            { kind: "factory_reset", args: { package: _package } }
-        ]);
-        // PROBLEM: Using `send()` for a actory reset on FBOS causes a
-        // chicken-and-egg situation- reseting the OS makes a confirmation message
-        // impossible to receive.
-        // SOLUTION: Send the packet raw over MQTT (via `publish`) and don't worry.
-        // about confirmation messages.
-        var fn = (_package === "farmbot_os") ? this.publish : this.send;
-        fn.call(this, [packet]);
+    Farmbot.prototype.resetOS = function () {
+        this.send(util_1.rpcRequest([
+            { kind: "factory_reset", args: { package: "farmbot_os" } }
+        ]));
+    };
+    Farmbot.prototype.resetMCU = function () {
+        this.publish(util_1.rpcRequest([
+            { kind: "factory_reset", args: { package: "arduino_firmware" } }
+        ]));
     };
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
@@ -394,6 +391,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.6.0";
+Farmbot.VERSION = "3.7.0";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
