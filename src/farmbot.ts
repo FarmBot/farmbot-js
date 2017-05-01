@@ -130,13 +130,13 @@ export class Farmbot {
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
   resetOS() {
-    this.send(rpcRequest([
+    this.publish(rpcRequest([
       { kind: "factory_reset", args: { package: "farmbot_os" } }
     ]));
   }
 
   resetMCU() {
-    this.publish(rpcRequest([
+    this.send(rpcRequest([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }

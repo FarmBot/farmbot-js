@@ -99,12 +99,12 @@ var Farmbot = (function () {
     };
     /** THIS WILL RESET THE SD CARD! Be careful!! */
     Farmbot.prototype.resetOS = function () {
-        this.send(util_1.rpcRequest([
+        this.publish(util_1.rpcRequest([
             { kind: "factory_reset", args: { package: "farmbot_os" } }
         ]));
     };
     Farmbot.prototype.resetMCU = function () {
-        this.publish(util_1.rpcRequest([
+        this.send(util_1.rpcRequest([
             { kind: "factory_reset", args: { package: "arduino_firmware" } }
         ]));
     };
