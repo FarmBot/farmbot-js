@@ -98,10 +98,14 @@ var Farmbot = (function () {
         ]));
     };
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    Farmbot.prototype.factoryReset = function (_package) {
-        if (_package === void 0) { _package = "farmbot_os"; }
-        return this.send(util_1.rpcRequest([
-            { kind: "factory_reset", args: { package: _package } }
+    Farmbot.prototype.resetOS = function () {
+        this.publish(util_1.rpcRequest([
+            { kind: "factory_reset", args: { package: "farmbot_os" } }
+        ]));
+    };
+    Farmbot.prototype.resetMCU = function () {
+        this.send(util_1.rpcRequest([
+            { kind: "factory_reset", args: { package: "arduino_firmware" } }
         ]));
     };
     /** Lock the bot from moving. This also will pause running regimens and cause
@@ -387,6 +391,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.5.3";
+Farmbot.VERSION = "3.7.2";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;

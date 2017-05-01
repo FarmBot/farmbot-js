@@ -25,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.5.3";
+  static VERSION = "3.7.2";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -129,9 +129,15 @@ export class Farmbot {
   }
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
-  factoryReset(_package: Corpus.ALLOWED_PACKAGES = "farmbot_os") {
-    return this.send(rpcRequest([
-      { kind: "factory_reset", args: { package: _package } }
+  resetOS() {
+    this.publish(rpcRequest([
+      { kind: "factory_reset", args: { package: "farmbot_os" } }
+    ]));
+  }
+
+  resetMCU() {
+    this.send(rpcRequest([
+      { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }
 

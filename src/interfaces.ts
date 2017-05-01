@@ -63,6 +63,9 @@ export type McuParamName =
   | "movement_invert_motor_x"
   | "movement_invert_motor_y"
   | "movement_invert_motor_z"
+  | "movement_keep_active_x"
+  | "movement_keep_active_y"
+  | "movement_keep_active_z"
   | "movement_max_spd_x"
   | "movement_max_spd_y"
   | "movement_max_spd_z"
@@ -77,6 +80,9 @@ export type McuParamName =
   | "movement_timeout_x"
   | "movement_timeout_y"
   | "movement_timeout_z"
+  | "encoder_missed_steps_decay_x"
+  | "encoder_missed_steps_decay_y"
+  | "encoder_missed_steps_decay_z"
   | "param_version";
 
 // /** Microcontroller configuration and settings. */

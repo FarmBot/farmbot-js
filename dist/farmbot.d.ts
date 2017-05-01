@@ -39,7 +39,8 @@ export declare class Farmbot {
      * No longer required, as FarmBot OS and Firmware are now bundled. */
     checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    factoryReset(_package?: Corpus.ALLOWED_PACKAGES): Promise<{}>;
+    resetOS(): void;
+    resetMCU(): void;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
     emergencyLock(): Promise<{}>;
