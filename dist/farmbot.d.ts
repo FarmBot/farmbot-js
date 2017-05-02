@@ -40,7 +40,7 @@ export declare class Farmbot {
     checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
     resetOS(): void;
-    resetMCU(): void;
+    resetMCU(): Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
     emergencyLock(): Promise<{}>;

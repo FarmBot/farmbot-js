@@ -25,7 +25,7 @@ const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 
 export class Farmbot {
-  static VERSION = "3.7.2";
+  static VERSION = "3.7.3";
   static defaults = { speed: 800, timeout: 6000 };
 
   /** Storage area for all event handlers */
@@ -136,7 +136,7 @@ export class Farmbot {
   }
 
   resetMCU() {
-    this.send(rpcRequest([
+    return this.send(rpcRequest([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }

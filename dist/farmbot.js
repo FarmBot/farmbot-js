@@ -104,7 +104,7 @@ var Farmbot = (function () {
         ]));
     };
     Farmbot.prototype.resetMCU = function () {
-        this.send(util_1.rpcRequest([
+        return this.send(util_1.rpcRequest([
             { kind: "factory_reset", args: { package: "arduino_firmware" } }
         ]));
     };
@@ -391,6 +391,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.7.2";
+Farmbot.VERSION = "3.7.3";
 Farmbot.defaults = { speed: 800, timeout: 6000 };
 exports.Farmbot = Farmbot;
