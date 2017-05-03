@@ -10,29 +10,33 @@ var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 var UUID = "uuid";
 var Farmbot = (function () {
     function Farmbot(input) {
+        var _this = this;
+        this._decodeThatToken = function () {
+            var token;
+            try {
+                var str = _this.getState()["token"];
+                var base64 = str.split(".")[1];
+                var plaintext = atob(base64);
+                token = JSON.parse(plaintext);
+            }
+            catch (e) {
+                console.warn(e);
+                throw new Error(ERR_TOKEN_PARSE);
+            }
+            var mqttUrl = token.mqtt || ERR_MISSING_MQTT;
+            var isSecure = !!_this._state.secure;
+            var protocol = isSecure ? "wss://" : "ws://";
+            var port = isSecure ? 443 : 3002;
+            _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
+            _this.setState(UUID, token.bot || ERR_MISSING_UUID);
+        };
+        if (!atob) {
+            throw new Error("NOTE TO NODEJS USERS:\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
+        }
         this._events = {};
         this._state = util_1.assign({}, Farmbot.defaults, input);
         this._decodeThatToken();
     }
-    Farmbot.prototype._decodeThatToken = function () {
-        var token;
-        try {
-            var str = this.getState()["token"];
-            var base64 = str.split(".")[1];
-            var plaintext = atob(base64);
-            token = JSON.parse(plaintext);
-        }
-        catch (e) {
-            console.warn(e);
-            throw new Error(ERR_TOKEN_PARSE);
-        }
-        var mqttUrl = token.mqtt || ERR_MISSING_MQTT;
-        var isSecure = location.protocol === "https:";
-        var protocol = isSecure ? "wss://" : "ws://";
-        var port = isSecure ? 443 : 3002;
-        this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
-        this.setState(UUID, token.bot || ERR_MISSING_UUID);
-    };
     /** Returns a READ ONLY copy of the local configuration. */
     Farmbot.prototype.getState = function () {
         return JSON.parse(JSON.stringify(this._state));
@@ -391,6 +395,10 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.7.3";
-Farmbot.defaults = { speed: 800, timeout: 6000 };
+Farmbot.VERSION = "3.8.0";
+Farmbot.defaults = {
+    speed: 800,
+    timeout: 6000,
+    secure: true
+};
 exports.Farmbot = Farmbot;
