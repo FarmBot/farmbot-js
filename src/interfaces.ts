@@ -39,6 +39,9 @@ export type McuParamName =
   | "encoder_invert_x"
   | "encoder_invert_y"
   | "encoder_invert_z"
+  | "encoder_missed_steps_decay_x"
+  | "encoder_missed_steps_decay_y"
+  | "encoder_missed_steps_decay_z"
   | "encoder_missed_steps_max_x"
   | "encoder_missed_steps_max_y"
   | "encoder_missed_steps_max_z"
@@ -54,6 +57,9 @@ export type McuParamName =
   | "movement_enable_endpoints_x"
   | "movement_enable_endpoints_y"
   | "movement_enable_endpoints_z"
+  | "movement_home_at_boot_x"
+  | "movement_home_at_boot_y"
+  | "movement_home_at_boot_z"
   | "movement_home_up_x"
   | "movement_home_up_y"
   | "movement_home_up_z"
@@ -77,12 +83,12 @@ export type McuParamName =
   | "movement_steps_acc_dec_x"
   | "movement_steps_acc_dec_y"
   | "movement_steps_acc_dec_z"
+  | "movement_stop_at_home_x"
+  | "movement_stop_at_home_y"
+  | "movement_stop_at_home_z"
   | "movement_timeout_x"
   | "movement_timeout_y"
   | "movement_timeout_z"
-  | "encoder_missed_steps_decay_x"
-  | "encoder_missed_steps_decay_y"
-  | "encoder_missed_steps_decay_z"
   | "param_version";
 
 // /** Microcontroller configuration and settings. */
@@ -110,11 +116,13 @@ export type Configuration =
   Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
 
 /** The possible values for the sync_msg property on informational_settings */
-export type SyncStatus = "synced" |
-  "sync_now" |
-  "syncing" |
-  "sync_error" |
-  "unknown";
+export type SyncStatus =
+  | "sync_now"
+  | "syncing"
+  | "synced"
+  | "sync_error"
+  | "locked"
+  | "unknown";
 
 export interface InformationalSettings {
   /** Current version of Farmbot OS */
@@ -125,8 +133,6 @@ export interface InformationalSettings {
   throttled?: string | undefined;
   /** Farmbot's private Ip address */
   private_ip?: string | undefined;
-  /** In a locked state */
-  locked?: boolean | undefined;
   /** The message to be displayed on the frontend for sync status. */
   sync_status?: SyncStatus | undefined;
 }
@@ -147,6 +153,8 @@ export type StateTree = Dictionary<string | number | boolean>;
 export interface ConstructorParams {
   /** API token which can be retrieved by logging into REST server or my.farmbot.io */
   token: string;
+  /** Use HTTPS/SSL? */
+  secure: boolean;
   /** Default time to wait (ms) before considering operation a failure. */
   timeout?: number;
   /** Default physical speed for operations. (steps/s?) */

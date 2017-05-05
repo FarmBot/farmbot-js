@@ -23,10 +23,15 @@ const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
 const ERR_MISSING_UUID = "MISSING_UUID";
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
+declare var atob: (i: string) => string;
 
 export class Farmbot {
-  static VERSION = "3.7.2";
-  static defaults = { speed: 800, timeout: 6000 };
+  static VERSION = "3.9.0";
+  static defaults = {
+    speed: 800,
+    timeout: 6000,
+    secure: true
+  };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
@@ -34,12 +39,19 @@ export class Farmbot {
   public client: MqttClient;
 
   constructor(input: ConstructorParams) {
+    if (!atob) {
+      throw new Error(`NOTE TO NODEJS USERS:
+      This library requires an 'atob()' function.
+      Please fix this first.
+      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33
+      `);
+    }
     this._events = {};
     this._state = assign({}, Farmbot.defaults, input);
     this._decodeThatToken();
   }
 
-  private _decodeThatToken() {
+  private _decodeThatToken = () => {
     let token: APIToken;
     try {
       let str = (this.getState()["token"] as string);
@@ -51,7 +63,7 @@ export class Farmbot {
       throw new Error(ERR_TOKEN_PARSE);
     }
     let mqttUrl = token.mqtt || ERR_MISSING_MQTT;
-    let isSecure = location.protocol === "https:";
+    let isSecure = !!this._state.secure;
     let protocol = isSecure ? "wss://" : "ws://";
     let port = isSecure ? 443 : 3002;
     this.setState("mqttServer", `${protocol}${mqttUrl}:${port}`);
@@ -136,7 +148,7 @@ export class Farmbot {
   }
 
   resetMCU() {
-    this.send(rpcRequest([
+    return this.send(rpcRequest([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }

@@ -6,13 +6,14 @@ export declare class Farmbot {
     static defaults: {
         speed: number;
         timeout: number;
+        secure: boolean;
     };
     /** Storage area for all event handlers */
     private _events;
     private _state;
     client: MqttClient;
     constructor(input: ConstructorParams);
-    private _decodeThatToken();
+    private _decodeThatToken;
     /** Returns a READ ONLY copy of the local configuration. */
     getState(): StateTree;
     /** Write a configuration value for local use.
@@ -40,7 +41,7 @@ export declare class Farmbot {
     checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
     resetOS(): void;
-    resetMCU(): void;
+    resetMCU(): Promise<{}>;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
     emergencyLock(): Promise<{}>;
