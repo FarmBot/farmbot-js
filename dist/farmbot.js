@@ -395,7 +395,7 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.8.0";
+Farmbot.VERSION = "3.9.0";
 Farmbot.defaults = {
     speed: 800,
     timeout: 6000,
