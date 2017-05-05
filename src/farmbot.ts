@@ -26,7 +26,7 @@ const UUID = "uuid";
 declare var atob: (i: string) => string;
 
 export class Farmbot {
-  static VERSION = "3.8.0";
+  static VERSION = "3.9.0";
   static defaults = {
     speed: 800,
     timeout: 6000,

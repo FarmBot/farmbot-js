@@ -116,11 +116,13 @@ export type Configuration =
   Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
 
 /** The possible values for the sync_msg property on informational_settings */
-export type SyncStatus = "synced" |
-  "sync_now" |
-  "syncing" |
-  "sync_error" |
-  "unknown";
+export type SyncStatus =
+  | "sync_now"
+  | "syncing"
+  | "synced"
+  | "sync_error"
+  | "locked"
+  | "unknown";
 
 export interface InformationalSettings {
   /** Current version of Farmbot OS */
@@ -131,8 +133,6 @@ export interface InformationalSettings {
   throttled?: string | undefined;
   /** Farmbot's private Ip address */
   private_ip?: string | undefined;
-  /** In a locked state */
-  locked?: boolean | undefined;
   /** The message to be displayed on the frontend for sync status. */
   sync_status?: SyncStatus | undefined;
 }
