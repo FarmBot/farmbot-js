@@ -259,9 +259,10 @@ var Farmbot = (function () {
     Farmbot.prototype.dataUpdate = function (value, input) {
         var body = util_1.toPairs(input);
         var args = { value: value };
+        var rpc = util_1.rpcRequest([{ kind: "data_update", body: body, args: args }]);
         // I'm using .publish() instead of .send() because confirmation requests are
         // of less importance right now - RC 2 APR 17.
-        return this.publish(util_1.rpcRequest([{ kind: "data_update", body: body, args: args }]));
+        return this.publish(rpc, false);
     };
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
@@ -306,13 +307,16 @@ var Farmbot = (function () {
     });
     /** Low level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
-    Farmbot.prototype.publish = function (msg) {
+    Farmbot.prototype.publish = function (msg, important) {
+        if (important === void 0) { important = true; }
         if (this.client) {
             /** SEE: https://github.com/mqttjs/MQTT.js#client */
             this.client.publish(this.channel.toDevice, JSON.stringify(msg));
         }
         else {
-            throw new Error("Not connected to server");
+            if (important) {
+                throw new Error("Not connected to server");
+            }
         }
     };
     ;
@@ -395,10 +399,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.9.0";
-Farmbot.defaults = {
-    speed: 800,
-    timeout: 6000,
-    secure: true
-};
+Farmbot.VERSION = "3.9.1";
+Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
 exports.Farmbot = Farmbot;
