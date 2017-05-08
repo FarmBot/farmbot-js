@@ -28,7 +28,7 @@ declare var atob: (i: string) => string;
 declare var global: any;
 
 export class Farmbot {
-  static VERSION = "3.9.2";
+  static VERSION = "3.9.3";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
@@ -67,7 +67,7 @@ export class Farmbot {
     let port: number;
     if (isNode()) {
       protocol = "mqtt://";
-      port = isSecure ? 8883 : 1883;
+      port = 1883;
     } else {
       protocol = isSecure ? "wss://" : "ws://";
       port = isSecure ? 443 : 3002;

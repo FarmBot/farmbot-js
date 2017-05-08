@@ -30,7 +30,7 @@ var Farmbot = (function () {
             var port;
             if (index_1.isNode()) {
                 protocol = "mqtt://";
-                port = isSecure ? 8883 : 1883;
+                port = 1883;
             }
             else {
                 protocol = isSecure ? "wss://" : "ws://";
@@ -408,6 +408,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.9.2";
+Farmbot.VERSION = "3.9.3";
 Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
 exports.Farmbot = Farmbot;
