@@ -26,12 +26,8 @@ const UUID = "uuid";
 declare var atob: (i: string) => string;
 
 export class Farmbot {
-  static VERSION = "3.9.0";
-  static defaults = {
-    speed: 800,
-    timeout: 6000,
-    secure: true
-  };
+  static VERSION = "3.9.1";
+  static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
@@ -317,9 +313,10 @@ export class Farmbot {
     input: Partial<Record<Corpus.ResourceName, string>>) {
     let body = toPairs(input);
     let args = { value };
+    let rpc = rpcRequest([{ kind: "data_update", body, args }]);
     // I'm using .publish() instead of .send() because confirmation requests are
     // of less importance right now - RC 2 APR 17.
-    return this.publish(rpcRequest([{ kind: "data_update", body, args }]));
+    return this.publish(rpc, false);
   }
 
   /** Retrieves all of the event handlers for a particular event.
@@ -362,12 +359,14 @@ export class Farmbot {
 
   /** Low level means of sending MQTT packets. Does not check format. Does not
    * acknowledge confirmation. Probably not the one you want. */
-  publish(msg: Corpus.RpcRequest): void {
+  publish(msg: Corpus.RpcRequest, important = true): void {
     if (this.client) {
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
-      throw new Error("Not connected to server");
+      if (important) {
+        throw new Error("Not connected to server");
+      }
     }
   };
 
