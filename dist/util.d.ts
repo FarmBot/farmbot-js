@@ -7,3 +7,4 @@ export declare function isCeleryScript(x: any): x is Corpus.CeleryNode;
 export declare function coordinate(x: number, y: number, z: number): Corpus.Coordinate;
 export declare function rpcRequest(body: Corpus.RpcRequestBodyItem[]): Corpus.RpcRequest;
 export declare function toPairs(input: Dictionary<string | number | boolean | undefined>): Corpus.Pair[];
+export declare function isNode(): boolean;

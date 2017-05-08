@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
+var index_1 = require("./index");
 exports.NULL = "null";
 var ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
 var ERR_MISSING_UUID = "MISSING_UUID";
@@ -25,13 +26,21 @@ var Farmbot = (function () {
             }
             var mqttUrl = token.mqtt || ERR_MISSING_MQTT;
             var isSecure = !!_this._state.secure;
-            var protocol = isSecure ? "wss://" : "ws://";
-            var port = isSecure ? 443 : 3002;
+            var protocol;
+            var port;
+            if (index_1.isNode()) {
+                protocol = "mqtt://";
+                port = isSecure ? 8883 : 1883;
+            }
+            else {
+                protocol = isSecure ? "wss://" : "ws://";
+                port = isSecure ? 443 : 3002;
+            }
             _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
-        if (!atob) {
-            throw new Error("NOTE TO NODEJS USERS:\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
+        if (index_1.isNode() && !global.atob) {
+            throw new Error("NOTE TO NODEJS USERS:\n\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
         }
         this._events = {};
         this._state = util_1.assign({}, Farmbot.defaults, input);
@@ -399,6 +408,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.9.1";
+Farmbot.VERSION = "3.9.2";
 Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
 exports.Farmbot = Farmbot;

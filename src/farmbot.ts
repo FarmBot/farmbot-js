@@ -17,6 +17,7 @@ import {
   Xyz
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
+import { isNode } from "./index";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
@@ -24,9 +25,10 @@ const ERR_MISSING_UUID = "MISSING_UUID";
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 declare var atob: (i: string) => string;
+declare var global: any;
 
 export class Farmbot {
-  static VERSION = "3.9.1";
+  static VERSION = "3.9.2";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
@@ -35,8 +37,9 @@ export class Farmbot {
   public client: MqttClient;
 
   constructor(input: ConstructorParams) {
-    if (!atob) {
+    if (isNode() && !global.atob) {
       throw new Error(`NOTE TO NODEJS USERS:
+
       This library requires an 'atob()' function.
       Please fix this first.
       SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33
@@ -60,8 +63,15 @@ export class Farmbot {
     }
     let mqttUrl = token.mqtt || ERR_MISSING_MQTT;
     let isSecure = !!this._state.secure;
-    let protocol = isSecure ? "wss://" : "ws://";
-    let port = isSecure ? 443 : 3002;
+    let protocol: string;
+    let port: number;
+    if (isNode()) {
+      protocol = "mqtt://";
+      port = isSecure ? 8883 : 1883;
+    } else {
+      protocol = isSecure ? "wss://" : "ws://";
+      port = isSecure ? 443 : 3002;
+    }
     this.setState("mqttServer", `${protocol}${mqttUrl}:${port}`);
     this.setState(UUID, token.bot || ERR_MISSING_UUID);
   }
