@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
+var index_1 = require("./index");
 exports.NULL = "null";
 var ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
 var ERR_MISSING_UUID = "MISSING_UUID";
@@ -25,13 +26,21 @@ var Farmbot = (function () {
             }
             var mqttUrl = token.mqtt || ERR_MISSING_MQTT;
             var isSecure = !!_this._state.secure;
-            var protocol = isSecure ? "wss://" : "ws://";
-            var port = isSecure ? 443 : 3002;
+            var protocol;
+            var port;
+            if (index_1.isNode()) {
+                protocol = "mqtt://";
+                port = 1883;
+            }
+            else {
+                protocol = isSecure ? "wss://" : "ws://";
+                port = isSecure ? 443 : 3002;
+            }
             _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
-        if (!atob) {
-            throw new Error("NOTE TO NODEJS USERS:\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
+        if (index_1.isNode() && !global.atob) {
+            throw new Error("NOTE TO NODEJS USERS:\n\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
         }
         this._events = {};
         this._state = util_1.assign({}, Farmbot.defaults, input);
@@ -259,9 +268,10 @@ var Farmbot = (function () {
     Farmbot.prototype.dataUpdate = function (value, input) {
         var body = util_1.toPairs(input);
         var args = { value: value };
+        var rpc = util_1.rpcRequest([{ kind: "data_update", body: body, args: args }]);
         // I'm using .publish() instead of .send() because confirmation requests are
         // of less importance right now - RC 2 APR 17.
-        return this.publish(util_1.rpcRequest([{ kind: "data_update", body: body, args: args }]));
+        return this.publish(rpc, false);
     };
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
@@ -306,13 +316,16 @@ var Farmbot = (function () {
     });
     /** Low level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
-    Farmbot.prototype.publish = function (msg) {
+    Farmbot.prototype.publish = function (msg, important) {
+        if (important === void 0) { important = true; }
         if (this.client) {
             /** SEE: https://github.com/mqttjs/MQTT.js#client */
             this.client.publish(this.channel.toDevice, JSON.stringify(msg));
         }
         else {
-            throw new Error("Not connected to server");
+            if (important) {
+                throw new Error("Not connected to server");
+            }
         }
     };
     ;
@@ -395,10 +408,6 @@ var Farmbot = (function () {
     };
     return Farmbot;
 }());
-Farmbot.VERSION = "3.9.0";
-Farmbot.defaults = {
-    speed: 800,
-    timeout: 6000,
-    secure: true
-};
+Farmbot.VERSION = "3.9.3";
+Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
 exports.Farmbot = Farmbot;

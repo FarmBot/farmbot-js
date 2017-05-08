@@ -63,3 +63,7 @@ function toPairs(input) {
     });
 }
 exports.toPairs = toPairs;
+function isNode() {
+    return typeof window === "undefined";
+}
+exports.isNode = isNode;

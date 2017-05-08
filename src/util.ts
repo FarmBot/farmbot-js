@@ -58,3 +58,7 @@ export function toPairs(input: Dictionary<string | number | boolean | undefined>
     };
   });
 }
+
+export function isNode() {
+  return typeof window === "undefined";
+}

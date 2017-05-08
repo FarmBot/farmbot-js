@@ -135,7 +135,7 @@ export declare class Farmbot {
     };
     /** Low level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
-    publish(msg: Corpus.RpcRequest): void;
+    publish(msg: Corpus.RpcRequest, important?: boolean): void;
     /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
