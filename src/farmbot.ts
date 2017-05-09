@@ -28,7 +28,7 @@ declare var atob: (i: string) => string;
 declare var global: any;
 
 export class Farmbot {
-  static VERSION = "3.9.3";
+  static VERSION = "3.9.4";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
