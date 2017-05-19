@@ -32,7 +32,7 @@ declare var global: any;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "3.9.5";
+  static VERSION = "3.9.6";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
