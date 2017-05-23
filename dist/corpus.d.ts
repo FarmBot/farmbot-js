@@ -133,7 +133,7 @@ export interface If {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript | TakePhoto;
+export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript | TakePhoto | FindHome;
 export interface Sequence {
     kind: "sequence";
     args: {
@@ -351,7 +351,7 @@ export declare type ALLOWED_AXIS = "x" | "y" | "z" | "all";
 export declare type Color = "blue" | "green" | "yellow" | "orange" | "purple" | "pink" | "gray" | "red";
 export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "label" | "lhs" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_mode" | "pin_number" | "pin_value" | "pointer_id" | "pointer_type" | "radius" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
 export declare type LegalKindString = "_if" | "add_point" | "calibrate" | "channel" | "check_updates" | "config_update" | "coordinate" | "data_update" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "explanation" | "factory_reset" | "find_home" | "home" | "install_farmware" | "move_absolute" | "move_relative" | "nothing" | "pair" | "point" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "rpc_error" | "rpc_ok" | "rpc_request" | "send_message" | "sequence" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "tool" | "update_farmware" | "wait" | "write_pin" | "zero";
-export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "take_photo" | "wait" | "write_pin";
+export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "find_home" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "take_photo" | "wait" | "write_pin";
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type ResourceName = "images" | "plants" | "regimens" | "peripherals" | "corpuses" | "logs" | "sequences" | "farm_events" | "tool_slots" | "tools" | "points" | "tokens" | "users" | "device";
 export declare type PointType = "GenericPointer" | "ToolSlot" | "Plant";
