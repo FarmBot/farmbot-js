@@ -23,7 +23,6 @@ export interface BotStateTree {
 export interface ProcessInfo {
   name: string;
   uuid: string;
-  status: string;
 }
 
 export enum Encoder {
