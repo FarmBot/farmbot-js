@@ -14,11 +14,32 @@ export interface BotStateTree {
   user_env: Dictionary<(string | undefined)>;
   /** List of user accessible processes running on the bot. */
   process_info: {
-    farm_events: ProcessInfo[];
-    regimens: ProcessInfo[];
-    farmwares: ProcessInfo[];
+    farmwares: FarmwareManifest[];
   };
 };
+
+export interface FarmwareManifestMeta {
+  min_os_version_major: string;
+  description: string;
+  language: string;
+  version: string;
+  author: string;
+  zip: string;
+}
+
+/** The Farmware manifest is a JSON file published by farmware authors.
+ * It is used by FarmBot OS to perform installation and upgrades. */
+export interface FarmwareManifest {
+  /** The thing that will run the farmware eg: `python`. */
+  executable: string;
+  uuid: string;
+  /** Command line args passed to `executable`. */
+  args: string[];
+  name: string;
+  url: string;
+  path: string;
+  meta: FarmwareManifestMeta;
+}
 
 export interface ProcessInfo {
   name: string;
