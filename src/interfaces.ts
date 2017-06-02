@@ -14,7 +14,7 @@ export interface BotStateTree {
   user_env: Dictionary<(string | undefined)>;
   /** List of user accessible processes running on the bot. */
   process_info: {
-    farmwares: FarmwareManifest[];
+    farmwares: Dictionary<FarmwareManifest>;
   };
 };
 
