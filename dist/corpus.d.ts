@@ -121,6 +121,7 @@ export interface Execute {
     comment?: string | undefined;
     body?: undefined;
 }
+export declare type IfBodyItem = Pair;
 export interface If {
     kind: "_if";
     args: {
@@ -131,7 +132,7 @@ export interface If {
         _else: Execute | Nothing;
     };
     comment?: string | undefined;
-    body?: undefined;
+    body?: IfBodyItem[] | undefined;
 }
 export declare type SequenceBodyItem = MoveAbsolute | MoveRelative | WritePin | ReadPin | Wait | SendMessage | Execute | If | ExecuteScript | TakePhoto | FindHome;
 export interface Sequence {
