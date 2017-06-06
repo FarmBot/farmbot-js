@@ -14,7 +14,7 @@ export interface BotStateTree {
   user_env: Dictionary<(string | undefined)>;
   /** List of user accessible processes running on the bot. */
   process_info: {
-    farmwares: FarmwareManifest[];
+    farmwares: Dictionary<FarmwareManifest>;
   };
 };
 
@@ -71,6 +71,9 @@ export type McuParamName =
   | "encoder_type_x"
   | "encoder_type_y"
   | "encoder_type_z"
+  | "encoder_use_for_pos_x"
+  | "encoder_use_for_pos_y"
+  | "encoder_use_for_pos_z"
   | "movement_axis_nr_steps_x"
   | "movement_axis_nr_steps_y"
   | "movement_axis_nr_steps_z"
@@ -106,6 +109,9 @@ export type McuParamName =
   | "movement_stop_at_home_x"
   | "movement_stop_at_home_y"
   | "movement_stop_at_home_z"
+  | "movement_stop_at_max_x"
+  | "movement_stop_at_max_y"
+  | "movement_stop_at_max_z"
   | "movement_timeout_x"
   | "movement_timeout_y"
   | "movement_timeout_z"
