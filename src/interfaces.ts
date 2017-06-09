@@ -143,11 +143,12 @@ export type Configuration =
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus =
-  | "sync_now"
-  | "syncing"
-  | "synced"
-  | "sync_error"
   | "locked"
+  | "maintenance"
+  | "sync_error"
+  | "sync_now"
+  | "synced"
+  | "syncing"
   | "unknown";
 
 export interface InformationalSettings {
