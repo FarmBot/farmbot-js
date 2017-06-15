@@ -137,7 +137,7 @@ export type ConfigurationName =
   | "steps_per_mm_x"
   | "steps_per_mm_y"
   | "steps_per_mm_z"
-  | "max_retries";
+  | "max_movement_retries";
 
 export type Configuration =
   Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
