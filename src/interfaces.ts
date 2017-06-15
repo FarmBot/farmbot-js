@@ -136,7 +136,8 @@ export type ConfigurationName =
   | "fw_auto_update"
   | "steps_per_mm_x"
   | "steps_per_mm_y"
-  | "steps_per_mm_z";
+  | "steps_per_mm_z"
+  | "max_retries";
 
 export type Configuration =
   Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
