@@ -1,4 +1,4 @@
-import * as Corpus from "./corpus"
+import * as Corpus from "./corpus";
 import { connect } from "mqtt";
 import {
   assign,
@@ -13,8 +13,7 @@ import {
   ConstructorParams,
   APIToken,
   McuParams,
-  Configuration,
-  Xyz
+  Configuration
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
 import { isNode } from "./index";
@@ -32,7 +31,7 @@ declare var global: any;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.0.7";
+  static VERSION = "4.1.0";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
