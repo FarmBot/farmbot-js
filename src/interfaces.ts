@@ -115,6 +115,7 @@ export type McuParamName =
   | "movement_timeout_x"
   | "movement_timeout_y"
   | "movement_timeout_z"
+  | "param_mov_nr_retry"
   | "param_version";
 
 // /** Microcontroller configuration and settings. */
@@ -136,8 +137,7 @@ export type ConfigurationName =
   | "fw_auto_update"
   | "steps_per_mm_x"
   | "steps_per_mm_y"
-  | "steps_per_mm_z"
-  | "max_movement_retries";
+  | "steps_per_mm_z";
 
 export type Configuration =
   Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
