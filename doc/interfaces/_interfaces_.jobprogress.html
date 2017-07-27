@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>APIToken | farmbot</title>
+	<title>JobProgress | farmbot</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,10 +59,10 @@
 					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.apitoken.html">APIToken</a>
+					<a href="_interfaces_.jobprogress.html">JobProgress</a>
 				</li>
 			</ul>
-			<h1>Interface APIToken</h1>
+			<h1>Interface JobProgress</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">APIToken</span>
+						<span class="target">JobProgress</span>
 					</li>
 				</ul>
 			</section>
@@ -84,8 +84,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.apitoken.html#bot" class="tsd-kind-icon">bot</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.apitoken.html#mqtt" class="tsd-kind-icon">mqtt</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.jobprogress.html#progress" class="tsd-kind-icon">progress</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.jobprogress.html#status" class="tsd-kind-icon">status</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,34 +94,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="bot" class="tsd-anchor"></a>
-					<h3>bot</h3>
-					<div class="tsd-signature tsd-kind-icon">bot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="progress" class="tsd-anchor"></a>
+					<h3>progress</h3>
+					<div class="tsd-signature tsd-kind-icon">progress<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L214">interfaces.ts:214</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L36">interfaces.ts:36</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>UUID of current bot.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="mqtt" class="tsd-anchor"></a>
-					<h3>mqtt</h3>
-					<div class="tsd-signature tsd-kind-icon">mqtt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#progressstatus" class="tsd-signature-type">ProgressStatus</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L212">interfaces.ts:212</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L35">interfaces.ts:35</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>URL of MQTT server. REST server is not the same as MQTT server.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -153,21 +143,9 @@
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/_interfaces_.encoder.html" class="tsd-kind-icon">Encoder</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.apitoken.html" class="tsd-kind-icon">APIToken</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.apitoken.html#bot" class="tsd-kind-icon">bot</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.apitoken.html#mqtt" class="tsd-kind-icon">mqtt</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.botstatetree.html" class="tsd-kind-icon">Bot<wbr>State<wbr>Tree</a>
 					</li>
@@ -186,9 +164,21 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.informationalsettings.html" class="tsd-kind-icon">Informational<wbr>Settings</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.jobprogress.html" class="tsd-kind-icon">Job<wbr>Progress</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.jobprogress.html#progress" class="tsd-kind-icon">progress</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.jobprogress.html#status" class="tsd-kind-icon">status</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.mqttclient.html" class="tsd-kind-icon">Mqtt<wbr>Client</a>
 					</li>

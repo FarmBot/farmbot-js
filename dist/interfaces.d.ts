@@ -3,7 +3,7 @@ export interface BotStateTree {
     /** Microcontroller configuration and settings. */
     mcu_params: McuParams;
     /** Cartesian coordinates of the bot. */
-    location: [number, number, number];
+    location_data: Record<LocationName, Vector3>;
     /** Lookup table, indexed by number for pin status */
     pins: Pins;
     /** User definable config settings.  */
@@ -12,10 +12,19 @@ export interface BotStateTree {
     readonly informational_settings: InformationalSettings;
     /** Bag of misc. settings that any script author can use. */
     user_env: Dictionary<(string | undefined)>;
+    /** When you're really curious about how a long-running
+     * task (like farmware downloas) is going to take. */
+    jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
         farmwares: Dictionary<FarmwareManifest>;
     };
+}
+export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
+export declare type ProgressStatus = "done" | "complete" | "failed";
+export interface JobProgress {
+    status: ProgressStatus;
+    progress: number;
 }
 export interface FarmwareManifestMeta {
     min_os_version_major: string;

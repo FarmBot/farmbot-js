@@ -26,7 +26,13 @@ export type LocationName =
   | "scaled_encoders"
   | "raw_encoders";
 
+export type ProgressStatus =
+  | "done"
+  | "complete"
+  | "failed";
+
 export interface JobProgress {
+  status: ProgressStatus;
   progress: number;
 }
 
