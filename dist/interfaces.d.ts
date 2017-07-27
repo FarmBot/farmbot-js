@@ -3,7 +3,7 @@ export interface BotStateTree {
     /** Microcontroller configuration and settings. */
     mcu_params: McuParams;
     /** Cartesian coordinates of the bot. */
-    location_data: Record<LocationName, Vector3>;
+    location_data: Record<LocationName, Record<Xyz, (number | undefined)>>;
     /** Lookup table, indexed by number for pin status */
     pins: Pins;
     /** User definable config settings.  */
