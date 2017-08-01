@@ -134,6 +134,7 @@ export type McuParamName =
   | "movement_timeout_y"
   | "movement_timeout_z"
   | "param_mov_nr_retry"
+  | "param_e_stop_on_mov_err"
   | "param_version";
 
 // /** Microcontroller configuration and settings. */
