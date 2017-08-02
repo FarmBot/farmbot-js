@@ -410,8 +410,8 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
+    Farmbot.VERSION = "4.2.0";
+    Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
-Farmbot.VERSION = "4.2.0";
-Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
 exports.Farmbot = Farmbot;

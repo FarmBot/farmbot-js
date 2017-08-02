@@ -98,7 +98,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.farmwaremanifest.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.farmwaremanifest.html#path" class="tsd-kind-icon">path</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.farmwaremanifest.html#url" class="tsd-kind-icon">url</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.farmwaremanifest.html#uuid" class="tsd-kind-icon">uuid</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,12 +111,12 @@
 					<div class="tsd-signature tsd-kind-icon">args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L55">interfaces.ts:55</a></li>
+							<li>Defined in <a href="https://github.com/farmbot/farmbot-js/blob/868d1c3/src/interfaces.ts#L61">interfaces.ts:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Command line args passed to <code>executable</code>.</p>
+							<p>Command line args passed to <code>executable</code>. eg: <code>take-photo-master/take_photo.py</code></p>
 						</div>
 					</div>
 				</section>
@@ -127,7 +126,7 @@
 					<div class="tsd-signature tsd-kind-icon">executable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L52">interfaces.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/farmbot/farmbot-js/blob/868d1c3/src/interfaces.ts#L59">interfaces.ts:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -142,9 +141,14 @@
 					<div class="tsd-signature tsd-kind-icon">meta<span class="tsd-signature-symbol">:</span> <a href="_interfaces_.farmwaremanifestmeta.html" class="tsd-signature-type">FarmwareManifestMeta</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L59">interfaces.ts:59</a></li>
+							<li>Defined in <a href="https://github.com/farmbot/farmbot-js/blob/868d1c3/src/interfaces.ts#L69">interfaces.ts:69</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Metadata about the Farmware.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="name" class="tsd-anchor"></a>
@@ -152,9 +156,14 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L56">interfaces.ts:56</a></li>
+							<li>Defined in <a href="https://github.com/farmbot/farmbot-js/blob/868d1c3/src/interfaces.ts#L63">interfaces.ts:63</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Name of the package. eg: <code>take-photo</code>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="path" class="tsd-anchor"></a>
@@ -162,9 +171,14 @@
 					<div class="tsd-signature tsd-kind-icon">path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L58">interfaces.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/farmbot/farmbot-js/blob/868d1c3/src/interfaces.ts#L67">interfaces.ts:67</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Path to the executable.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="url" class="tsd-anchor"></a>
@@ -172,19 +186,14 @@
 					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L57">interfaces.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/farmbot/farmbot-js/blob/868d1c3/src/interfaces.ts#L65">interfaces.ts:65</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="uuid" class="tsd-anchor"></a>
-					<h3>uuid</h3>
-					<div class="tsd-signature tsd-kind-icon">uuid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/cbbf553/src/interfaces.ts#L53">interfaces.ts:53</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>URL of the manifest. eg: <code>https://github.com/farmbot-labs/farmbot-manifests/take_photo.json</code></p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -251,9 +260,6 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_interfaces_.farmwaremanifest.html#url" class="tsd-kind-icon">url</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.farmwaremanifest.html#uuid" class="tsd-kind-icon">uuid</a>
-							</li>
 						</ul>
 					</li>
 				</ul>
@@ -272,9 +278,6 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.pin.html" class="tsd-kind-icon">Pin</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.processinfo.html" class="tsd-kind-icon">Process<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_interfaces_.html#configuration" class="tsd-kind-icon">Configuration</a>
