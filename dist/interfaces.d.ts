@@ -26,12 +26,19 @@ export interface JobProgress {
     status: ProgressStatus;
     progress: number;
 }
+/** Farmware  Manifest Meta data is data about the package used internally  by FBOS.*/
 export interface FarmwareManifestMeta {
+    /** For FBOS internal version comparison. */
     min_os_version_major: string;
+    /** Description of the package. */
     description: string;
+    /** Language used to develop the package. */
     language: string;
+    /** Version number of the package. */
     version: string;
+    /** Author of the package. */
     author: string;
+    /** Url to the downloadable archive. */
     zip: string;
 }
 /** The Farmware manifest is a JSON file published by farmware authors.
@@ -39,17 +46,16 @@ export interface FarmwareManifestMeta {
 export interface FarmwareManifest {
     /** The thing that will run the farmware eg: `python`. */
     executable: string;
-    uuid: string;
-    /** Command line args passed to `executable`. */
+    /** Command line args passed to `executable`. eg: `take-photo-master/take_photo.py` */
     args: string[];
+    /** Name of the package. eg: `take-photo`.*/
     name: string;
+    /** URL of the manifest. eg: `https://github.com/farmbot-labs/farmbot-manifests/take_photo.json` */
     url: string;
+    /** Path to the executable. */
     path: string;
+    /** Metadata about the Farmware. */
     meta: FarmwareManifestMeta;
-}
-export interface ProcessInfo {
-    name: string;
-    uuid: string;
 }
 export declare enum Encoder {
     unknown = -1,
