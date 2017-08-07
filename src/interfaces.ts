@@ -186,13 +186,6 @@ export interface InformationalSettings {
 
 export type MQTTEventName = "connect" | "message";
 
-export interface MqttClient {
-  publish: (channel: string, payload: any) => void;
-  subscribe: (channel: string | string[]) => void;
-  on: (type: MQTTEventName, listener: any) => void;
-  once: (type: MQTTEventName, listener: any) => void;
-}
-
 export interface Dictionary<T> { [key: string]: T; }
 
 export type StateTree = Dictionary<string | number | boolean>;

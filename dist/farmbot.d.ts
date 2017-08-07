@@ -1,5 +1,6 @@
 import * as Corpus from "./corpus";
-import { StateTree, MqttClient, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
+import { Client as MqttClient } from "mqtt";
+import { StateTree, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
 export declare const NULL = "null";
 export declare class Farmbot {
     static VERSION: string;
