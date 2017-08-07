@@ -402,7 +402,7 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "4.2.2";
+    Farmbot.VERSION = "4.2.3";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
