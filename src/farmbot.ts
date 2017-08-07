@@ -1,5 +1,5 @@
 import * as Corpus from "./corpus";
-import { connect } from "mqtt";
+import { connect, Client as MqttClient } from "mqtt";
 import {
   assign,
   rpcRequest,
@@ -8,7 +8,6 @@ import {
 } from "./util";
 import {
   StateTree,
-  MqttClient,
   Dictionary,
   ConstructorParams,
   APIToken,
@@ -24,7 +23,7 @@ const ERR_MISSING_UUID = "MISSING_UUID";
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 declare var atob: (i: string) => string;
-declare var global: any;
+declare var global: typeof window;
 
 // Prevents our error catcher from getting overwhelmed by failed
 // connection attempts
@@ -82,7 +81,7 @@ export class Farmbot {
   /** Returns a READ ONLY copy of the local configuration. */
   getState(): StateTree {
     return JSON.parse(JSON.stringify(this._state));
-  };
+  }
 
   /** Write a configuration value for local use.
    * Eg: setState("timeout", 999)
@@ -92,9 +91,9 @@ export class Farmbot {
       let old = this._state[key];
       this._state[key] = val;
       this.emit("change", { name: key, value: val, oldValue: old });
-    };
+    }
     return val;
-  };
+  }
 
   /** Installs a "Farmware" (plugin) onto the bot's SD card.
    * URL must point to a valid Farmware manifest JSON document.
@@ -338,11 +337,11 @@ export class Farmbot {
   event(name: string) {
     this._events[name] = this._events[name] || [];
     return this._events[name];
-  };
+  }
 
   on(event: string, callback: Function) {
     this.event(event).push(callback);
-  };
+  }
 
   emit(event: string, data: any) {
     [this.event(event), this.event("*")]
@@ -381,7 +380,7 @@ export class Farmbot {
         throw new Error("Not connected to server");
       }
     }
-  };
+  }
 
   /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
    * receipt of message, but does not check formatting. Consider using higher
@@ -413,7 +412,7 @@ export class Farmbot {
         }
       });
     });
-  };
+  }
 
   /** Main entry point for all MQTT packets. */
   private _onmessage(chan: string, buffer: Uint8Array) {
@@ -436,7 +435,7 @@ export class Farmbot {
         }
       default: throw new Error("Never should see this.");
     }
-  };
+  }
 
   /** Bootstrap the device onto the MQTT broker. */
   connect() {
@@ -446,7 +445,7 @@ export class Farmbot {
       username: <string>uuid,
       password: <string>token,
       reconnectPeriod: RECONNECT_THROTTLE
-    }) as MqttClient;
+    });
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);

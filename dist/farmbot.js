@@ -53,7 +53,6 @@ var Farmbot = (function () {
     Farmbot.prototype.getState = function () {
         return JSON.parse(JSON.stringify(this._state));
     };
-    ;
     /** Write a configuration value for local use.
      * Eg: setState("timeout", 999)
      */
@@ -63,10 +62,8 @@ var Farmbot = (function () {
             this._state[key] = val;
             this.emit("change", { name: key, value: val, oldValue: old });
         }
-        ;
         return val;
     };
-    ;
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document.
      */
@@ -283,11 +280,9 @@ var Farmbot = (function () {
         this._events[name] = this._events[name] || [];
         return this._events[name];
     };
-    ;
     Farmbot.prototype.on = function (event, callback) {
         this.event(event).push(callback);
     };
-    ;
     Farmbot.prototype.emit = function (event, data) {
         [this.event(event), this.event("*")]
             .forEach(function (handlers) {
@@ -331,7 +326,6 @@ var Farmbot = (function () {
             }
         }
     };
-    ;
     /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
@@ -362,7 +356,6 @@ var Farmbot = (function () {
             });
         });
     };
-    ;
     /** Main entry point for all MQTT packets. */
     Farmbot.prototype._onmessage = function (chan, buffer) {
         try {
@@ -386,7 +379,6 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    ;
     /** Bootstrap the device onto the MQTT broker. */
     Farmbot.prototype.connect = function () {
         var that = this;
