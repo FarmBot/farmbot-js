@@ -1,3 +1,4 @@
+/// <reference types="mqtt" />
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
 import { StateTree, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";

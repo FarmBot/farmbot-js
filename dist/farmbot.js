@@ -410,7 +410,7 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.6";
+    Farmbot.VERSION = "4.3.7";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
