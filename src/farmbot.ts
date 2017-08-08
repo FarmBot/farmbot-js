@@ -140,14 +140,6 @@ export class Farmbot {
     ]));
   }
 
-  /** @deprecated
-   * No longer required, as FarmBot OS and Firmware are now bundled. */
-  checkArduinoUpdates() {
-    return this.send(rpcRequest([
-      { kind: "check_updates", args: { package: "arduino_firmware" } }
-    ]));
-  }
-
   /** THIS WILL RESET THE SD CARD! Be careful!! */
   resetOS() {
     this.publish(rpcRequest([
@@ -448,7 +440,11 @@ export class Farmbot {
     this.client.subscribe(this.channel.status);
     this.client.on("message", this._onmessage.bind(this));
     this.client.on("offline", () => {
-    })
+      console.log("FARMBOT WENT OFFLINE");
+    });
+    this.client.on("connect", () => {
+      console.log("FARMBOT CONNECTED");
+    });
     let done = false;
     return new Promise(function (resolve, reject) {
       setTimeout(() => {
