@@ -12,7 +12,7 @@ export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
     private _state;
-    client: MqttClient;
+    client: MqttClient | undefined;
     constructor(input: ConstructorParams);
     private _decodeThatToken;
     /** Returns a READ ONLY copy of the local configuration. */
@@ -37,9 +37,6 @@ export declare class Farmbot {
     reboot(): Promise<{}>;
     /** Check for new versions of FarmBot OS. */
     checkUpdates(): Promise<{}>;
-    /** @deprecated
-     * No longer required, as FarmBot OS and Firmware are now bundled. */
-    checkArduinoUpdates(): Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
     resetOS(): void;
     resetMCU(): Promise<{}>;
@@ -110,7 +107,6 @@ export declare class Farmbot {
     setUserEnv(configs: Dictionary<(string | undefined)>): Promise<{}>;
     /** Update a config option for FarmBot OS. */
     updateConfig(update: Partial<Configuration>): Promise<{}>;
-    /** (under development April 2017) Calibrate device length. */
     calibrate(args: {
         axis: Corpus.ALLOWED_AXIS;
     }): Promise<{}>;
@@ -141,9 +137,9 @@ export declare class Farmbot {
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
     */
-    send(input: Corpus.RpcRequest): Promise<{}>;
+    send: (input: Corpus.RpcRequest) => Promise<{}>;
     /** Main entry point for all MQTT packets. */
     private _onmessage(chan, buffer);
     /** Bootstrap the device onto the MQTT broker. */
-    connect(): Promise<{}>;
+    connect: () => Promise<{}>;
 }

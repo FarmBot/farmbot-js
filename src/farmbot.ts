@@ -30,13 +30,13 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.2.3";
+  static VERSION = "4.3.1";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
   private _state: StateTree;
-  public client: MqttClient;
+  public client: MqttClient | undefined;
 
   constructor(input: ConstructorParams) {
     if (isNode() && !global.atob) {
@@ -137,14 +137,6 @@ export class Farmbot {
   checkUpdates() {
     return this.send(rpcRequest([
       { kind: "check_updates", args: { package: "farmbot_os" } }
-    ]));
-  }
-
-  /** @deprecated
-   * No longer required, as FarmBot OS and Firmware are now bundled. */
-  checkArduinoUpdates() {
-    return this.send(rpcRequest([
-      { kind: "check_updates", args: { package: "arduino_firmware" } }
     ]));
   }
 
@@ -310,7 +302,6 @@ export class Farmbot {
     }]));
   }
 
-  /** (under development April 2017) Calibrate device length. */
   calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
@@ -386,20 +377,19 @@ export class Farmbot {
    * receipt of message, but does not check formatting. Consider using higher
    * level methods like .moveRelative(), .calibrate(), etc....
   */
-  send(input: Corpus.RpcRequest) {
-    let that = this;
+  send = (input: Corpus.RpcRequest) => {
     let done = false;
-    return new Promise(function (resolve, reject) {
-      that.publish(input);
+    return new Promise((resolve, reject) => {
+      this.publish(input);
       let label = (input.body || []).map(x => x.kind).join(", ");
-      let time = that.getState()["timeout"] as number;
+      let time = this.getState()["timeout"] as number;
       setTimeout(function () {
         if (!done) {
           reject(new Error(`${label} timeout after ${time} ms.`));
         }
       }, time);
 
-      that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+      this.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
         done = true;
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
@@ -438,26 +428,31 @@ export class Farmbot {
   }
 
   /** Bootstrap the device onto the MQTT broker. */
-  connect() {
-    let that = this;
-    let { uuid, token, mqttServer, timeout } = that.getState();
-    that.client = connect(<string>mqttServer, {
+  connect = () => {
+    let { uuid, token, mqttServer, timeout } = this.getState();
+    this.client = connect(<string>mqttServer, {
       username: <string>uuid,
       password: <string>token,
       reconnectPeriod: RECONNECT_THROTTLE
     });
-    that.client.subscribe(that.channel.toClient);
-    that.client.subscribe(that.channel.logs);
-    that.client.subscribe(that.channel.status);
-    that.client.on("message", that._onmessage.bind(that));
+    this.client.subscribe(this.channel.toClient);
+    this.client.subscribe(this.channel.logs);
+    this.client.subscribe(this.channel.status);
+    this.client.on("message", this._onmessage.bind(this));
+    this.client.on("offline", () => this.emit("offline", {}));
+    this.client.on("connect", () => this.emit("online", {}));
     let done = false;
     return new Promise(function (resolve, reject) {
-      setTimeout(function () {
+      setTimeout(() => {
         if (!done) {
           reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
         }
       }, timeout);
-      that.client.once("connect", () => resolve(that));
+      if (this.client) {
+        this.client.once("connect", () => resolve(this));
+      } else {
+        throw new Error("FarmBotJS Could not find a client");
+      }
     });
   }
 }

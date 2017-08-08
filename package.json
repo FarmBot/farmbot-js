@@ -1,15 +1,19 @@
 {
   "name": "farmbot",
-  "version": "4.2.3",
+  "version": "4.3.1",
   "description": "Farmbot Javascript client.",
   "scripts": {
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "test": "node_modules/jest/bin/jest.js"
   },
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^20.0.6",
     "@types/mqtt": "0.0.34",
     "@types/promise": "^7.1.30",
+    "jest": "^20.0.4",
+    "ts-jest": "^20.0.10",
     "tslint": "^5.5.0"
   },
   "main": "./dist/index.js",
@@ -28,5 +32,26 @@
     "iot",
     "arduino",
     "typescript"
-  ]
+  ],
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "mapCoverage": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}"
+    ],
+    "coverageReporters": [
+      "html",
+      "json",
+      "lcov"
+    ]
+  }
 }

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-;
 var Encoder;
 (function (Encoder) {
     Encoder[Encoder["unknown"] = -1] = "unknown";
