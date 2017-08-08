@@ -30,13 +30,25 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.5";
+  static VERSION = "4.3.6";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
   private _state: StateTree;
-  public client: MqttClient | undefined;
+  private _client: MqttClient;
+
+  get client(): MqttClient | undefined {
+    return this._client;
+  }
+
+  set client(x: MqttClient | undefined) {
+    if (x) {
+      this._client = x;
+    } else {
+      throw new Error("AHA!");
+    }
+  }
 
   constructor(input: ConstructorParams) {
     if (isNode() && !global.atob) {

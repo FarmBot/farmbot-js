@@ -90,9 +90,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_farmbot_.farmbot.html#_client" class="tsd-kind-icon">_client</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_farmbot_.farmbot.html#_events" class="tsd-kind-icon">_events</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_farmbot_.farmbot.html#_state" class="tsd-kind-icon">_state</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_farmbot_.farmbot.html#client" class="tsd-kind-icon">client</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_farmbot_.farmbot.html#version" class="tsd-kind-icon">VERSION</a></li>
 							</ul>
 						</section>
@@ -100,6 +100,7 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_farmbot_.farmbot.html#channel" class="tsd-kind-icon">channel</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_farmbot_.farmbot.html#client" class="tsd-kind-icon">client</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -165,7 +166,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L39">farmbot.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L51">farmbot.ts:51</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -182,12 +183,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_client" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _client</h3>
+					<div class="tsd-signature tsd-kind-icon">_client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MqttClient</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L39">farmbot.ts:39</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_events" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _events</h3>
 					<div class="tsd-signature tsd-kind-icon">_events<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_interfaces_.dictionary.html" class="tsd-signature-type">Dictionary</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L37">farmbot.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L37">farmbot.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,27 +213,17 @@
 					<div class="tsd-signature tsd-kind-icon">_state<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#statetree" class="tsd-signature-type">StateTree</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L38">farmbot.ts:38</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="client" class="tsd-anchor"></a>
-					<h3>client</h3>
-					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MqttClient</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L39">farmbot.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L38">farmbot.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="version" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> VERSION</h3>
-					<div class="tsd-signature tsd-kind-icon">VERSION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;4.3.5&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">VERSION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;4.3.6&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L33">farmbot.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L33">farmbot.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -239,7 +240,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L351">farmbot.ts:351</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L363">farmbot.ts:363</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -275,6 +276,41 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="client" class="tsd-anchor"></a>
+					<h3>client</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> client<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MqttClient</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> client<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MqttClient</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L41">farmbot.ts:41</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MqttClient</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L45">farmbot.ts:45</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">MqttClient</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
@@ -288,7 +324,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L55">farmbot.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L67">farmbot.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -305,7 +341,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L409">farmbot.ts:409</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L421">farmbot.ts:421</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,7 +372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L305">farmbot.ts:305</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L317">farmbot.ts:317</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -364,7 +400,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L137">farmbot.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L149">farmbot.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -386,7 +422,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L431">farmbot.ts:431</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L443">farmbot.ts:443</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -403,7 +439,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L315">farmbot.ts:315</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L327">farmbot.ts:327</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -437,7 +473,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L158">farmbot.ts:158</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L170">farmbot.ts:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -460,7 +496,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L164">farmbot.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L176">farmbot.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -483,7 +519,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L337">farmbot.ts:337</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L349">farmbot.ts:349</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -509,7 +545,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L328">farmbot.ts:328</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L340">farmbot.ts:340</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -538,7 +574,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L174">farmbot.ts:174</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L186">farmbot.ts:186</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -569,7 +605,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L169">farmbot.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L181">farmbot.ts:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -597,7 +633,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L189">farmbot.ts:189</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L201">farmbot.ts:201</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -634,7 +670,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L82">farmbot.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L94">farmbot.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -656,7 +692,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L183">farmbot.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L195">farmbot.ts:195</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -692,7 +728,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L101">farmbot.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L113">farmbot.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -721,7 +757,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L194">farmbot.ts:194</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L206">farmbot.ts:206</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -763,7 +799,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L210">farmbot.ts:210</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L222">farmbot.ts:222</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -805,7 +841,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L333">farmbot.ts:333</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L345">farmbot.ts:345</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -831,7 +867,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L127">farmbot.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L139">farmbot.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -853,7 +889,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L365">farmbot.ts:365</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L377">farmbot.ts:377</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -885,7 +921,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L229">farmbot.ts:229</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L241">farmbot.ts:241</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -917,7 +953,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L132">farmbot.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L144">farmbot.ts:144</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -939,7 +975,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L119">farmbot.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L131">farmbot.ts:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -967,7 +1003,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L150">farmbot.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L162">farmbot.ts:162</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -984,7 +1020,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L144">farmbot.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L156">farmbot.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1006,7 +1042,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L381">farmbot.ts:381</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L393">farmbot.ts:393</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1036,7 +1072,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L89">farmbot.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L101">farmbot.ts:101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1075,7 +1111,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L277">farmbot.ts:277</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L289">farmbot.ts:289</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1104,7 +1140,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L247">farmbot.ts:247</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L259">farmbot.ts:259</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1134,7 +1170,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L240">farmbot.ts:240</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L252">farmbot.ts:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1165,7 +1201,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L234">farmbot.ts:234</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L246">farmbot.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1195,7 +1231,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L222">farmbot.ts:222</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L234">farmbot.ts:234</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1228,7 +1264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L290">farmbot.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L302">farmbot.ts:302</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1256,7 +1292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L111">farmbot.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L123">farmbot.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1285,7 +1321,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L255">farmbot.ts:255</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L267">farmbot.ts:267</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1313,7 +1349,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L217">farmbot.ts:217</a></li>
+									<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L229">farmbot.ts:229</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1351,7 +1387,7 @@
 					<div class="tsd-signature tsd-kind-icon">defaults<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L34">farmbot.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L34">farmbot.ts:34</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1360,7 +1396,7 @@
 						<div class="tsd-signature tsd-kind-icon">secure<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L34">farmbot.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L34">farmbot.ts:34</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -1370,7 +1406,7 @@
 						<div class="tsd-signature tsd-kind-icon">speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;800</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L34">farmbot.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L34">farmbot.ts:34</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -1380,7 +1416,7 @@
 						<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;6000</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/e4d8672/src/farmbot.ts#L34">farmbot.ts:34</a></li>
+								<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/0380c01/src/farmbot.ts#L34">farmbot.ts:34</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -1427,19 +1463,22 @@
 								<a href="_farmbot_.farmbot.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_farmbot_.farmbot.html#_client" class="tsd-kind-icon">_client</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_farmbot_.farmbot.html#_events" class="tsd-kind-icon">_events</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="_farmbot_.farmbot.html#_state" class="tsd-kind-icon">_state</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_farmbot_.farmbot.html#client" class="tsd-kind-icon">client</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="_farmbot_.farmbot.html#version" class="tsd-kind-icon">VERSION</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_farmbot_.farmbot.html#channel" class="tsd-kind-icon">channel</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="_farmbot_.farmbot.html#client" class="tsd-kind-icon">client</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="_farmbot_.farmbot.html#_decodethattoken" class="tsd-kind-icon">_decode<wbr>That<wbr>Token</a>

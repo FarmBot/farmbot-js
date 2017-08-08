@@ -12,6 +12,7 @@ export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
     private _state;
+    private _client;
     client: MqttClient | undefined;
     constructor(input: ConstructorParams);
     private _decodeThatToken;

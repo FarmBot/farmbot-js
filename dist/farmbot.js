@@ -117,6 +117,21 @@ var Farmbot = (function () {
         this._state = util_1.assign({}, Farmbot.defaults, input);
         this._decodeThatToken();
     }
+    Object.defineProperty(Farmbot.prototype, "client", {
+        get: function () {
+            return this._client;
+        },
+        set: function (x) {
+            if (x) {
+                this._client = x;
+            }
+            else {
+                throw new Error("AHA!");
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     /** Returns a READ ONLY copy of the local configuration. */
     Farmbot.prototype.getState = function () {
         return JSON.parse(JSON.stringify(this._state));
@@ -395,7 +410,7 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.5";
+    Farmbot.VERSION = "4.3.6";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
