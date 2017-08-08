@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.3";
+  static VERSION = "4.3.4";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
@@ -368,6 +368,7 @@ export class Farmbot {
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
       if (important) {
+        console.warn("Tried to send data before connection was made");
         throw new Error("Not connected to server");
       }
     }
@@ -448,11 +449,7 @@ export class Farmbot {
           reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
         }
       }, timeout);
-      if (this.client) {
-        this.client.once("connect", () => resolve(this));
-      } else {
-        throw new Error("FarmBotJS Could not find a client");
-      }
+      this.client.once("connect", () => resolve(this));
     });
   }
 }

@@ -52,6 +52,7 @@ var Farmbot = (function () {
             }
             else {
                 if (important) {
+                    console.warn("Tried to send data before connection was made");
                     throw new Error("Not connected to server");
                 }
             }
@@ -107,12 +108,7 @@ var Farmbot = (function () {
                         reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
                     }
                 }, timeout);
-                if (this.client) {
-                    this.client.once("connect", function () { return resolve(_this); });
-                }
-                else {
-                    throw new Error("FarmBotJS Could not find a client");
-                }
+                this.client.once("connect", function () { return resolve(_this); });
             });
         };
         if (index_1.isNode() && !global.atob) {
@@ -400,7 +396,7 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.3";
+    Farmbot.VERSION = "4.3.4";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
