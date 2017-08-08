@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BotStateTree | farmbot</title>
+	<title>BytesProgress | farmbot</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -59,28 +59,21 @@
 					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
 				</li>
 				<li>
-					<a href="_interfaces_.botstatetree.html">BotStateTree</a>
+					<a href="_interfaces_.bytesprogress.html">BytesProgress</a>
 				</li>
 			</ul>
-			<h1>Interface BotStateTree</h1>
+			<h1>Interface BytesProgress</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Everything the farmbot knows about itself at a given moment in time.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BotStateTree</span>
+						<span class="target">BytesProgress</span>
 					</li>
 				</ul>
 			</section>
@@ -91,14 +84,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#configuration" class="tsd-kind-icon">configuration</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#informational_settings" class="tsd-kind-icon">informational_<wbr>settings</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#jobs" class="tsd-kind-icon">jobs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#location_data" class="tsd-kind-icon">location_<wbr>data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#mcu_params" class="tsd-kind-icon">mcu_<wbr>params</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#pins" class="tsd-kind-icon">pins</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#process_info" class="tsd-kind-icon">process_<wbr>info</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.botstatetree.html#user_env" class="tsd-kind-icon">user_<wbr>env</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.bytesprogress.html#bytes" class="tsd-kind-icon">bytes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.bytesprogress.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.bytesprogress.html#unit" class="tsd-kind-icon">unit</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,133 +95,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="configuration" class="tsd-anchor"></a>
-					<h3>configuration</h3>
-					<div class="tsd-signature tsd-kind-icon">configuration<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#configuration" class="tsd-signature-type">Configuration</a></div>
+					<a name="bytes" class="tsd-anchor"></a>
+					<h3>bytes</h3>
+					<div class="tsd-signature tsd-kind-icon">bytes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L10">interfaces.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L47">interfaces.ts:47</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>User definable config settings.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="informational_settings" class="tsd-anchor"></a>
-					<h3>informational_<wbr>settings</h3>
-					<div class="tsd-signature tsd-kind-icon">informational_<wbr>settings<span class="tsd-signature-symbol">:</span> <a href="_interfaces_.informationalsettings.html" class="tsd-signature-type">InformationalSettings</a></div>
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#progressstatus" class="tsd-signature-type">ProgressStatus</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L12">interfaces.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L45">interfaces.ts:45</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>READ ONLY meta data about the FarmBot device.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="jobs" class="tsd-anchor"></a>
-					<h3>jobs</h3>
-					<div class="tsd-signature tsd-kind-icon">jobs<span class="tsd-signature-symbol">:</span> <a href="_interfaces_.dictionary.html" class="tsd-signature-type">Dictionary</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="_interfaces_.percentageprogress.html" class="tsd-signature-type">PercentageProgress</a><span class="tsd-signature-symbol"> | </span><a href="_interfaces_.bytesprogress.html" class="tsd-signature-type">BytesProgress</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="unit" class="tsd-anchor"></a>
+					<h3>unit</h3>
+					<div class="tsd-signature tsd-kind-icon">unit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"bytes"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L17">interfaces.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L46">interfaces.ts:46</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>When you&#39;re really curious about how a long-running
-							task (like farmware downloads) is going to take.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="location_data" class="tsd-anchor"></a>
-					<h3>location_<wbr>data</h3>
-					<div class="tsd-signature tsd-kind-icon">location_<wbr>data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_interfaces_.html#locationname" class="tsd-signature-type">LocationName</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_interfaces_.html#xyz" class="tsd-signature-type">Xyz</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L6">interfaces.ts:6</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Cartesian coordinates of the bot.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="mcu_params" class="tsd-anchor"></a>
-					<h3>mcu_<wbr>params</h3>
-					<div class="tsd-signature tsd-kind-icon">mcu_<wbr>params<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#mcuparams" class="tsd-signature-type">McuParams</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L4">interfaces.ts:4</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Microcontroller configuration and settings.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="pins" class="tsd-anchor"></a>
-					<h3>pins</h3>
-					<div class="tsd-signature tsd-kind-icon">pins<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#pins" class="tsd-signature-type">Pins</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L8">interfaces.ts:8</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Lookup table, indexed by number for pin status</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="process_info" class="tsd-anchor"></a>
-					<h3>process_<wbr>info</h3>
-					<div class="tsd-signature tsd-kind-icon">process_<wbr>info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L19">interfaces.ts:19</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>List of user accessible processes running on the bot.</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>farmwares<span class="tsd-signature-symbol">: </span><a href="_interfaces_.dictionary.html" class="tsd-signature-type">Dictionary</a><span class="tsd-signature-symbol">&lt;</span><a href="_interfaces_.farmwaremanifest.html" class="tsd-signature-type">FarmwareManifest</a><span class="tsd-signature-symbol">&gt;</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="user_env" class="tsd-anchor"></a>
-					<h3>user_<wbr>env</h3>
-					<div class="tsd-signature tsd-kind-icon">user_<wbr>env<span class="tsd-signature-symbol">:</span> <a href="_interfaces_.dictionary.html" class="tsd-signature-type">Dictionary</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/8d2a68f/src/interfaces.ts#L14">interfaces.ts:14</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Bag of misc. settings that any script author can use.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -274,42 +163,27 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.apitoken.html" class="tsd-kind-icon">APIToken</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.botstatetree.html" class="tsd-kind-icon">Bot<wbr>State<wbr>Tree</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.botstatetree.html" class="tsd-kind-icon">Bot<wbr>State<wbr>Tree</a>
+						<a href="_interfaces_.bytesprogress.html" class="tsd-kind-icon">Bytes<wbr>Progress</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#configuration" class="tsd-kind-icon">configuration</a>
+								<a href="_interfaces_.bytesprogress.html#bytes" class="tsd-kind-icon">bytes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#informational_settings" class="tsd-kind-icon">informational_<wbr>settings</a>
+								<a href="_interfaces_.bytesprogress.html#status" class="tsd-kind-icon">status</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#jobs" class="tsd-kind-icon">jobs</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#location_data" class="tsd-kind-icon">location_<wbr>data</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#mcu_params" class="tsd-kind-icon">mcu_<wbr>params</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#pins" class="tsd-kind-icon">pins</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#process_info" class="tsd-kind-icon">process_<wbr>info</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_interfaces_.botstatetree.html#user_env" class="tsd-kind-icon">user_<wbr>env</a>
+								<a href="_interfaces_.bytesprogress.html#unit" class="tsd-kind-icon">unit</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_interfaces_.bytesprogress.html" class="tsd-kind-icon">Bytes<wbr>Progress</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_interfaces_.constructorparams.html" class="tsd-kind-icon">Constructor<wbr>Params</a>
 					</li>

@@ -27,14 +27,9 @@ export type LocationName =
   | "raw_encoders";
 
 export type ProgressStatus =
-  | "done"
   | "complete"
-  | "failed";
-
-export enum Measurement {
-  percent = "percent",
-  bytes = "bytes",
-}
+  | "working"
+  | "error";
 
 export type JobProgress =
   | PercentageProgress
@@ -42,13 +37,13 @@ export type JobProgress =
 
 export interface PercentageProgress {
   status: ProgressStatus;
-  unit: Measurement.percent;
+  unit: "percent";
   percent: number;
 }
 
 export interface BytesProgress {
   status: ProgressStatus;
-  unit: Measurement.bytes;
+  unit: "bytes";
   bytes: number;
 }
 

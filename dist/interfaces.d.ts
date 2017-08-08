@@ -13,7 +13,7 @@ export interface BotStateTree {
     /** Bag of misc. settings that any script author can use. */
     user_env: Dictionary<(string | undefined)>;
     /** When you're really curious about how a long-running
-     * task (like farmware downloas) is going to take. */
+     * task (like farmware downloads) is going to take. */
     jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
@@ -21,10 +21,17 @@ export interface BotStateTree {
     };
 }
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
-export declare type ProgressStatus = "done" | "complete" | "failed";
-export interface JobProgress {
+export declare type ProgressStatus = "complete" | "working" | "error";
+export declare type JobProgress = PercentageProgress | BytesProgress;
+export interface PercentageProgress {
     status: ProgressStatus;
-    progress: number;
+    unit: "percent";
+    percent: number;
+}
+export interface BytesProgress {
+    status: ProgressStatus;
+    unit: "bytes";
+    bytes: number;
 }
 export interface FarmwareManifestMeta {
     min_os_version_major: string;
