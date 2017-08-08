@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.4";
+  static VERSION = "4.3.5";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
@@ -428,20 +428,20 @@ export class Farmbot {
     }
   }
 
-  /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
-    let { uuid, token, mqttServer, timeout } = this.getState();
-    this.client = connect(<string>mqttServer, {
+    let that = this;
+    let { uuid, token, mqttServer, timeout } = that.getState();
+    that.client = connect(<string>mqttServer, {
       username: <string>uuid,
       password: <string>token,
       reconnectPeriod: RECONNECT_THROTTLE
-    });
-    this.client.subscribe(this.channel.toClient);
-    this.client.subscribe(this.channel.logs);
-    this.client.subscribe(this.channel.status);
-    this.client.on("message", this._onmessage.bind(this));
-    this.client.on("offline", () => this.emit("offline", {}));
-    this.client.on("connect", () => this.emit("online", {}));
+    }) as MqttClient;
+    that.client.subscribe(that.channel.toClient);
+    that.client.subscribe(that.channel.logs);
+    that.client.subscribe(that.channel.status);
+    that.client.on("message", that._onmessage.bind(that));
+    that.client.on("connect", () => this.emit("online", {}));
+    that.client.on("offline", () => this.emit("offline", {}));
     let done = false;
     return new Promise(function (resolve, reject) {
       setTimeout(() => {
@@ -449,7 +449,8 @@ export class Farmbot {
           reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
         }
       }, timeout);
-      this.client.once("connect", () => resolve(this));
+      this.client.once("connect", () => resolve(that));
     });
   }
 }
+

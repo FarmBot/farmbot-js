@@ -86,29 +86,28 @@ var Farmbot = (function () {
                 });
             });
         };
-        /** Bootstrap the device onto the MQTT broker. */
         this.connect = function () {
-            var _a = _this.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
-            _this.client = mqtt_1.connect(mqttServer, {
+            var that = _this;
+            var _a = that.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
+            that.client = mqtt_1.connect(mqttServer, {
                 username: uuid,
                 password: token,
                 reconnectPeriod: RECONNECT_THROTTLE
             });
-            _this.client.subscribe(_this.channel.toClient);
-            _this.client.subscribe(_this.channel.logs);
-            _this.client.subscribe(_this.channel.status);
-            _this.client.on("message", _this._onmessage.bind(_this));
-            _this.client.on("offline", function () { return _this.emit("offline", {}); });
-            _this.client.on("connect", function () { return _this.emit("online", {}); });
+            that.client.subscribe(that.channel.toClient);
+            that.client.subscribe(that.channel.logs);
+            that.client.subscribe(that.channel.status);
+            that.client.on("message", that._onmessage.bind(that));
+            that.client.on("connect", function () { return _this.emit("online", {}); });
+            that.client.on("offline", function () { return _this.emit("offline", {}); });
             var done = false;
             return new Promise(function (resolve, reject) {
-                var _this = this;
                 setTimeout(function () {
                     if (!done) {
                         reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
                     }
                 }, timeout);
-                this.client.once("connect", function () { return resolve(_this); });
+                this.client.once("connect", function () { return resolve(that); });
             });
         };
         if (index_1.isNode() && !global.atob) {
@@ -396,7 +395,7 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.4";
+    Farmbot.VERSION = "4.3.5";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());

@@ -140,6 +140,5 @@ export declare class Farmbot {
     send: (input: Corpus.RpcRequest) => Promise<{}>;
     /** Main entry point for all MQTT packets. */
     private _onmessage(chan, buffer);
-    /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<{}>;
 }
