@@ -83,12 +83,8 @@ var Farmbot = (function () {
             _this.client.subscribe(_this.channel.logs);
             _this.client.subscribe(_this.channel.status);
             _this.client.on("message", _this._onmessage.bind(_this));
-            _this.client.on("offline", function () {
-                console.log("FARMBOT WENT OFFLINE");
-            });
-            _this.client.on("connect", function () {
-                console.log("FARMBOT CONNECTED");
-            });
+            _this.client.on("offline", function () { return _this.emit("offline", {}); });
+            _this.client.on("connect", function () { return _this.emit("online", {}); });
             var done = false;
             return new Promise(function (resolve, reject) {
                 var _this = this;
@@ -404,7 +400,7 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.0";
+    Farmbot.VERSION = "4.3.1";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
