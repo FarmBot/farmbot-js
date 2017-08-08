@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.0";
+  static VERSION = "4.3.1";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
@@ -439,12 +439,8 @@ export class Farmbot {
     this.client.subscribe(this.channel.logs);
     this.client.subscribe(this.channel.status);
     this.client.on("message", this._onmessage.bind(this));
-    this.client.on("offline", () => {
-      console.log("FARMBOT WENT OFFLINE");
-    });
-    this.client.on("connect", () => {
-      console.log("FARMBOT CONNECTED");
-    });
+    this.client.on("offline", () => this.emit("offline", {}));
+    this.client.on("connect", () => this.emit("online", {}));
     let done = false;
     return new Promise(function (resolve, reject) {
       setTimeout(() => {
