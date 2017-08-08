@@ -15,9 +15,6 @@
       "spaces"
     ],
     "eofline": true,
-    "only-arrow-functions": [
-      true
-    ],
     "no-duplicate-variable": true,
     "no-arg": true,
     "no-internal-module": true,

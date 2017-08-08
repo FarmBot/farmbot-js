@@ -23,32 +23,20 @@ const ERR_MISSING_UUID = "MISSING_UUID";
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 declare var atob: (i: string) => string;
-declare var global: typeof window;
+declare var global: any;
 
 // Prevents our error catcher from getting overwhelmed by failed
 // connection attempts
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.7";
+  static VERSION = "4.3.8";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
   private _state: StateTree;
-  private _client: MqttClient;
-
-  get client(): MqttClient | undefined {
-    return this._client;
-  }
-
-  set client(x: MqttClient | undefined) {
-    if (x) {
-      this._client = x;
-    } else {
-      throw new Error("AHA!");
-    }
-  }
+  public client: MqttClient;
 
   constructor(input: ConstructorParams) {
     if (isNode() && !global.atob) {
@@ -268,7 +256,7 @@ export class Farmbot {
     let body: Corpus.RpcRequestBodyItem[] = [];
     Object
       .keys(update)
-      .forEach((label) => {
+      .forEach(function (label) {
         let value = pick<Primitive>(update, label, "ERROR");
         body.push({
           kind: "config_update",
@@ -289,7 +277,7 @@ export class Farmbot {
   setUserEnv(configs: Dictionary<(string | undefined)>) {
     let body = Object
       .keys(configs)
-      .map((label): Corpus.Pair => {
+      .map(function (label): Corpus.Pair {
         return {
           kind: "pair",
           args: { label, value: (configs[label] || NULL) }
@@ -348,8 +336,8 @@ export class Farmbot {
 
   emit(event: string, data: any) {
     [this.event(event), this.event("*")]
-      .forEach((handlers) => {
-        handlers.forEach((handler: Function) => {
+      .forEach(function (handlers) {
+        handlers.forEach(function (handler: Function) {
           try {
             handler(data, event);
           } catch (e) {
@@ -374,13 +362,12 @@ export class Farmbot {
 
   /** Low level means of sending MQTT packets. Does not check format. Does not
    * acknowledge confirmation. Probably not the one you want. */
-  publish = (msg: Corpus.RpcRequest, important = true): void => {
+  publish(msg: Corpus.RpcRequest, important = true): void {
     if (this.client) {
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
       if (important) {
-        console.warn("Tried to send data before connection was made");
         throw new Error("Not connected to server");
       }
     }
@@ -390,19 +377,20 @@ export class Farmbot {
    * receipt of message, but does not check formatting. Consider using higher
    * level methods like .moveRelative(), .calibrate(), etc....
   */
-  send = (input: Corpus.RpcRequest) => {
+  send(input: Corpus.RpcRequest) {
+    let that = this;
     let done = false;
-    return new Promise((resolve, reject) => {
-      this.publish(input);
+    return new Promise(function (resolve, reject) {
+      that.publish(input);
       let label = (input.body || []).map(x => x.kind).join(", ");
-      let time = this.getState()["timeout"] as number;
-      setTimeout(() => {
+      let time = that.getState()["timeout"] as number;
+      setTimeout(function () {
         if (!done) {
           reject(new Error(`${label} timeout after ${time} ms.`));
         }
       }, time);
 
-      this.on(input.args.label, (response: Corpus.RpcOk | Corpus.RpcError) => {
+      that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
         done = true;
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
@@ -440,7 +428,8 @@ export class Farmbot {
     }
   }
 
-  connect = () => {
+  /** Bootstrap the device onto the MQTT broker. */
+  connect() {
     let that = this;
     let { uuid, token, mqttServer, timeout } = that.getState();
     that.client = connect(<string>mqttServer, {
@@ -452,17 +441,16 @@ export class Farmbot {
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);
     that.client.on("message", that._onmessage.bind(that));
-    that.client.on("connect", () => this.emit("online", {}));
     that.client.on("offline", () => this.emit("offline", {}));
+    that.client.on("connect", () => this.emit("online", {}));
     let done = false;
     return new Promise(function (resolve, reject) {
-      setTimeout(() => {
+      setTimeout(function () {
         if (!done) {
           reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
         }
       }, timeout);
-      this.client.once("connect", () => resolve(that));
+      that.client.once("connect", () => resolve(that));
     });
   }
 }
-
