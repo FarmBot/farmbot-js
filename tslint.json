@@ -1,7 +1,9 @@
-
 {
   "rules": {
-    "max-line-length": [true, 100],
+    "max-line-length": [
+      true,
+      100
+    ],
     "no-inferrable-types": true,
     "class-name": true,
     "comment-format": [
@@ -13,6 +15,9 @@
       "spaces"
     ],
     "eofline": true,
+    "only-arrow-functions": [
+      true
+    ],
     "no-duplicate-variable": true,
     "no-arg": true,
     "no-internal-module": true,
@@ -33,7 +38,10 @@
       "double",
       "avoid-escape"
     ],
-    "semicolon": [true, "always"],
+    "semicolon": [
+      true,
+      "always"
+    ],
     "typedef-whitespace": [
       true,
       {

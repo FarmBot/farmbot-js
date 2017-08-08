@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.2";
+  static VERSION = "4.3.3";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
@@ -256,7 +256,7 @@ export class Farmbot {
     let body: Corpus.RpcRequestBodyItem[] = [];
     Object
       .keys(update)
-      .forEach(function (label) {
+      .forEach((label) => {
         let value = pick<Primitive>(update, label, "ERROR");
         body.push({
           kind: "config_update",
@@ -277,7 +277,7 @@ export class Farmbot {
   setUserEnv(configs: Dictionary<(string | undefined)>) {
     let body = Object
       .keys(configs)
-      .map(function (label): Corpus.Pair {
+      .map((label): Corpus.Pair => {
         return {
           kind: "pair",
           args: { label, value: (configs[label] || NULL) }
@@ -336,8 +336,8 @@ export class Farmbot {
 
   emit(event: string, data: any) {
     [this.event(event), this.event("*")]
-      .forEach(function (handlers) {
-        handlers.forEach(function (handler: Function) {
+      .forEach((handlers) => {
+        handlers.forEach((handler: Function) => {
           try {
             handler(data, event);
           } catch (e) {
@@ -362,7 +362,7 @@ export class Farmbot {
 
   /** Low level means of sending MQTT packets. Does not check format. Does not
    * acknowledge confirmation. Probably not the one you want. */
-  publish(msg: Corpus.RpcRequest, important = true): void {
+  publish = (msg: Corpus.RpcRequest, important = true): void => {
     if (this.client) {
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
@@ -383,13 +383,13 @@ export class Farmbot {
       this.publish(input);
       let label = (input.body || []).map(x => x.kind).join(", ");
       let time = this.getState()["timeout"] as number;
-      setTimeout(function () {
+      setTimeout(() => {
         if (!done) {
           reject(new Error(`${label} timeout after ${time} ms.`));
         }
       }, time);
 
-      this.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+      this.on(input.args.label, (response: Corpus.RpcOk | Corpus.RpcError) => {
         done = true;
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
