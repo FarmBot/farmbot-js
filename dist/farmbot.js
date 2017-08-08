@@ -42,6 +42,20 @@ var Farmbot = (function () {
             _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
+        /** Low level means of sending MQTT packets. Does not check format. Does not
+         * acknowledge confirmation. Probably not the one you want. */
+        this.publish = function (msg, important) {
+            if (important === void 0) { important = true; }
+            if (_this.client) {
+                /** SEE: https://github.com/mqttjs/MQTT.js#client */
+                _this.client.publish(_this.channel.toDevice, JSON.stringify(msg));
+            }
+            else {
+                if (important) {
+                    throw new Error("Not connected to server");
+                }
+            }
+        };
         /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
          * receipt of message, but does not check formatting. Consider using higher
          * level methods like .moveRelative(), .calibrate(), etc....
@@ -363,20 +377,6 @@ var Farmbot = (function () {
         enumerable: true,
         configurable: true
     });
-    /** Low level means of sending MQTT packets. Does not check format. Does not
-     * acknowledge confirmation. Probably not the one you want. */
-    Farmbot.prototype.publish = function (msg, important) {
-        if (important === void 0) { important = true; }
-        if (this.client) {
-            /** SEE: https://github.com/mqttjs/MQTT.js#client */
-            this.client.publish(this.channel.toDevice, JSON.stringify(msg));
-        }
-        else {
-            if (important) {
-                throw new Error("Not connected to server");
-            }
-        }
-    };
     /** Main entry point for all MQTT packets. */
     Farmbot.prototype._onmessage = function (chan, buffer) {
         try {
@@ -400,7 +400,7 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.2";
+    Farmbot.VERSION = "4.3.3";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());
