@@ -42,65 +42,6 @@ var Farmbot = (function () {
             _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
-        /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
-         * receipt of message, but does not check formatting. Consider using higher
-         * level methods like .moveRelative(), .calibrate(), etc....
-        */
-        this.send = function (input) {
-            var done = false;
-            return new Promise(function (resolve, reject) {
-                _this.publish(input);
-                var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
-                var time = _this.getState()["timeout"];
-                setTimeout(function () {
-                    if (!done) {
-                        reject(new Error(label + " timeout after " + time + " ms."));
-                    }
-                }, time);
-                _this.on(input.args.label, function (response) {
-                    done = true;
-                    switch (response.kind) {
-                        case "rpc_ok": return resolve(response);
-                        case "rpc_error":
-                            var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
-                            return reject(new Error("Problem sending RPC command: " + reason));
-                        default:
-                            console.dir(response);
-                            throw new Error("Got a bad CeleryScript node.");
-                    }
-                });
-            });
-        };
-        /** Bootstrap the device onto the MQTT broker. */
-        this.connect = function () {
-            var _a = _this.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
-            _this.client = mqtt_1.connect(mqttServer, {
-                username: uuid,
-                password: token,
-                reconnectPeriod: RECONNECT_THROTTLE
-            });
-            _this.client.subscribe(_this.channel.toClient);
-            _this.client.subscribe(_this.channel.logs);
-            _this.client.subscribe(_this.channel.status);
-            _this.client.on("message", _this._onmessage.bind(_this));
-            _this.client.on("offline", function () { return _this.emit("offline", {}); });
-            _this.client.on("connect", function () { return _this.emit("online", {}); });
-            var done = false;
-            return new Promise(function (resolve, reject) {
-                var _this = this;
-                setTimeout(function () {
-                    if (!done) {
-                        reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
-                    }
-                }, timeout);
-                if (this.client) {
-                    this.client.once("connect", function () { return resolve(_this); });
-                }
-                else {
-                    throw new Error("FarmBotJS Could not find a client");
-                }
-            });
-        };
         if (index_1.isNode() && !global.atob) {
             throw new Error("NOTE TO NODEJS USERS:\n\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
         }
@@ -377,6 +318,36 @@ var Farmbot = (function () {
             }
         }
     };
+    /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
+     * receipt of message, but does not check formatting. Consider using higher
+     * level methods like .moveRelative(), .calibrate(), etc....
+    */
+    Farmbot.prototype.send = function (input) {
+        var that = this;
+        var done = false;
+        return new Promise(function (resolve, reject) {
+            that.publish(input);
+            var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
+            var time = that.getState()["timeout"];
+            setTimeout(function () {
+                if (!done) {
+                    reject(new Error(label + " timeout after " + time + " ms."));
+                }
+            }, time);
+            that.on(input.args.label, function (response) {
+                done = true;
+                switch (response.kind) {
+                    case "rpc_ok": return resolve(response);
+                    case "rpc_error":
+                        var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
+                        return reject(new Error("Problem sending RPC command: " + reason));
+                    default:
+                        console.dir(response);
+                        throw new Error("Got a bad CeleryScript node.");
+                }
+            });
+        });
+    };
     /** Main entry point for all MQTT packets. */
     Farmbot.prototype._onmessage = function (chan, buffer) {
         try {
@@ -400,7 +371,33 @@ var Farmbot = (function () {
             default: throw new Error("Never should see this.");
         }
     };
-    Farmbot.VERSION = "4.3.1";
+    /** Bootstrap the device onto the MQTT broker. */
+    Farmbot.prototype.connect = function () {
+        var _this = this;
+        var that = this;
+        var _a = that.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
+        that.client = mqtt_1.connect(mqttServer, {
+            username: uuid,
+            password: token,
+            reconnectPeriod: RECONNECT_THROTTLE
+        });
+        that.client.subscribe(that.channel.toClient);
+        that.client.subscribe(that.channel.logs);
+        that.client.subscribe(that.channel.status);
+        that.client.on("message", that._onmessage.bind(that));
+        that.client.on("offline", function () { return _this.emit("offline", {}); });
+        that.client.on("connect", function () { return _this.emit("online", {}); });
+        var done = false;
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                if (!done) {
+                    reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
+                }
+            }, timeout);
+            that.client.once("connect", function () { return resolve(that); });
+        });
+    };
+    Farmbot.VERSION = "4.3.8";
     Farmbot.defaults = { speed: 800, timeout: 6000, secure: true };
     return Farmbot;
 }());

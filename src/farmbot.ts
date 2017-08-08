@@ -23,20 +23,20 @@ const ERR_MISSING_UUID = "MISSING_UUID";
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 declare var atob: (i: string) => string;
-declare var global: typeof window;
+declare var global: any;
 
 // Prevents our error catcher from getting overwhelmed by failed
 // connection attempts
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.1";
+  static VERSION = "4.3.8";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
   private _state: StateTree;
-  public client: MqttClient | undefined;
+  public client: MqttClient;
 
   constructor(input: ConstructorParams) {
     if (isNode() && !global.atob) {
@@ -377,19 +377,20 @@ export class Farmbot {
    * receipt of message, but does not check formatting. Consider using higher
    * level methods like .moveRelative(), .calibrate(), etc....
   */
-  send = (input: Corpus.RpcRequest) => {
+  send(input: Corpus.RpcRequest) {
+    let that = this;
     let done = false;
-    return new Promise((resolve, reject) => {
-      this.publish(input);
+    return new Promise(function (resolve, reject) {
+      that.publish(input);
       let label = (input.body || []).map(x => x.kind).join(", ");
-      let time = this.getState()["timeout"] as number;
+      let time = that.getState()["timeout"] as number;
       setTimeout(function () {
         if (!done) {
           reject(new Error(`${label} timeout after ${time} ms.`));
         }
       }, time);
 
-      this.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+      that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
         done = true;
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
@@ -428,31 +429,28 @@ export class Farmbot {
   }
 
   /** Bootstrap the device onto the MQTT broker. */
-  connect = () => {
-    let { uuid, token, mqttServer, timeout } = this.getState();
-    this.client = connect(<string>mqttServer, {
+  connect() {
+    let that = this;
+    let { uuid, token, mqttServer, timeout } = that.getState();
+    that.client = connect(<string>mqttServer, {
       username: <string>uuid,
       password: <string>token,
       reconnectPeriod: RECONNECT_THROTTLE
-    });
-    this.client.subscribe(this.channel.toClient);
-    this.client.subscribe(this.channel.logs);
-    this.client.subscribe(this.channel.status);
-    this.client.on("message", this._onmessage.bind(this));
-    this.client.on("offline", () => this.emit("offline", {}));
-    this.client.on("connect", () => this.emit("online", {}));
+    }) as MqttClient;
+    that.client.subscribe(that.channel.toClient);
+    that.client.subscribe(that.channel.logs);
+    that.client.subscribe(that.channel.status);
+    that.client.on("message", that._onmessage.bind(that));
+    that.client.on("offline", () => this.emit("offline", {}));
+    that.client.on("connect", () => this.emit("online", {}));
     let done = false;
     return new Promise(function (resolve, reject) {
-      setTimeout(() => {
+      setTimeout(function () {
         if (!done) {
           reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
         }
       }, timeout);
-      if (this.client) {
-        this.client.once("connect", () => resolve(this));
-      } else {
-        throw new Error("FarmBotJS Could not find a client");
-      }
+      that.client.once("connect", () => resolve(that));
     });
   }
 }

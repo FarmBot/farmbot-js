@@ -1,3 +1,4 @@
+/// <reference types="mqtt" />
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
 import { StateTree, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
@@ -12,7 +13,7 @@ export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
     private _state;
-    client: MqttClient | undefined;
+    client: MqttClient;
     constructor(input: ConstructorParams);
     private _decodeThatToken;
     /** Returns a READ ONLY copy of the local configuration. */
@@ -137,9 +138,9 @@ export declare class Farmbot {
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
     */
-    send: (input: Corpus.RpcRequest) => Promise<{}>;
+    send(input: Corpus.RpcRequest): Promise<{}>;
     /** Main entry point for all MQTT packets. */
     private _onmessage(chan, buffer);
     /** Bootstrap the device onto the MQTT broker. */
-    connect: () => Promise<{}>;
+    connect(): Promise<{}>;
 }
