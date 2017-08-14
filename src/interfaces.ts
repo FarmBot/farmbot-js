@@ -193,6 +193,8 @@ export interface InformationalSettings {
   private_ip?: string | undefined;
   /** The message to be displayed on the frontend for sync status. */
   sync_status?: SyncStatus | undefined;
+  busy: boolean;
+  locked: boolean;
 }
 
 export type MQTTEventName = "connect" | "message";

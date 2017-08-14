@@ -23,14 +23,14 @@ const ERR_MISSING_UUID = "MISSING_UUID";
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 const UUID = "uuid";
 declare var atob: (i: string) => string;
-declare var global: any;
+declare var global: typeof window;
 
 // Prevents our error catcher from getting overwhelmed by failed
 // connection attempts
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.3.8";
+  static VERSION = "4.3.9";
   static defaults = { speed: 800, timeout: 6000, secure: true };
 
   /** Storage area for all event handlers */
