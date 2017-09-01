@@ -112,6 +112,9 @@ export type McuParamName =
   | "movement_home_at_boot_x"
   | "movement_home_at_boot_y"
   | "movement_home_at_boot_z"
+  | "movement_home_spd_x"
+  | "movement_home_spd_y"
+  | "movement_home_spd_z"
   | "movement_home_up_x"
   | "movement_home_up_y"
   | "movement_home_up_z"
@@ -144,8 +147,8 @@ export type McuParamName =
   | "movement_timeout_x"
   | "movement_timeout_y"
   | "movement_timeout_z"
-  | "param_mov_nr_retry"
   | "param_e_stop_on_mov_err"
+  | "param_mov_nr_retry"
   | "param_version";
 
 // /** Microcontroller configuration and settings. */
@@ -193,6 +196,8 @@ export interface InformationalSettings {
   private_ip?: string | undefined;
   /** The message to be displayed on the frontend for sync status. */
   sync_status?: SyncStatus | undefined;
+  busy: boolean;
+  locked: boolean;
 }
 
 export type MQTTEventName = "connect" | "message";
