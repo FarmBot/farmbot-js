@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "4.4.0";
+  static VERSION = "5.0.0";
   static defaults = { speed: 800, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -74,7 +74,7 @@ export class Farmbot {
       protocol = isSecure ? "wss://" : "ws://";
       port = isSecure ? 443 : 3002;
     }
-    this.setState("mqttServer", `${protocol}${mqttUrl}:${port}`);
+    this.setState("mqttServer", `${protocol}${mqttUrl}:${port}/ws`);
     this.setState(UUID, token.bot || ERR_MISSING_UUID);
   }
 
