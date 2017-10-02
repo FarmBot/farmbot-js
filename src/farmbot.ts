@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "5.0.0";
+  static VERSION = "5.0.1-rc1";
   static defaults = { speed: 800, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -72,7 +72,8 @@ export class Farmbot {
       port = 1883;
     } else {
       protocol = isSecure ? "wss://" : "ws://";
-      port = isSecure ? 443 : 3002;
+      console.log("THIS IS NOT PRODUCTION READY!");
+      port = 15675;
     }
     this.setState("mqttServer", `${protocol}${mqttUrl}:${port}/ws`);
     this.setState(UUID, token.bot || ERR_MISSING_UUID);
