@@ -20,6 +20,7 @@ export interface BotStateTree {
         farmwares: Dictionary<FarmwareManifest>;
     };
 }
+export declare type FirmwareHardware = "arduino" | "farmduino";
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
 export declare type ProgressStatus = "complete" | "working" | "error";
 export declare type JobProgress = PercentageProgress | BytesProgress;
@@ -73,7 +74,7 @@ export interface Pin {
     value: number;
 }
 export declare type Pins = Dictionary<Pin | undefined>;
-export declare type ConfigurationName = "os_auto_update" | "fw_auto_update" | "steps_per_mm_x" | "steps_per_mm_y" | "steps_per_mm_z";
+export declare type ConfigurationName = "os_auto_update" | "firmware_hardware" | "fw_auto_update" | "steps_per_mm_x" | "steps_per_mm_y" | "steps_per_mm_z";
 export declare type Configuration = Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
 /** The possible values for the sync_msg property on informational_settings */
 export declare type SyncStatus = "locked" | "maintenance" | "sync_error" | "sync_now" | "synced" | "syncing" | "unknown";
