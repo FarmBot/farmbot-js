@@ -21,6 +21,10 @@ export interface BotStateTree {
   };
 }
 
+export type FirmwareHardware =
+  | "arduino"
+  | "farmduino";
+
 export type LocationName =
   | "position"
   | "scaled_encoders"
@@ -167,6 +171,7 @@ export type Pins = Dictionary<Pin | undefined>;
 
 export type ConfigurationName =
   | "os_auto_update"
+  | "firmware_hardware"
   | "fw_auto_update"
   | "steps_per_mm_x"
   | "steps_per_mm_y"
