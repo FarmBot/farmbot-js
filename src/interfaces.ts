@@ -169,16 +169,18 @@ export interface Pin {
 
 export type Pins = Dictionary<Pin | undefined>;
 
-export type ConfigurationName =
-  | "os_auto_update"
-  | "firmware_hardware"
-  | "fw_auto_update"
-  | "steps_per_mm_x"
-  | "steps_per_mm_y"
-  | "steps_per_mm_z";
+export interface FullConfiguration {
+  firmware_hardware: FirmwareHardware;
+  fw_auto_update: number;
+  os_auto_update: number;
+  steps_per_mm_x: number;
+  steps_per_mm_y: number;
+  steps_per_mm_z: number;
+}
 
-export type Configuration =
-  Partial<Record<ConfigurationName, (boolean | number | undefined)>>;
+export type Configuration = Partial<FullConfiguration>;
+
+export type ConfigurationName = keyof Configuration;
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus =

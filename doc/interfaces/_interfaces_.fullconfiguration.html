@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Coordinate | farmbot</title>
+	<title>FullConfiguration | farmbot</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_corpus_.html">&quot;corpus&quot;</a>
+					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
 				</li>
 				<li>
-					<a href="_corpus_.coordinate.html">Coordinate</a>
+					<a href="_interfaces_.fullconfiguration.html">FullConfiguration</a>
 				</li>
 			</ul>
-			<h1>Interface Coordinate</h1>
+			<h1>Interface FullConfiguration</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Coordinate</span>
+						<span class="target">FullConfiguration</span>
 					</li>
 				</ul>
 			</section>
@@ -84,10 +84,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_corpus_.coordinate.html#args" class="tsd-kind-icon">args</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_corpus_.coordinate.html#body" class="tsd-kind-icon">body</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_corpus_.coordinate.html#comment" class="tsd-kind-icon">comment</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_corpus_.coordinate.html#kind" class="tsd-kind-icon">kind</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.fullconfiguration.html#firmware_hardware" class="tsd-kind-icon">firmware_<wbr>hardware</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.fullconfiguration.html#fw_auto_update" class="tsd-kind-icon">fw_<wbr>auto_<wbr>update</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.fullconfiguration.html#os_auto_update" class="tsd-kind-icon">os_<wbr>auto_<wbr>update</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.fullconfiguration.html#steps_per_mm_x" class="tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>x</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.fullconfiguration.html#steps_per_mm_y" class="tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>y</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.fullconfiguration.html#steps_per_mm_z" class="tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>z</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,56 +98,62 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="args" class="tsd-anchor"></a>
-					<h3>args</h3>
-					<div class="tsd-signature tsd-kind-icon">args<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="firmware_hardware" class="tsd-anchor"></a>
+					<h3>firmware_<wbr>hardware</h3>
+					<div class="tsd-signature tsd-kind-icon">firmware_<wbr>hardware<span class="tsd-signature-symbol">:</span> <a href="../modules/_interfaces_.html#firmwarehardware" class="tsd-signature-type">FirmwareHardware</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/corpus.ts#L58">corpus.ts:58</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>z<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="body" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> body</h3>
-					<div class="tsd-signature tsd-kind-icon">body<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/corpus.ts#L64">corpus.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/interfaces.ts#L173">interfaces.ts:173</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="comment" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> comment</h3>
-					<div class="tsd-signature tsd-kind-icon">comment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<a name="fw_auto_update" class="tsd-anchor"></a>
+					<h3>fw_<wbr>auto_<wbr>update</h3>
+					<div class="tsd-signature tsd-kind-icon">fw_<wbr>auto_<wbr>update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/corpus.ts#L63">corpus.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/interfaces.ts#L174">interfaces.ts:174</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="kind" class="tsd-anchor"></a>
-					<h3>kind</h3>
-					<div class="tsd-signature tsd-kind-icon">kind<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"coordinate"</span></div>
+					<a name="os_auto_update" class="tsd-anchor"></a>
+					<h3>os_<wbr>auto_<wbr>update</h3>
+					<div class="tsd-signature tsd-kind-icon">os_<wbr>auto_<wbr>update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/corpus.ts#L57">corpus.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/interfaces.ts#L175">interfaces.ts:175</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="steps_per_mm_x" class="tsd-anchor"></a>
+					<h3>steps_<wbr>per_<wbr>mm_<wbr>x</h3>
+					<div class="tsd-signature tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/interfaces.ts#L176">interfaces.ts:176</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="steps_per_mm_y" class="tsd-anchor"></a>
+					<h3>steps_<wbr>per_<wbr>mm_<wbr>y</h3>
+					<div class="tsd-signature tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/interfaces.ts#L177">interfaces.ts:177</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="steps_per_mm_z" class="tsd-anchor"></a>
+					<h3>steps_<wbr>per_<wbr>mm_<wbr>z</h3>
+					<div class="tsd-signature tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>z<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/58a6db1/src/interfaces.ts#L178">interfaces.ts:178</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -160,7 +168,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/___tests___farmbot_test_.html">"__tests__/farmbot.test"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_corpus_.html">"corpus"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -169,7 +177,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_index_.html">"index"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_interfaces_.html">"interfaces"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -182,27 +190,111 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/_interfaces_.encoder.html" class="tsd-kind-icon">Encoder</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.apitoken.html" class="tsd-kind-icon">APIToken</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.botstatetree.html" class="tsd-kind-icon">Bot<wbr>State<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.bytesprogress.html" class="tsd-kind-icon">Bytes<wbr>Progress</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.constructorparams.html" class="tsd-kind-icon">Constructor<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_interfaces_.dictionary.html" class="tsd-kind-icon">Dictionary</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.farmwaremanifest.html" class="tsd-kind-icon">Farmware<wbr>Manifest</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.farmwaremanifestmeta.html" class="tsd-kind-icon">Farmware<wbr>Manifest<wbr>Meta</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_corpus_.coordinate.html" class="tsd-kind-icon">Coordinate</a>
+						<a href="_interfaces_.fullconfiguration.html" class="tsd-kind-icon">Full<wbr>Configuration</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_corpus_.coordinate.html#args" class="tsd-kind-icon">args</a>
+								<a href="_interfaces_.fullconfiguration.html#firmware_hardware" class="tsd-kind-icon">firmware_<wbr>hardware</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_corpus_.coordinate.html#body" class="tsd-kind-icon">body</a>
+								<a href="_interfaces_.fullconfiguration.html#fw_auto_update" class="tsd-kind-icon">fw_<wbr>auto_<wbr>update</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_corpus_.coordinate.html#comment" class="tsd-kind-icon">comment</a>
+								<a href="_interfaces_.fullconfiguration.html#os_auto_update" class="tsd-kind-icon">os_<wbr>auto_<wbr>update</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_corpus_.coordinate.html#kind" class="tsd-kind-icon">kind</a>
+								<a href="_interfaces_.fullconfiguration.html#steps_per_mm_x" class="tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>x</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.fullconfiguration.html#steps_per_mm_y" class="tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>y</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.fullconfiguration.html#steps_per_mm_z" class="tsd-kind-icon">steps_<wbr>per_<wbr>mm_<wbr>z</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.informationalsettings.html" class="tsd-kind-icon">Informational<wbr>Settings</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.percentageprogress.html" class="tsd-kind-icon">Percentage<wbr>Progress</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.pin.html" class="tsd-kind-icon">Pin</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_interfaces_.processinfo.html" class="tsd-kind-icon">Process<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#configuration" class="tsd-kind-icon">Configuration</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#configurationname" class="tsd-kind-icon">Configuration<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#firmwarehardware" class="tsd-kind-icon">Firmware<wbr>Hardware</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#jobprogress" class="tsd-kind-icon">Job<wbr>Progress</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#locationname" class="tsd-kind-icon">Location<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#mqtteventname" class="tsd-kind-icon">MQTTEvent<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#mcuparamname" class="tsd-kind-icon">Mcu<wbr>Param<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#mcuparams" class="tsd-kind-icon">Mcu<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#pins" class="tsd-kind-icon">Pins</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#progressstatus" class="tsd-kind-icon">Progress<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#statetree" class="tsd-kind-icon">State<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#syncstatus" class="tsd-kind-icon">Sync<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#vector3" class="tsd-kind-icon">Vector3</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_interfaces_.html#xyz" class="tsd-kind-icon">Xyz</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
