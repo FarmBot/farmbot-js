@@ -86,6 +86,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.apitoken.html#bot" class="tsd-kind-icon">bot</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.apitoken.html#mqtt" class="tsd-kind-icon">mqtt</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_interfaces_.apitoken.html#mqtt_ws" class="tsd-kind-icon">mqtt_<wbr>ws</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,7 +100,7 @@
 					<div class="tsd-signature tsd-kind-icon">bot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/513dc5d/src/interfaces.ts#L237">interfaces.ts:237</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/b5323d8/src/interfaces.ts#L244">interfaces.ts:244</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -114,12 +115,30 @@
 					<div class="tsd-signature tsd-kind-icon">mqtt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/513dc5d/src/interfaces.ts#L235">interfaces.ts:235</a></li>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/b5323d8/src/interfaces.ts#L237">interfaces.ts:237</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>URL of MQTT server. REST server is not the same as MQTT server.</p>
+							<p>LEGACY ISSUES AHEAD: PLEASE READ:
+								This is the <em>host</em> of MQTT server. A host is <em>not</em> the same thing as
+							a URL. This property is only useful for NodeJS users.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="mqtt_ws" class="tsd-anchor"></a>
+					<h3>mqtt_<wbr>ws</h3>
+					<div class="tsd-signature tsd-kind-icon">mqtt_<wbr>ws<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/RickCarlino/farmbot-js/blob/b5323d8/src/interfaces.ts#L241">interfaces.ts:241</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Fully formed URL (port, protocol, host) pointing to the MQTT
+							websocket server.</p>
 						</div>
 					</div>
 				</section>
@@ -169,6 +188,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_interfaces_.apitoken.html#mqtt" class="tsd-kind-icon">mqtt</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_interfaces_.apitoken.html#mqtt_ws" class="tsd-kind-icon">mqtt_<wbr>ws</a>
 							</li>
 						</ul>
 					</li>

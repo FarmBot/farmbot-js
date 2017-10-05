@@ -231,8 +231,15 @@ export interface ConstructorParams {
 }
 
 export interface APIToken {
-  /** URL of MQTT server. REST server is not the same as MQTT server. */
+  /** LEGACY ISSUES AHEAD: PLEASE READ:
+   * This is the *host* of MQTT server. A host is *not* the same thing as
+   * a URL. This property is only useful for NodeJS users.*/
   mqtt: string;
+
+  /** Fully formed URL (port, protocol, host) pointing to the MQTT
+   * websocket server. */
+  mqtt_ws: string;
+
   /** UUID of current bot. */
   bot: string;
 }

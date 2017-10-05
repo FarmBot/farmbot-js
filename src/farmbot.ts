@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "5.0.1-rc8";
+  static VERSION = "5.0.1-rc9";
   static defaults = { speed: 800, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -63,20 +63,8 @@ export class Farmbot {
       console.warn(e);
       throw new Error(ERR_TOKEN_PARSE);
     }
-    let mqttUrl = token.mqtt || ERR_MISSING_MQTT;
-    let isSecure = !!this._state.secure;
-    let protocol: string;
-    let port: number;
-    if (isNode()) {
-      protocol = "mqtt://";
-      port = 1883;
-    } else {
-      protocol = isSecure ? "wss://" : "ws://";
-      console.log(isSecure ?
-        "UNSTABLE" : "Need to change port 3002 for non-https self hosters");
-      port = isSecure ? 443 : 3002;
-    }
-    this.setState("mqttServer", `${protocol}${mqttUrl}:${port}/ws/mqtt`);
+    this.setState("mqttServer", isNode() ?
+      `mqtt://${token.mqtt_ws}:1883` : token.mqtt_ws);
     this.setState(UUID, token.bot || ERR_MISSING_UUID);
   }
 
