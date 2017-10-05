@@ -51,6 +51,9 @@ export interface BytesProgress {
   bytes: number;
 }
 
+/** Relates to form builder */
+export type FarmwareConfig = Record<"name" | "label" | "value", string>;
+
 export interface FarmwareManifestMeta {
   min_os_version_major: string;
   description: string;
@@ -58,6 +61,7 @@ export interface FarmwareManifestMeta {
   version: string;
   author: string;
   zip: string;
+  config: FarmwareConfig[];
 }
 
 /** The Farmware manifest is a JSON file published by farmware authors.

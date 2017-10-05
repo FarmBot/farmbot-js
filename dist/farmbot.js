@@ -37,8 +37,9 @@ var Farmbot = (function () {
             }
             else {
                 protocol = isSecure ? "wss://" : "ws://";
-                console.log("NOT PRODUCTION READY: ");
-                port = 443;
+                console.log(isSecure ?
+                    "UNSTABLE" : "Need to change port 3002 for non-https self hosters");
+                port = isSecure ? 443 : 3002;
             }
             _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port + "/ws/mqtt");
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
@@ -398,7 +399,7 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1-rc5";
+    Farmbot.VERSION = "5.0.1-rc6";
     Farmbot.defaults = { speed: 800, timeout: 15000, secure: true };
     return Farmbot;
 }());
