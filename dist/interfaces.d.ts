@@ -34,8 +34,6 @@ export interface BytesProgress {
     unit: "bytes";
     bytes: number;
 }
-/** Relates to form builder */
-export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
 export interface FarmwareManifestMeta {
     min_os_version_major: string;
     description: string;
@@ -43,8 +41,9 @@ export interface FarmwareManifestMeta {
     version: string;
     author: string;
     zip: string;
-    config: FarmwareConfig[];
 }
+/** Relates to form builder */
+export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
 /** The Farmware manifest is a JSON file published by farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades. */
 export interface FarmwareManifest {
@@ -57,6 +56,7 @@ export interface FarmwareManifest {
     url: string;
     path: string;
     meta: FarmwareManifestMeta;
+    config: FarmwareConfig[];
 }
 export interface ProcessInfo {
     name: string;
