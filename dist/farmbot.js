@@ -298,6 +298,7 @@ var Farmbot = (function () {
     Farmbot.prototype.publish = function (msg, important) {
         if (important === void 0) { important = true; }
         if (this.client) {
+            this.emit("sent", msg);
             /** SEE: https://github.com/mqttjs/MQTT.js#client */
             this.client.publish(this.channel.toDevice, JSON.stringify(msg));
         }
@@ -386,7 +387,7 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1-rc8";
+    Farmbot.VERSION = "5.0.1-rc10";
     Farmbot.defaults = { speed: 800, timeout: 15000, secure: true };
     return Farmbot;
 }());
