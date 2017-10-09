@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "5.0.1-rc9";
+  static VERSION = "5.0.1-rc10";
   static defaults = { speed: 800, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -354,6 +354,7 @@ export class Farmbot {
    * acknowledge confirmation. Probably not the one you want. */
   publish(msg: Corpus.RpcRequest, important = true): void {
     if (this.client) {
+      this.emit("sent", msg);
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
