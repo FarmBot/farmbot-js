@@ -51,9 +51,6 @@ export interface BytesProgress {
   bytes: number;
 }
 
-/** Relates to form builder */
-export type FarmwareConfig = Record<"name" | "label" | "value", string>;
-
 export interface FarmwareManifestMeta {
   min_os_version_major: string;
   description: string;
@@ -61,8 +58,9 @@ export interface FarmwareManifestMeta {
   version: string;
   author: string;
   zip: string;
-  config: FarmwareConfig[];
 }
+/** Relates to form builder */
+export type FarmwareConfig = Record<"name" | "label" | "value", string>;
 
 /** The Farmware manifest is a JSON file published by farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades. */
@@ -76,6 +74,7 @@ export interface FarmwareManifest {
   url: string;
   path: string;
   meta: FarmwareManifestMeta;
+  config: FarmwareConfig[];
 }
 
 export interface ProcessInfo {
@@ -143,6 +142,9 @@ export type McuParamName =
   | "movement_min_spd_z"
   | "movement_secondary_motor_invert_x"
   | "movement_secondary_motor_x"
+  | "movement_step_per_mm_x"
+  | "movement_step_per_mm_y"
+  | "movement_step_per_mm_z"
   | "movement_steps_acc_dec_x"
   | "movement_steps_acc_dec_y"
   | "movement_steps_acc_dec_z"
@@ -229,8 +231,15 @@ export interface ConstructorParams {
 }
 
 export interface APIToken {
-  /** URL of MQTT server. REST server is not the same as MQTT server. */
+  /** LEGACY ISSUES AHEAD: PLEASE READ:
+   * This is the *host* of MQTT server. A host is *not* the same thing as
+   * a URL. This property is only useful for NodeJS users.*/
   mqtt: string;
+
+  /** Fully formed URL (port, protocol, host) pointing to the MQTT
+   * websocket server. */
+  mqtt_ws: string;
+
   /** UUID of current bot. */
   bot: string;
 }

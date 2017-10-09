@@ -34,8 +34,6 @@ export interface BytesProgress {
     unit: "bytes";
     bytes: number;
 }
-/** Relates to form builder */
-export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
 export interface FarmwareManifestMeta {
     min_os_version_major: string;
     description: string;
@@ -43,8 +41,9 @@ export interface FarmwareManifestMeta {
     version: string;
     author: string;
     zip: string;
-    config: FarmwareConfig[];
 }
+/** Relates to form builder */
+export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
 /** The Farmware manifest is a JSON file published by farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades. */
 export interface FarmwareManifest {
@@ -57,6 +56,7 @@ export interface FarmwareManifest {
     url: string;
     path: string;
     meta: FarmwareManifestMeta;
+    config: FarmwareConfig[];
 }
 export interface ProcessInfo {
     name: string;
@@ -67,7 +67,7 @@ export declare enum Encoder {
     quadrature = 0,
     differential = 1,
 }
-export declare type McuParamName = "encoder_enabled_x" | "encoder_enabled_y" | "encoder_enabled_z" | "encoder_invert_x" | "encoder_invert_y" | "encoder_invert_z" | "encoder_missed_steps_decay_x" | "encoder_missed_steps_decay_y" | "encoder_missed_steps_decay_z" | "encoder_missed_steps_max_x" | "encoder_missed_steps_max_y" | "encoder_missed_steps_max_z" | "encoder_scaling_x" | "encoder_scaling_y" | "encoder_scaling_z" | "encoder_type_x" | "encoder_type_y" | "encoder_type_z" | "encoder_use_for_pos_x" | "encoder_use_for_pos_y" | "encoder_use_for_pos_z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_enable_endpoints_x" | "movement_enable_endpoints_y" | "movement_enable_endpoints_z" | "movement_home_at_boot_x" | "movement_home_at_boot_y" | "movement_home_at_boot_z" | "movement_home_spd_x" | "movement_home_spd_y" | "movement_home_spd_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_keep_active_x" | "movement_keep_active_y" | "movement_keep_active_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_secondary_motor_invert_x" | "movement_secondary_motor_x" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_stop_at_home_x" | "movement_stop_at_home_y" | "movement_stop_at_home_z" | "movement_stop_at_max_x" | "movement_stop_at_max_y" | "movement_stop_at_max_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_e_stop_on_mov_err" | "param_mov_nr_retry" | "param_version";
+export declare type McuParamName = "encoder_enabled_x" | "encoder_enabled_y" | "encoder_enabled_z" | "encoder_invert_x" | "encoder_invert_y" | "encoder_invert_z" | "encoder_missed_steps_decay_x" | "encoder_missed_steps_decay_y" | "encoder_missed_steps_decay_z" | "encoder_missed_steps_max_x" | "encoder_missed_steps_max_y" | "encoder_missed_steps_max_z" | "encoder_scaling_x" | "encoder_scaling_y" | "encoder_scaling_z" | "encoder_type_x" | "encoder_type_y" | "encoder_type_z" | "encoder_use_for_pos_x" | "encoder_use_for_pos_y" | "encoder_use_for_pos_z" | "movement_axis_nr_steps_x" | "movement_axis_nr_steps_y" | "movement_axis_nr_steps_z" | "movement_enable_endpoints_x" | "movement_enable_endpoints_y" | "movement_enable_endpoints_z" | "movement_home_at_boot_x" | "movement_home_at_boot_y" | "movement_home_at_boot_z" | "movement_home_spd_x" | "movement_home_spd_y" | "movement_home_spd_z" | "movement_home_up_x" | "movement_home_up_y" | "movement_home_up_z" | "movement_invert_endpoints_x" | "movement_invert_endpoints_y" | "movement_invert_endpoints_z" | "movement_invert_motor_x" | "movement_invert_motor_y" | "movement_invert_motor_z" | "movement_keep_active_x" | "movement_keep_active_y" | "movement_keep_active_z" | "movement_max_spd_x" | "movement_max_spd_y" | "movement_max_spd_z" | "movement_min_spd_x" | "movement_min_spd_y" | "movement_min_spd_z" | "movement_secondary_motor_invert_x" | "movement_secondary_motor_x" | "movement_step_per_mm_x" | "movement_step_per_mm_y" | "movement_step_per_mm_z" | "movement_steps_acc_dec_x" | "movement_steps_acc_dec_y" | "movement_steps_acc_dec_z" | "movement_stop_at_home_x" | "movement_stop_at_home_y" | "movement_stop_at_home_z" | "movement_stop_at_max_x" | "movement_stop_at_max_y" | "movement_stop_at_max_z" | "movement_timeout_x" | "movement_timeout_y" | "movement_timeout_z" | "param_e_stop_on_mov_err" | "param_mov_nr_retry" | "param_version";
 export declare type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
 export declare type Xyz = "x" | "y" | "z";
 /** 3 dimensional vector. */
@@ -119,8 +119,13 @@ export interface ConstructorParams {
     speed?: number;
 }
 export interface APIToken {
-    /** URL of MQTT server. REST server is not the same as MQTT server. */
+    /** LEGACY ISSUES AHEAD: PLEASE READ:
+     * This is the *host* of MQTT server. A host is *not* the same thing as
+     * a URL. This property is only useful for NodeJS users.*/
     mqtt: string;
+    /** Fully formed URL (port, protocol, host) pointing to the MQTT
+     * websocket server. */
+    mqtt_ws: string;
     /** UUID of current bot. */
     bot: string;
 }

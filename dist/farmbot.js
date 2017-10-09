@@ -27,21 +27,8 @@ var Farmbot = (function () {
                 console.warn(e);
                 throw new Error(ERR_TOKEN_PARSE);
             }
-            var mqttUrl = token.mqtt || ERR_MISSING_MQTT;
-            var isSecure = !!_this._state.secure;
-            var protocol;
-            var port;
-            if (index_1.isNode()) {
-                protocol = "mqtt://";
-                port = 1883;
-            }
-            else {
-                protocol = isSecure ? "wss://" : "ws://";
-                console.log(isSecure ?
-                    "UNSTABLE" : "Need to change port 3002 for non-https self hosters");
-                port = isSecure ? 443 : 3002;
-            }
-            _this.setState("mqttServer", "" + protocol + mqttUrl + ":" + port + "/ws/mqtt");
+            _this.setState("mqttServer", index_1.isNode() ?
+                "mqtt://" + token.mqtt_ws + ":1883" : token.mqtt_ws);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
         if (index_1.isNode() && !global.atob) {
@@ -399,7 +386,7 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1-rc6";
+    Farmbot.VERSION = "5.0.1-rc8";
     Farmbot.defaults = { speed: 800, timeout: 15000, secure: true };
     return Farmbot;
 }());
