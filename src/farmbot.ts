@@ -31,7 +31,7 @@ const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
   static VERSION = "5.0.1-rc10";
-  static defaults = { speed: 800, timeout: 15000, secure: true };
+  static defaults = { speed: 100, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
