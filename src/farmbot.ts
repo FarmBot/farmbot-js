@@ -113,6 +113,16 @@ export class Farmbot {
     }]));
   }
 
+    /** Installs "Farmwares" (plugins) authored by FarmBot.io
+   * onto the bot's SD card.
+   */
+  installFirstPartyFarmware() {
+    return this.send(rpcRequest([{
+      kind: "install_first_party_farmware",
+      args: {}
+    }]));
+  }
+  
   /** Deactivate FarmBot OS completely. */
   powerOff() {
     return this.send(rpcRequest([{ kind: "power_off", args: {} }]));
