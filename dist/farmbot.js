@@ -78,6 +78,15 @@ var Farmbot = (function () {
                 args: { package: pkg }
             }]));
     };
+    /** Installs "Farmwares" (plugins) authored by FarmBot.io
+   * onto the bot's SD card.
+   */
+    Farmbot.prototype.installFirstPartyFarmware = function () {
+        return this.send(util_1.rpcRequest([{
+                kind: "install_first_party_farmware",
+                args: {}
+            }]));
+    };
     /** Deactivate FarmBot OS completely. */
     Farmbot.prototype.powerOff = function () {
         return this.send(util_1.rpcRequest([{ kind: "power_off", args: {} }]));
@@ -387,7 +396,7 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1-rc12";
+    Farmbot.VERSION = "5.0.1-rc13";
     Farmbot.defaults = { speed: 100, timeout: 15000, secure: true };
     return Farmbot;
 }());

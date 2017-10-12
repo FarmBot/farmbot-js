@@ -32,6 +32,10 @@ export declare class Farmbot {
     updateFarmware(pkg: string): Promise<{}>;
     /** Uninstall a Farmware plugin. */
     removeFarmware(pkg: string): Promise<{}>;
+    /** Installs "Farmwares" (plugins) authored by FarmBot.io
+   * onto the bot's SD card.
+   */
+    installFirstPartyFarmware(): Promise<{}>;
     /** Deactivate FarmBot OS completely. */
     powerOff(): Promise<{}>;
     /** Cycle device power. */

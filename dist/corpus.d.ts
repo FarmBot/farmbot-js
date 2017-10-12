@@ -205,7 +205,7 @@ export interface Explanation {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | Wait | AddPoint | InstallFarmware | UpdateFarmware | Zero | RemoveFarmware | TakePhoto | DataUpdate | FindHome;
+export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | Wait | AddPoint | InstallFarmware | UpdateFarmware | Zero | RemoveFarmware | TakePhoto | DataUpdate | FindHome | InstallFirstPartyFarmware;
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
