@@ -30,7 +30,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 45000;
 
 export class Farmbot {
-  static VERSION = "5.0.1-rc10";
+  static VERSION = "5.0.1-rc13";
   static defaults = { speed: 100, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -110,6 +110,16 @@ export class Farmbot {
     return this.send(rpcRequest([{
       kind: "remove_farmware",
       args: { package: pkg }
+    }]));
+  }
+
+    /** Installs "Farmwares" (plugins) authored by FarmBot.io
+   * onto the bot's SD card.
+   */
+  installFirstPartyFarmware() {
+    return this.send(rpcRequest([{
+      kind: "install_first_party_farmware",
+      args: {}
     }]));
   }
 

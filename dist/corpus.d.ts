@@ -205,7 +205,7 @@ export interface Explanation {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | Wait | AddPoint | InstallFarmware | UpdateFarmware | Zero | RemoveFarmware | TakePhoto | DataUpdate | FindHome;
+export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | Wait | AddPoint | InstallFarmware | UpdateFarmware | Zero | RemoveFarmware | TakePhoto | DataUpdate | FindHome | InstallFirstPartyFarmware;
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
@@ -349,7 +349,7 @@ export declare const LATEST_VERSION = 4;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
 export declare type ALLOWED_PIN_MODES = 0 | 1;
-export declare type ALLOWED_MESSAGE_TYPES = "success" | "busy" | "warn" | "error" | "info" | "fun";
+export declare type ALLOWED_MESSAGE_TYPES = "success" | "busy" | "warn" | "error" | "info" | "fun" | "debug";
 export declare type ALLOWED_CHANNEL_NAMES = "ticker" | "toast" | "email";
 export declare type ALLOWED_DATA_TYPES = "string" | "integer";
 export declare type ALLOWED_OPS = "<" | ">" | "is" | "not" | "is_undefined";
