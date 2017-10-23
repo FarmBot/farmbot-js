@@ -12,7 +12,7 @@ var UUID = "uuid";
 // Prevents our error catcher from getting overwhelmed by failed
 // connection attempts
 var RECONNECT_THROTTLE = 45000;
-var Farmbot = (function () {
+var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
         this._decodeThatToken = function () {
@@ -396,7 +396,7 @@ var Farmbot = (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1-rc13";
+    Farmbot.VERSION = "5.0.1";
     Farmbot.defaults = { speed: 100, timeout: 15000, secure: true };
     return Farmbot;
 }());
