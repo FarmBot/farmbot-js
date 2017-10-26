@@ -296,6 +296,7 @@ var Farmbot = /** @class */ (function () {
                 /** From farmbot */
                 toClient: "bot/" + uuid + "/from_device",
                 status: "bot/" + uuid + "/status",
+                sync: "bot/" + uuid + "/sync/#",
                 logs: "bot/" + uuid + "/logs"
             };
         },
@@ -367,7 +368,8 @@ var Farmbot = /** @class */ (function () {
                     console.warn("Got malformed message. Out of date firmware?");
                     return this.emit("malformed", msg);
                 }
-            default: throw new Error("Never should see this.");
+            default:
+                console.info("Unhandled inbound message from " + chan);
         }
     };
     /** Bootstrap the device onto the MQTT broker. */
@@ -383,6 +385,7 @@ var Farmbot = /** @class */ (function () {
         that.client.subscribe(that.channel.toClient);
         that.client.subscribe(that.channel.logs);
         that.client.subscribe(that.channel.status);
+        that.client.subscribe(that.channel.sync);
         that.client.on("message", that._onmessage.bind(that));
         that.client.on("offline", function () { return _this.emit("offline", {}); });
         that.client.on("connect", function () { return _this.emit("online", {}); });

@@ -334,7 +334,7 @@ export class Farmbot {
     this.event(event).push(callback);
   }
 
-  emit(event: string, data: any) {
+  emit(event: string, data: {}) {
     [this.event(event), this.event("*")]
       .forEach(function (handlers) {
         handlers.forEach(function (handler: Function) {
@@ -356,6 +356,7 @@ export class Farmbot {
       /** From farmbot */
       toClient: `bot/${uuid}/from_device`,
       status: `bot/${uuid}/status`,
+      sync: `bot/${uuid}/sync/#`,
       logs: `bot/${uuid}/logs`
     };
   }
@@ -425,7 +426,8 @@ export class Farmbot {
           console.warn("Got malformed message. Out of date firmware?");
           return this.emit("malformed", msg);
         }
-      default: throw new Error("Never should see this.");
+      default:
+        console.info(`Unhandled inbound message from ${chan}`);
     }
   }
 
@@ -441,6 +443,7 @@ export class Farmbot {
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);
+    that.client.subscribe(that.channel.sync);
     that.client.on("message", that._onmessage.bind(that));
     that.client.on("offline", () => this.emit("offline", {}));
     that.client.on("connect", () => this.emit("online", {}));
