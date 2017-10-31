@@ -9,9 +9,7 @@ var ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
 var ERR_MISSING_UUID = "MISSING_UUID";
 var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 var UUID = "uuid";
-// Prevents our error catcher from getting overwhelmed by failed
-// connection attempts
-var RECONNECT_THROTTLE = 45000;
+var RECONNECT_THROTTLE = 1000;
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
@@ -380,6 +378,7 @@ var Farmbot = /** @class */ (function () {
         that.client = mqtt_1.connect(mqttServer, {
             username: uuid,
             password: token,
+            clean: false,
             reconnectPeriod: RECONNECT_THROTTLE
         });
         that.client.subscribe(that.channel.toClient);
@@ -399,7 +398,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1";
+    Farmbot.VERSION = "5.0.2-rc1";
     Farmbot.defaults = { speed: 100, timeout: 15000, secure: true };
     return Farmbot;
 }());

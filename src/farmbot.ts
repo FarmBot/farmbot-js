@@ -25,12 +25,10 @@ const UUID = "uuid";
 declare var atob: (i: string) => string;
 declare var global: typeof window;
 
-// Prevents our error catcher from getting overwhelmed by failed
-// connection attempts
-const RECONNECT_THROTTLE = 45000;
+const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.0.1";
+  static VERSION = "5.0.2-rc1";
   static defaults = { speed: 100, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -436,8 +434,9 @@ export class Farmbot {
     let that = this;
     let { uuid, token, mqttServer, timeout } = that.getState();
     that.client = connect(<string>mqttServer, {
-      username: <string>uuid,
-      password: <string>token,
+      username: uuid as string,
+      password: token as string,
+      clean: false,
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;
     that.client.subscribe(that.channel.toClient);
