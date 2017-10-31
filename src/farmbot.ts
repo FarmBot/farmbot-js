@@ -4,7 +4,8 @@ import {
   assign,
   rpcRequest,
   coordinate,
-  toPairs
+  toPairs,
+  uuid as genUuid
 } from "./util";
 import {
   StateTree,
@@ -437,6 +438,7 @@ export class Farmbot {
       username: uuid as string,
       password: token as string,
       clean: false,
+      clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;
     that.client.subscribe(that.channel.toClient);

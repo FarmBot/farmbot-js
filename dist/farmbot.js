@@ -379,6 +379,7 @@ var Farmbot = /** @class */ (function () {
             username: uuid,
             password: token,
             clean: false,
+            clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
             reconnectPeriod: RECONNECT_THROTTLE
         });
         that.client.subscribe(that.channel.toClient);
