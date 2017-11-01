@@ -82,7 +82,7 @@ bot
 
 Currently supported commands:
 
-:star:[See the documentation](https://cdn.rawgit.com/FarmBot/farmbot-js/master/doc/classes/_farmbot_.farmbot.html):star:
+[See the annotated type definitions for available methods and properties](https://github.com/FarmBot/farmbot-js/blob/master/dist/farmbot.d.ts#L24)
 
 ## Using Events
 
