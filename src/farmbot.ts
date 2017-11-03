@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.0.2-rc1";
+  static VERSION = "5.0.2-rc3";
   static defaults = { speed: 100, timeout: 15000, secure: true };
 
   /** Storage area for all event handlers */
@@ -426,7 +426,11 @@ export class Farmbot {
           return this.emit("malformed", msg);
         }
       default:
-        console.info(`Unhandled inbound message from ${chan}`);
+        if (chan.includes("sync")) {
+          this.emit("sync", msg);
+        } else {
+          console.info(`Unhandled inbound message from ${chan}`);
+        }
     }
   }
 

@@ -367,7 +367,12 @@ var Farmbot = /** @class */ (function () {
                     return this.emit("malformed", msg);
                 }
             default:
-                console.info("Unhandled inbound message from " + chan);
+                if (chan.includes("sync")) {
+                    this.emit("sync", msg);
+                }
+                else {
+                    console.info("Unhandled inbound message from " + chan);
+                }
         }
     };
     /** Bootstrap the device onto the MQTT broker. */
@@ -399,7 +404,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.2-rc1";
+    Farmbot.VERSION = "5.0.2-rc3";
     Farmbot.defaults = { speed: 100, timeout: 15000, secure: true };
     return Farmbot;
 }());
