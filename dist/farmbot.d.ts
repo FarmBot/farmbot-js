@@ -7,7 +7,6 @@ export declare class Farmbot {
     static defaults: {
         speed: number;
         timeout: number;
-        secure: boolean;
     };
     /** Storage area for all event handlers */
     private _events;

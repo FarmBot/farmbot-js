@@ -26,7 +26,7 @@ var Farmbot = /** @class */ (function () {
                 throw new Error(ERR_TOKEN_PARSE);
             }
             _this.setState("mqttServer", index_1.isNode() ?
-                "mqtt://" + token.mqtt_ws + ":1883" : token.mqtt_ws);
+                "mqtt://" + token.mqtt + ":1883" : token.mqtt_ws);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
         if (index_1.isNode() && !global.atob) {
@@ -404,8 +404,8 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.2-rc3";
-    Farmbot.defaults = { speed: 100, timeout: 15000, secure: true };
+    Farmbot.VERSION = "5.0.2-rc4";
+    Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

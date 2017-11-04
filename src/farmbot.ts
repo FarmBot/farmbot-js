@@ -29,8 +29,8 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.0.2-rc3";
-  static defaults = { speed: 100, timeout: 15000, secure: true };
+  static VERSION = "5.0.2-rc4";
+  static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
@@ -63,7 +63,7 @@ export class Farmbot {
       throw new Error(ERR_TOKEN_PARSE);
     }
     this.setState("mqttServer", isNode() ?
-      `mqtt://${token.mqtt_ws}:1883` : token.mqtt_ws);
+      `mqtt://${token.mqtt}:1883` : token.mqtt_ws);
     this.setState(UUID, token.bot || ERR_MISSING_UUID);
   }
 
