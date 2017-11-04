@@ -7,7 +7,6 @@ export declare class Farmbot {
     static defaults: {
         speed: number;
         timeout: number;
-        secure: boolean;
     };
     /** Storage area for all event handlers */
     private _events;
@@ -126,12 +125,13 @@ export declare class Farmbot {
       */
     event(name: string): Function[];
     on(event: string, callback: Function): void;
-    emit(event: string, data: any): void;
+    emit(event: string, data: {}): void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
         toDevice: string;
         toClient: string;
         status: string;
+        sync: string;
         logs: string;
     };
     /** Low level means of sending MQTT packets. Does not check format. Does not

@@ -9,7 +9,7 @@ export function uuid() {
     return v.toString(16);
   };
   return template.replace(/[xy]/g, replaceChar);
-};
+}
 
 export function pick<T>(target: any, value: string, fallback: T) {
   let result = target[value];

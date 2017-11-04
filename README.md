@@ -82,7 +82,7 @@ bot
 
 Currently supported commands:
 
-:star:[See the documentation](https://cdn.rawgit.com/FarmBot/farmbot-js/master/doc/classes/_farmbot_.farmbot.html):star:
+[See the annotated type definitions for available methods and properties](https://github.com/FarmBot/farmbot-js/blob/master/dist/farmbot.d.ts#L24)
 
 ## Using Events
 
@@ -104,6 +104,7 @@ Currently supported commands:
  * `status`: Most important. When the REMOTE state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
  * `*`: Catch all events (for debugging).
  * `ready`: Client is connected and subscribed to bot.
+ * `sync/:resource_name/:resource_id`: A resource on the API has changed.
  * `logs`: The bot will send logs to this channel, usually from `STDOUT` on the device.
  * `disconnect`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
  * `malformed`: When the bot gets a bad RPC command, it will notify you via this channel.
