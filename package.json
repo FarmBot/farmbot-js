@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "5.0.1",
+  "version": "5.0.2-rc4",
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh",
@@ -9,9 +9,7 @@
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {
-    "@types/mqtt": "2.5.0",
-    "@types/node": "^8.0.46",
-    "@types/promise": "^7.1.30"
+    "@types/node": "^8.0.46"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

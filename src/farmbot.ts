@@ -4,7 +4,8 @@ import {
   assign,
   rpcRequest,
   coordinate,
-  toPairs
+  toPairs,
+  uuid as genUuid
 } from "./util";
 import {
   StateTree,
@@ -25,13 +26,11 @@ const UUID = "uuid";
 declare var atob: (i: string) => string;
 declare var global: typeof window;
 
-// Prevents our error catcher from getting overwhelmed by failed
-// connection attempts
-const RECONNECT_THROTTLE = 45000;
+const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.0.1";
-  static defaults = { speed: 100, timeout: 15000, secure: true };
+  static VERSION = "5.0.2-rc4";
+  static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
@@ -64,7 +63,7 @@ export class Farmbot {
       throw new Error(ERR_TOKEN_PARSE);
     }
     this.setState("mqttServer", isNode() ?
-      `mqtt://${token.mqtt_ws}:1883` : token.mqtt_ws);
+      `mqtt://${token.mqtt}:1883` : token.mqtt_ws);
     this.setState(UUID, token.bot || ERR_MISSING_UUID);
   }
 
@@ -334,7 +333,7 @@ export class Farmbot {
     this.event(event).push(callback);
   }
 
-  emit(event: string, data: any) {
+  emit(event: string, data: {}) {
     [this.event(event), this.event("*")]
       .forEach(function (handlers) {
         handlers.forEach(function (handler: Function) {
@@ -356,6 +355,7 @@ export class Farmbot {
       /** From farmbot */
       toClient: `bot/${uuid}/from_device`,
       status: `bot/${uuid}/status`,
+      sync: `bot/${uuid}/sync/#`,
       logs: `bot/${uuid}/logs`
     };
   }
@@ -425,7 +425,12 @@ export class Farmbot {
           console.warn("Got malformed message. Out of date firmware?");
           return this.emit("malformed", msg);
         }
-      default: throw new Error("Never should see this.");
+      default:
+        if (chan.includes("sync")) {
+          this.emit("sync", msg);
+        } else {
+          console.info(`Unhandled inbound message from ${chan}`);
+        }
     }
   }
 
@@ -434,13 +439,16 @@ export class Farmbot {
     let that = this;
     let { uuid, token, mqttServer, timeout } = that.getState();
     that.client = connect(<string>mqttServer, {
-      username: <string>uuid,
-      password: <string>token,
+      username: uuid as string,
+      password: token as string,
+      clean: false,
+      clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);
+    that.client.subscribe(that.channel.sync);
     that.client.on("message", that._onmessage.bind(that));
     that.client.on("offline", () => this.emit("offline", {}));
     that.client.on("connect", () => this.emit("online", {}));

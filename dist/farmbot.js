@@ -9,9 +9,7 @@ var ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
 var ERR_MISSING_UUID = "MISSING_UUID";
 var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 var UUID = "uuid";
-// Prevents our error catcher from getting overwhelmed by failed
-// connection attempts
-var RECONNECT_THROTTLE = 45000;
+var RECONNECT_THROTTLE = 1000;
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
@@ -28,7 +26,7 @@ var Farmbot = /** @class */ (function () {
                 throw new Error(ERR_TOKEN_PARSE);
             }
             _this.setState("mqttServer", index_1.isNode() ?
-                "mqtt://" + token.mqtt_ws + ":1883" : token.mqtt_ws);
+                "mqtt://" + token.mqtt + ":1883" : token.mqtt_ws);
             _this.setState(UUID, token.bot || ERR_MISSING_UUID);
         };
         if (index_1.isNode() && !global.atob) {
@@ -296,6 +294,7 @@ var Farmbot = /** @class */ (function () {
                 /** From farmbot */
                 toClient: "bot/" + uuid + "/from_device",
                 status: "bot/" + uuid + "/status",
+                sync: "bot/" + uuid + "/sync/#",
                 logs: "bot/" + uuid + "/logs"
             };
         },
@@ -367,7 +366,13 @@ var Farmbot = /** @class */ (function () {
                     console.warn("Got malformed message. Out of date firmware?");
                     return this.emit("malformed", msg);
                 }
-            default: throw new Error("Never should see this.");
+            default:
+                if (chan.includes("sync")) {
+                    this.emit("sync", msg);
+                }
+                else {
+                    console.info("Unhandled inbound message from " + chan);
+                }
         }
     };
     /** Bootstrap the device onto the MQTT broker. */
@@ -378,11 +383,14 @@ var Farmbot = /** @class */ (function () {
         that.client = mqtt_1.connect(mqttServer, {
             username: uuid,
             password: token,
+            clean: false,
+            clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
             reconnectPeriod: RECONNECT_THROTTLE
         });
         that.client.subscribe(that.channel.toClient);
         that.client.subscribe(that.channel.logs);
         that.client.subscribe(that.channel.status);
+        that.client.subscribe(that.channel.sync);
         that.client.on("message", that._onmessage.bind(that));
         that.client.on("offline", function () { return _this.emit("offline", {}); });
         that.client.on("connect", function () { return _this.emit("online", {}); });
@@ -396,8 +404,8 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.1";
-    Farmbot.defaults = { speed: 100, timeout: 15000, secure: true };
+    Farmbot.VERSION = "5.0.2-rc4";
+    Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
