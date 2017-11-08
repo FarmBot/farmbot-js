@@ -113,13 +113,6 @@ export declare class Farmbot {
     calibrate(args: {
         axis: Corpus.ALLOWED_AXIS;
     }): Promise<{}>;
-    /** Let the bot know that some resources it has in cache are no longer valid.
-     *
-     * Hopefully, some day we will not need this. Ideally, sending this message
-     * would be handled by the API, but currently the API is REST only and does
-     * not support push state messaging.
-     */
-    dataUpdate(value: Corpus.DataChangeType, input: Partial<Record<Corpus.ResourceName, string>>): void;
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */

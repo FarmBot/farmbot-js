@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.0.2-rc4";
+  static VERSION = "5.0.2-rc5";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -303,22 +303,6 @@ export class Farmbot {
 
   calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
-  }
-
-  /** Let the bot know that some resources it has in cache are no longer valid.
-   *
-   * Hopefully, some day we will not need this. Ideally, sending this message
-   * would be handled by the API, but currently the API is REST only and does
-   * not support push state messaging.
-   */
-  dataUpdate(value: Corpus.DataChangeType,
-    input: Partial<Record<Corpus.ResourceName, string>>) {
-    let body = toPairs(input);
-    let args = { value };
-    let rpc = rpcRequest([{ kind: "data_update", body, args }]);
-    // I'm using .publish() instead of .send() because confirmation requests are
-    // of less importance right now - RC 2 APR 17.
-    return this.publish(rpc, false);
   }
 
   /** Retrieves all of the event handlers for a particular event.
