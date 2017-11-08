@@ -79,6 +79,7 @@ export interface Pin {
 export declare type Pins = Dictionary<Pin | undefined>;
 export interface FullConfiguration {
     firmware_hardware: FirmwareHardware;
+    auto_update: number;
     fw_auto_update: number;
     os_auto_update: number;
     steps_per_mm_x: number;
