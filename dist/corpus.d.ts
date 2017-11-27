@@ -115,6 +115,7 @@ export interface Sequence {
     kind: "sequence";
     args: {
         version: number;
+        label: string;
     };
     comment?: string | undefined;
     body?: SequenceBodyItem[] | undefined;
@@ -327,7 +328,7 @@ export interface InstallFirstPartyFarmware {
     body?: undefined;
 }
 export declare type CeleryNode = Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | FindHome | Zero | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | ConfigUpdate | FactoryReset | ExecuteScript | SetUserEnv | TakePhoto | Point | InstallFarmware | UpdateFarmware | RemoveFarmware | InstallFirstPartyFarmware;
-export declare const LATEST_VERSION = 4;
+export declare const LATEST_VERSION = 5;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
 export declare type ALLOWED_PIN_MODES = 0 | 1;
