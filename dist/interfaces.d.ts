@@ -108,6 +108,10 @@ export interface InformationalSettings {
     sync_status?: SyncStatus | undefined;
     busy: boolean;
     locked: boolean;
+    /**  FBOS commit hash */
+    commit: string;
+    target: string;
+    env: string;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {

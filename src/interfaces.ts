@@ -217,6 +217,10 @@ export interface InformationalSettings {
   sync_status?: SyncStatus | undefined;
   busy: boolean;
   locked: boolean;
+  /**  FBOS commit hash */
+  commit: string;
+  target: string;
+  env: string;
 }
 
 export type MQTTEventName = "connect" | "message";
