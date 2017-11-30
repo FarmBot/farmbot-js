@@ -19,6 +19,9 @@ export interface BotStateTree {
     process_info: {
         farmwares: Dictionary<FarmwareManifest>;
     };
+    gpio_registry: {
+        [pin: number]: string | undefined;
+    };
 }
 export declare type FirmwareHardware = "arduino" | "farmduino";
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
