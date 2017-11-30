@@ -19,6 +19,9 @@ export interface BotStateTree {
     process_info: {
         farmwares: Dictionary<FarmwareManifest>;
     };
+    gpio_registry: {
+        [pin: number]: string | undefined;
+    };
 }
 export declare type FirmwareHardware = "arduino" | "farmduino";
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
@@ -108,6 +111,10 @@ export interface InformationalSettings {
     sync_status?: SyncStatus | undefined;
     busy: boolean;
     locked: boolean;
+    /**  FBOS commit hash */
+    commit: string;
+    target: string;
+    env: string;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {

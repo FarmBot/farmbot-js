@@ -16,9 +16,8 @@ export interface BotStateTree {
    * task (like farmware downloads) is going to take. */
   jobs: Dictionary<(JobProgress | undefined)>;
   /** List of user accessible processes running on the bot. */
-  process_info: {
-    farmwares: Dictionary<FarmwareManifest>;
-  };
+  process_info: { farmwares: Dictionary<FarmwareManifest>; };
+  gpio_registry: { [pin: number]: string | undefined };
 }
 
 export type FirmwareHardware =
@@ -217,6 +216,10 @@ export interface InformationalSettings {
   sync_status?: SyncStatus | undefined;
   busy: boolean;
   locked: boolean;
+  /**  FBOS commit hash */
+  commit: string;
+  target: string;
+  env: string;
 }
 
 export type MQTTEventName = "connect" | "message";

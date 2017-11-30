@@ -205,7 +205,7 @@ export interface Explanation {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | Wait | InstallFarmware | UpdateFarmware | TakePhoto | Zero | InstallFirstPartyFarmware | RemoveFarmware | FindHome;
+export declare type RpcRequestBodyItem = Home | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | ConfigUpdate | Calibrate | Execute | MoveAbsolute | MoveRelative | WritePin | ReadPin | SendMessage | FactoryReset | ExecuteScript | SetUserEnv | Wait | InstallFarmware | UpdateFarmware | TakePhoto | Zero | InstallFirstPartyFarmware | RemoveFarmware | FindHome | RegisterGpio | UnregisterGpio;
 export interface RpcRequest {
     kind: "rpc_request";
     args: {
@@ -252,6 +252,7 @@ export interface RegisterGpio {
     kind: "register_gpio";
     args: {
         pin_number: number;
+        sequence_id: number;
     };
     comment?: string | undefined;
     body?: undefined;

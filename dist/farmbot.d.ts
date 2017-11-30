@@ -108,6 +108,13 @@ export declare class Farmbot {
     /** Set user ENV vars (usually used by 3rd party Farmware scripts).
      * Set value to `undefined` to unset. */
     setUserEnv(configs: Dictionary<(string | undefined)>): Promise<{}>;
+    registerGpio(input: {
+        pin_number: number;
+        sequence_id: number;
+    }): Promise<{}>;
+    unregisterGpio(input: {
+        pin_number: number;
+    }): Promise<{}>;
     /** Update a config option for FarmBot OS. */
     updateConfig(update: Partial<Configuration>): Promise<{}>;
     calibrate(args: {

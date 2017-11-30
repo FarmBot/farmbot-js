@@ -230,6 +230,22 @@ var Farmbot = /** @class */ (function () {
         });
         return this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
     };
+    Farmbot.prototype.registerGpio = function (input) {
+        var sequence_id = input.sequence_id, pin_number = input.pin_number;
+        var rpc = util_1.rpcRequest([{
+                kind: "register_gpio",
+                args: { sequence_id: sequence_id, pin_number: pin_number }
+            }]);
+        return this.send(rpc);
+    };
+    Farmbot.prototype.unregisterGpio = function (input) {
+        var pin_number = input.pin_number;
+        var rpc = util_1.rpcRequest([{
+                kind: "unregister_gpio",
+                args: { pin_number: pin_number }
+            }]);
+        return this.send(rpc);
+    };
     /** Update a config option for FarmBot OS. */
     Farmbot.prototype.updateConfig = function (update) {
         var body = Object
@@ -390,7 +406,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.0.3";
+    Farmbot.VERSION = "5.1.0";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());

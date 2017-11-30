@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.0.3";
+  static VERSION = "5.1.0";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -284,6 +284,26 @@ export class Farmbot {
       });
     return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
   }
+
+  registerGpio(input: { pin_number: number, sequence_id: number }) {
+    const { sequence_id, pin_number } = input;
+    const rpc = rpcRequest([{
+      kind: "register_gpio",
+      args: { sequence_id, pin_number }
+    }]);
+    return this.send(rpc);
+  }
+
+  unregisterGpio(input: { pin_number: number }) {
+    const { pin_number } = input;
+    const rpc = rpcRequest([{
+      kind: "unregister_gpio",
+      args: { pin_number }
+    }]);
+    return this.send(rpc);
+  }
+
+
 
   /** Update a config option for FarmBot OS. */
   updateConfig(update: Partial<Configuration>) {
