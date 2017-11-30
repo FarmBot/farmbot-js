@@ -21,7 +21,7 @@ export interface BotStateTree {
     };
     gpio_registry: {
         [pin: number]: string | undefined;
-    };
+    } | undefined;
 }
 export declare type FirmwareHardware = "arduino" | "farmduino";
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";

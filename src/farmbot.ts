@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.1.0";
+  static VERSION = "5.1.1";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
