@@ -292,7 +292,9 @@ export type RpcRequestBodyItem = Home
   | Zero
   | InstallFirstPartyFarmware
   | RemoveFarmware
-  | FindHome;
+  | FindHome
+  | RegisterGpio
+  | UnregisterGpio;
 
 export interface RpcRequest {
   kind: "rpc_request";
@@ -348,6 +350,7 @@ export interface RegisterGpio {
   kind: "register_gpio";
   args: {
     pin_number: number;
+    sequence_id: number;
   };
   comment?: string | undefined;
   body?: undefined;

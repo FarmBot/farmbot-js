@@ -16,9 +16,8 @@ export interface BotStateTree {
    * task (like farmware downloads) is going to take. */
   jobs: Dictionary<(JobProgress | undefined)>;
   /** List of user accessible processes running on the bot. */
-  process_info: {
-    farmwares: Dictionary<FarmwareManifest>;
-  };
+  process_info: { farmwares: Dictionary<FarmwareManifest>; };
+  gpio_registry: { [pin: number]: string | undefined };
 }
 
 export type FirmwareHardware =
