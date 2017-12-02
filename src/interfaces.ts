@@ -17,7 +17,7 @@ export interface BotStateTree {
   jobs: Dictionary<(JobProgress | undefined)>;
   /** List of user accessible processes running on the bot. */
   process_info: { farmwares: Dictionary<FarmwareManifest>; };
-  gpio_registry: { [pin: number]: string | undefined };
+  gpio_registry: { [pin: number]: string | undefined } | undefined;
 }
 
 export type FirmwareHardware =
