@@ -115,6 +115,7 @@ export interface InformationalSettings {
     commit: string;
     target: string;
     env: string;
+    node_name: string;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {

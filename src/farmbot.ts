@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.2.0-rc1";
+  static VERSION = "5.2.0-rc4";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -304,6 +304,22 @@ export class Farmbot {
   }
 
 
+  setServoAngle(args: { pin_number: number; pin_value: number; }) {
+    const result = this.send(rpcRequest([{ kind: "set_servo_angle", args }]));
+
+    // Celery script can't validate `pin_number` and `pin_value` the way we need
+    // for `set_servo_angle`. We will send the RPC command off, but also
+    // crash the client to aid debugging.
+    if (![4, 5].includes(args.pin_number)) {
+      throw new Error("Servos only work on pins 4 and 5");
+    }
+
+    if (args.pin_value > 360 || args.pin_value < 0) {
+      throw new Error("Pin value outside of 0...360 range");
+    }
+
+    return result;
+  }
 
   /** Update a config option for FarmBot OS. */
   updateConfig(update: Partial<Configuration>) {

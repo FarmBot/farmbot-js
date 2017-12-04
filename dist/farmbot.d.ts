@@ -115,6 +115,10 @@ export declare class Farmbot {
     unregisterGpio(input: {
         pin_number: number;
     }): Promise<{}>;
+    setServoAngle(args: {
+        pin_number: number;
+        pin_value: number;
+    }): Promise<{}>;
     /** Update a config option for FarmBot OS. */
     updateConfig(update: Partial<Configuration>): Promise<{}>;
     calibrate(args: {
