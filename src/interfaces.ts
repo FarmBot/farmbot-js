@@ -220,6 +220,7 @@ export interface InformationalSettings {
   commit: string;
   target: string;
   env: string;
+  node_name: string;
 }
 
 export type MQTTEventName = "connect" | "message";
