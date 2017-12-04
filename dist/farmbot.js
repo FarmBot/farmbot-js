@@ -246,6 +246,19 @@ var Farmbot = /** @class */ (function () {
             }]);
         return this.send(rpc);
     };
+    Farmbot.prototype.setServoAngle = function (args) {
+        var result = this.send(util_1.rpcRequest([{ kind: "set_servo_angle", args: args }]));
+        // Celery script can't validate `pin_number` and `pin_value` the way we need
+        // for `set_servo_angle`. We will send the RPC command off, but also
+        // crash the client to aid debugging.
+        if (![4, 5].includes(args.pin_number)) {
+            throw new Error("Servos only work on pins 4 and 5");
+        }
+        if (args.pin_value > 360 || args.pin_value < 0) {
+            throw new Error("Pin value outside of 0...360 range");
+        }
+        return result;
+    };
     /** Update a config option for FarmBot OS. */
     Farmbot.prototype.updateConfig = function (update) {
         var body = Object
@@ -406,7 +419,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.2.0-rc1";
+    Farmbot.VERSION = "5.2.0-rc3";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
