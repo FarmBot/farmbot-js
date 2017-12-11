@@ -182,6 +182,8 @@ export interface FullConfiguration {
   sequence_init_log: boolean;
   sequence_body_log: boolean;
   sequence_complete_log: boolean;
+  firmware_input_log: boolean;
+  firmware_output_log: boolean;
   fw_auto_update: number;
   os_auto_update: number;
   steps_per_mm_x: number;
