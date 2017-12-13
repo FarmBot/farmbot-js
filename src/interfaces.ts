@@ -189,6 +189,7 @@ export interface FullConfiguration {
   steps_per_mm_x: number;
   steps_per_mm_y: number;
   steps_per_mm_z: number;
+  arduino_debug_messages: number;
 }
 
 export type Configuration = Partial<FullConfiguration>;
