@@ -398,7 +398,7 @@ var Farmbot = /** @class */ (function () {
         that.client = mqtt_1.connect(mqttServer, {
             username: uuid,
             password: token,
-            clean: false,
+            clean: true,
             clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
             reconnectPeriod: RECONNECT_THROTTLE
         });
@@ -419,7 +419,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.2.0-rc7";
+    Farmbot.VERSION = "5.2.0-rc8";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
