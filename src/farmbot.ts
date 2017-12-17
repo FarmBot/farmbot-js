@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.2.0-rc7";
+  static VERSION = "5.2.0";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -461,7 +461,7 @@ export class Farmbot {
     that.client = connect(<string>mqttServer, {
       username: uuid as string,
       password: token as string,
-      clean: false,
+      clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;

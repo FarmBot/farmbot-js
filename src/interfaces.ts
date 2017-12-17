@@ -158,7 +158,22 @@ export type McuParamName =
   | "movement_timeout_z"
   | "param_e_stop_on_mov_err"
   | "param_mov_nr_retry"
-  | "param_version";
+  | "param_version"
+  | "pin_guard_1_active_state"
+  | "pin_guard_1_pin_nr"
+  | "pin_guard_1_time_out"
+  | "pin_guard_2_active_state"
+  | "pin_guard_2_pin_nr"
+  | "pin_guard_2_time_out"
+  | "pin_guard_3_active_state"
+  | "pin_guard_3_pin_nr"
+  | "pin_guard_3_time_out"
+  | "pin_guard_4_active_state"
+  | "pin_guard_4_pin_nr"
+  | "pin_guard_4_time_out"
+  | "pin_guard_5_active_state"
+  | "pin_guard_5_pin_nr"
+  | "pin_guard_5_time_out";
 
 // /** Microcontroller configuration and settings. */
 export type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
