@@ -400,7 +400,11 @@ var Farmbot = /** @class */ (function () {
             password: token,
             clean: true,
             clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
-            reconnectPeriod: RECONNECT_THROTTLE
+            reconnectPeriod: RECONNECT_THROTTLE,
+            /** BEGIN HACKS */
+            keepalive: 3000,
+            connectTimeout: 3000
+            /** END HACKS */
         });
         that.client.subscribe(that.channel.toClient);
         that.client.subscribe(that.channel.logs);
@@ -419,7 +423,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.2.0";
+    Farmbot.VERSION = "5.2.1";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());

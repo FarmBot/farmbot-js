@@ -1,5 +1,5 @@
 import * as Corpus from "./corpus";
-import { connect, Client as MqttClient } from "mqtt";
+import { connect, Client as MqttClient, IClientOptions } from "mqtt";
 import {
   assign,
   rpcRequest,
@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.2.0";
+  static VERSION = "5.2.1";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -463,7 +463,11 @@ export class Farmbot {
       password: token as string,
       clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
-      reconnectPeriod: RECONNECT_THROTTLE
+      reconnectPeriod: RECONNECT_THROTTLE,
+      /** BEGIN HACKS */
+      keepalive: 3000,
+      connectTimeout: 3000
+      /** END HACKS */
     }) as MqttClient;
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
