@@ -81,21 +81,22 @@ export interface Pin {
 }
 export declare type Pins = Dictionary<Pin | undefined>;
 export interface FullConfiguration {
-    firmware_hardware: FirmwareHardware;
+    arduino_debug_messages: number;
     auto_sync: boolean;
+    beta_opt_in: boolean;
     disable_factory_reset: boolean;
-    network_not_found_timer: number;
-    sequence_init_log: boolean;
-    sequence_body_log: boolean;
-    sequence_complete_log: boolean;
+    firmware_hardware: FirmwareHardware;
     firmware_input_log: boolean;
     firmware_output_log: boolean;
     fw_auto_update: number;
+    network_not_found_timer: number;
     os_auto_update: number;
+    sequence_body_log: boolean;
+    sequence_complete_log: boolean;
+    sequence_init_log: boolean;
     steps_per_mm_x: number;
     steps_per_mm_y: number;
     steps_per_mm_z: number;
-    arduino_debug_messages: number;
 }
 export declare type Configuration = Partial<FullConfiguration>;
 export declare type ConfigurationName = keyof Configuration;
