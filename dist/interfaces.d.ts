@@ -117,6 +117,7 @@ export interface InformationalSettings {
     locked: boolean;
     /**  FBOS commit hash */
     commit: string;
+    firmware_commit: string;
     target: string;
     env: string;
     node_name: string;
