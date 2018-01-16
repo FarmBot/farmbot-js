@@ -118,6 +118,6 @@ The bot object keeps all state in one place for sanity. This includes things lik
  * `bot.getState()`: Get copy of Farmbot status variables (read only).
  * `bot.setState(name, value)`: Set state configuration 'A' to value 'B'. Ex: `bot.setState('uuid', '---')`. Emits a `change` event.
 
-## Security Issues
+# Q: Where do I report security issues?
 
-We take security seriously and value the input of independent researchers. Please see our [responsible disclosure guidelines](https://farmbot.io/responsible-disclosure-of-security-vulnerabilities/).
+We take security seriously and value the input of independent researchers. Please see our [responsible disclosure guidelines](https://farm.bot/responsible-disclosure-of-security-vulnerabilities/).
