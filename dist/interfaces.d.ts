@@ -101,7 +101,7 @@ export interface FullConfiguration {
 export declare type Configuration = Partial<FullConfiguration>;
 export declare type ConfigurationName = keyof Configuration;
 /** The possible values for the sync_msg property on informational_settings */
-export declare type SyncStatus = "locked" | "maintenance" | "sync_error" | "sync_now" | "synced" | "syncing" | "unknown";
+export declare type SyncStatus = "booting" | "maintenance" | "sync_error" | "sync_now" | "synced" | "syncing" | "unknown";
 export interface InformationalSettings {
     /** Current version of Farmbot OS */
     controller_version?: string | undefined;

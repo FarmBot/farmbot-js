@@ -214,7 +214,7 @@ export type ConfigurationName = keyof Configuration;
 
 /** The possible values for the sync_msg property on informational_settings */
 export type SyncStatus =
-  | "locked"
+  | "booting"
   | "maintenance"
   | "sync_error"
   | "sync_now"
