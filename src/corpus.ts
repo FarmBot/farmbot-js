@@ -114,7 +114,6 @@ export interface Wait {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type SendMessageBodyItem = Channel;
 export interface SendMessage {
   kind: "send_message";
@@ -134,7 +133,6 @@ export interface Execute {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type IfBodyItem = Pair;
 export interface If {
   kind: "_if";
@@ -150,18 +148,19 @@ export interface If {
   comment?: string | undefined;
   body?: IfBodyItem[] | undefined;
 }
-
-export type SequenceBodyItem = MoveAbsolute
-  | MoveRelative
-  | WritePin
-  | ReadPin
-  | Wait
-  | SendMessage
+export type SequenceBodyItem = If
   | Execute
-  | If
   | ExecuteScript
+  | FindHome
+  | MoveAbsolute
+  | MoveRelative
+  | ReadPeripheral
+  | ReadPin
+  | SendMessage
   | TakePhoto
-  | FindHome;
+  | Wait
+  | WritePeripheral
+  | WritePin;
 export interface Sequence {
   kind: "sequence";
   args: {
@@ -275,7 +274,6 @@ export interface Explanation {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type RpcRequestBodyItem = Home
   | EmergencyLock
   | EmergencyUnlock
@@ -324,7 +322,6 @@ export interface RpcOk {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type RpcErrorBodyItem = Explanation;
 export interface RpcError {
   kind: "rpc_error";
@@ -374,7 +371,6 @@ export interface UnregisterGpio {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type ConfigUpdateBodyItem = Pair;
 export interface ConfigUpdate {
   kind: "config_update";
@@ -393,7 +389,6 @@ export interface FactoryReset {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type ExecuteScriptBodyItem = Pair;
 export interface ExecuteScript {
   kind: "execute_script";
@@ -403,7 +398,6 @@ export interface ExecuteScript {
   comment?: string | undefined;
   body?: ExecuteScriptBodyItem[] | undefined;
 }
-
 export type SetUserEnvBodyItem = Pair;
 export interface SetUserEnv {
   kind: "set_user_env";
@@ -457,7 +451,6 @@ export interface RemoveFarmware {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type ScopeDeclarationBodyItem = ParameterDeclaration
   | VariableDeclaration;
 export interface ScopeDeclaration {
@@ -489,7 +482,6 @@ export interface VariableDeclaration {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export interface ParameterDeclaration {
   kind: "parameter_declaration";
   args: {
@@ -517,7 +509,6 @@ export interface InstallFirstPartyFarmware {
   comment?: string | undefined;
   body?: undefined;
 }
-
 export type CeleryNode = ReadPeripheral
   | WritePeripheral
   | Nothing
@@ -693,10 +684,12 @@ export type LegalSequenceKind = "_if"
   | "find_home"
   | "move_absolute"
   | "move_relative"
+  | "read_peripheral"
   | "read_pin"
   | "send_message"
   | "take_photo"
   | "wait"
+  | "write_peripheral"
   | "write_pin";
 export type DataChangeType = "add"
   | "remove"
