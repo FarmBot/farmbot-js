@@ -2,6 +2,7 @@ export interface ReadPeripheral {
     kind: "read_peripheral";
     args: {
         peripheral_id: number;
+        pin_mode: number;
     };
     comment?: string | undefined;
     body?: undefined;
