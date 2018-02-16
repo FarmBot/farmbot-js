@@ -7,15 +7,6 @@ export interface ReadPeripheral {
     comment?: string | undefined;
     body?: undefined;
 }
-export interface WritePeripheral {
-    kind: "write_peripheral";
-    args: {
-        peripheral_id: number;
-        pin_value: number;
-    };
-    comment?: string | undefined;
-    body?: undefined;
-}
 export interface Nothing {
     kind: "nothing";
     args: {};
@@ -65,6 +56,16 @@ export interface WritePin {
     kind: "write_pin";
     args: {
         pin_number: number;
+        pin_value: number;
+        pin_mode: number;
+    };
+    comment?: string | undefined;
+    body?: undefined;
+}
+export interface WritePeripheral {
+    kind: "write_peripheral";
+    args: {
+        peripheral_id: number;
         pin_value: number;
         pin_mode: number;
     };
@@ -404,7 +405,7 @@ export interface InstallFirstPartyFarmware {
     comment?: string | undefined;
     body?: undefined;
 }
-export declare type CeleryNode = ReadPeripheral | WritePeripheral | Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | FindHome | Zero | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | RegisterGpio | UnregisterGpio | ConfigUpdate | FactoryReset | ExecuteScript | SetUserEnv | TakePhoto | Point | InstallFarmware | UpdateFarmware | RemoveFarmware | ScopeDeclaration | Identifier | VariableDeclaration | ParameterDeclaration | SetServoAngle | InstallFirstPartyFarmware;
+export declare type CeleryNode = ReadPeripheral | Nothing | Tool | Coordinate | MoveAbsolute | MoveRelative | WritePin | WritePeripheral | ReadPin | Channel | Wait | SendMessage | Execute | If | Sequence | Home | FindHome | Zero | EmergencyLock | EmergencyUnlock | ReadStatus | Sync | CheckUpdates | PowerOff | Reboot | TogglePin | Explanation | RpcRequest | RpcOk | RpcError | Calibrate | Pair | RegisterGpio | UnregisterGpio | ConfigUpdate | FactoryReset | ExecuteScript | SetUserEnv | TakePhoto | Point | InstallFarmware | UpdateFarmware | RemoveFarmware | ScopeDeclaration | Identifier | VariableDeclaration | ParameterDeclaration | SetServoAngle | InstallFirstPartyFarmware;
 export declare const LATEST_VERSION = 20180209;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
