@@ -12,16 +12,6 @@ export interface NamedPin {
   body?: undefined;
 }
 
-export interface ReadPeripheral {
-  kind: "read_peripheral";
-  args: {
-    peripheral_id: number;
-    pin_mode: number;
-  };
-  comment?: string | undefined;
-  body?: undefined;
-}
-
 export interface Nothing {
   kind: "nothing";
   args: {
@@ -81,17 +71,6 @@ export interface WritePin {
   args: {
     pin_number: number
     | NamedPin;
-    pin_value: number;
-    pin_mode: number;
-  };
-  comment?: string | undefined;
-  body?: undefined;
-}
-
-export interface WritePeripheral {
-  kind: "write_peripheral";
-  args: {
-    peripheral_id: number;
     pin_value: number;
     pin_mode: number;
   };
@@ -171,12 +150,10 @@ export type SequenceBodyItem = If
   | FindHome
   | MoveAbsolute
   | MoveRelative
-  | ReadPeripheral
   | ReadPin
   | SendMessage
   | TakePhoto
   | Wait
-  | WritePeripheral
   | WritePin;
 export interface Sequence {
   kind: "sequence";
@@ -539,14 +516,12 @@ export interface InstallFirstPartyFarmware {
 }
 
 export type CeleryNode = NamedPin
-  | ReadPeripheral
   | Nothing
   | Tool
   | Coordinate
   | MoveAbsolute
   | MoveRelative
   | WritePin
-  | WritePeripheral
   | ReadPin
   | Channel
   | Wait
@@ -642,7 +617,6 @@ export type LegalArgString = "_else"
   | "offset"
   | "op"
   | "package"
-  | "peripheral_id"
   | "pin_id"
   | "pin_mode"
   | "pin_number"
@@ -686,7 +660,6 @@ export type LegalKindString = "_if"
   | "parameter_declaration"
   | "point"
   | "power_off"
-  | "read_peripheral"
   | "read_pin"
   | "read_status"
   | "reboot"
@@ -708,7 +681,6 @@ export type LegalKindString = "_if"
   | "update_farmware"
   | "variable_declaration"
   | "wait"
-  | "write_peripheral"
   | "write_pin"
   | "zero";
 export type LegalSequenceKind = "_if"
@@ -717,12 +689,10 @@ export type LegalSequenceKind = "_if"
   | "find_home"
   | "move_absolute"
   | "move_relative"
-  | "read_peripheral"
   | "read_pin"
   | "send_message"
   | "take_photo"
   | "wait"
-  | "write_peripheral"
   | "write_pin";
 export type DataChangeType = "add"
   | "remove"
