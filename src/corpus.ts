@@ -700,3 +700,5 @@ export type DataChangeType = "add"
 export type PointType = "GenericPointer"
   | "ToolSlot"
   | "Plant";
+export type AllowedPinTypes = "Peripheral"
+  | "Sensor";

@@ -412,3 +412,4 @@ export declare type LegalKindString = "_if" | "calibrate" | "channel" | "check_u
 export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "find_home" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "take_photo" | "wait" | "write_pin";
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type PointType = "GenericPointer" | "ToolSlot" | "Plant";
+export declare type AllowedPinTypes = "Peripheral" | "Sensor";
