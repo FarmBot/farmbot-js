@@ -22,7 +22,8 @@ export interface BotStateTree {
 
 export type FirmwareHardware =
   | "arduino"
-  | "farmduino";
+  | "farmduino"
+  | "farmduino_k14";
 
 export type LocationName =
   | "position"

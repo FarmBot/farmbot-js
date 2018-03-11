@@ -23,7 +23,7 @@ export interface BotStateTree {
         [pin: number]: string | undefined;
     } | undefined;
 }
-export declare type FirmwareHardware = "arduino" | "farmduino";
+export declare type FirmwareHardware = "arduino" | "farmduino" | "farmduino_k14";
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
 export declare type ProgressStatus = "complete" | "working" | "error";
 export declare type JobProgress = PercentageProgress | BytesProgress;
