@@ -420,7 +420,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.4.0-rc5";
+    Farmbot.VERSION = "5.4.0-rc9";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
