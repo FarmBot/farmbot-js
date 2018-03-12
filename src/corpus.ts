@@ -300,7 +300,8 @@ export type RpcRequestBodyItem = Home
   | FindHome
   | RegisterGpio
   | UnregisterGpio
-  | SetServoAngle;
+  | SetServoAngle
+  | ChangeOwnership;
 export interface RpcRequest {
   kind: "rpc_request";
   args: {
