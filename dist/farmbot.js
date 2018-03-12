@@ -166,6 +166,10 @@ var Farmbot = /** @class */ (function () {
     Farmbot.prototype.writePin = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "write_pin", args: args }]));
     };
+    /** Set a GPIO pin to a particular value. */
+    Farmbot.prototype.readPin = function (args) {
+        return this.send(util_1.rpcRequest([{ kind: "read_pin", args: args }]));
+    };
     /** Reverse the value of a digital pin. */
     Farmbot.prototype.togglePin = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "toggle_pin", args: args }]));
@@ -420,7 +424,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.4.0-rc9";
+    Farmbot.VERSION = "5.4.0-rc10";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
