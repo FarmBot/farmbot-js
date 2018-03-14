@@ -110,7 +110,7 @@ export declare type IfBodyItem = Pair;
 export interface If {
     kind: "_if";
     args: {
-        lhs: string;
+        lhs: string | NamedPin;
         op: string;
         rhs: number;
         _then: Execute | Nothing;
