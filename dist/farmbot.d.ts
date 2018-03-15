@@ -22,8 +22,7 @@ export declare class Farmbot {
      */
     setState(key: string, val: string | number | boolean): string | number | boolean;
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
-     * URL must point to a valid Farmware manifest JSON document.
-     */
+     * URL must point to a valid Farmware manifest JSON document. */
     installFarmware(url: string): Promise<{}>;
     /** Checks for updates on a particular Farmware plugin when given the name of
      * a farmware. `updateFarmware("take-photo")`
