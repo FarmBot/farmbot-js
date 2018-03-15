@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.4.0-rc11";
+  static VERSION = "5.4.0";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -85,13 +85,9 @@ export class Farmbot {
   }
 
   /** Installs a "Farmware" (plugin) onto the bot's SD card.
-   * URL must point to a valid Farmware manifest JSON document.
-   */
+   * URL must point to a valid Farmware manifest JSON document. */
   installFarmware(url: string) {
-    return this.send(rpcRequest([{
-      kind: "install_farmware",
-      args: { url }
-    }]));
+    return this.send(rpcRequest([{ kind: "install_farmware", args: { url } }]));
   }
 
   /** Checks for updates on a particular Farmware plugin when given the name of
