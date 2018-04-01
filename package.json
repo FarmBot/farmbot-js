@@ -9,13 +9,13 @@
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^8.0.46"
+    "@types/node": "^8.0.46",
+    "typescript": "^2.8.1"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "mqtt": "2.15.0",
-    "typescript": "^2.4.2"
+    "mqtt": "2.15.0"
   },
   "repository": {
     "type": "git",
