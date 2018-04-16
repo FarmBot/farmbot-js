@@ -16,7 +16,7 @@ import {
   Configuration
 } from "./interfaces";
 import { pick, isCeleryScript } from "./util";
-import { isNode } from "./index";
+import { isNode, ReadPin, WritePin } from "./index";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
@@ -29,7 +29,7 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.4.0-rc5";
+  static VERSION = "5.4.0";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
@@ -85,13 +85,9 @@ export class Farmbot {
   }
 
   /** Installs a "Farmware" (plugin) onto the bot's SD card.
-   * URL must point to a valid Farmware manifest JSON document.
-   */
+   * URL must point to a valid Farmware manifest JSON document. */
   installFarmware(url: string) {
-    return this.send(rpcRequest([{
-      kind: "install_farmware",
-      args: { url }
-    }]));
+    return this.send(rpcRequest([{ kind: "install_farmware", args: { url } }]));
   }
 
   /** Checks for updates on a particular Farmware plugin when given the name of
@@ -213,8 +209,13 @@ export class Farmbot {
   }
 
   /** Set a GPIO pin to a particular value. */
-  writePin(args: { pin_number: number; pin_value: number; pin_mode: number; }) {
+  writePin(args: WritePin["args"]) {
     return this.send(rpcRequest([{ kind: "write_pin", args }]));
+  }
+
+  /** Set a GPIO pin to a particular value. */
+  readPin(args: ReadPin["args"]) {
+    return this.send(rpcRequest([{ kind: "read_pin", args }]));
   }
 
   /** Reverse the value of a digital pin. */

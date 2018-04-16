@@ -52,13 +52,9 @@ var Farmbot = /** @class */ (function () {
         return val;
     };
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
-     * URL must point to a valid Farmware manifest JSON document.
-     */
+     * URL must point to a valid Farmware manifest JSON document. */
     Farmbot.prototype.installFarmware = function (url) {
-        return this.send(util_1.rpcRequest([{
-                kind: "install_farmware",
-                args: { url: url }
-            }]));
+        return this.send(util_1.rpcRequest([{ kind: "install_farmware", args: { url: url } }]));
     };
     /** Checks for updates on a particular Farmware plugin when given the name of
      * a farmware. `updateFarmware("take-photo")`
@@ -165,6 +161,10 @@ var Farmbot = /** @class */ (function () {
     /** Set a GPIO pin to a particular value. */
     Farmbot.prototype.writePin = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "write_pin", args: args }]));
+    };
+    /** Set a GPIO pin to a particular value. */
+    Farmbot.prototype.readPin = function (args) {
+        return this.send(util_1.rpcRequest([{ kind: "read_pin", args: args }]));
     };
     /** Reverse the value of a digital pin. */
     Farmbot.prototype.togglePin = function (args) {
@@ -420,7 +420,7 @@ var Farmbot = /** @class */ (function () {
             that.client.once("connect", function () { return resolve(that); });
         });
     };
-    Farmbot.VERSION = "5.4.0-rc5";
+    Farmbot.VERSION = "5.4.0";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());

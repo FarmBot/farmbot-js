@@ -1,6 +1,7 @@
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
 import { StateTree, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
+import { ReadPin, WritePin } from "./index";
 export declare const NULL = "null";
 export declare class Farmbot {
     static VERSION: string;
@@ -21,8 +22,7 @@ export declare class Farmbot {
      */
     setState(key: string, val: string | number | boolean): string | number | boolean;
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
-     * URL must point to a valid Farmware manifest JSON document.
-     */
+     * URL must point to a valid Farmware manifest JSON document. */
     installFarmware(url: string): Promise<{}>;
     /** Checks for updates on a particular Farmware plugin when given the name of
      * a farmware. `updateFarmware("take-photo")`
@@ -81,11 +81,9 @@ export declare class Farmbot {
         speed?: number;
     }): Promise<{}>;
     /** Set a GPIO pin to a particular value. */
-    writePin(args: {
-        pin_number: number;
-        pin_value: number;
-        pin_mode: number;
-    }): Promise<{}>;
+    writePin(args: WritePin["args"]): Promise<{}>;
+    /** Set a GPIO pin to a particular value. */
+    readPin(args: ReadPin["args"]): Promise<{}>;
     /** Reverse the value of a digital pin. */
     togglePin(args: {
         pin_number: number;
