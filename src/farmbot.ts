@@ -29,13 +29,13 @@ declare var global: typeof window;
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.4.0";
+  static VERSION = "5.4.1";
   static defaults = { speed: 100, timeout: 15000 };
 
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
   private _state: StateTree;
-  public client: MqttClient;
+  public client?: MqttClient;
 
   constructor(input: ConstructorParams) {
     if (isNode() && !global.atob) {
@@ -261,12 +261,7 @@ export class Farmbot {
         body.push({
           kind: "config_update",
           args: { package: "arduino_firmware" },
-          body: [
-            {
-              kind: "pair",
-              args: { value, label }
-            }
-          ]
+          body: [{ kind: "pair", args: { value, label } }]
         });
       });
     return this.send(rpcRequest(body));
@@ -481,7 +476,12 @@ export class Farmbot {
           reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
         }
       }, timeout);
-      that.client.once("connect", () => resolve(that));
+      const { client } = that;
+      if (client) {
+        client.once("connect", () => resolve(that));
+      } else {
+        throw new Error("Please connect first.");
+      }
     });
   }
 }

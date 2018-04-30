@@ -122,8 +122,8 @@ var Farmbot = /** @class */ (function () {
     };
     /** Run a preloaded Farmware / script on the SD Card. */
     Farmbot.prototype.execScript = function (/** Filename of the script */ label, 
-        /** Optional ENV vars to pass the script */
-        envVars) {
+    /** Optional ENV vars to pass the script */
+    envVars) {
         return this.send(util_1.rpcRequest([
             { kind: "execute_script", args: { label: label }, body: envVars }
         ]));
@@ -207,12 +207,7 @@ var Farmbot = /** @class */ (function () {
             body.push({
                 kind: "config_update",
                 args: { package: "arduino_firmware" },
-                body: [
-                    {
-                        kind: "pair",
-                        args: { value: value, label: label }
-                    }
-                ]
+                body: [{ kind: "pair", args: { value: value, label: label } }]
             });
         });
         return this.send(util_1.rpcRequest(body));
@@ -417,10 +412,16 @@ var Farmbot = /** @class */ (function () {
                     reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
                 }
             }, timeout);
-            that.client.once("connect", function () { return resolve(that); });
+            var client = that.client;
+            if (client) {
+                client.once("connect", function () { return resolve(that); });
+            }
+            else {
+                throw new Error("Please connect first.");
+            }
         });
     };
-    Farmbot.VERSION = "5.4.0";
+    Farmbot.VERSION = "5.4.1";
     Farmbot.defaults = { speed: 100, timeout: 15000 };
     return Farmbot;
 }());
