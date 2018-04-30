@@ -6,6 +6,7 @@ npm install
 rm -rf dist
 mkdir dist
 node_modules/typescript/bin/tsc
+parcel build src/farmbot_single_file.js
 
 # Commit
 echo "Now run this: "
