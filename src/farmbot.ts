@@ -22,7 +22,7 @@ import {
   WritePin
 } from "./index";
 import {
-  FarmBotInternalConfig,
+  FarmBotInternalConfig as Conf,
   FarmbotConstructorParams,
   generateConfig,
   CONFIG_DEFAULTS
@@ -35,13 +35,19 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.0.0-rc1";
+  static VERSION = "6.0.0-rc2";
   public client?: MqttClient;
-  public config: FarmBotInternalConfig;
+  private config: Conf;
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
     this.config = generateConfig(input);
+  }
+
+  getConfig = <U extends keyof Conf>(key: U): Conf[U] => this.config[key];
+
+  setConfig = <U extends keyof Conf>(key: U, value: Conf[U]) => {
+    this.config[key] = value;
   }
 
   /** Installs a "Farmware" (plugin) onto the bot's SD card.
