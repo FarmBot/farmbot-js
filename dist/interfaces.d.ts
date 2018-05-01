@@ -126,17 +126,6 @@ export declare type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {
     [key: string]: T;
 }
-export declare type StateTree = Dictionary<string | number | boolean>;
-export interface ConstructorParams {
-    /** API token which can be retrieved by logging into REST server or my.farmbot.io */
-    token: string;
-    /** Use HTTPS/SSL? */
-    secure: boolean;
-    /** Default time to wait (ms) before considering operation a failure. */
-    timeout?: number;
-    /** Default physical speed for operations. (steps/s?) */
-    speed?: number;
-}
 export interface APIToken {
     /** LEGACY ISSUES AHEAD: PLEASE READ:
      * This is the *host* of MQTT server. A host is *not* the same thing as

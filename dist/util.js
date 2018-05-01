@@ -16,20 +16,14 @@ function pick(target, value, fallback) {
 }
 exports.pick = pick;
 // TODO: Make this a generic.
-function assign(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    others.forEach(function (dict) {
-        for (var k in dict) {
-            target[k] = dict[k];
-        }
-        ;
-    });
-    return target;
-}
-exports.assign = assign;
+// export function assign(target: Dictionary<any>, ...others: Dictionary<any>[]) {
+//   others.forEach(function (dict) {
+//     for (let k in dict) {
+//       target[k] = dict[k];
+//     };
+//   });
+//   return target;
+// }
 function isCeleryScript(x) {
     // REMEMBER: (typeof null === "object"). PS: Sorry :(
     var isObj = function (o) { return o && JSON.stringify(o)[0] === "{"; };
@@ -50,18 +44,17 @@ function rpcRequest(body) {
     };
 }
 exports.rpcRequest = rpcRequest;
-function toPairs(input) {
-    return Object.keys(input).map(function (key) {
-        return {
-            kind: "pair",
-            args: {
-                label: key,
-                value: input[key] || "null"
-            }
-        };
-    });
-}
-exports.toPairs = toPairs;
+// export function toPairs(input: Dictionary<string | number | boolean | undefined>): Corpus.Pair[] {
+//   return Object.keys(input).map(function (key): Corpus.Pair {
+//     return {
+//       kind: "pair",
+//       args: {
+//         label: key,
+//         value: input[key] || "null"
+//       }
+//     };
+//   });
+// }
 function isNode() {
     return typeof window === "undefined";
 }

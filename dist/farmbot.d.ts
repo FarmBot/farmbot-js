@@ -1,26 +1,16 @@
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
-import { StateTree, Dictionary, ConstructorParams, McuParams, Configuration } from "./interfaces";
+import { Dictionary, McuParams, Configuration } from "./interfaces";
 import { ReadPin, WritePin } from "./index";
+import { FarmBotInternalConfig, FarmbotConstructorParams } from "./config";
 export declare const NULL = "null";
 export declare class Farmbot {
-    static VERSION: string;
-    static defaults: {
-        speed: number;
-        timeout: number;
-    };
     /** Storage area for all event handlers */
     private _events;
-    private _state;
+    static VERSION: string;
     client?: MqttClient;
-    constructor(input: ConstructorParams);
-    private _decodeThatToken;
-    /** Returns a READ ONLY copy of the local configuration. */
-    getState(): StateTree;
-    /** Write a configuration value for local use.
-     * Eg: setState("timeout", 999)
-     */
-    setState(key: string, val: string | number | boolean): string | number | boolean;
+    config: FarmBotInternalConfig;
+    constructor(input: FarmbotConstructorParams);
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document. */
     installFarmware(url: string): Promise<{}>;
@@ -61,7 +51,7 @@ export declare class Farmbot {
         axis: Corpus.ALLOWED_AXIS;
     }): Promise<{}>;
     /** Use end stops or encoders to figure out where 0,0,0 is.
-     *  WON'T WORK WITHOUT ENCODERS OR ENDSTOPS! */
+     *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
     findHome(args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
@@ -126,7 +116,7 @@ export declare class Farmbot {
      * Returns an empty array if the event did not exist.
       */
     event(name: string): Function[];
-    on(event: string, callback: Function): void;
+    on: (event: string, callback: Function) => number;
     emit(event: string, data: {}): void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
