@@ -9,6 +9,10 @@ var RECONNECT_THROTTLE = 1000;
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
+        this.getConfig = function (key) { return _this.config[key]; };
+        this.setConfig = function (key, value) {
+            _this.config[key] = value;
+        };
         this.on = function (event, callback) { return _this.event(event).push(callback); };
         this._events = {};
         this.config = config_1.generateConfig(input);
@@ -365,7 +369,7 @@ var Farmbot = /** @class */ (function () {
             }
         });
     };
-    Farmbot.VERSION = "6.0.0-rc1";
+    Farmbot.VERSION = "6.0.0-rc2";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

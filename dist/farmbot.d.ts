@@ -2,15 +2,17 @@ import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
 import { Dictionary, McuParams, Configuration } from "./interfaces";
 import { ReadPin, WritePin } from "./index";
-import { FarmBotInternalConfig, FarmbotConstructorParams } from "./config";
+import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 export declare const NULL = "null";
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
     static VERSION: string;
     client?: MqttClient;
-    config: FarmBotInternalConfig;
+    private config;
     constructor(input: FarmbotConstructorParams);
+    getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U) => Conf[U];
+    setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U, value: Conf[U]) => void;
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document. */
     installFarmware(url: string): Promise<{}>;

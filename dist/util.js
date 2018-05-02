@@ -15,15 +15,6 @@ function pick(target, value, fallback) {
     return (typeof result === undefined) ? fallback : result;
 }
 exports.pick = pick;
-// TODO: Make this a generic.
-// export function assign(target: Dictionary<any>, ...others: Dictionary<any>[]) {
-//   others.forEach(function (dict) {
-//     for (let k in dict) {
-//       target[k] = dict[k];
-//     };
-//   });
-//   return target;
-// }
 function isCeleryScript(x) {
     // REMEMBER: (typeof null === "object"). PS: Sorry :(
     var isObj = function (o) { return o && JSON.stringify(o)[0] === "{"; };
@@ -44,17 +35,6 @@ function rpcRequest(body) {
     };
 }
 exports.rpcRequest = rpcRequest;
-// export function toPairs(input: Dictionary<string | number | boolean | undefined>): Corpus.Pair[] {
-//   return Object.keys(input).map(function (key): Corpus.Pair {
-//     return {
-//       kind: "pair",
-//       args: {
-//         label: key,
-//         value: input[key] || "null"
-//       }
-//     };
-//   });
-// }
 function isNode() {
     return typeof window === "undefined";
 }
