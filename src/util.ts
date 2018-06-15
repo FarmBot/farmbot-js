@@ -1,5 +1,4 @@
 import * as Corpus from "./corpus";
-import { Dictionary } from "./interfaces";
 
 export function uuid() {
   let template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
@@ -14,16 +13,6 @@ export function uuid() {
 export function pick<T>(target: any, value: string, fallback: T) {
   let result = target[value];
   return (typeof result === undefined) ? fallback : result;
-}
-
-// TODO: Make this a generic.
-export function assign(target: Dictionary<any>, ...others: Dictionary<any>[]) {
-  others.forEach(function (dict) {
-    for (let k in dict) {
-      target[k] = dict[k];
-    };
-  });
-  return target;
 }
 
 export function isCeleryScript(x: any): x is Corpus.CeleryNode {
@@ -45,18 +34,6 @@ export function rpcRequest(body: Corpus.RpcRequestBodyItem[]): Corpus.RpcRequest
     args: { label: uuid() },
     body
   };
-}
-
-export function toPairs(input: Dictionary<string | number | boolean | undefined>): Corpus.Pair[] {
-  return Object.keys(input).map(function (key): Corpus.Pair {
-    return {
-      kind: "pair",
-      args: {
-        label: key,
-        value: input[key] || "null"
-      }
-    };
-  });
 }
 
 export function isNode() {

@@ -15,21 +15,6 @@ function pick(target, value, fallback) {
     return (typeof result === undefined) ? fallback : result;
 }
 exports.pick = pick;
-// TODO: Make this a generic.
-function assign(target) {
-    var others = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        others[_i - 1] = arguments[_i];
-    }
-    others.forEach(function (dict) {
-        for (var k in dict) {
-            target[k] = dict[k];
-        }
-        ;
-    });
-    return target;
-}
-exports.assign = assign;
 function isCeleryScript(x) {
     // REMEMBER: (typeof null === "object"). PS: Sorry :(
     var isObj = function (o) { return o && JSON.stringify(o)[0] === "{"; };
@@ -50,18 +35,6 @@ function rpcRequest(body) {
     };
 }
 exports.rpcRequest = rpcRequest;
-function toPairs(input) {
-    return Object.keys(input).map(function (key) {
-        return {
-            kind: "pair",
-            args: {
-                label: key,
-                value: input[key] || "null"
-            }
-        };
-    });
-}
-exports.toPairs = toPairs;
 function isNode() {
     return typeof window === "undefined";
 }

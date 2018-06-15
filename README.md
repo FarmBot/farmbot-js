@@ -8,15 +8,26 @@ Works on any browser that supports:
  * [Websockets](http://caniuse.com/#feat=websockets).
  * JSON (any browser made after 1942).
 
-It is theoretically possible to run FarmBotJS in a Node environment, but we do not test against Node based setups.
+Independant developers have reported success when using FarmBotJS in a Node environment, but we do not test against Node based setups. Issue reports related to NodeJS are highly appreciated.
 
-## Installation
+## Installation (NPM)
 
 ```
 npm install farmbot
 ```
 
-Raise an issue if you require support with other package managers such as Bower. We don't support them currently, but can if there is a need.
+## Installation (Vanilla JS)
+
+```
+<script src="./dist/farmbot_single_file.js"></script>
+<script>
+  var farmbot123 = new = new fbjs.Farmbot({ token: "foo.bar.baz" });
+<script>
+```
+
+## Other Package Managers
+
+Please raise an issue if you require support with other package managers such as Bower.
 
 ## Login with an API Token
 
@@ -63,7 +74,7 @@ bot
 
 ## Basic RPC Commands
 
-Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise. Timeout is set at `6000 ms` by default and can be reconfigured by changing the bot `timeout` propery on instantiation or via `bot.setState("timeout", 999)`.
+Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise.
 
 Example:
 
@@ -87,7 +98,7 @@ Currently supported commands:
 ## Using Events
 
 ```javascript
-  var bot = Farmbot({uuid: '---', token: '---'});
+  var bot = Farmbot({ token: '---'});
   bot.on("eventName", function(data, eventName) {
     console.log("I just got an" + eventName + " event!");
     console.log("This is the payload: " + data);
@@ -101,22 +112,15 @@ Currently supported commands:
 
 ## Common Events
 
- * `status`: Most important. When the REMOTE state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
- * `*`: Catch all events (for debugging).
- * `ready`: Client is connected and subscribed to bot.
- * `sync/:resource_name/:resource_id`: A resource on the API has changed.
- * `logs`: The bot will send logs to this channel, usually from `STDOUT` on the device.
- * `disconnect`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
- * `malformed`: When the bot gets a bad RPC command, it will notify you via this channel.
- * `change`: The bot object's (local) internal state has changed, usually as a result of FarmBotJS configuration updates.
+ * `"logs"`: The bot will send logs to this channel, usually from `STDOUT` on the device.
+ * `"malformed"`: When the bot gets a bad RPC command, it will notify you via this channel.
+ * `"offline"`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
+ * `"online"`: Client is connected and subscribed to bot.
+ * `"sent"`: Triggered when the application begins sending a message.
+ * `"status"`: Most important. When the REMOTE device state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
+ * `"sync"`: A resource on the API has changed.
  * `<random uuid>`: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request's UUID. Mostly for internal use.
-
-## Internal State and Config
-
-The bot object keeps all state in one place for sanity. This includes things like configuration options, current position, etc. All updates to the bot's state are broadcast with a `change` event, that reports current and previous state value as it changes.
-
- * `bot.getState()`: Get copy of Farmbot status variables (read only).
- * `bot.setState(name, value)`: Set state configuration 'A' to value 'B'. Ex: `bot.setState('uuid', '---')`. Emits a `change` event.
+ * `*`: Catch all events (for debugging).
 
 # Q: Where do I report security issues?
 

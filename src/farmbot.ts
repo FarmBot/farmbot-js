@@ -1,87 +1,53 @@
 import * as Corpus from "./corpus";
-import { connect, Client as MqttClient, IClientOptions } from "mqtt";
 import {
-  assign,
+  connect,
+  Client as MqttClient
+} from "mqtt";
+import {
   rpcRequest,
   coordinate,
-  toPairs,
   uuid as genUuid
 } from "./util";
 import {
-  StateTree,
   Dictionary,
-  ConstructorParams,
-  APIToken,
   McuParams,
   Configuration
 } from "./interfaces";
-import { pick, isCeleryScript } from "./util";
-import { isNode, ReadPin, WritePin } from "./index";
+import {
+  pick,
+  isCeleryScript
+} from "./util";
+import {
+  ReadPin,
+  WritePin
+} from "./index";
+import {
+  FarmBotInternalConfig as Conf,
+  FarmbotConstructorParams,
+  generateConfig,
+  CONFIG_DEFAULTS
+} from "./config";
 type Primitive = string | number | boolean;
 export const NULL = "null";
-const ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
-const ERR_MISSING_UUID = "MISSING_UUID";
-const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
-const UUID = "uuid";
-declare var atob: (i: string) => string;
-declare var global: typeof window;
 
 const RECONNECT_THROTTLE = 1000;
 
 export class Farmbot {
-  static VERSION = "5.4.1";
-  static defaults = { speed: 100, timeout: 15000 };
-
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  private _state: StateTree;
+  static VERSION = "6.0.0";
   public client?: MqttClient;
+  private config: Conf;
 
-  constructor(input: ConstructorParams) {
-    if (isNode() && !global.atob) {
-      throw new Error(`NOTE TO NODEJS USERS:
-
-      This library requires an 'atob()' function.
-      Please fix this first.
-      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33
-      `);
-    }
+  constructor(input: FarmbotConstructorParams) {
     this._events = {};
-    this._state = assign({}, Farmbot.defaults, input);
-    this._decodeThatToken();
+    this.config = generateConfig(input);
   }
 
-  private _decodeThatToken = () => {
-    let token: APIToken;
-    try {
-      let str = (this.getState()["token"] as string);
-      let base64 = str.split(".")[1];
-      let plaintext = atob(base64);
-      token = JSON.parse(plaintext);
-    } catch (e) {
-      console.warn(e);
-      throw new Error(ERR_TOKEN_PARSE);
-    }
-    this.setState("mqttServer", isNode() ?
-      `mqtt://${token.mqtt}:1883` : token.mqtt_ws);
-    this.setState(UUID, token.bot || ERR_MISSING_UUID);
-  }
+  getConfig = <U extends keyof Conf>(key: U): Conf[U] => this.config[key];
 
-  /** Returns a READ ONLY copy of the local configuration. */
-  getState(): StateTree {
-    return JSON.parse(JSON.stringify(this._state));
-  }
-
-  /** Write a configuration value for local use.
-   * Eg: setState("timeout", 999)
-   */
-  setState(key: string, val: string | number | boolean) {
-    if (val !== this._state[key]) {
-      let old = this._state[key];
-      this._state[key] = val;
-      this.emit("change", { name: key, value: val, oldValue: old });
-    }
-    return val;
+  setConfig = <U extends keyof Conf>(key: U, value: Conf[U]) => {
+    this.config[key] = value;
   }
 
   /** Installs a "Farmware" (plugin) onto the bot's SD card.
@@ -180,7 +146,7 @@ export class Farmbot {
   }
 
   /** Use end stops or encoders to figure out where 0,0,0 is.
-   *  WON'T WORK WITHOUT ENCODERS OR ENDSTOPS! */
+   *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
   findHome(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
     return this.send(rpcRequest([{ kind: "find_home", args }]));
   }
@@ -188,7 +154,7 @@ export class Farmbot {
   /** Move gantry to an absolute point. */
   moveAbsolute(args: { x: number, y: number, z: number, speed?: number }) {
     let { x, y, z, speed } = args;
-    speed = speed || Farmbot.defaults.speed;
+    speed = speed || CONFIG_DEFAULTS.speed;
     return this.send(rpcRequest([
       {
         kind: "move_absolute",
@@ -204,7 +170,7 @@ export class Farmbot {
   /** Move gantry to position relative to its current position. */
   moveRelative(args: { x: number, y: number, z: number, speed?: number }) {
     let { x, y, z, speed } = args;
-    speed = speed || Farmbot.defaults.speed;
+    speed = speed || CONFIG_DEFAULTS.speed;
     return this.send(rpcRequest([{ kind: "move_relative", args: { x, y, z, speed } }]));
   }
 
@@ -337,6 +303,16 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
 
+  /** Set the position of the given axis to 0 at the current position of said
+ * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+ * 255 to 0. */
+  dumpInfo() {
+    return this.send(rpcRequest([{
+      kind: "dump_info",
+      args: {}
+    }]));
+  }
+
   /** Retrieves all of the event handlers for a particular event.
    * Returns an empty array if the event did not exist.
     */
@@ -345,9 +321,7 @@ export class Farmbot {
     return this._events[name];
   }
 
-  on(event: string, callback: Function) {
-    this.event(event).push(callback);
-  }
+  on = (event: string, callback: Function) => this.event(event).push(callback);
 
   emit(event: string, data: {}) {
     [this.event(event), this.event("*")]
@@ -365,15 +339,15 @@ export class Farmbot {
 
   /** Dictionary of all relevant MQTT channels the bot uses. */
   get channel() {
-    let uuid = this.getState()[UUID] || ERR_MISSING_UUID;
+    let deviceName = this.config.mqttUsername;
     return {
       /** From the browser, usually. */
-      toDevice: `bot/${uuid}/from_clients`,
+      toDevice: `bot/${deviceName}/from_clients`,
       /** From farmbot */
-      toClient: `bot/${uuid}/from_device`,
-      status: `bot/${uuid}/status`,
-      sync: `bot/${uuid}/sync/#`,
-      logs: `bot/${uuid}/logs`
+      toClient: `bot/${deviceName}/from_device`,
+      status: `bot/${deviceName}/status`,
+      sync: `bot/${deviceName}/sync/#`,
+      logs: `bot/${deviceName}/logs`
     };
   }
 
@@ -397,19 +371,10 @@ export class Farmbot {
   */
   send(input: Corpus.RpcRequest) {
     let that = this;
-    let done = false;
     return new Promise(function (resolve, reject) {
       that.publish(input);
-      let label = (input.body || []).map(x => x.kind).join(", ");
-      let time = that.getState()["timeout"] as number;
-      setTimeout(function () {
-        if (!done) {
-          reject(new Error(`${label} timeout after ${time} ms.`));
-        }
-      }, time);
 
       that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
-        done = true;
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
           case "rpc_error":
@@ -454,10 +419,10 @@ export class Farmbot {
   /** Bootstrap the device onto the MQTT broker. */
   connect() {
     let that = this;
-    let { uuid, token, mqttServer, timeout } = that.getState();
+    let { mqttUsername, token, mqttServer } = that.config;
     that.client = connect(<string>mqttServer, {
-      username: uuid as string,
-      password: token as string,
+      username: mqttUsername,
+      password: token,
       clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
@@ -469,13 +434,7 @@ export class Farmbot {
     that.client.on("message", that._onmessage.bind(that));
     that.client.on("offline", () => this.emit("offline", {}));
     that.client.on("connect", () => this.emit("online", {}));
-    let done = false;
-    return new Promise(function (resolve, reject) {
-      setTimeout(function () {
-        if (!done) {
-          reject(new Error(`Failed to connect to MQTT after ${timeout} ms.`));
-        }
-      }, timeout);
+    return new Promise(function (resolve, _reject) {
       const { client } = that;
       if (client) {
         client.once("connect", () => resolve(that));

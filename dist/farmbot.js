@@ -3,54 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
-var index_1 = require("./index");
+var config_1 = require("./config");
 exports.NULL = "null";
-var ERR_MISSING_MQTT = "MQTT SERVER MISSING FROM TOKEN";
-var ERR_MISSING_UUID = "MISSING_UUID";
-var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
-var UUID = "uuid";
 var RECONNECT_THROTTLE = 1000;
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
-        this._decodeThatToken = function () {
-            var token;
-            try {
-                var str = _this.getState()["token"];
-                var base64 = str.split(".")[1];
-                var plaintext = atob(base64);
-                token = JSON.parse(plaintext);
-            }
-            catch (e) {
-                console.warn(e);
-                throw new Error(ERR_TOKEN_PARSE);
-            }
-            _this.setState("mqttServer", index_1.isNode() ?
-                "mqtt://" + token.mqtt + ":1883" : token.mqtt_ws);
-            _this.setState(UUID, token.bot || ERR_MISSING_UUID);
+        this.getConfig = function (key) { return _this.config[key]; };
+        this.setConfig = function (key, value) {
+            _this.config[key] = value;
         };
-        if (index_1.isNode() && !global.atob) {
-            throw new Error("NOTE TO NODEJS USERS:\n\n      This library requires an 'atob()' function.\n      Please fix this first.\n      SOLUTION: https://github.com/FarmBot/farmbot-js/issues/33\n      ");
-        }
+        this.on = function (event, callback) { return _this.event(event).push(callback); };
         this._events = {};
-        this._state = util_1.assign({}, Farmbot.defaults, input);
-        this._decodeThatToken();
+        this.config = config_1.generateConfig(input);
     }
-    /** Returns a READ ONLY copy of the local configuration. */
-    Farmbot.prototype.getState = function () {
-        return JSON.parse(JSON.stringify(this._state));
-    };
-    /** Write a configuration value for local use.
-     * Eg: setState("timeout", 999)
-     */
-    Farmbot.prototype.setState = function (key, val) {
-        if (val !== this._state[key]) {
-            var old = this._state[key];
-            this._state[key] = val;
-            this.emit("change", { name: key, value: val, oldValue: old });
-        }
-        return val;
-    };
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document. */
     Farmbot.prototype.installFarmware = function (url) {
@@ -133,14 +99,14 @@ var Farmbot = /** @class */ (function () {
         return this.send(util_1.rpcRequest([{ kind: "home", args: args }]));
     };
     /** Use end stops or encoders to figure out where 0,0,0 is.
-     *  WON'T WORK WITHOUT ENCODERS OR ENDSTOPS! */
+     *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
     Farmbot.prototype.findHome = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "find_home", args: args }]));
     };
     /** Move gantry to an absolute point. */
     Farmbot.prototype.moveAbsolute = function (args) {
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
-        speed = speed || Farmbot.defaults.speed;
+        speed = speed || config_1.CONFIG_DEFAULTS.speed;
         return this.send(util_1.rpcRequest([
             {
                 kind: "move_absolute",
@@ -155,7 +121,7 @@ var Farmbot = /** @class */ (function () {
     /** Move gantry to position relative to its current position. */
     Farmbot.prototype.moveRelative = function (args) {
         var x = args.x, y = args.y, z = args.z, speed = args.speed;
-        speed = speed || Farmbot.defaults.speed;
+        speed = speed || config_1.CONFIG_DEFAULTS.speed;
         return this.send(util_1.rpcRequest([{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }]));
     };
     /** Set a GPIO pin to a particular value. */
@@ -271,15 +237,21 @@ var Farmbot = /** @class */ (function () {
     Farmbot.prototype.calibrate = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "calibrate", args: args }]));
     };
+    /** Set the position of the given axis to 0 at the current position of said
+   * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+   * 255 to 0. */
+    Farmbot.prototype.dumpInfo = function () {
+        return this.send(util_1.rpcRequest([{
+                kind: "dump_info",
+                args: {}
+            }]));
+    };
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
     Farmbot.prototype.event = function (name) {
         this._events[name] = this._events[name] || [];
         return this._events[name];
-    };
-    Farmbot.prototype.on = function (event, callback) {
-        this.event(event).push(callback);
     };
     Farmbot.prototype.emit = function (event, data) {
         [this.event(event), this.event("*")]
@@ -298,15 +270,15 @@ var Farmbot = /** @class */ (function () {
     Object.defineProperty(Farmbot.prototype, "channel", {
         /** Dictionary of all relevant MQTT channels the bot uses. */
         get: function () {
-            var uuid = this.getState()[UUID] || ERR_MISSING_UUID;
+            var deviceName = this.config.mqttUsername;
             return {
                 /** From the browser, usually. */
-                toDevice: "bot/" + uuid + "/from_clients",
+                toDevice: "bot/" + deviceName + "/from_clients",
                 /** From farmbot */
-                toClient: "bot/" + uuid + "/from_device",
-                status: "bot/" + uuid + "/status",
-                sync: "bot/" + uuid + "/sync/#",
-                logs: "bot/" + uuid + "/logs"
+                toClient: "bot/" + deviceName + "/from_device",
+                status: "bot/" + deviceName + "/status",
+                sync: "bot/" + deviceName + "/sync/#",
+                logs: "bot/" + deviceName + "/logs"
             };
         },
         enumerable: true,
@@ -333,18 +305,9 @@ var Farmbot = /** @class */ (function () {
     */
     Farmbot.prototype.send = function (input) {
         var that = this;
-        var done = false;
         return new Promise(function (resolve, reject) {
             that.publish(input);
-            var label = (input.body || []).map(function (x) { return x.kind; }).join(", ");
-            var time = that.getState()["timeout"];
-            setTimeout(function () {
-                if (!done) {
-                    reject(new Error(label + " timeout after " + time + " ms."));
-                }
-            }, time);
             that.on(input.args.label, function (response) {
-                done = true;
                 switch (response.kind) {
                     case "rpc_ok": return resolve(response);
                     case "rpc_error":
@@ -390,9 +353,9 @@ var Farmbot = /** @class */ (function () {
     Farmbot.prototype.connect = function () {
         var _this = this;
         var that = this;
-        var _a = that.getState(), uuid = _a.uuid, token = _a.token, mqttServer = _a.mqttServer, timeout = _a.timeout;
+        var _a = that.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
         that.client = mqtt_1.connect(mqttServer, {
-            username: uuid,
+            username: mqttUsername,
             password: token,
             clean: true,
             clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
@@ -405,13 +368,7 @@ var Farmbot = /** @class */ (function () {
         that.client.on("message", that._onmessage.bind(that));
         that.client.on("offline", function () { return _this.emit("offline", {}); });
         that.client.on("connect", function () { return _this.emit("online", {}); });
-        var done = false;
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                if (!done) {
-                    reject(new Error("Failed to connect to MQTT after " + timeout + " ms."));
-                }
-            }, timeout);
+        return new Promise(function (resolve, _reject) {
             var client = that.client;
             if (client) {
                 client.once("connect", function () { return resolve(that); });
@@ -421,8 +378,7 @@ var Farmbot = /** @class */ (function () {
             }
         });
     };
-    Farmbot.VERSION = "5.4.1";
-    Farmbot.defaults = { speed: 100, timeout: 15000 };
+    Farmbot.VERSION = "6.0.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
