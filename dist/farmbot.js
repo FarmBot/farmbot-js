@@ -237,6 +237,15 @@ var Farmbot = /** @class */ (function () {
     Farmbot.prototype.calibrate = function (args) {
         return this.send(util_1.rpcRequest([{ kind: "calibrate", args: args }]));
     };
+    /** Set the position of the given axis to 0 at the current position of said
+   * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+   * 255 to 0. */
+    Farmbot.prototype.dumpInfo = function () {
+        return this.send(util_1.rpcRequest([{
+                kind: "dump_info",
+                args: {}
+            }]));
+    };
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
@@ -369,7 +378,7 @@ var Farmbot = /** @class */ (function () {
             }
         });
     };
-    Farmbot.VERSION = "6.0.0-rc2";
+    Farmbot.VERSION = "6.0.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

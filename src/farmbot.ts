@@ -35,7 +35,7 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.0.0-rc2";
+  static VERSION = "6.0.0";
   public client?: MqttClient;
   private config: Conf;
 
@@ -301,6 +301,16 @@ export class Farmbot {
 
   calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
+  }
+
+  /** Set the position of the given axis to 0 at the current position of said
+ * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
+ * 255 to 0. */
+  dumpInfo() {
+    return this.send(rpcRequest([{
+      kind: "dump_info",
+      args: {}
+    }]));
   }
 
   /** Retrieves all of the event handlers for a particular event.
