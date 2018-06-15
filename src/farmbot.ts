@@ -35,7 +35,7 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.0.0";
+  static VERSION = "6.0.1";
   public client?: MqttClient;
   private config: Conf;
 
@@ -303,9 +303,7 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
 
-  /** Set the position of the given axis to 0 at the current position of said
- * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
- * 255 to 0. */
+  /** Tell the bot to send diagnostic info to the API.*/
   dumpInfo() {
     return this.send(rpcRequest([{
       kind: "dump_info",

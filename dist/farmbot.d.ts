@@ -114,9 +114,7 @@ export declare class Farmbot {
     calibrate(args: {
         axis: Corpus.ALLOWED_AXIS;
     }): Promise<{}>;
-    /** Set the position of the given axis to 0 at the current position of said
-   * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
-   * 255 to 0. */
+    /** Tell the bot to send diagnostic info to the API.*/
     dumpInfo(): Promise<{}>;
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
