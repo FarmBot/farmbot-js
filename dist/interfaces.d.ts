@@ -103,6 +103,8 @@ export declare type ConfigurationName = keyof Configuration;
 /** The possible values for the sync_msg property on informational_settings */
 export declare type SyncStatus = "booting" | "maintenance" | "sync_error" | "sync_now" | "synced" | "syncing" | "unknown";
 export interface InformationalSettings {
+    /** CPU Temperature of the Pi */
+    soc_temp?: number;
     /** Current version of Farmbot OS */
     controller_version?: string | undefined;
     /** Arduino firmware version. */

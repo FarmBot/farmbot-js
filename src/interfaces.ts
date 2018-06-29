@@ -227,6 +227,8 @@ export type SyncStatus =
   | "unknown";
 
 export interface InformationalSettings {
+  /** CPU Temperature of the Pi */
+  soc_temp?: number;
   /** Current version of Farmbot OS */
   controller_version?: string | undefined;
   /** Arduino firmware version. */
