@@ -229,6 +229,8 @@ export type SyncStatus =
 export interface InformationalSettings {
   /** CPU Temperature of the Pi */
   soc_temp?: number;
+  /** Wifi strength (dbm) */
+  wifi_level?: number;
   /** Current version of Farmbot OS */
   controller_version?: string | undefined;
   /** Arduino firmware version. */
