@@ -35,7 +35,7 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.1.1";
+  static VERSION = "6.1.3";
   public client?: MqttClient;
   private config: Conf;
 
