@@ -27,6 +27,7 @@ import {
   generateConfig,
   CONFIG_DEFAULTS
 } from "./config";
+import { ResourceAdapter } from "./resource_adapter";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 
@@ -37,6 +38,7 @@ export class Farmbot {
   private _events: Dictionary<Function[]>;
   static VERSION = "6.1.1";
   public client?: MqttClient;
+  public resources?: ResourceAdapter;
   private config: Conf;
 
   constructor(input: FarmbotConstructorParams) {
@@ -425,6 +427,7 @@ export class Farmbot {
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;
+    this.resources = new ResourceAdapter(that.client, this.config.mqttUsername);
     that.client.subscribe(that.channel.toClient);
     that.client.subscribe(that.channel.logs);
     that.client.subscribe(that.channel.status);
