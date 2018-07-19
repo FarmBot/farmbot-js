@@ -323,28 +323,30 @@ var Farmbot = /** @class */ (function () {
         try {
             /** UNSAFE CODE: TODO: Add user defined type guards? */
             var msg = JSON.parse(buffer.toString());
+            switch (chan) {
+                case this.channel.logs: return this.emit("logs", msg);
+                case this.channel.status: return this.emit("status", msg);
+                case this.channel.toClient:
+                    if (util_2.isCeleryScript(msg)) {
+                        return this.emit(msg.args.label, msg);
+                    }
+                    else {
+                        console.warn("Got malformed message. Out of date firmware?");
+                        return this.emit("malformed", msg);
+                    }
+                default:
+                    if (chan.includes("sync")) {
+                        this.emit("sync", msg);
+                    }
+                    else {
+                        console.warn("Unhandled inbound message from " + chan);
+                        this.emit("malformed", msg);
+                    }
+            }
         }
         catch (error) {
-            throw new Error("Could not parse inbound message from MQTT.");
-        }
-        switch (chan) {
-            case this.channel.logs: return this.emit("logs", msg);
-            case this.channel.status: return this.emit("status", msg);
-            case this.channel.toClient:
-                if (util_2.isCeleryScript(msg)) {
-                    return this.emit(msg.args.label, msg);
-                }
-                else {
-                    console.warn("Got malformed message. Out of date firmware?");
-                    return this.emit("malformed", msg);
-                }
-            default:
-                if (chan.includes("sync")) {
-                    this.emit("sync", msg);
-                }
-                else {
-                    console.info("Unhandled inbound message from " + chan);
-                }
+            console.warn("Could not parse inbound message from MQTT.");
+            this.emit("malformed", buffer.toString());
         }
     };
     /** Bootstrap the device onto the MQTT broker. */
@@ -376,7 +378,7 @@ var Farmbot = /** @class */ (function () {
             }
         });
     };
-    Farmbot.VERSION = "6.1.3";
+    Farmbot.VERSION = "6.2.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

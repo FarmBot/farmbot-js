@@ -35,7 +35,7 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.1.3";
+  static VERSION = "6.2.0";
   public client?: MqttClient;
   private config: Conf;
 
@@ -390,27 +390,28 @@ export class Farmbot {
   private _onmessage(chan: string, buffer: Uint8Array) {
     try {
       /** UNSAFE CODE: TODO: Add user defined type guards? */
-      var msg = JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
+      const msg = JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
+      switch (chan) {
+        case this.channel.logs: return this.emit("logs", msg);
+        case this.channel.status: return this.emit("status", msg);
+        case this.channel.toClient:
+          if (isCeleryScript(msg)) {
+            return this.emit(msg.args.label, msg);
+          } else {
+            console.warn("Got malformed message. Out of date firmware?");
+            return this.emit("malformed", msg);
+          }
+        default:
+          if (chan.includes("sync")) {
+            this.emit("sync", msg);
+          } else {
+            console.warn(`Unhandled inbound message from ${chan}`);
+            this.emit("malformed", msg);
+          }
+      }
     } catch (error) {
-      throw new Error("Could not parse inbound message from MQTT.");
-    }
-
-    switch (chan) {
-      case this.channel.logs: return this.emit("logs", msg);
-      case this.channel.status: return this.emit("status", msg);
-      case this.channel.toClient:
-        if (isCeleryScript(msg)) {
-          return this.emit(msg.args.label, msg);
-        } else {
-          console.warn("Got malformed message. Out of date firmware?");
-          return this.emit("malformed", msg);
-        }
-      default:
-        if (chan.includes("sync")) {
-          this.emit("sync", msg);
-        } else {
-          console.info(`Unhandled inbound message from ${chan}`);
-        }
+      console.warn("Could not parse inbound message from MQTT.");
+      this.emit("malformed", buffer.toString());
     }
   }
 
