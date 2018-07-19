@@ -31,14 +31,15 @@ export class ResourceAdapter {
 
   }
 
-  private outboundChanFor = (req: BatchDestroyRequest, uuid_: string): string => [
-    `bot`,
-    this.username,
-    `resources_v0`,
-    `${req.name}`,
-    `${req.id}`,
-    `${uuid_}`,
-  ].join("/");
+  private outboundChanFor =
+    (req: BatchDestroyRequest, uuid_: string): string => [
+      `bot`,
+      this.username,
+      `resources_v0`,
+      `${req.name}`,
+      `${req.id}`,
+      `${uuid_}`,
+    ].join("/");
 
   private inboundChannelFor = (req: BatchDestroyRequest): string => [
     `bot`,
@@ -51,10 +52,10 @@ export class ResourceAdapter {
     // Generate a UUID
     const requestId = uuid();
     const outputChan = this.outboundChanFor(req, requestId);
-    const p: Promise<void> = new Promise((_resolve, _reject) => {
+    const p: Promise<void> = new Promise((resolve, _reject) => {
       this.connection.subscribe(this.inboundChannelFor(req), () => {
         throw new Error("Stopped here");
-        // _resolve();
+        resolve();
       });
     });
     // Put it in the cache
