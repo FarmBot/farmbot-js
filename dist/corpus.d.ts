@@ -425,5 +425,5 @@ export declare type LegalKindString = "_if" | "calibrate" | "change_ownership" |
 export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "find_home" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "take_photo" | "wait" | "write_pin";
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type PointType = "GenericPointer" | "ToolSlot" | "Plant";
-export declare type AllowedPinTypes = "Peripheral" | "Sensor" | "RPi";
+export declare type AllowedPinTypes = "Peripheral" | "Sensor" | "BoxLed3" | "BoxLed4";
 export declare type PlantStage = "planned" | "planted" | "harvested";
