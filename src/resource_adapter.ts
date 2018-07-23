@@ -40,7 +40,7 @@ export class ResourceAdapter {
       `${uuid_}`,
     ].join("/");
 
-  destroy = (req: BatchDestroyRequest): Promise<void> => {
+  destroy = (req: BatchDestroyRequest): Promise<Response> => {
     const { client } = this.parent;
     if (client) {
       return new Promise((res, rej) => {
@@ -51,11 +51,27 @@ export class ResourceAdapter {
         // Setup the response handler.
         this
           .parent
-          .on(requestId, (m: Response) => (m.kind == "rpc_ok") ? res() : rej());
+          .on(requestId, (m: Response) => {
+            (m.kind == "rpc_ok" ? res : rej)(m);
+          });
         client.publish(outputChan, "");
       });
     }
     // Auto-reject if client is not connected yet.
-    return Promise.reject();
+    const internalError: RpcError = {
+      kind: "rpc_error",
+      args: {
+        label: "BROWSER_LEVEL_FAILURE"
+      },
+      body: [
+        {
+          kind: "explanation",
+          args: {
+            message: "Tried to perform batch operation before connect."
+          }
+        }
+      ]
+    };
+    return Promise.reject(internalError);
   }
 }

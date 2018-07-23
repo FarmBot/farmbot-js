@@ -43,12 +43,28 @@ var ResourceAdapter = /** @class */ (function () {
                     // Setup the response handler.
                     _this
                         .parent
-                        .on(requestId, function (m) { return (m.kind == "rpc_ok") ? res() : rej(); });
+                        .on(requestId, function (m) {
+                        (m.kind == "rpc_ok" ? res : rej)(m);
+                    });
                     client.publish(outputChan, "");
                 });
             }
             // Auto-reject if client is not connected yet.
-            return Promise.reject();
+            var internalError = {
+                kind: "rpc_error",
+                args: {
+                    label: "BROWSER_LEVEL_FAILURE"
+                },
+                body: [
+                    {
+                        kind: "explanation",
+                        args: {
+                            message: "Tried to perform batch operation before connect."
+                        }
+                    }
+                ]
+            };
+            return Promise.reject(internalError);
         };
     }
     return ResourceAdapter;

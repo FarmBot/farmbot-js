@@ -1,4 +1,4 @@
-import { Farmbot } from ".";
+import { Farmbot, RpcError, RpcOk } from ".";
 export declare enum ResourceName {
     FarmEvent = "FarmEvent",
     FarmwareInstallations = "FarmwareInstallation",
@@ -20,10 +20,12 @@ export interface BatchDestroyRequest {
     name: ResourceName;
     id: number;
 }
+declare type Response = RpcOk | RpcError;
 export declare class ResourceAdapter {
     parent: Farmbot;
     username: string;
     constructor(parent: Farmbot, username: string);
     private outboundChanFor;
-    destroy: (req: BatchDestroyRequest) => Promise<void>;
+    destroy: (req: BatchDestroyRequest) => Promise<Response>;
 }
+export {};
