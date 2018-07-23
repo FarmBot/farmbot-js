@@ -36,7 +36,7 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.1.1";
+  static VERSION = "6.2.2";
   public client?: MqttClient;
   public resources?: ResourceAdapter;
   private config: Conf;
@@ -349,7 +349,7 @@ export class Farmbot {
       status: `bot/${deviceName}/status`,
       logs: `bot/${deviceName}/logs`,
       sync: `bot/${deviceName}/sync/#`,
-      fromAPI: `"bot/${deviceName}/from_api/#`,
+      fromAPI: `"bot/${deviceName}/from_api`,
     };
   }
 
@@ -399,17 +399,18 @@ export class Farmbot {
         case this.channel.logs: return this.emit("logs", msg);
         case this.channel.status: return this.emit("status", msg);
         case this.channel.toClient:
+        case this.channel.fromAPI:
+        default:
           if (isCeleryScript(msg)) {
             return this.emit(msg.args.label, msg);
-          } else {
-            console.warn("Got malformed message. Out of date firmware?");
-            return this.emit("malformed", msg);
           }
-        default:
+
           if (chan.includes("sync")) {
-            this.emit("sync", msg);
-            return;
+            return this.emit("sync", msg);
           }
+
+          console.warn(`Unhandled inbound message from ${chan}`);
+          this.emit("malformed", msg);
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");
@@ -428,7 +429,7 @@ export class Farmbot {
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;
-    this.resources = new ResourceAdapter(that.client, this.config.mqttUsername);
+    this.resources = new ResourceAdapter(that, this.config.mqttUsername);
     that.client.subscribe(that.channel.all);
     that.client.on("message", that._onmessage.bind(that));
     that.client.on("offline", () => this.emit("offline", {}));

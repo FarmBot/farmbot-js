@@ -1,4 +1,5 @@
 var FB = require("./dist/farmbot");
+
 global.atob = require("atob");
 
 var f = new FB.Farmbot({
@@ -7,13 +8,6 @@ var f = new FB.Farmbot({
 
 f.connect().then(() => console.log("OK"), (e) => (console.dir(e)));
 
-f.on("*", (x) => {
-  console.log(x);
-});
-
-f.on("online", () => {
-  console.log("ONLINE");
-});
-f.on("offline", () => {
-  console.log("offline");
-});
+f.on("*", (x) => console.log(x));
+f.on("online", () => console.log("ONLINE"));
+f.on("offline", () => console.log("offline"));

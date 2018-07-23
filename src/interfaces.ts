@@ -65,6 +65,7 @@ export type FarmwareConfig = Record<"name" | "label" | "value", string>;
 /** The Farmware manifest is a JSON file published by farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades. */
 export interface FarmwareManifest {
+  farmware_tools_version?: string;
   /** The thing that will run the farmware eg: `python`. */
   executable: string;
   uuid: string;

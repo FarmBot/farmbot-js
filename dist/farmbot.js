@@ -4,6 +4,7 @@ var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var util_2 = require("./util");
 var config_1 = require("./config");
+var resource_adapter_1 = require("./resource_adapter");
 exports.NULL = "null";
 var RECONNECT_THROTTLE = 1000;
 var Farmbot = /** @class */ (function () {
@@ -270,13 +271,15 @@ var Farmbot = /** @class */ (function () {
         get: function () {
             var deviceName = this.config.mqttUsername;
             return {
+                all: "bot/" + deviceName + "/#",
                 /** From the browser, usually. */
                 toDevice: "bot/" + deviceName + "/from_clients",
                 /** From farmbot */
                 toClient: "bot/" + deviceName + "/from_device",
                 status: "bot/" + deviceName + "/status",
+                logs: "bot/" + deviceName + "/logs",
                 sync: "bot/" + deviceName + "/sync/#",
-                logs: "bot/" + deviceName + "/logs"
+                fromAPI: "\"bot/" + deviceName + "/from_api",
             };
         },
         enumerable: true,
@@ -323,28 +326,25 @@ var Farmbot = /** @class */ (function () {
         try {
             /** UNSAFE CODE: TODO: Add user defined type guards? */
             var msg = JSON.parse(buffer.toString());
+            switch (chan) {
+                case this.channel.logs: return this.emit("logs", msg);
+                case this.channel.status: return this.emit("status", msg);
+                case this.channel.toClient:
+                case this.channel.fromAPI:
+                default:
+                    if (util_2.isCeleryScript(msg)) {
+                        return this.emit(msg.args.label, msg);
+                    }
+                    if (chan.includes("sync")) {
+                        return this.emit("sync", msg);
+                    }
+                    console.warn("Unhandled inbound message from " + chan);
+                    this.emit("malformed", msg);
+            }
         }
         catch (error) {
-            throw new Error("Could not parse inbound message from MQTT.");
-        }
-        switch (chan) {
-            case this.channel.logs: return this.emit("logs", msg);
-            case this.channel.status: return this.emit("status", msg);
-            case this.channel.toClient:
-                if (util_2.isCeleryScript(msg)) {
-                    return this.emit(msg.args.label, msg);
-                }
-                else {
-                    console.warn("Got malformed message. Out of date firmware?");
-                    return this.emit("malformed", msg);
-                }
-            default:
-                if (chan.includes("sync")) {
-                    this.emit("sync", msg);
-                }
-                else {
-                    console.info("Unhandled inbound message from " + chan);
-                }
+            console.warn("Could not parse inbound message from MQTT.");
+            this.emit("malformed", buffer.toString());
         }
     };
     /** Bootstrap the device onto the MQTT broker. */
@@ -359,10 +359,8 @@ var Farmbot = /** @class */ (function () {
             clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
             reconnectPeriod: RECONNECT_THROTTLE
         });
-        that.client.subscribe(that.channel.toClient);
-        that.client.subscribe(that.channel.logs);
-        that.client.subscribe(that.channel.status);
-        that.client.subscribe(that.channel.sync);
+        this.resources = new resource_adapter_1.ResourceAdapter(that, this.config.mqttUsername);
+        that.client.subscribe(that.channel.all);
         that.client.on("message", that._onmessage.bind(that));
         that.client.on("offline", function () { return _this.emit("offline", {}); });
         that.client.on("connect", function () { return _this.emit("online", {}); });
@@ -376,7 +374,7 @@ var Farmbot = /** @class */ (function () {
             }
         });
     };
-    Farmbot.VERSION = "6.1.1";
+    Farmbot.VERSION = "6.2.2";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

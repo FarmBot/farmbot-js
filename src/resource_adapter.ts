@@ -1,5 +1,4 @@
-import { uuid, Dictionary } from ".";
-import { Client } from "mqtt";
+import { uuid, Dictionary, Farmbot } from ".";
 
 export enum ResourceName {
   FarmEvent = "FarmEvent",
@@ -27,7 +26,7 @@ export interface BatchDestroyRequest {
 export class ResourceAdapter {
   public cache: Dictionary<Promise<void>> = {};
 
-  constructor(public connection: Client, public username: string) {
+  constructor(public parent: Farmbot, public username: string) {
 
   }
 
@@ -49,21 +48,25 @@ export class ResourceAdapter {
   ].join("/");
 
   destroy = (req: BatchDestroyRequest): Promise<void> => {
-    // Generate a UUID
-    const requestId = uuid();
-    const outputChan = this.outboundChanFor(req, requestId);
-    const p: Promise<void> = new Promise((resolve, _reject) => {
-      this.connection.subscribe(this.inboundChannelFor(req), () => {
-        throw new Error("Stopped here");
-        resolve();
+    const { client } = this.parent;
+    if (client) {
+      client.emit(-1);
+      // Generate a UUID
+      const requestId = uuid();
+      const outputChan = this.outboundChanFor(req, requestId);
+      const p: Promise<void> = new Promise((resolve, _reject) => {
+        this.parent.on(this.inboundChannelFor(req), () => {
+          resolve();
+          throw new Error("Stopped here");
+        });
       });
-    });
-    // Put it in the cache
-    this.cache[requestId] = p;
-    // Subscribe to response chan
-    // publish RPC
-    // return promise
-    this.connection.publish(outputChan, "");
-    return p;
+      // Put it in the cache
+      this.cache[requestId] = p;
+      // Subscribe to response chan
+      // publish RPC
+      // return promise
+      return p;
+    }
+    return Promise.reject();
   }
 }

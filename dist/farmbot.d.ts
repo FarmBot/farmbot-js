@@ -3,12 +3,14 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary, McuParams, Configuration } from "./interfaces";
 import { ReadPin, WritePin } from "./index";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
+import { ResourceAdapter } from "./resource_adapter";
 export declare const NULL = "null";
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
     static VERSION: string;
     client?: MqttClient;
+    resources?: ResourceAdapter;
     private config;
     constructor(input: FarmbotConstructorParams);
     getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U) => Conf[U];
@@ -45,8 +47,8 @@ export declare class Farmbot {
     execSequence(sequence_id: number): Promise<{}>;
     /** Run a preloaded Farmware / script on the SD Card. */
     execScript(/** Filename of the script */ label: string, 
-        /** Optional ENV vars to pass the script */
-        envVars?: Corpus.Pair[] | undefined): Promise<{}>;
+    /** Optional ENV vars to pass the script */
+    envVars?: Corpus.Pair[] | undefined): Promise<{}>;
     /** Bring a particular axis (or all of them) to position 0. */
     home(args: {
         speed: number;
@@ -124,11 +126,15 @@ export declare class Farmbot {
     emit(event: string, data: {}): void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
+        all: string;
+        /** From the browser, usually. */
         toDevice: string;
+        /** From farmbot */
         toClient: string;
         status: string;
-        sync: string;
         logs: string;
+        sync: string;
+        fromAPI: string;
     };
     /** Low level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
@@ -139,7 +145,7 @@ export declare class Farmbot {
     */
     send(input: Corpus.RpcRequest): Promise<{}>;
     /** Main entry point for all MQTT packets. */
-    private _onmessage(chan, buffer);
+    private _onmessage;
     /** Bootstrap the device onto the MQTT broker. */
     connect(): Promise<{}>;
 }
