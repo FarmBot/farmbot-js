@@ -341,13 +341,15 @@ export class Farmbot {
   get channel() {
     let deviceName = this.config.mqttUsername;
     return {
+      all: `bot/${deviceName}/#`,
       /** From the browser, usually. */
       toDevice: `bot/${deviceName}/from_clients`,
       /** From farmbot */
       toClient: `bot/${deviceName}/from_device`,
       status: `bot/${deviceName}/status`,
+      logs: `bot/${deviceName}/logs`,
       sync: `bot/${deviceName}/sync/#`,
-      logs: `bot/${deviceName}/logs`
+      fromAPI: `"bot/${deviceName}/from_api/#`,
     };
   }
 
@@ -406,8 +408,7 @@ export class Farmbot {
         default:
           if (chan.includes("sync")) {
             this.emit("sync", msg);
-          } else {
-            console.info(`Unhandled inbound message from ${chan}`);
+            return;
           }
       }
     } catch (error) {
@@ -428,10 +429,7 @@ export class Farmbot {
       reconnectPeriod: RECONNECT_THROTTLE
     }) as MqttClient;
     this.resources = new ResourceAdapter(that.client, this.config.mqttUsername);
-    that.client.subscribe(that.channel.toClient);
-    that.client.subscribe(that.channel.logs);
-    that.client.subscribe(that.channel.status);
-    that.client.subscribe(that.channel.sync);
+    that.client.subscribe(that.channel.all);
     that.client.on("message", that._onmessage.bind(that));
     that.client.on("offline", () => this.emit("offline", {}));
     that.client.on("connect", () => this.emit("online", {}));
