@@ -349,7 +349,7 @@ export class Farmbot {
       status: `bot/${deviceName}/status`,
       logs: `bot/${deviceName}/logs`,
       sync: `bot/${deviceName}/sync/#`,
-      fromAPI: `"bot/${deviceName}/from_api`,
+      fromAPI: `bot/${deviceName}/from_api`,
     };
   }
 
