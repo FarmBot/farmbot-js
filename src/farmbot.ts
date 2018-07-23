@@ -342,7 +342,6 @@ export class Farmbot {
   get channel() {
     let deviceName = this.config.mqttUsername;
     return {
-      all: `bot/${deviceName}/#`,
       /** From the browser, usually. */
       toDevice: `bot/${deviceName}/from_clients`,
       /** From farmbot */
@@ -372,12 +371,12 @@ export class Farmbot {
    * receipt of message, but does not check formatting. Consider using higher
    * level methods like .moveRelative(), .calibrate(), etc....
   */
-  send(input: Corpus.RpcRequest) {
-    let that = this;
-    return new Promise(function (resolve, reject) {
-      that.publish(input);
+  send = (input: Corpus.RpcRequest) => {
+    return new Promise((resolve, reject) => {
 
-      that.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
+      this.publish(input);
+
+      this.on(input.args.label, function (response: Corpus.RpcOk | Corpus.RpcError) {
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
           case "rpc_error":
@@ -392,7 +391,7 @@ export class Farmbot {
   }
 
   /** Main entry point for all MQTT packets. */
-  private _onmessage(chan: string, buffer: Uint8Array) {
+  private _onmessage = (chan: string, buffer: Uint8Array) => {
     try {
       /** UNSAFE CODE: TODO: Add user defined type guards? */
       const msg = JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
@@ -420,25 +419,29 @@ export class Farmbot {
   }
 
   /** Bootstrap the device onto the MQTT broker. */
-  connect() {
-    let that = this;
-    let { mqttUsername, token, mqttServer } = that.config;
-    that.client = connect(<string>mqttServer, {
+  connect = () => {
+    let { mqttUsername, token, mqttServer } = this.config;
+    const client = connect(<string>mqttServer, {
       username: mqttUsername,
       password: token,
       clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       reconnectPeriod: RECONNECT_THROTTLE
-    }) as MqttClient;
-    this.resources = new ResourceAdapter(that, this.config.mqttUsername);
-    that.client.subscribe(that.channel.all);
-    that.client.on("message", that._onmessage.bind(that));
-    that.client.on("offline", () => this.emit("offline", {}));
-    that.client.on("connect", () => this.emit("online", {}));
-    return new Promise(function (resolve, _reject) {
-      const { client } = that;
+    });
+    this.client = client;
+    this.resources = new ResourceAdapter(this, this.config.mqttUsername);
+    client.on("message", this._onmessage);
+    client.on("offline", () => this.emit("offline", {}));
+    client.on("connect", () => this.emit("online", {}));
+    const channels = [this.channel.logs,
+    this.channel.status,
+    this.channel.toClient,
+    this.channel.fromAPI];
+    client.subscribe(channels);
+    return new Promise((resolve, _reject) => {
+      const { client } = this;
       if (client) {
-        client.once("connect", () => resolve(that));
+        client.once("connect", () => resolve(this));
       } else {
         throw new Error("Please connect first.");
       }
