@@ -17,6 +17,7 @@ var Farmbot = /** @class */ (function () {
         this.on = function (event, callback) { return _this.event(event).push(callback); };
         this._events = {};
         this.config = config_1.generateConfig(input);
+        this.resources = new resource_adapter_1.ResourceAdapter(this, this.config.mqttUsername);
     }
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document. */
@@ -374,7 +375,7 @@ var Farmbot = /** @class */ (function () {
             }
         });
     };
-    Farmbot.VERSION = "6.2.2";
+    Farmbot.VERSION = "6.3.0-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

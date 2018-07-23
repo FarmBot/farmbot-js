@@ -24,7 +24,6 @@ var ResourceAdapter = /** @class */ (function () {
         var _this = this;
         this.parent = parent;
         this.username = username;
-        this.cache = {};
         this.outboundChanFor = function (req, uuid_) { return [
             "bot",
             _this.username,
@@ -33,32 +32,22 @@ var ResourceAdapter = /** @class */ (function () {
             "" + req.id,
             "" + uuid_,
         ].join("/"); };
-        this.inboundChannelFor = function (req) { return [
-            "bot",
-            _this.username,
-            "from_api",
-            "" + req.id,
-        ].join("/"); };
         this.destroy = function (req) {
             var client = _this.parent.client;
             if (client) {
-                client.emit(-1);
-                // Generate a UUID
-                var requestId = _1.uuid();
-                var outputChan = _this.outboundChanFor(req, requestId);
-                var p = new Promise(function (resolve, _reject) {
-                    _this.parent.on(_this.inboundChannelFor(req), function () {
-                        resolve();
-                        throw new Error("Stopped here");
-                    });
+                return new Promise(function (res, rej) {
+                    // Generate a UUID
+                    var requestId = _1.uuid();
+                    // Figure out which channel it needs to be published to.
+                    var outputChan = _this.outboundChanFor(req, requestId);
+                    // Setup the response handler.
+                    _this
+                        .parent
+                        .on(requestId, function (m) { return (m.kind == "rpc_ok") ? res() : rej(); });
+                    client.publish(outputChan, "");
                 });
-                // Put it in the cache
-                _this.cache[requestId] = p;
-                // Subscribe to response chan
-                // publish RPC
-                // return promise
-                return p;
             }
+            // Auto-reject if client is not connected yet.
             return Promise.reject();
         };
     }

@@ -36,14 +36,15 @@ const RECONNECT_THROTTLE = 1000;
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
-  static VERSION = "6.2.2";
-  public client?: MqttClient;
-  public resources?: ResourceAdapter;
   private config: Conf;
+  public client?: MqttClient;
+  public resources: ResourceAdapter;
+  static VERSION = "6.3.0-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
     this.config = generateConfig(input);
+    this.resources = new ResourceAdapter(this, this.config.mqttUsername);
   }
 
   getConfig = <U extends keyof Conf>(key: U): Conf[U] => this.config[key];

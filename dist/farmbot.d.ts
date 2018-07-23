@@ -8,10 +8,10 @@ export declare const NULL = "null";
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
-    static VERSION: string;
-    client?: MqttClient;
-    resources?: ResourceAdapter;
     private config;
+    client?: MqttClient;
+    resources: ResourceAdapter;
+    static VERSION: string;
     constructor(input: FarmbotConstructorParams);
     getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U) => Conf[U];
     setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U, value: Conf[U]) => void;

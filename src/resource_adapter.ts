@@ -1,4 +1,4 @@
-import { uuid, Dictionary, Farmbot, RpcError, RpcOk } from ".";
+import { uuid, Farmbot, RpcError, RpcOk } from ".";
 
 export enum ResourceName {
   FarmEvent = "FarmEvent",
@@ -39,13 +39,6 @@ export class ResourceAdapter {
       `${req.id}`,
       `${uuid_}`,
     ].join("/");
-
-  private inboundChannelFor = (req: BatchDestroyRequest): string => [
-    `bot`,
-    this.username,
-    `from_api`,
-    `${req.id}`,
-  ].join("/");
 
   destroy = (req: BatchDestroyRequest): Promise<void> => {
     const { client } = this.parent;

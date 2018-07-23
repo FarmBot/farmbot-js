@@ -1,4 +1,4 @@
-import { Dictionary, Farmbot } from ".";
+import { Farmbot } from ".";
 export declare enum ResourceName {
     FarmEvent = "FarmEvent",
     FarmwareInstallations = "FarmwareInstallation",
@@ -23,9 +23,7 @@ export interface BatchDestroyRequest {
 export declare class ResourceAdapter {
     parent: Farmbot;
     username: string;
-    cache: Dictionary<Promise<void>>;
     constructor(parent: Farmbot, username: string);
     private outboundChanFor;
-    private inboundChannelFor;
     destroy: (req: BatchDestroyRequest) => Promise<void>;
 }
