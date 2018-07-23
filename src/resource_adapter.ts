@@ -1,4 +1,4 @@
-import { uuid, Dictionary, Farmbot } from ".";
+import { uuid, Dictionary, Farmbot, RpcError, RpcOk } from ".";
 
 export enum ResourceName {
   FarmEvent = "FarmEvent",
@@ -23,9 +23,9 @@ export interface BatchDestroyRequest {
   id: number;
 }
 
-export class ResourceAdapter {
-  public cache: Dictionary<Promise<void>> = {};
+type Response = RpcOk | RpcError;
 
+export class ResourceAdapter {
   constructor(public parent: Farmbot, public username: string) {
 
   }
@@ -50,23 +50,19 @@ export class ResourceAdapter {
   destroy = (req: BatchDestroyRequest): Promise<void> => {
     const { client } = this.parent;
     if (client) {
-      client.emit(-1);
-      // Generate a UUID
-      const requestId = uuid();
-      const outputChan = this.outboundChanFor(req, requestId);
-      const p: Promise<void> = new Promise((resolve, _reject) => {
-        this.parent.on(this.inboundChannelFor(req), () => {
-          resolve();
-          throw new Error("Stopped here");
-        });
+      return new Promise((res, rej) => {
+        // Generate a UUID
+        const requestId = uuid();
+        // Figure out which channel it needs to be published to.
+        const outputChan = this.outboundChanFor(req, requestId);
+        // Setup the response handler.
+        this
+          .parent
+          .on(requestId, (m: Response) => (m.kind == "rpc_ok") ? res() : rej());
+        client.publish(outputChan, "");
       });
-      // Put it in the cache
-      this.cache[requestId] = p;
-      // Subscribe to response chan
-      // publish RPC
-      // return promise
-      return p;
     }
+    // Auto-reject if client is not connected yet.
     return Promise.reject();
   }
 }
