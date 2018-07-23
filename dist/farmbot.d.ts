@@ -126,7 +126,6 @@ export declare class Farmbot {
     emit(event: string, data: {}): void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
-        all: string;
         /** From the browser, usually. */
         toDevice: string;
         /** From farmbot */
@@ -143,9 +142,9 @@ export declare class Farmbot {
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
     */
-    send(input: Corpus.RpcRequest): Promise<{}>;
+    send: (input: Corpus.RpcRequest) => Promise<{}>;
     /** Main entry point for all MQTT packets. */
     private _onmessage;
     /** Bootstrap the device onto the MQTT broker. */
-    connect(): Promise<{}>;
+    connect: () => Promise<{}>;
 }

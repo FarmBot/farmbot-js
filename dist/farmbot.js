@@ -15,6 +15,82 @@ var Farmbot = /** @class */ (function () {
             _this.config[key] = value;
         };
         this.on = function (event, callback) { return _this.event(event).push(callback); };
+        /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
+         * receipt of message, but does not check formatting. Consider using higher
+         * level methods like .moveRelative(), .calibrate(), etc....
+        */
+        this.send = function (input) {
+            return new Promise(function (resolve, reject) {
+                _this.publish(input);
+                _this.on(input.args.label, function (response) {
+                    switch (response.kind) {
+                        case "rpc_ok": return resolve(response);
+                        case "rpc_error":
+                            var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
+                            return reject(new Error("Problem sending RPC command: " + reason));
+                        default:
+                            console.dir(response);
+                            throw new Error("Got a bad CeleryScript node.");
+                    }
+                });
+            });
+        };
+        /** Main entry point for all MQTT packets. */
+        this._onmessage = function (chan, buffer) {
+            try {
+                /** UNSAFE CODE: TODO: Add user defined type guards? */
+                var msg = JSON.parse(buffer.toString());
+                switch (chan) {
+                    case _this.channel.logs: return _this.emit("logs", msg);
+                    case _this.channel.status: return _this.emit("status", msg);
+                    case _this.channel.toClient:
+                    case _this.channel.fromAPI:
+                    default:
+                        if (util_2.isCeleryScript(msg)) {
+                            return _this.emit(msg.args.label, msg);
+                        }
+                        if (chan.includes("sync")) {
+                            return _this.emit("sync", msg);
+                        }
+                        console.warn("Unhandled inbound message from " + chan);
+                        _this.emit("malformed", msg);
+                }
+            }
+            catch (error) {
+                console.warn("Could not parse inbound message from MQTT.");
+                _this.emit("malformed", buffer.toString());
+            }
+        };
+        /** Bootstrap the device onto the MQTT broker. */
+        this.connect = function () {
+            var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
+            var client = mqtt_1.connect(mqttServer, {
+                username: mqttUsername,
+                password: token,
+                clean: true,
+                clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
+                reconnectPeriod: RECONNECT_THROTTLE
+            });
+            _this.client = client;
+            _this.resources = new resource_adapter_1.ResourceAdapter(_this, _this.config.mqttUsername);
+            client.on("message", _this._onmessage);
+            client.on("offline", function () { return _this.emit("offline", {}); });
+            client.on("connect", function () { return _this.emit("online", {}); });
+            var channels = [_this.channel.logs,
+                _this.channel.status,
+                _this.channel.toClient,
+                _this.channel.fromAPI];
+            client.subscribe(channels);
+            return new Promise(function (resolve, _reject) {
+                var client = _this.client;
+                if (client) {
+                    client.once("connect", function () { return resolve(_this); });
+                }
+                else {
+                    throw new Error("Please connect first.");
+                }
+            });
+        };
         this._events = {};
         this.config = config_1.generateConfig(input);
         this.resources = new resource_adapter_1.ResourceAdapter(this, this.config.mqttUsername);
@@ -272,7 +348,6 @@ var Farmbot = /** @class */ (function () {
         get: function () {
             var deviceName = this.config.mqttUsername;
             return {
-                all: "bot/" + deviceName + "/#",
                 /** From the browser, usually. */
                 toDevice: "bot/" + deviceName + "/from_clients",
                 /** From farmbot */
@@ -300,80 +375,6 @@ var Farmbot = /** @class */ (function () {
                 throw new Error("Not connected to server");
             }
         }
-    };
-    /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
-     * receipt of message, but does not check formatting. Consider using higher
-     * level methods like .moveRelative(), .calibrate(), etc....
-    */
-    Farmbot.prototype.send = function (input) {
-        var that = this;
-        return new Promise(function (resolve, reject) {
-            that.publish(input);
-            that.on(input.args.label, function (response) {
-                switch (response.kind) {
-                    case "rpc_ok": return resolve(response);
-                    case "rpc_error":
-                        var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
-                        return reject(new Error("Problem sending RPC command: " + reason));
-                    default:
-                        console.dir(response);
-                        throw new Error("Got a bad CeleryScript node.");
-                }
-            });
-        });
-    };
-    /** Main entry point for all MQTT packets. */
-    Farmbot.prototype._onmessage = function (chan, buffer) {
-        try {
-            /** UNSAFE CODE: TODO: Add user defined type guards? */
-            var msg = JSON.parse(buffer.toString());
-            switch (chan) {
-                case this.channel.logs: return this.emit("logs", msg);
-                case this.channel.status: return this.emit("status", msg);
-                case this.channel.toClient:
-                case this.channel.fromAPI:
-                default:
-                    if (util_2.isCeleryScript(msg)) {
-                        return this.emit(msg.args.label, msg);
-                    }
-                    if (chan.includes("sync")) {
-                        return this.emit("sync", msg);
-                    }
-                    console.warn("Unhandled inbound message from " + chan);
-                    this.emit("malformed", msg);
-            }
-        }
-        catch (error) {
-            console.warn("Could not parse inbound message from MQTT.");
-            this.emit("malformed", buffer.toString());
-        }
-    };
-    /** Bootstrap the device onto the MQTT broker. */
-    Farmbot.prototype.connect = function () {
-        var _this = this;
-        var that = this;
-        var _a = that.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
-        that.client = mqtt_1.connect(mqttServer, {
-            username: mqttUsername,
-            password: token,
-            clean: true,
-            clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
-            reconnectPeriod: RECONNECT_THROTTLE
-        });
-        this.resources = new resource_adapter_1.ResourceAdapter(that, this.config.mqttUsername);
-        that.client.subscribe(that.channel.all);
-        that.client.on("message", that._onmessage.bind(that));
-        that.client.on("offline", function () { return _this.emit("offline", {}); });
-        that.client.on("connect", function () { return _this.emit("online", {}); });
-        return new Promise(function (resolve, _reject) {
-            var client = that.client;
-            if (client) {
-                client.once("connect", function () { return resolve(that); });
-            }
-            else {
-                throw new Error("Please connect first.");
-            }
-        });
     };
     Farmbot.VERSION = "6.3.0-rc1";
     return Farmbot;
