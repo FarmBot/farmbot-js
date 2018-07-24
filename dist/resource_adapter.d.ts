@@ -1,21 +1,5 @@
 import { Farmbot, RpcError, RpcOk } from ".";
-export declare enum ResourceName {
-    FarmEvent = "FarmEvent",
-    FarmwareInstallations = "FarmwareInstallation",
-    Image = "Image",
-    Log = "Log",
-    Peripheral = "Peripheral",
-    PinBinding = "PinBinding",
-    PlantTemplate = "PlantTemplate",
-    Point = "Point",
-    Regimen = "Regimen",
-    SavedGarden = "SavedGarden",
-    Sensor = "Sensor",
-    SensorReading = "SensorReading",
-    Sequence = "Sequence",
-    Tool = "Tool",
-    WebcamFeed = "WebcamFeed"
-}
+export declare type ResourceName = "FarmEvent" | "FarmwareInstallation" | "Image" | "Log" | "Peripheral" | "PinBinding" | "PlantTemplate" | "Point" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "WebcamFeed";
 export interface BatchDestroyRequest {
     name: ResourceName;
     id: number;

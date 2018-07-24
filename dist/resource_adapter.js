@@ -1,24 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = require(".");
-var ResourceName;
-(function (ResourceName) {
-    ResourceName["FarmEvent"] = "FarmEvent";
-    ResourceName["FarmwareInstallations"] = "FarmwareInstallation";
-    ResourceName["Image"] = "Image";
-    ResourceName["Log"] = "Log";
-    ResourceName["Peripheral"] = "Peripheral";
-    ResourceName["PinBinding"] = "PinBinding";
-    ResourceName["PlantTemplate"] = "PlantTemplate";
-    ResourceName["Point"] = "Point";
-    ResourceName["Regimen"] = "Regimen";
-    ResourceName["SavedGarden"] = "SavedGarden";
-    ResourceName["Sensor"] = "Sensor";
-    ResourceName["SensorReading"] = "SensorReading";
-    ResourceName["Sequence"] = "Sequence";
-    ResourceName["Tool"] = "Tool";
-    ResourceName["WebcamFeed"] = "WebcamFeed";
-})(ResourceName = exports.ResourceName || (exports.ResourceName = {}));
 var ResourceAdapter = /** @class */ (function () {
     function ResourceAdapter(parent, username) {
         var _this = this;
