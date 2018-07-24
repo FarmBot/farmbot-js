@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- 8.11.3
+cache:
+  yarn: true
+env:
+  global:
+    - FOO=BAR
+# before_install:
+# - "foo bar --baz"
+install:
+  - yarn install
+# before_script:
+# - "foo bar --baz"
+script:
+- npm run typecheck
+- npm run test

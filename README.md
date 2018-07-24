@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/RickCarlino/farmbot-js.svg?branch=master)](https://travis-ci.org/RickCarlino/farmbot-js)
+
 # FarmbotJS: Farmbot RPC wrapper
 
 ## Browser Support
