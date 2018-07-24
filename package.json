@@ -4,12 +4,18 @@
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh",
+    "typecheck": "node_modules/typescript/bin/tsc --noEmit",
+    "coverage": "cat **/*lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test": "node_modules/jest/bin/jest.js"
   },
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^23.3.0",
     "@types/node": "^8.0.46",
+    "coveralls": "^3.0.2",
+    "jest": "^23.4.1",
+    "ts-jest": "^23.0.1",
     "typescript": "^2.9.2"
   },
   "main": "./dist/index.js",
@@ -29,16 +35,16 @@
     "typescript"
   ],
   "jest": {
+    "setupFiles": [],
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testRegex": "(src/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js"
     ],
-    "mapCoverage": true,
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}"

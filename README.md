@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/RickCarlino/farmbot-js.svg?branch=master)](https://travis-ci.org/RickCarlino/farmbot-js)
+[![Coverage Status](https://coveralls.io/repos/github/FarmBot/farmbot-js/badge.svg?branch=master)](https://coveralls.io/github/FarmBot/farmbot-js?branch=master)
+
 # FarmbotJS: Farmbot RPC wrapper
 
 ## Browser Support

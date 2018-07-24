@@ -1,22 +1,21 @@
 import { uuid, Farmbot, RpcError, RpcOk } from ".";
 
-export enum ResourceName {
-  FarmEvent = "FarmEvent",
-  FarmwareInstallations = "FarmwareInstallation",
-  Image = "Image",
-  Log = "Log",
-  Peripheral = "Peripheral",
-  PinBinding = "PinBinding",
-  PlantTemplate = "PlantTemplate",
-  Point = "Point",
-  Regimen = "Regimen",
-  SavedGarden = "SavedGarden",
-  Sensor = "Sensor",
-  SensorReading = "SensorReading",
-  Sequence = "Sequence",
-  Tool = "Tool",
-  WebcamFeed = "WebcamFeed",
-}
+export type ResourceName =
+  | "FarmEvent"
+  | "FarmwareInstallation"
+  | "Image"
+  | "Log"
+  | "Peripheral"
+  | "PinBinding"
+  | "PlantTemplate"
+  | "Point"
+  | "Regimen"
+  | "SavedGarden"
+  | "Sensor"
+  | "SensorReading"
+  | "Sequence"
+  | "Tool"
+  | "WebcamFeed";
 
 export interface BatchDestroyRequest {
   name: ResourceName;
