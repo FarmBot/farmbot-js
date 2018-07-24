@@ -4,6 +4,7 @@
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh",
+    "typecheck": "node_modules/typescript/bin/tsc --noEmit",
     "test": "node_modules/jest/bin/jest.js"
   },
   "author": "FarmBot.io, Rick Carlino",
