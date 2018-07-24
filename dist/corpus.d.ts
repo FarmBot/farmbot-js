@@ -34,7 +34,7 @@ export interface Coordinate {
 export interface MoveAbsolute {
     kind: "move_absolute";
     args: {
-        location: Tool | Coordinate | Point | Identifier;
+        location: Coordinate | Identifier | Point | Tool;
         speed: number;
         offset: Coordinate;
     };
@@ -55,7 +55,7 @@ export interface MoveRelative {
 export interface WritePin {
     kind: "write_pin";
     args: {
-        pin_number: number | NamedPin;
+        pin_number: NamedPin | number;
         pin_value: number;
         pin_mode: number;
     };
@@ -65,7 +65,7 @@ export interface WritePin {
 export interface ReadPin {
     kind: "read_pin";
     args: {
-        pin_number: number | NamedPin;
+        pin_number: NamedPin | number;
         label: string;
         pin_mode: number;
     };
@@ -110,7 +110,7 @@ export declare type IfBodyItem = Pair;
 export interface If {
     kind: "_if";
     args: {
-        lhs: string | NamedPin;
+        lhs: NamedPin | string;
         op: string;
         rhs: number;
         _then: Execute | Nothing;
@@ -202,7 +202,7 @@ export interface Reboot {
 export interface TogglePin {
     kind: "toggle_pin";
     args: {
-        pin_number: number | NamedPin;
+        pin_number: NamedPin | number;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -253,7 +253,7 @@ export interface Pair {
     kind: "pair";
     args: {
         label: string;
-        value: string | number | Boolean;
+        value: Boolean | number | string;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -261,7 +261,7 @@ export interface Pair {
 export interface RegisterGpio {
     kind: "register_gpio";
     args: {
-        pin_number: number | NamedPin;
+        pin_number: NamedPin | number;
         sequence_id: number;
     };
     comment?: string | undefined;
@@ -270,7 +270,7 @@ export interface RegisterGpio {
 export interface UnregisterGpio {
     kind: "unregister_gpio";
     args: {
-        pin_number: number | NamedPin;
+        pin_number: NamedPin | number;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -366,7 +366,7 @@ export interface VariableDeclaration {
     kind: "variable_declaration";
     args: {
         label: string;
-        data_value: Tool | Coordinate | Point | Identifier;
+        data_value: Coordinate | Identifier | Point | Tool;
     };
     comment?: string | undefined;
     body?: undefined;
@@ -383,7 +383,7 @@ export interface ParameterDeclaration {
 export interface SetServoAngle {
     kind: "set_servo_angle";
     args: {
-        pin_number: number | NamedPin;
+        pin_number: NamedPin | number;
         pin_value: number;
     };
     comment?: string | undefined;
@@ -425,5 +425,5 @@ export declare type LegalKindString = "_if" | "calibrate" | "change_ownership" |
 export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "find_home" | "move_absolute" | "move_relative" | "read_pin" | "send_message" | "take_photo" | "wait" | "write_pin";
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type PointType = "GenericPointer" | "ToolSlot" | "Plant";
-export declare type AllowedPinTypes = "Peripheral" | "Sensor";
+export declare type AllowedPinTypes = "Peripheral" | "Sensor" | "BoxLed3" | "BoxLed4";
 export declare type PlantStage = "planned" | "planted" | "harvested";
