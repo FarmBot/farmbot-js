@@ -27,5 +27,6 @@ export declare class ResourceAdapter {
     constructor(parent: Farmbot, username: string);
     private outboundChanFor;
     destroy: (req: BatchDestroyRequest) => Promise<Response>;
+    destroyAll: (req: BatchDestroyRequest[]) => Promise<Response[]>;
 }
 export {};

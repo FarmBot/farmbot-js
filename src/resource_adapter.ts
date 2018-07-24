@@ -75,4 +75,7 @@ export class ResourceAdapter {
     };
     return Promise.reject(internalError);
   }
+
+  destroyAll =
+    (req: BatchDestroyRequest[]) => Promise.all(req.map(r => this.destroy(r)));
 }

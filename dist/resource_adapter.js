@@ -67,6 +67,7 @@ var ResourceAdapter = /** @class */ (function () {
             };
             return Promise.reject(internalError);
         };
+        this.destroyAll = function (req) { return Promise.all(req.map(function (r) { return _this.destroy(r); })); };
     }
     return ResourceAdapter;
 }());
