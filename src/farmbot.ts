@@ -39,7 +39,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.3.0-rc1";
+  static VERSION = "6.3.0-rc2";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -401,14 +401,18 @@ export class Farmbot {
         case this.channel.toClient:
         case this.channel.fromAPI:
         default:
-          if (isCeleryScript(msg)) {
-            return this.emit(msg.args.label, msg);
-          }
-
+          // Did it come from the auto_sync channel? Process it as such.
           if (chan.includes("sync")) {
             return this.emit("sync", msg);
           }
 
+          // Is it valid CS? Probably a batch resource or RPC operation.
+          if (isCeleryScript(msg)) {
+            return this.emit(msg.args.label, msg);
+          }
+
+          // Still nothing? Emit "malformed", but don't crash incase we're
+          // getting outdated messages from a legacy bot.
           console.warn(`Unhandled inbound message from ${chan}`);
           this.emit("malformed", msg);
       }

@@ -46,12 +46,16 @@ var Farmbot = /** @class */ (function () {
                     case _this.channel.toClient:
                     case _this.channel.fromAPI:
                     default:
-                        if (util_2.isCeleryScript(msg)) {
-                            return _this.emit(msg.args.label, msg);
-                        }
+                        // Did it come from the auto_sync channel? Process it as such.
                         if (chan.includes("sync")) {
                             return _this.emit("sync", msg);
                         }
+                        // Is it valid CS? Probably a batch resource or RPC operation.
+                        if (util_2.isCeleryScript(msg)) {
+                            return _this.emit(msg.args.label, msg);
+                        }
+                        // Still nothing? Emit "malformed", but don't crash incase we're
+                        // getting outdated messages from a legacy bot.
                         console.warn("Unhandled inbound message from " + chan);
                         _this.emit("malformed", msg);
                 }
@@ -376,7 +380,7 @@ var Farmbot = /** @class */ (function () {
             }
         }
     };
-    Farmbot.VERSION = "6.3.0-rc1";
+    Farmbot.VERSION = "6.3.0-rc2";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
