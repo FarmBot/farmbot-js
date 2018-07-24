@@ -28,6 +28,7 @@ var ResourceAdapter = /** @class */ (function () {
             "bot",
             _this.username,
             "resources_v0",
+            "destroy",
             "" + req.name,
             "" + req.id,
             "" + uuid_,
