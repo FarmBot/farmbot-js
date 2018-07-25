@@ -39,7 +39,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.3.0-rc2";
+  static VERSION = "6.3.0-rc3";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -437,10 +437,13 @@ export class Farmbot {
     client.on("message", this._onmessage);
     client.on("offline", () => this.emit("offline", {}));
     client.on("connect", () => this.emit("online", {}));
-    const channels = [this.channel.logs,
-    this.channel.status,
-    this.channel.toClient,
-    this.channel.fromAPI];
+    const channels = [
+      this.channel.fromAPI,
+      this.channel.logs,
+      this.channel.status,
+      this.channel.sync,
+      this.channel.toClient,
+    ];
     client.subscribe(channels);
     return new Promise((resolve, _reject) => {
       const { client } = this;

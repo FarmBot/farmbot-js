@@ -80,10 +80,13 @@ var Farmbot = /** @class */ (function () {
             client.on("message", _this._onmessage);
             client.on("offline", function () { return _this.emit("offline", {}); });
             client.on("connect", function () { return _this.emit("online", {}); });
-            var channels = [_this.channel.logs,
+            var channels = [
+                _this.channel.fromAPI,
+                _this.channel.logs,
                 _this.channel.status,
+                _this.channel.sync,
                 _this.channel.toClient,
-                _this.channel.fromAPI];
+            ];
             client.subscribe(channels);
             return new Promise(function (resolve, _reject) {
                 var client = _this.client;
@@ -380,7 +383,7 @@ var Farmbot = /** @class */ (function () {
             }
         }
     };
-    Farmbot.VERSION = "6.3.0-rc2";
+    Farmbot.VERSION = "6.3.0-rc3";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
