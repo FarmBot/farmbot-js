@@ -195,7 +195,9 @@ export interface PowerOff {
 }
 export interface Reboot {
     kind: "reboot";
-    args: {};
+    args: {
+        package: string;
+    };
     comment?: string | undefined;
     body?: undefined;
 }

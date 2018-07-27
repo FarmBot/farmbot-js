@@ -39,7 +39,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.3.0-rc3";
+  static VERSION = "6.4.0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -94,7 +94,9 @@ export class Farmbot {
 
   /** Cycle device power. */
   reboot() {
-    return this.send(rpcRequest([{ kind: "reboot", args: {} }]));
+    const r =
+      rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
+    return this.send(r);
   }
 
   /** Check for new versions of FarmBot OS. */
@@ -312,6 +314,12 @@ export class Farmbot {
       kind: "dump_info",
       args: {}
     }]));
+  }
+
+  reinitFirmware() {
+    const r =
+      rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
+    return this.send(r);
   }
 
   /** Retrieves all of the event handlers for a particular event.
