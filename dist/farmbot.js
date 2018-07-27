@@ -138,7 +138,8 @@ var Farmbot = /** @class */ (function () {
     };
     /** Cycle device power. */
     Farmbot.prototype.reboot = function () {
-        return this.send(util_1.rpcRequest([{ kind: "reboot", args: {} }]));
+        var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
+        return this.send(r);
     };
     /** Check for new versions of FarmBot OS. */
     Farmbot.prototype.checkUpdates = function () {
@@ -329,6 +330,10 @@ var Farmbot = /** @class */ (function () {
                 args: {}
             }]));
     };
+    Farmbot.prototype.reinitFirmware = function () {
+        var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
+        return this.send(r);
+    };
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
@@ -383,7 +388,7 @@ var Farmbot = /** @class */ (function () {
             }
         }
     };
-    Farmbot.VERSION = "6.3.0-rc3";
+    Farmbot.VERSION = "6.4.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
