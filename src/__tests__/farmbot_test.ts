@@ -154,12 +154,8 @@ describe("FarmBot", () => {
       const [x, y, z] = [1, 2, 3];
       bot.moveRelative({ x, y, z });
       expectRPC({
-        kind: "move_absolute",
-        args: {
-          location: coordinate(x, y, z),
-          offset: coordinate(0, 0, 0),
-          speed: CONFIG_DEFAULTS.speed
-        }
+        kind: "move_relative",
+        args: { x, y, z, speed: CONFIG_DEFAULTS.speed }
       });
     });
   });
