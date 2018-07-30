@@ -97,6 +97,12 @@ describe("FarmBot", () => {
       expectRPC({ kind: "install_farmware", args: { url } });
     });
 
+    it("updates Farmware", () => {
+      const pkg = "a package";
+      bot.updateFarmware(pkg);
+      expectRPC({ kind: "update_farmware", args: { package: pkg } });
+    });
+
 
   });
 });
