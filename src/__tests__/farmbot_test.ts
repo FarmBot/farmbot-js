@@ -149,5 +149,18 @@ describe("FarmBot", () => {
         }
       });
     });
+
+    it("Moves to a relative coord", () => {
+      const [x, y, z] = [1, 2, 3];
+      bot.moveRelative({ x, y, z });
+      expectRPC({
+        kind: "move_absolute",
+        args: {
+          location: coordinate(x, y, z),
+          offset: coordinate(0, 0, 0),
+          speed: CONFIG_DEFAULTS.speed
+        }
+      });
+    });
   });
 });
