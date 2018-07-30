@@ -1,4 +1,5 @@
 import { Farmbot } from ".";
+import { FarmbotLike } from "./resources/interfaces";
 
 export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
   "G1pbkBhZG1pbi5jb20iLCJpYXQiOjE1MDIxMjcxMTcsImp0aSI6IjlhZjY2NzJmLTY5NmEtNDh" +
@@ -15,3 +16,6 @@ export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
 
 export const fakeFarmbot =
   (token = FAKE_TOKEN) => new Farmbot({ token, speed: 100, secure: false });
+
+export const fakeFarmbotLike =
+  (): FarmbotLike => ({ on: jest.fn(), client: { publish: jest.fn() } });

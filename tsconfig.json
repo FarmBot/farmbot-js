@@ -13,11 +13,12 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
   },
   "exclude": [
     "node_modules",
-    "typings"
+    "typings",
+    "dist"
   ],
   "compileOnSave": false,
   "buildOnSave": false

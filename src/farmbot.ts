@@ -20,14 +20,14 @@ import {
 import {
   ReadPin,
   WritePin
-} from "./index";
+} from ".";
 import {
   FarmBotInternalConfig as Conf,
   FarmbotConstructorParams,
   generateConfig,
   CONFIG_DEFAULTS
 } from "./config";
-import { ResourceAdapter } from "./resource_adapter";
+import { ResourceAdapter } from "./resources/resource_adapter";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 
@@ -422,7 +422,7 @@ export class Farmbot {
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
     const { mqttUsername, token, mqttServer } = this.config;
-    const client = connect(<string>mqttServer, {
+    const client = connect(mqttServer, {
       username: mqttUsername,
       password: token,
       clean: true,
