@@ -4,10 +4,11 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest } from "..";
+import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
 import { FAKE_TOKEN } from "../../dist/test_support";
 import { fakeFarmbot } from "../test_support";
 import { Pair, Home } from "../corpus";
+import { CONFIG_DEFAULTS } from "../../dist/config";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
@@ -128,6 +129,25 @@ describe("FarmBot", () => {
       const args: Home["args"] = { speed: 100, axis: "all" };
       bot.home(args as any);
       expectRPC({ kind: "home", args });
+    });
+
+    it("finds home position", () => {
+      const args: Home["args"] = { speed: 100, axis: "all" };
+      bot.findHome(args as any);
+      expectRPC({ kind: "find_home", args });
+    });
+
+    it("Moves to an absolute coord", () => {
+      const [x, y, z] = [1, 2, 3];
+      bot.moveAbsolute({ x, y, z });
+      expectRPC({
+        kind: "move_absolute",
+        args: {
+          location: coordinate(x, y, z),
+          offset: coordinate(0, 0, 0),
+          speed: CONFIG_DEFAULTS.speed
+        }
+      });
     });
   });
 });
