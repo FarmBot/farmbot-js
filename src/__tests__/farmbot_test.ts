@@ -7,7 +7,7 @@ jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
 import { FAKE_TOKEN } from "../../dist/test_support";
 import { fakeFarmbot } from "../test_support";
-import { Pair, Home } from "../corpus";
+import { Pair, Home, WritePin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../../dist/config";
 
 describe("FarmBot", () => {
@@ -157,6 +157,13 @@ describe("FarmBot", () => {
         kind: "move_relative",
         args: { x, y, z, speed: CONFIG_DEFAULTS.speed }
       });
+    });
+
+    it("writes a pin", () => {
+      const args: WritePin["args"] =
+        { pin_mode: 1, pin_value: 128, pin_number: 8 };
+      bot.writePin(args);
+      expectRPC({ kind: "write_pin", args });
     });
   });
 });
