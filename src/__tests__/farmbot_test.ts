@@ -7,7 +7,7 @@ jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 import { RpcRequestBodyItem, rpcRequest } from "..";
 import { FAKE_TOKEN } from "../../dist/test_support";
 import { fakeFarmbot } from "../test_support";
-import { Pair } from "../corpus";
+import { Pair, Home } from "../corpus";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
@@ -117,12 +117,17 @@ describe("FarmBot", () => {
     });
 
     it("executes a script", () => {
-      const label = "any UUID is fine here.";
-      const envVars: Pair[] = [
-        { kind: "pair", args: { label: "is_pair", value: true } }
-      ];
+      const label = "minesweeper.exe";
+      const envVars: Pair[] =
+        [{ kind: "pair", args: { label: "is_pair", value: true } }];
       bot.execScript(label, envVars);
       expectRPC({ kind: "execute_script", args: { label }, body: envVars });
+    });
+
+    it("moves to home position", () => {
+      const args: Home["args"] = { speed: 100, axis: "all" };
+      bot.home(args as any);
+      expectRPC({ kind: "home", args });
     });
   });
 });
