@@ -4,10 +4,10 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
+import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams, NULL } from "..";
 import { FAKE_TOKEN } from "../../dist/test_support";
 import { fakeFarmbot } from "../test_support";
-import { Pair, Home, WritePin } from "../corpus";
+import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../../dist/config";
 
 describe("FarmBot", () => {
@@ -164,6 +164,74 @@ describe("FarmBot", () => {
         { pin_mode: 1, pin_value: 128, pin_number: 8 };
       bot.writePin(args);
       expectRPC({ kind: "write_pin", args });
+    });
+
+    it("reads a pin", () => {
+      const args: ReadPin["args"] = { pin_mode: 1, pin_number: 8, label: "X" };
+      bot.readPin(args);
+      expectRPC({ kind: "read_pin", args });
+    });
+
+    it("toggles a pin", () => {
+      const pin_number = 13;
+      const args = { pin_number }
+      bot.togglePin(args);
+      expectRPC({ kind: "toggle_pin", args });
+    });
+
+    it("reads the bot's status", () => {
+      const args = {};
+      bot.readStatus(args);
+      expectRPC({ kind: "read_status", args });
+    });
+
+    it("takes a photo", () => {
+      const args = {};
+      bot.takePhoto(args);
+      expectRPC({ kind: "take_photo", args });
+    });
+
+    it("syncs", () => {
+      const args = {};
+      bot.sync(args);
+      expectRPC({ kind: "sync", args });
+    });
+
+    it("sets zero", () => {
+      const axis = "x";
+      bot.setZero(axis);
+      expectRPC({
+        kind: "zero",
+        args: { axis }
+      });
+    });
+
+    it("Updates MCU settings", () => {
+      const label: keyof McuParams = "encoder_use_for_pos_x";
+      const value = 1;
+      const args = { [label]: value };
+      bot.updateMcu(args);
+      expectRPC({
+        kind: "config_update",
+        args: { package: "arduino_firmware" },
+        body: [{ kind: "pair", args: { value, label } }]
+      });
+    });
+
+    it("sets ENV vars", () => {
+      const xmp = {
+        foo: undefined,
+        bar: "bz"
+      }
+      bot.setUserEnv(xmp);
+      expectRPC({
+        kind: "set_user_env",
+        args: {},
+        body: [
+          { kind: "pair", args: { label: "foo", value: NULL } },
+          { kind: "pair", args: { label: "bar", value: "bz" } },
+        ]
+      })
     });
   });
 });

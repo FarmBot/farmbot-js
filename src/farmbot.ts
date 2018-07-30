@@ -200,15 +200,12 @@ export class Farmbot {
   }
 
   /** Snap a photo and send to the API for post processing. */
-  takePhoto = (args = {}) => {
-    return this.send(rpcRequest([{ kind: "take_photo", args }]));
-  }
+  takePhoto =
+    (args = {}) => this.send(rpcRequest([{ kind: "take_photo", args }]));
 
-  /** Download all of the latest JSON resources (plants, account info...)
-   * from the FarmBot API. */
-  sync = (args = {}) => {
-    return this.send(rpcRequest([{ kind: "sync", args }]));
-  }
+  /** Force device to download all of the latest JSON resources (plants,
+   * account info, etc.) from the FarmBot API. */
+  sync = (args = {}) => this.send(rpcRequest([{ kind: "sync", args }]));
 
   /** Set the position of the given axis to 0 at the current position of said
    * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
