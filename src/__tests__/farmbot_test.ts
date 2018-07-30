@@ -61,6 +61,7 @@ describe("FarmBot", () => {
       ]
     ];
     expectations.map(([rpc, xpectArgs]) => {
+      fakeSender.mockClear();
       rpc(false);
       expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
     })
