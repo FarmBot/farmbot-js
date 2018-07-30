@@ -17,11 +17,33 @@ describe("FarmBot", () => {
     expect(bot.getConfig("secure")).toEqual(false);
   });
 
-  it("uses the bot object to send simple RPCs", () => {
+  it("uses the bot object to *BROADCAST* simple RPCs", () => {
     const bot = fakeFarmbot();
     const fakeSender = jest.fn();
-    bot.send = fakeSender;
     bot.publish = fakeSender;
+
+    const expectations: [Function, RpcRequestBodyItem][] = [
+      [
+        bot.resetOS,
+        { kind: "factory_reset", args: { package: "farmbot_os" } }
+      ],
+      [
+        bot.resetMCU,
+        { kind: "factory_reset", args: { package: "arduino_firmware" } }
+      ]
+    ];
+    expectations.map(([rpc, xpectArgs]) => {
+      fakeSender.mockClear();
+      rpc(false);
+      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
+    })
+  });
+
+  it("uses the bot object to *SEND* simple RPCs", () => {
+    const bot = fakeFarmbot();
+    const fakeSender = jest.fn();
+    bot.publish = fakeSender;
+
     const expectations: [Function, RpcRequestBodyItem][] = [
       [
         bot.installFirstPartyFarmware,
@@ -30,14 +52,6 @@ describe("FarmBot", () => {
       [
         bot.checkUpdates,
         { kind: "check_updates", args: { package: "farmbot_os" } }
-      ],
-      [
-        bot.resetOS,
-        { kind: "factory_reset", args: { package: "farmbot_os" } }
-      ],
-      [
-        bot.resetMCU,
-        { kind: "factory_reset", args: { package: "arduino_firmware" } }
       ],
       [
         bot.powerOff,
@@ -65,5 +79,24 @@ describe("FarmBot", () => {
       rpc(false);
       expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
     })
-  })
+  });
+
+  describe("configurable RPC logic", () => {
+    const bot = fakeFarmbot();
+    const fakeSender = jest.fn();
+    bot.publish = fakeSender;
+
+    beforeEach(() => fakeSender.mockClear());
+    function expectRPC(item: RpcRequestBodyItem) {
+      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([item]));
+    }
+
+    it("installs Farmware", () => {
+      const url = "foo.bar/manifest.json";
+      bot.installFarmware(url);
+      expectRPC({ kind: "install_farmware", args: { url } });
+    });
+
+
+  });
 });
