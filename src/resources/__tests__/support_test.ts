@@ -1,4 +1,4 @@
-import { resolveOrReject, internalError } from "../support";
+import { resolveOrReject } from "../support";
 import { RpcError, RpcOk } from "../../corpus";
 import { rejectRpc } from "../reject_rpc";
 

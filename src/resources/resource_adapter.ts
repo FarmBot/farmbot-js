@@ -10,6 +10,7 @@ import {
   resolveOrReject
 } from "./support";
 import { rejectRpc } from "./reject_rpc";
+import { TaggedResource } from "./tagged_resource";
 
 export class ResourceAdapter {
   constructor(public parent: FarmbotLike, public username: string) { }
@@ -17,6 +18,10 @@ export class ResourceAdapter {
   destroy = (req: BatchDestroyRequest) => {
     const { client } = this.parent;
     return (client ? this.doDestroy(client, req) : rejectRpc());
+  };
+
+  update = (_: TaggedResource) => {
+    throw new Error("Hmmm");
   };
 
   destroyAll =
