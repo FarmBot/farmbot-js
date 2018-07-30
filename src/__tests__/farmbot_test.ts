@@ -103,6 +103,11 @@ describe("FarmBot", () => {
       expectRPC({ kind: "update_farmware", args: { package: pkg } });
     });
 
+    it("removes Farmware", () => {
+      const pkg = "a package";
+      bot.removeFarmware(pkg);
+      expectRPC({ kind: "remove_farmware", args: { package: pkg } });
+    });
 
   });
 });
