@@ -1,4 +1,4 @@
-import { BatchDestroyRequest } from "./interfaces";
+import { BatchDestroyRequest, RpcResponse } from "./interfaces";
 import { RpcError } from "..";
 
 export const outboundChanFor =
@@ -23,3 +23,7 @@ export const internalError: RpcError = {
     }
   ]
 };
+
+export const resolveOrReject = (res: Function, rej: Function) => {
+  return (m: RpcResponse) => (m.kind == "rpc_ok" ? res : rej)(m);
+}

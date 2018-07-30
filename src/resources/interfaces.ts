@@ -31,4 +31,4 @@ export type ResourceName =
 
 export interface BatchDestroyRequest { name: ResourceName; id: number; }
 
-export type Response = RpcOk | RpcError;
+export type RpcResponse = RpcOk | RpcError;

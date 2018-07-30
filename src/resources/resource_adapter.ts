@@ -3,31 +3,31 @@ import {
   BatchDestroyRequest,
   FarmbotLike,
   MqttLike,
-  Response
+  RpcResponse
 } from "./interfaces";
-import { outboundChanFor, internalError } from "./support";
+import {
+  outboundChanFor,
+  resolveOrReject
+} from "./support";
+import { rejectRpc } from "./reject_rpc";
 
 export class ResourceAdapter {
   constructor(public parent: FarmbotLike, public username: string) { }
 
   destroy = (req: BatchDestroyRequest) => {
     const { client } = this.parent;
-    return (client ? this.doDestroy(client, req) : this.dontDestroy());
+    return (client ? this.doDestroy(client, req) : rejectRpc());
   };
 
   destroyAll =
     (req: BatchDestroyRequest[]) => Promise.all(req.map(r => this.destroy(r)));
 
   private doDestroy =
-    (client: MqttLike, req: BatchDestroyRequest): Promise<Response> => {
+    (client: MqttLike, req: BatchDestroyRequest): Promise<RpcResponse> => {
       return new Promise((res, rej) => {
         const requestId = uuid();
-        this
-          .parent
-          .on(requestId, (m: Response) => (m.kind == "rpc_ok" ? res : rej)(m));
+        this.parent.on(requestId, resolveOrReject(res, rej));
         client.publish(outboundChanFor(this.username, req, requestId), "");
       });
     }
-
-  private dontDestroy = () => Promise.reject(internalError);
 }
