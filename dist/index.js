@@ -7,3 +7,4 @@ __export(require("./corpus"));
 __export(require("./farmbot"));
 __export(require("./interfaces"));
 __export(require("./util"));
+__export(require("./resources/tagged_resource"));

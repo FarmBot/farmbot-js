@@ -39,7 +39,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.4.1-rc1";
+  static VERSION = "6.4.1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -108,7 +108,7 @@ export class Farmbot {
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
   resetOS = () => {
-    this.publish(rpcRequest([
+    return this.publish(rpcRequest([
       { kind: "factory_reset", args: { package: "farmbot_os" } }
     ]));
   }

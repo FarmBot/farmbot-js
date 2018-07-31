@@ -56,7 +56,7 @@ var Farmbot = /** @class */ (function () {
         };
         /** THIS WILL RESET THE SD CARD! Be careful!! */
         this.resetOS = function () {
-            _this.publish(util_1.rpcRequest([
+            return _this.publish(util_1.rpcRequest([
                 { kind: "factory_reset", args: { package: "farmbot_os" } }
             ]));
         };
@@ -388,7 +388,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "6.4.1-rc1";
+    Farmbot.VERSION = "6.4.1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
