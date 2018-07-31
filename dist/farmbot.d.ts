@@ -1,6 +1,7 @@
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
-import { Dictionary } from "./interfaces";
+import { Dictionary, McuParams, Configuration } from "./interfaces";
+import { ReadPin, WritePin } from ".";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
 export declare const NULL = "null";
@@ -45,7 +46,9 @@ export declare class Farmbot {
     /** Execute a sequence by its ID on the API. */
     execSequence: (sequence_id: number) => Promise<{}>;
     /** Run a preloaded Farmware / script on the SD Card. */
-    execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<{}>;
+    execScript(/** Filename of the script */ label: string,
+        /** Optional ENV vars to pass the script */
+        envVars?: Corpus.Pair[] | undefined): Promise<{}>;
     /** Bring a particular axis (or all of them) to position 0. */
     home: (args: {
         speed: number;
