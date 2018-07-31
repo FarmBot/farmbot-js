@@ -16,6 +16,7 @@
     ],
   },
   "exclude": [
+    "*__tests__*",
     "node_modules",
     "typings",
     "dist"
