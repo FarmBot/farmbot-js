@@ -118,6 +118,7 @@ export declare class Farmbot {
     }): Promise<{}>;
     /** Tell the bot to send diagnostic info to the API.*/
     dumpInfo(): Promise<{}>;
+    reinitFirmware(): Promise<{}>;
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
