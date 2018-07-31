@@ -28,9 +28,16 @@ npm install farmbot
 <script>
 ```
 
+## Running the Test Suite (Advanced)
+
+
+```
+npm run test
+```
+
 ## Other Package Managers
 
-Please raise an issue if you require support with other package managers such as Bower.
+Please raise an issue if you require support with other package managers.
 
 ## Login with an API Token
 

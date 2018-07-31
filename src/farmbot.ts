@@ -20,14 +20,14 @@ import {
 import {
   ReadPin,
   WritePin
-} from "./index";
+} from ".";
 import {
   FarmBotInternalConfig as Conf,
   FarmbotConstructorParams,
   generateConfig,
   CONFIG_DEFAULTS
 } from "./config";
-import { ResourceAdapter } from "./resource_adapter";
+import { ResourceAdapter } from "./resources/resource_adapter";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 
@@ -55,14 +55,14 @@ export class Farmbot {
 
   /** Installs a "Farmware" (plugin) onto the bot's SD card.
    * URL must point to a valid Farmware manifest JSON document. */
-  installFarmware(url: string) {
+  installFarmware = (url: string) => {
     return this.send(rpcRequest([{ kind: "install_farmware", args: { url } }]));
   }
 
   /** Checks for updates on a particular Farmware plugin when given the name of
    * a farmware. `updateFarmware("take-photo")`
    */
-  updateFarmware(pkg: string) {
+  updateFarmware = (pkg: string) => {
     return this.send(rpcRequest([{
       kind: "update_farmware",
       args: { package: pkg }
@@ -70,7 +70,7 @@ export class Farmbot {
   }
 
   /** Uninstall a Farmware plugin. */
-  removeFarmware(pkg: string) {
+  removeFarmware = (pkg: string) => {
     return this.send(rpcRequest([{
       kind: "remove_farmware",
       args: { package: pkg }
@@ -80,7 +80,7 @@ export class Farmbot {
   /** Installs "Farmwares" (plugins) authored by FarmBot.io
  * onto the bot's SD card.
  */
-  installFirstPartyFarmware() {
+  installFirstPartyFarmware = () => {
     return this.send(rpcRequest([{
       kind: "install_first_party_farmware",
       args: {}
@@ -88,7 +88,7 @@ export class Farmbot {
   }
 
   /** Deactivate FarmBot OS completely. */
-  powerOff() {
+  powerOff = () => {
     return this.send(rpcRequest([{ kind: "power_off", args: {} }]));
   }
 
@@ -100,66 +100,66 @@ export class Farmbot {
   }
 
   /** Check for new versions of FarmBot OS. */
-  checkUpdates() {
+  checkUpdates = () => {
     return this.send(rpcRequest([
       { kind: "check_updates", args: { package: "farmbot_os" } }
     ]));
   }
 
   /** THIS WILL RESET THE SD CARD! Be careful!! */
-  resetOS() {
+  resetOS = () => {
     this.publish(rpcRequest([
       { kind: "factory_reset", args: { package: "farmbot_os" } }
     ]));
   }
 
-  resetMCU() {
-    return this.send(rpcRequest([
+  resetMCU = () => {
+    return this.publish(rpcRequest([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }
 
   /** Lock the bot from moving. This also will pause running regimens and cause
    *  any running sequences to exit */
-  emergencyLock() {
+  emergencyLock = () => {
     return this.send(rpcRequest([{ kind: "emergency_lock", args: {} }]));
   }
 
   /** Unlock the bot when the user says it is safe. Currently experiencing
    * issues. Consider reboot() instead. */
-  emergencyUnlock() {
+  emergencyUnlock = () => {
     return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
   }
 
   /** Execute a sequence by its ID on the API. */
-  execSequence(sequence_id: number) {
+  execSequence = (sequence_id: number) => {
     return this.send(rpcRequest([{ kind: "execute", args: { sequence_id } }]));
   }
 
   /** Run a preloaded Farmware / script on the SD Card. */
-  execScript(/** Filename of the script */label: string,
+  execScript = (/** Filename of the script */label: string,
     /** Optional ENV vars to pass the script */
-    envVars?: Corpus.Pair[] | undefined) {
+    envVars?: Corpus.Pair[] | undefined) => {
     return this.send(rpcRequest([
       { kind: "execute_script", args: { label }, body: envVars }
     ]));
   }
 
   /** Bring a particular axis (or all of them) to position 0. */
-  home(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
+  home = (args: { speed: number, axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(rpcRequest([{ kind: "home", args }]));
   }
 
   /** Use end stops or encoders to figure out where 0,0,0 is.
    *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
-  findHome(args: { speed: number, axis: Corpus.ALLOWED_AXIS }) {
+  findHome = (args: { speed: number, axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(rpcRequest([{ kind: "find_home", args }]));
   }
 
   /** Move gantry to an absolute point. */
-  moveAbsolute(args: { x: number, y: number, z: number, speed?: number }) {
-    let { x, y, z, speed } = args;
-    speed = speed || CONFIG_DEFAULTS.speed;
+  moveAbsolute = (args: { x: number, y: number, z: number, speed?: number }) => {
+    const { x, y, z } = args;
+    const speed = args.speed || CONFIG_DEFAULTS.speed;
     return this.send(rpcRequest([
       {
         kind: "move_absolute",
@@ -173,49 +173,46 @@ export class Farmbot {
   }
 
   /** Move gantry to position relative to its current position. */
-  moveRelative(args: { x: number, y: number, z: number, speed?: number }) {
-    let { x, y, z, speed } = args;
-    speed = speed || CONFIG_DEFAULTS.speed;
+  moveRelative = (args: { x: number, y: number, z: number, speed?: number }) => {
+    const { x, y, z } = args;
+    const speed = args.speed || CONFIG_DEFAULTS.speed;
     return this.send(rpcRequest([{ kind: "move_relative", args: { x, y, z, speed } }]));
   }
 
   /** Set a GPIO pin to a particular value. */
-  writePin(args: WritePin["args"]) {
+  writePin = (args: WritePin["args"]) => {
     return this.send(rpcRequest([{ kind: "write_pin", args }]));
   }
 
   /** Set a GPIO pin to a particular value. */
-  readPin(args: ReadPin["args"]) {
+  readPin = (args: ReadPin["args"]) => {
     return this.send(rpcRequest([{ kind: "read_pin", args }]));
   }
 
   /** Reverse the value of a digital pin. */
-  togglePin(args: { pin_number: number; }) {
+  togglePin = (args: { pin_number: number; }) => {
     return this.send(rpcRequest([{ kind: "toggle_pin", args }]));
   }
 
   /** Read the status of the bot. Should not be needed unless you are first
    * logging in to the device, since the device pushes new states out on
    * every update. */
-  readStatus(args = {}) {
+  readStatus = (args = {}) => {
     return this.send(rpcRequest([{ kind: "read_status", args }]));
   }
 
   /** Snap a photo and send to the API for post processing. */
-  takePhoto(args = {}) {
-    return this.send(rpcRequest([{ kind: "take_photo", args }]));
-  }
+  takePhoto =
+    (args = {}) => this.send(rpcRequest([{ kind: "take_photo", args }]));
 
-  /** Download all of the latest JSON resources (plants, account info...)
-   * from the FarmBot API. */
-  sync(args = {}) {
-    return this.send(rpcRequest([{ kind: "sync", args }]));
-  }
+  /** Force device to download all of the latest JSON resources (plants,
+   * account info, etc.) from the FarmBot API. */
+  sync = (args = {}) => this.send(rpcRequest([{ kind: "sync", args }]));
 
   /** Set the position of the given axis to 0 at the current position of said
    * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
    * 255 to 0. */
-  setZero(axis: Corpus.ALLOWED_AXIS) {
+  setZero = (axis: Corpus.ALLOWED_AXIS) => {
     return this.send(rpcRequest([{
       kind: "zero",
       args: { axis }
@@ -223,12 +220,12 @@ export class Farmbot {
   }
 
   /** Update the Arduino settings */
-  updateMcu(update: Partial<McuParams>) {
-    let body: Corpus.RpcRequestBodyItem[] = [];
+  updateMcu = (update: Partial<McuParams>) => {
+    const body: Corpus.RpcRequestBodyItem[] = [];
     Object
       .keys(update)
       .forEach(function (label) {
-        let value = pick<Primitive>(update, label, "ERROR");
+        const value = pick<Primitive>(update, label, "ERROR");
         body.push({
           kind: "config_update",
           args: { package: "arduino_firmware" },
@@ -240,8 +237,8 @@ export class Farmbot {
 
   /** Set user ENV vars (usually used by 3rd party Farmware scripts).
    * Set value to `undefined` to unset. */
-  setUserEnv(configs: Dictionary<(string | undefined)>) {
-    let body = Object
+  setUserEnv = (configs: Dictionary<(string | undefined)>) => {
+    const body = Object
       .keys(configs)
       .map(function (label): Corpus.Pair {
         return {
@@ -252,7 +249,7 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
   }
 
-  registerGpio(input: { pin_number: number, sequence_id: number }) {
+  registerGpio = (input: { pin_number: number, sequence_id: number }) => {
     const { sequence_id, pin_number } = input;
     const rpc = rpcRequest([{
       kind: "register_gpio",
@@ -261,7 +258,7 @@ export class Farmbot {
     return this.send(rpc);
   }
 
-  unregisterGpio(input: { pin_number: number }) {
+  unregisterGpio = (input: { pin_number: number }) => {
     const { pin_number } = input;
     const rpc = rpcRequest([{
       kind: "unregister_gpio",
@@ -271,7 +268,7 @@ export class Farmbot {
   }
 
 
-  setServoAngle(args: { pin_number: number; pin_value: number; }) {
+  setServoAngle = (args: { pin_number: number; pin_value: number; }) => {
     const result = this.send(rpcRequest([{ kind: "set_servo_angle", args }]));
 
     // Celery script can't validate `pin_number` and `pin_value` the way we need
@@ -289,11 +286,11 @@ export class Farmbot {
   }
 
   /** Update a config option for FarmBot OS. */
-  updateConfig(update: Partial<Configuration>) {
-    let body = Object
+  updateConfig = (update: Partial<Configuration>) => {
+    const body = Object
       .keys(update)
       .map((label): Corpus.Pair => {
-        let value = pick<Primitive>(update, label, "ERROR");
+        const value = pick<Primitive>(update, label, "ERROR");
         return { kind: "pair", args: { value, label } };
       });
 
@@ -304,12 +301,12 @@ export class Farmbot {
     }]));
   }
 
-  calibrate(args: { axis: Corpus.ALLOWED_AXIS }) {
+  calibrate = (args: { axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
 
   /** Tell the bot to send diagnostic info to the API.*/
-  dumpInfo() {
+  dumpInfo = () => {
     return this.send(rpcRequest([{
       kind: "dump_info",
       args: {}
@@ -325,14 +322,14 @@ export class Farmbot {
   /** Retrieves all of the event handlers for a particular event.
    * Returns an empty array if the event did not exist.
     */
-  event(name: string) {
+  event = (name: string) => {
     this._events[name] = this._events[name] || [];
     return this._events[name];
   }
 
   on = (event: string, callback: Function) => this.event(event).push(callback);
 
-  emit(event: string, data: {}) {
+  emit = (event: string, data: {}) => {
     [this.event(event), this.event("*")]
       .forEach(function (handlers) {
         handlers.forEach(function (handler: Function) {
@@ -348,7 +345,7 @@ export class Farmbot {
 
   /** Dictionary of all relevant MQTT channels the bot uses. */
   get channel() {
-    let deviceName = this.config.mqttUsername;
+    const deviceName = this.config.mqttUsername;
     return {
       /** From the browser, usually. */
       toDevice: `bot/${deviceName}/from_clients`,
@@ -363,7 +360,7 @@ export class Farmbot {
 
   /** Low level means of sending MQTT packets. Does not check format. Does not
    * acknowledge confirmation. Probably not the one you want. */
-  publish(msg: Corpus.RpcRequest, important = true): void {
+  publish = (msg: Corpus.RpcRequest, important = true): void => {
     if (this.client) {
       this.emit("sent", msg);
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
@@ -388,7 +385,7 @@ export class Farmbot {
         switch (response.kind) {
           case "rpc_ok": return resolve(response);
           case "rpc_error":
-            let reason = (response.body || []).map(x => x.args.message).join(", ");
+            const reason = (response.body || []).map(x => x.args.message).join(", ");
             return reject(new Error("Problem sending RPC command: " + reason));
           default:
             console.dir(response);
@@ -432,8 +429,8 @@ export class Farmbot {
 
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
-    let { mqttUsername, token, mqttServer } = this.config;
-    const client = connect(<string>mqttServer, {
+    const { mqttUsername, token, mqttServer } = this.config;
+    const client = connect(mqttServer, {
       username: mqttUsername,
       password: token,
       clean: true,

@@ -1,4 +1,7 @@
-export let FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
+import { Farmbot } from ".";
+import { FarmbotLike } from "./resources/interfaces";
+
+export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
   "G1pbkBhZG1pbi5jb20iLCJpYXQiOjE1MDIxMjcxMTcsImp0aSI6IjlhZjY2NzJmLTY5NmEtNDh" +
   "lMy04ODVkLWJiZjEyZDlhYThjMiIsImlzcyI6Ii8vbG9jYWxob3N0OjMwMDAiLCJleHAiOjE1M" +
   "DU1ODMxMTcsIm1xdHQiOiJsb2NhbGhvc3QiLCJvc191cGRhdGVfc2VydmVyIjoiaHR0cHM6Ly9" +
@@ -10,3 +13,9 @@ export let FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
   "GxanoWVTTgGx2i_MZLr8FPZ8prnRdwC1x9zZ6xY7BtMPtHW0ddvMtXU8ZVF4CWJwKSaM0Q2pTx" +
   "I9GRqrp5Y8UjaKufif7bBPOUbkEHLNOiaux4MQr-OWAC8TrYMyFHzteXTEVkqw7rved84ogw6E" +
   "KBSFCVqwRA-NKWLpPMV_q7fRwiEGWj7R-KZqRweALXuvCLF765E6-ENxA";
+
+export const fakeFarmbot =
+  (token = FAKE_TOKEN) => new Farmbot({ token, speed: 100, secure: false });
+
+export const fakeFarmbotLike =
+  (): FarmbotLike => ({ on: jest.fn(), client: { publish: jest.fn() } });

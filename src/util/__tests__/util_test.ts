@@ -1,4 +1,4 @@
-import { uuid } from "../util";
+import { uuid } from "../../util";
 
 describe("Utility functionality", () => {
   it("generates a UUID", () => {
