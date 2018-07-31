@@ -61,7 +61,7 @@ var Farmbot = /** @class */ (function () {
             ]));
         };
         this.resetMCU = function () {
-            return _this.publish(util_1.rpcRequest([
+            return _this.send(util_1.rpcRequest([
                 { kind: "factory_reset", args: { package: "arduino_firmware" } }
             ]));
         };

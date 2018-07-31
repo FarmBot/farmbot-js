@@ -114,7 +114,7 @@ export class Farmbot {
   }
 
   resetMCU = () => {
-    return this.publish(rpcRequest([
+    return this.send(rpcRequest([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }
