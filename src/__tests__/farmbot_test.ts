@@ -5,10 +5,9 @@
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
 import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams, NULL } from "..";
-import { FAKE_TOKEN } from "../../dist/test_support";
-import { fakeFarmbot } from "../test_support";
+import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
-import { CONFIG_DEFAULTS } from "../../dist/config";
+import { CONFIG_DEFAULTS } from "../config";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
@@ -61,7 +60,7 @@ describe("FarmBot", () => {
       ],
       [
         bot.reboot,
-        { kind: "reboot", args: {} }
+        { kind: "reboot", args: { package: "farmbot_os" } }
       ],
       [
         bot.emergencyLock,

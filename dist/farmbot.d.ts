@@ -1,9 +1,8 @@
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
-import { Dictionary, McuParams, Configuration } from "./interfaces";
-import { ReadPin, WritePin } from ".";
+import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
-import { ResourceAdapter } from "./resource_adapter";
+import { ResourceAdapter } from "./resources/resource_adapter";
 export declare const NULL = "null";
 export declare class Farmbot {
     /** Storage area for all event handlers */
@@ -17,114 +16,122 @@ export declare class Farmbot {
     setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U, value: Conf[U]) => void;
     /** Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document. */
-    installFarmware(url: string): Promise<{}>;
+    installFarmware: (url: string) => Promise<{}>;
     /** Checks for updates on a particular Farmware plugin when given the name of
      * a farmware. `updateFarmware("take-photo")`
      */
-    updateFarmware(pkg: string): Promise<{}>;
+    updateFarmware: (pkg: string) => Promise<{}>;
     /** Uninstall a Farmware plugin. */
-    removeFarmware(pkg: string): Promise<{}>;
+    removeFarmware: (pkg: string) => Promise<{}>;
     /** Installs "Farmwares" (plugins) authored by FarmBot.io
    * onto the bot's SD card.
    */
-    installFirstPartyFarmware(): Promise<{}>;
+    installFirstPartyFarmware: () => Promise<{}>;
     /** Deactivate FarmBot OS completely. */
-    powerOff(): Promise<{}>;
+    powerOff: () => Promise<{}>;
     /** Cycle device power. */
     reboot(): Promise<{}>;
     /** Check for new versions of FarmBot OS. */
-    checkUpdates(): Promise<{}>;
+    checkUpdates: () => Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
-    resetOS(): void;
-    resetMCU(): Promise<{}>;
+    resetOS: () => void;
+    resetMCU: () => void;
     /** Lock the bot from moving. This also will pause running regimens and cause
      *  any running sequences to exit */
-    emergencyLock(): Promise<{}>;
+    emergencyLock: () => Promise<{}>;
     /** Unlock the bot when the user says it is safe. Currently experiencing
      * issues. Consider reboot() instead. */
-    emergencyUnlock(): Promise<{}>;
+    emergencyUnlock: () => Promise<{}>;
     /** Execute a sequence by its ID on the API. */
-    execSequence(sequence_id: number): Promise<{}>;
+    execSequence: (sequence_id: number) => Promise<{}>;
     /** Run a preloaded Farmware / script on the SD Card. */
-    execScript(/** Filename of the script */ label: string,
-        /** Optional ENV vars to pass the script */
-        envVars?: Corpus.Pair[] | undefined): Promise<{}>;
+    execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<{}>;
     /** Bring a particular axis (or all of them) to position 0. */
-    home(args: {
+    home: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
-    }): Promise<{}>;
+    }) => Promise<{}>;
     /** Use end stops or encoders to figure out where 0,0,0 is.
      *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
-    findHome(args: {
+    findHome: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
-    }): Promise<{}>;
+    }) => Promise<{}>;
     /** Move gantry to an absolute point. */
-    moveAbsolute(args: {
+    moveAbsolute: (args: {
         x: number;
         y: number;
         z: number;
-        speed?: number;
-    }): Promise<{}>;
+        speed?: number | undefined;
+    }) => Promise<{}>;
     /** Move gantry to position relative to its current position. */
-    moveRelative(args: {
+    moveRelative: (args: {
         x: number;
         y: number;
         z: number;
-        speed?: number;
-    }): Promise<{}>;
+        speed?: number | undefined;
+    }) => Promise<{}>;
     /** Set a GPIO pin to a particular value. */
-    writePin(args: WritePin["args"]): Promise<{}>;
+    writePin: (args: {
+        pin_number: number | Corpus.NamedPin;
+        pin_value: number;
+        pin_mode: number;
+    }) => Promise<{}>;
     /** Set a GPIO pin to a particular value. */
-    readPin(args: ReadPin["args"]): Promise<{}>;
+    readPin: (args: {
+        pin_number: number | Corpus.NamedPin;
+        label: string;
+        pin_mode: number; /** Checks for updates on a particular Farmware plugin when given the name of
+         * a farmware. `updateFarmware("take-photo")`
+         */
+    }) => Promise<{}>;
     /** Reverse the value of a digital pin. */
-    togglePin(args: {
+    togglePin: (args: {
         pin_number: number;
-    }): Promise<{}>;
+    }) => Promise<{}>;
     /** Read the status of the bot. Should not be needed unless you are first
      * logging in to the device, since the device pushes new states out on
      * every update. */
-    readStatus(args?: {}): Promise<{}>;
+    readStatus: (args?: {}) => Promise<{}>;
     /** Snap a photo and send to the API for post processing. */
-    takePhoto(args?: {}): Promise<{}>;
-    /** Download all of the latest JSON resources (plants, account info...)
-     * from the FarmBot API. */
-    sync(args?: {}): Promise<{}>;
+    takePhoto: (args?: {}) => Promise<{}>;
+    /** Force device to download all of the latest JSON resources (plants,
+     * account info, etc.) from the FarmBot API. */
+    sync: (args?: {}) => Promise<{}>;
     /** Set the position of the given axis to 0 at the current position of said
      * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
      * 255 to 0. */
-    setZero(axis: Corpus.ALLOWED_AXIS): Promise<{}>;
+    setZero: (axis: Corpus.ALLOWED_AXIS) => Promise<{}>;
     /** Update the Arduino settings */
-    updateMcu(update: Partial<McuParams>): Promise<{}>;
+    updateMcu: (update: Partial<Partial<Record<import("./interfaces").McuParamName, number | undefined>>>) => Promise<{}>;
     /** Set user ENV vars (usually used by 3rd party Farmware scripts).
      * Set value to `undefined` to unset. */
-    setUserEnv(configs: Dictionary<(string | undefined)>): Promise<{}>;
-    registerGpio(input: {
+    setUserEnv: (configs: Dictionary<string | undefined>) => Promise<{}>;
+    registerGpio: (input: {
         pin_number: number;
         sequence_id: number;
-    }): Promise<{}>;
-    unregisterGpio(input: {
+    }) => Promise<{}>;
+    unregisterGpio: (input: {
         pin_number: number;
-    }): Promise<{}>;
-    setServoAngle(args: {
+    }) => Promise<{}>;
+    setServoAngle: (args: {
         pin_number: number;
         pin_value: number;
-    }): Promise<{}>;
+    }) => Promise<{}>;
     /** Update a config option for FarmBot OS. */
-    updateConfig(update: Partial<Configuration>): Promise<{}>;
-    calibrate(args: {
+    updateConfig: (update: Partial<Partial<import("./interfaces").FullConfiguration>>) => Promise<{}>;
+    calibrate: (args: {
         axis: Corpus.ALLOWED_AXIS;
-    }): Promise<{}>;
+    }) => Promise<{}>;
     /** Tell the bot to send diagnostic info to the API.*/
-    dumpInfo(): Promise<{}>;
+    dumpInfo: () => Promise<{}>;
     reinitFirmware(): Promise<{}>;
     /** Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
       */
-    event(name: string): Function[];
+    event: (name: string) => Function[];
     on: (event: string, callback: Function) => number;
-    emit(event: string, data: {}): void;
+    emit: (event: string, data: {}) => void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
         /** From the browser, usually. */
@@ -138,7 +145,7 @@ export declare class Farmbot {
     };
     /** Low level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
-    publish(msg: Corpus.RpcRequest, important?: boolean): void;
+    publish: (msg: Corpus.RpcRequest, important?: boolean) => void;
     /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....

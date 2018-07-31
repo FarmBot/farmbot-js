@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = require("../util");
+var util_1 = require("../../util");
 describe("Utility functionality", function () {
     it("generates a UUID", function () {
         var tpl = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
