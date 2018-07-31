@@ -1,6 +1,6 @@
 import { uuid } from "..";
 import {
-  BatchDestroyRequest,
+  DeletionRequest,
   FarmbotLike,
   MqttLike,
   RpcResponse
@@ -15,24 +15,37 @@ import { TaggedResource } from "./tagged_resource";
 export class ResourceAdapter {
   constructor(public parent: FarmbotLike, public username: string) { }
 
-  destroy = (req: BatchDestroyRequest) => {
+  destroy = (r: DeletionRequest) => {
     const { client } = this.parent;
-    return (client ? this.doDestroy(client, req) : rejectRpc());
+    return (client ? this.doDestroy(client, r.kind, r.id) : rejectRpc());
   };
 
-  update = (_: TaggedResource) => {
-    throw new Error("Hmmm");
+  save = (resource: TaggedResource) => {
+    const { client } = this.parent;
+    return (client ? this.doSave(client, resource) : rejectRpc());
   };
 
-  destroyAll =
-    (req: BatchDestroyRequest[]) => Promise.all(req.map(r => this.destroy(r)));
+  destroyAll = (req: DeletionRequest[]) => Promise.all(req.map(r => this.destroy(r)));
 
-  private doDestroy =
-    (client: MqttLike, req: BatchDestroyRequest): Promise<RpcResponse> => {
+  private doDestroy = (client: MqttLike,
+    kind: DeletionRequest["kind"],
+    id: number): Promise<RpcResponse> => {
+
+    return new Promise((res, rej) => {
+      const requestId = uuid();
+      this.parent.on(requestId, resolveOrReject(res, rej));
+      client.publish(outboundChanFor(this.username, "destroy", kind, requestId, id), "");
+    });
+  }
+
+  private doSave =
+    (client: MqttLike, r: TaggedResource): Promise<RpcResponse> => {
       return new Promise((res, rej) => {
-        const requestId = uuid();
-        this.parent.on(requestId, resolveOrReject(res, rej));
-        client.publish(outboundChanFor(this.username, req, requestId), "");
+        const uid = uuid();
+        this.parent.on(uid, resolveOrReject(res, rej));
+        const chan =
+          outboundChanFor(this.username, "save", r.kind, uid, r.body.id);
+        client.publish(chan, JSON.stringify(r.body));
       });
     }
 }

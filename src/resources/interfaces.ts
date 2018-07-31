@@ -1,34 +1,22 @@
 import { Farmbot } from "../farmbot";
 import { Client } from "mqtt";
 import { RpcOk, RpcError } from "..";
-
-export interface MqttLike {
-  publish: Client["publish"];
-}
+import { TaggedResource } from "./tagged_resource";
 
 export interface FarmbotLike {
   on: Farmbot["on"];
   client?: MqttLike;
 }
 
+export interface DeletionRequest {
+  id: number;
+  kind: ResourceName;
+}
 
-export type ResourceName =
-  | "FarmEvent"
-  | "FarmwareInstallation"
-  | "Image"
-  | "Log"
-  | "Peripheral"
-  | "PinBinding"
-  | "PlantTemplate"
-  | "Point"
-  | "Regimen"
-  | "SavedGarden"
-  | "Sensor"
-  | "SensorReading"
-  | "Sequence"
-  | "Tool"
-  | "WebcamFeed";
+export interface MqttLike {
+  publish: Client["publish"];
+}
 
-export interface BatchDestroyRequest { name: ResourceName; id: number; }
+export type ResourceName = TaggedResource["kind"];
 
 export type RpcResponse = RpcOk | RpcError;

@@ -16,21 +16,22 @@ jest.mock("../reject_rpc", () => ({
 
 import { fakeFarmbotLike } from "../../test_support";
 import { ResourceAdapter } from "../resource_adapter";
-import { BatchDestroyRequest } from "../interfaces";
+import { DeletionRequest } from "../interfaces";
 import { outboundChanFor } from "../support";
 import { rejectRpc } from "../reject_rpc";
 
 describe("resourceAdapter", () => {
   const username = "device_87";
+
   it("destroys all", () => {
     const fakeFb = fakeFarmbotLike();
     const ra = new ResourceAdapter(fakeFb, username);
-    const requests: BatchDestroyRequest[] =
-      [{ name: "Point", id: 4 }, { name: "Sequence", id: 4 }];
+    const requests: DeletionRequest[] =
+      [{ kind: "Point", id: 4 }, { kind: "Sequence", id: 4 }];
     ra.destroyAll(requests).then(() => { }, () => { });
     requests.map((req) => {
       const { client } = fakeFb;
-      const expectedArgs = [outboundChanFor(username, req, mockUuid), ""];
+      const expectedArgs = [outboundChanFor(username, "destroy", req.kind, mockUuid, req.id), ""];
       expect(client && client.publish).toHaveBeenCalledWith(...expectedArgs);
     });
   });
@@ -39,7 +40,7 @@ describe("resourceAdapter", () => {
     const fakeFb = fakeFarmbotLike();
     fakeFb.client = undefined;
     const ra = new ResourceAdapter(fakeFb, username);
-    ra.destroy({ name: "Point", id: 4 }).then(() => { }, () => { });
+    ra.destroy({ kind: "Point", id: 4 }).then(() => { }, () => { });
     expect(rejectRpc).toHaveBeenCalled();
   });
 });

@@ -1,16 +1,13 @@
-import { BatchDestroyRequest, RpcResponse } from "./interfaces";
+import { RpcResponse, ResourceName } from "./interfaces";
 import { RpcError } from "..";
 
+type OpType = "destroy" | "save";
+
 export const outboundChanFor =
-  (username: string, req: BatchDestroyRequest, uuid_: string): string => [
-    `bot`,
-    username,
-    `resources_v0`,
-    `destroy`,
-    `${req.name}`,
-    `${req.id}`,
-    `${uuid_}`,
-  ].join("/");
+  (username: string, op: OpType, kind: ResourceName, uuid: string, id = 0): string => {
+    const segments = [`bot`, username, `resources_v0`, op, kind, uuid, id];
+    return segments.join("/");
+  };
 
 // Auto-reject if client is not connected yet.
 export const internalError: RpcError = {
