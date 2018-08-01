@@ -93,7 +93,7 @@ export class Farmbot {
   }
 
   /** Cycle device power. */
-  reboot() {
+  reboot = () => {
     const r =
       rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
     return this.send(r);
