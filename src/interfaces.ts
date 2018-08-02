@@ -250,6 +250,7 @@ export interface InformationalSettings {
   target: string;
   env: string;
   node_name: string;
+  currently_on_beta?: boolean;
 }
 
 export type MQTTEventName = "connect" | "message";
