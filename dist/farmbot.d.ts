@@ -30,7 +30,7 @@ export declare class Farmbot {
     /** Deactivate FarmBot OS completely. */
     powerOff: () => Promise<{}>;
     /** Cycle device power. */
-    reboot(): Promise<{}>;
+    reboot: () => Promise<{}>;
     /** Check for new versions of FarmBot OS. */
     checkUpdates: () => Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
@@ -81,9 +81,7 @@ export declare class Farmbot {
     readPin: (args: {
         pin_number: number | Corpus.NamedPin;
         label: string;
-        pin_mode: number; /** Checks for updates on a particular Farmware plugin when given the name of
-         * a farmware. `updateFarmware("take-photo")`
-         */
+        pin_mode: number;
     }) => Promise<{}>;
     /** Reverse the value of a digital pin. */
     togglePin: (args: {

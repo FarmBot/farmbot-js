@@ -48,6 +48,11 @@ var Farmbot = /** @class */ (function () {
         this.powerOff = function () {
             return _this.send(util_1.rpcRequest([{ kind: "power_off", args: {} }]));
         };
+        /** Cycle device power. */
+        this.reboot = function () {
+            var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
+            return _this.send(r);
+        };
         /** Check for new versions of FarmBot OS. */
         this.checkUpdates = function () {
             return _this.send(util_1.rpcRequest([
@@ -361,11 +366,6 @@ var Farmbot = /** @class */ (function () {
         this.config = config_1.generateConfig(input);
         this.resources = new resource_adapter_1.ResourceAdapter(this, this.config.mqttUsername);
     }
-    /** Cycle device power. */
-    Farmbot.prototype.reboot = function () {
-        var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
-        return this.send(r);
-    };
     Farmbot.prototype.reinitFirmware = function () {
         var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
         return this.send(r);
@@ -388,7 +388,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "6.4.1";
+    Farmbot.VERSION = "6.5.0-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

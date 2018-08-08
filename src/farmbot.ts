@@ -39,7 +39,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.4.1";
+  static VERSION = "6.5.0-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -93,7 +93,7 @@ export class Farmbot {
   }
 
   /** Cycle device power. */
-  reboot() {
+  reboot = () => {
     const r =
       rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
     return this.send(r);

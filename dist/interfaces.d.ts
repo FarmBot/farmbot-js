@@ -126,6 +126,7 @@ export interface InformationalSettings {
     target: string;
     env: string;
     node_name: string;
+    currently_on_beta?: boolean;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {

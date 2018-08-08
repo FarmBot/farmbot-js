@@ -24,7 +24,7 @@ npm install farmbot
 ```
 <script src="./dist/farmbot_single_file.js"></script>
 <script>
-  var farmbot123 = new = new fbjs.Farmbot({ token: "foo.bar.baz" });
+  var farmbot123 = new fbjs.Farmbot({ token: "foo.bar.baz" });
 <script>
 ```
 
