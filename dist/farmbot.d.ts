@@ -81,9 +81,7 @@ export declare class Farmbot {
     readPin: (args: {
         pin_number: number | Corpus.NamedPin;
         label: string;
-        pin_mode: number; /** Checks for updates on a particular Farmware plugin when given the name of
-         * a farmware. `updateFarmware("take-photo")`
-         */
+        pin_mode: number;
     }) => Promise<{}>;
     /** Reverse the value of a digital pin. */
     togglePin: (args: {

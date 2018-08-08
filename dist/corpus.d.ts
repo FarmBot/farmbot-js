@@ -98,13 +98,14 @@ export interface SendMessage {
     comment?: string | undefined;
     body?: SendMessageBodyItem[] | undefined;
 }
+export declare type ExecuteBodyItem = VariableDeclaration;
 export interface Execute {
     kind: "execute";
     args: {
         sequence_id: number;
     };
     comment?: string | undefined;
-    body?: undefined;
+    body?: ExecuteBodyItem[] | undefined;
 }
 export declare type IfBodyItem = Pair;
 export interface If {
