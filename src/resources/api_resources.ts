@@ -219,7 +219,7 @@ export interface Crop {
   slug: string;
 }
 
-export interface DeviceConfig {
+export interface FarmwareEnv {
   id?: number;
   key: string;
   value: string | number | boolean;

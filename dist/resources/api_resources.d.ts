@@ -180,7 +180,7 @@ export interface Crop {
     spread?: number | undefined;
     slug: string;
 }
-export interface DeviceConfig {
+export interface FarmwareEnv {
     id?: number;
     key: string;
     value: string | number | boolean;

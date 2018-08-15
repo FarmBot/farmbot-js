@@ -1,5 +1,5 @@
-import { Crop, DeviceAccountSettings, DeviceConfig, FarmEvent, FarmwareInstallation, FbosConfig, FirmwareConfig, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebAppConfig, WebcamFeed } from "./api_resources";
-export declare type ResourceName = "Crop" | "Device" | "DeviceConfig" | "DiagnosticDump" | "FarmEvent" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WebcamFeed";
+import { Crop, DeviceAccountSettings, FarmwareEnv, FarmEvent, FarmwareInstallation, FbosConfig, FirmwareConfig, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebAppConfig, WebcamFeed } from "./api_resources";
+export declare type ResourceName = "Crop" | "Device" | "FarmwareEnv" | "DiagnosticDump" | "FarmEvent" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WebcamFeed";
 export interface TaggedResourceBase {
     kind: ResourceName;
     /** Unique identifier and index key.
@@ -28,7 +28,7 @@ export interface Resource<T extends ResourceName, U extends object> extends Tagg
 }
 export declare type TaggedResource = TaggedCrop | TaggedDevice | TaggedDiagnosticDump | TaggedFarmEvent | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
 export declare type TaggedCrop = Resource<"Crop", Crop>;
-export declare type TaggedDeviceConfig = Resource<"DeviceConfig", DeviceConfig>;
+export declare type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export declare type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
 export declare type TaggedFirmwareConfig = Resource<"FirmwareConfig", FirmwareConfig>;
 export declare type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
