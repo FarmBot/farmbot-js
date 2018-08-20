@@ -94,6 +94,7 @@ interface BasePoint {
     id?: number | undefined;
     created_at?: string | undefined;
     updated_at?: string | undefined;
+    discarded_at?: string | undefined;
     radius: number;
     x: number;
     y: number;
