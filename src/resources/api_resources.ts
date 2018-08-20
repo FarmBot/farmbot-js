@@ -118,6 +118,7 @@ interface BasePoint {
   id?: number | undefined;
   created_at?: string | undefined;
   updated_at?: string | undefined;
+  discarded_at?: string | undefined;
   radius: number;
   x: number;
   y: number;
@@ -219,7 +220,7 @@ export interface Crop {
   slug: string;
 }
 
-export interface DeviceConfig {
+export interface FarmwareEnv {
   id?: number;
   key: string;
   value: string | number | boolean;

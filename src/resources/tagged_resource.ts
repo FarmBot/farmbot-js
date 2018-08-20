@@ -1,7 +1,7 @@
 import {
   Crop,
   DeviceAccountSettings,
-  DeviceConfig,
+  FarmwareEnv,
   FarmEvent,
   FarmwareInstallation,
   FbosConfig,
@@ -28,7 +28,7 @@ import {
 export type ResourceName =
   | "Crop"
   | "Device"
-  | "DeviceConfig"
+  | "FarmwareEnv"
   | "DiagnosticDump"
   | "FarmEvent"
   | "FarmwareInstallation"
@@ -106,7 +106,7 @@ export type TaggedResource =
   | TaggedWebcamFeed;
 
 export type TaggedCrop = Resource<"Crop", Crop>;
-export type TaggedDeviceConfig = Resource<"DeviceConfig", DeviceConfig>;
+export type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
 export type TaggedFirmwareConfig = Resource<"FirmwareConfig", FirmwareConfig>;
 export type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
