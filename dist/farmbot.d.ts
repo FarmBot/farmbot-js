@@ -74,6 +74,8 @@ export declare class Farmbot {
     /** Set a GPIO pin to a particular value. */
     writePin: (args: {
         pin_number: number | Corpus.NamedPin;
+        /** Installs a "Farmware" (plugin) onto the bot's SD card.
+         * URL must point to a valid Farmware manifest JSON document. */
         pin_value: number;
         pin_mode: number;
     }) => Promise<{}>;
