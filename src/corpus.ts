@@ -167,7 +167,7 @@ export type SequenceBodyItem = If
   | TakePhoto
   | Wait
   | WritePin
-  | ResourceUpdate;
+  | Transaction;
 export interface Sequence {
   kind: "sequence";
   args: {
@@ -797,9 +797,9 @@ export type LegalSequenceKind = "_if"
   | "move_absolute"
   | "move_relative"
   | "read_pin"
-  | "resource_update"
   | "send_message"
   | "take_photo"
+  | "transaction"
   | "wait"
   | "write_pin";
 export type DataChangeType = "add"
