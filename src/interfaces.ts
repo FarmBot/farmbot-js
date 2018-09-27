@@ -228,7 +228,13 @@ export type SyncStatus =
   | "unknown";
 
 export interface InformationalSettings {
-  /** CPU Temperature of the Pi */
+  /** System uptime in seconds */
+  uptime?: number;
+  /** Percentage of disc space */
+  disk_usage?: number;
+  /** Megabytes of RAM */
+  memory_usage?: number;
+  /** CPU Temperature (C) of the Pi */
   soc_temp?: number;
   /** Wifi strength (dbm) */
   wifi_level?: number;

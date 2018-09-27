@@ -31,6 +31,7 @@ export declare class Farmbot {
     powerOff: () => Promise<{}>;
     /** Cycle device power. */
     reboot: () => Promise<{}>;
+    rebootFirmware: () => Promise<{}>;
     /** Check for new versions of FarmBot OS. */
     checkUpdates: () => Promise<{}>;
     /** THIS WILL RESET THE SD CARD! Be careful!! */
