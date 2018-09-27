@@ -53,6 +53,10 @@ var Farmbot = /** @class */ (function () {
             var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
             return _this.send(r);
         };
+        this.rebootFirmware = function () {
+            var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
+            return _this.send(r);
+        };
         /** Check for new versions of FarmBot OS. */
         this.checkUpdates = function () {
             return _this.send(util_1.rpcRequest([
@@ -388,7 +392,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "6.5.0";
+    Farmbot.VERSION = "6.5.1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
