@@ -440,4 +440,4 @@ export declare type LegalSequenceKind = "_if" | "execute" | "execute_script" | "
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type PointType = "GenericPointer" | "ToolSlot" | "Plant";
 export declare type AllowedPinTypes = "Peripheral" | "Sensor" | "BoxLed3" | "BoxLed4";
-export declare type PlantStage = "planned" | "planted" | "harvested";
+export declare type PlantStage = "planned" | "planted" | "harvested" | "sprouted";
