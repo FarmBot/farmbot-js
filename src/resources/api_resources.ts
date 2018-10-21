@@ -26,9 +26,9 @@ export enum ToolPulloutDirection {
 }
 
 export interface ResourceBase {
-  id?: number;
-  created_at?: string;
-  updated_at?: string;
+  id?: number | undefined;
+  created_at?: string | undefined;
+  updated_at?: string | undefined;
 }
 
 export interface FarmEvent extends ResourceBase {
@@ -57,7 +57,10 @@ export interface Image extends ResourceBase {
   };
 }
 
-export interface Log extends ResourceBase {
+export interface Log {
+  id?: number;
+  updated_at?: string;
+  created_at?: number;
   message: string;
   type: ALLOWED_MESSAGE_TYPES;
   x?: number;
