@@ -25,8 +25,13 @@ export enum ToolPulloutDirection {
   NEGATIVE_Y = 4,
 }
 
-export interface FarmEvent {
-  id?: number | undefined;
+export interface ResourceBase {
+  id?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface FarmEvent extends ResourceBase {
   start_time: string;
   end_time?: string | undefined;
   repeat?: number | undefined;
@@ -35,18 +40,14 @@ export interface FarmEvent {
   executable_type: ExecutableType;
 }
 
-export interface FarmwareInstallation {
-  id?: number;
+export interface FarmwareInstallation extends ResourceBase {
   url: string;
 }
 
 
-export interface Image {
-  id: number;
+export interface Image extends ResourceBase {
   device_id: number;
   attachment_processed_at: string | undefined;
-  updated_at: string;
-  created_at: string;
   attachment_url: string;
   meta: {
     x: number | undefined;
@@ -56,8 +57,7 @@ export interface Image {
   };
 }
 
-export interface Log {
-  id?: number | undefined;
+export interface Log extends ResourceBase {
   message: string;
   type: ALLOWED_MESSAGE_TYPES;
   x?: number;
@@ -67,16 +67,14 @@ export interface Log {
   major_version?: number;
   minor_version?: number;
   channels: ALLOWED_CHANNEL_NAMES[];
-  created_at: number;
 }
 
-export interface Peripheral {
-  id?: number;
+export interface Peripheral extends ResourceBase {
   pin: number | undefined;
   label: string;
 }
 
-interface PinBindingBase { id?: number; pin_num: number; }
+interface PinBindingBase extends ResourceBase { pin_num: number; }
 
 export enum PinBindingType { special = "special", standard = "standard" }
 
@@ -103,8 +101,7 @@ export interface SpecialPinBinding extends PinBindingBase {
 
 export type PinBinding = StandardPinBinding | SpecialPinBinding;
 
-export interface PlantTemplate {
-  id?: number;
+export interface PlantTemplate extends ResourceBase {
   saved_garden_id: number;
   radius: number;
   x: number;
@@ -114,10 +111,7 @@ export interface PlantTemplate {
   openfarm_slug: string;
 }
 
-interface BasePoint {
-  id?: number | undefined;
-  created_at?: string | undefined;
-  updated_at?: string | undefined;
+interface BasePoint extends ResourceBase {
   discarded_at?: string | undefined;
   radius: number;
   x: number;
@@ -160,8 +154,7 @@ export interface RegimenItem {
 }
 
 /** A list of "Sequence" scheduled after a starting point (epoch). */
-export interface Regimen {
-  id?: number;
+export interface Regimen extends ResourceBase {
   /** Friendly identifier for humans to easily identify regimens. */
   name: string;
   color: Color;
@@ -169,68 +162,55 @@ export interface Regimen {
   in_use?: boolean;
 }
 
-export interface SavedGarden {
-  id?: number;
+export interface SavedGarden extends ResourceBase {
   name?: string;
 }
 
-export interface Sensor {
-  id?: number;
+export interface Sensor extends ResourceBase {
   pin: number | undefined;
   mode: number;
   label: string;
 }
 
-export interface SensorReading {
-  id?: number | undefined;
+export interface SensorReading extends ResourceBase {
   x: number | undefined;
   y: number | undefined;
   z: number | undefined;
   value: number;
   mode: number;
   pin: number;
-  created_at: string;
 }
 
-export interface Tool {
-  id?: number | undefined;
+export interface Tool extends ResourceBase {
   name?: string;
   status?: string | undefined;
 }
 
-export interface WebcamFeed {
-  id?: number;
+export interface WebcamFeed extends ResourceBase {
   url: string;
   name: string;
-  updated_at?: string;
-  created_at?: string;
 }
 
-export interface SequenceResource extends Sequence {
-  id?: number;
+export interface SequenceResource extends Sequence, ResourceBase {
   color: Color;
   name: string;
   in_use?: boolean;
 }
 
-export interface Crop {
-  id?: undefined;
+export interface Crop extends ResourceBase {
   svg_icon?: string | undefined;
   spread?: number | undefined;
   slug: string;
 }
 
-export interface FarmwareEnv {
-  id?: number;
+export interface FarmwareEnv extends ResourceBase {
   key: string;
   value: string | number | boolean;
 }
 
-export interface FbosConfig {
+export interface FbosConfig extends ResourceBase {
   id: number;
   device_id: number;
-  created_at: string;
-  updated_at: string;
   auto_sync: boolean;
   beta_opt_in: boolean;
   disable_factory_reset: boolean;
@@ -246,10 +226,9 @@ export interface FbosConfig {
   arduino_debug_messages: boolean;
 }
 
-export interface FirmwareConfig {
+export interface FirmwareConfig extends ResourceBase {
   id: number;
   api_migrated: boolean;
-  created_at: string;
   device_id: number;
   encoder_enabled_x: number;
   encoder_enabled_y: number;
@@ -343,7 +322,6 @@ export interface FirmwareConfig {
   pin_guard_5_active_state: number;
   pin_guard_5_pin_nr: number;
   pin_guard_5_time_out: number;
-  updated_at: string;
 };
 
 export interface WebAppConfig {
@@ -351,7 +329,6 @@ export interface WebAppConfig {
   bot_origin_quadrant: number;
   busy_log: number;
   confirm_step_deletion: boolean;
-  created_at: string;
   debug_log: number;
   device_id: number;
   disable_animations: boolean;
@@ -380,7 +357,6 @@ export interface WebAppConfig {
   show_spread: boolean;
   stub_config: boolean;
   success_log: number;
-  updated_at: string;
   warn_log: number;
   xy_swap: boolean;
   x_axis_inverted: boolean;
@@ -389,16 +365,12 @@ export interface WebAppConfig {
   zoom_level: number;
 }
 
-export interface User {
-  id: number;
+export interface User extends ResourceBase {
   name: string;
   email: string;
-  created_at?: string;
-  updated_at?: string;
 }
 
-export interface DeviceAccountSettings {
-  id: number;
+export interface DeviceAccountSettings extends ResourceBase {
   name: string;
   timezone?: string | undefined;
   tz_offset_hrs: number;
