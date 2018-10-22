@@ -24,7 +24,10 @@ export interface FarmEvent extends ResourceBase {
 export interface FarmwareInstallation extends ResourceBase {
     url: string;
 }
-export interface Image extends ResourceBase {
+export interface Image {
+    id?: number | undefined;
+    created_at: string;
+    updated_at: string;
     device_id: number;
     attachment_processed_at: string | undefined;
     attachment_url: string;
@@ -169,7 +172,7 @@ export interface FarmwareEnv extends ResourceBase {
     key: string;
     value: string | number | boolean;
 }
-export interface FbosConfig extends ResourceBase {
+export interface FbosConfig {
     id: number;
     device_id: number;
     auto_sync: boolean;
@@ -186,7 +189,7 @@ export interface FbosConfig extends ResourceBase {
     os_auto_update: boolean;
     arduino_debug_messages: boolean;
 }
-export interface FirmwareConfig extends ResourceBase {
+export interface FirmwareConfig {
     id: number;
     api_migrated: boolean;
     device_id: number;
