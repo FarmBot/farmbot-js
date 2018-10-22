@@ -24,4 +24,3 @@ var PinBindingSpecialAction;
     PinBindingSpecialAction["read_status"] = "read_status";
     PinBindingSpecialAction["take_photo"] = "take_photo";
 })(PinBindingSpecialAction = exports.PinBindingSpecialAction || (exports.PinBindingSpecialAction = {}));
-;

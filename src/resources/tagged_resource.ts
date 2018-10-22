@@ -4,8 +4,6 @@ import {
   FarmwareEnv,
   FarmEvent,
   FarmwareInstallation,
-  FbosConfig,
-  FirmwareConfig,
   GenericPointer,
   Image,
   Log,
@@ -21,9 +19,11 @@ import {
   Tool,
   ToolSlotPointer,
   User,
-  WebAppConfig,
   WebcamFeed,
 } from "./api_resources";
+import { FbosConfig } from "./configs/fbos";
+import { FirmwareConfig } from "./configs/firmware";
+import { WebAppConfig } from "./configs/web_app";
 
 export type ResourceName =
   | "Crop"

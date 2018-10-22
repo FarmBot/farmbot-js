@@ -1,4 +1,7 @@
-import { Crop, DeviceAccountSettings, FarmwareEnv, FarmEvent, FarmwareInstallation, FbosConfig, FirmwareConfig, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebAppConfig, WebcamFeed } from "./api_resources";
+import { Crop, DeviceAccountSettings, FarmwareEnv, FarmEvent, FarmwareInstallation, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebcamFeed } from "./api_resources";
+import { FbosConfig } from "./configs/fbos";
+import { FirmwareConfig } from "./configs/firmware";
+import { WebAppConfig } from "./configs/web_app";
 export declare type ResourceName = "Crop" | "Device" | "FarmwareEnv" | "DiagnosticDump" | "FarmEvent" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WebcamFeed";
 export interface TaggedResourceBase {
     kind: ResourceName;
