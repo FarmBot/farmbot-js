@@ -29,7 +29,7 @@ export interface Resource<T extends ResourceName, U extends object> extends Tagg
     kind: T;
     body: U;
 }
-export declare type TaggedResource = TaggedCrop | TaggedDevice | TaggedDiagnosticDump | TaggedFarmEvent | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
+export declare type TaggedResource = TaggedCrop | TaggedDevice | TaggedDiagnosticDump | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
 export declare type TaggedCrop = Resource<"Crop", Crop>;
 export declare type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export declare type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;

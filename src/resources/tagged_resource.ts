@@ -86,6 +86,7 @@ export type TaggedResource =
   | TaggedDevice
   | TaggedDiagnosticDump
   | TaggedFarmEvent
+  | TaggedFarmwareEnv
   | TaggedFarmwareInstallation
   | TaggedFbosConfig
   | TaggedFirmwareConfig
@@ -104,7 +105,6 @@ export type TaggedResource =
   | TaggedUser
   | TaggedWebAppConfig
   | TaggedWebcamFeed;
-
 export type TaggedCrop = Resource<"Crop", Crop>;
 export type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
