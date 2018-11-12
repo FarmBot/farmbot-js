@@ -16,8 +16,8 @@ export interface FbosConfig {
   api_migrated: boolean;
   os_auto_update: boolean;
   arduino_debug_messages: boolean;
-  firmware_path: string;
-  firmware_debug_log: boolean;
+  firmware_path?: string;
+  firmware_debug_log?: boolean;
 }
 
 export type NumberConfigKey = "id"
