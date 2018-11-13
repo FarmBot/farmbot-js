@@ -165,7 +165,6 @@ export interface Regimen extends ResourceBase {
   name: string;
   color: Color;
   regimen_items: RegimenItem[];
-  in_use?: boolean;
 }
 
 export interface SavedGarden extends ResourceBase {
@@ -200,7 +199,6 @@ export interface WebcamFeed extends ResourceBase {
 export interface SequenceResource extends Sequence, ResourceBase {
   color: Color;
   name: string;
-  in_use?: boolean;
 }
 
 export interface Crop extends ResourceBase {
