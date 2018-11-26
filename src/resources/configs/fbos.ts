@@ -16,6 +16,8 @@ export interface FbosConfig {
   api_migrated: boolean;
   os_auto_update: boolean;
   arduino_debug_messages: boolean;
+  firmware_path?: string;
+  firmware_debug_log?: boolean;
 }
 
 export type NumberConfigKey = "id"
@@ -23,16 +25,18 @@ export type NumberConfigKey = "id"
   | "network_not_found_timer";
 
 export type StringConfigKey =
-  | "firmware_hardware";
+  | "firmware_hardware"
+  | "firmware_path";
 
 export type BooleanConfigKey = "auto_sync"
+  | "api_migrated"
+  | "arduino_debug_messages"
   | "beta_opt_in"
   | "disable_factory_reset"
+  | "firmware_debug_log"
   | "firmware_input_log"
   | "firmware_output_log"
+  | "os_auto_update"
   | "sequence_body_log"
   | "sequence_complete_log"
-  | "sequence_init_log"
-  | "api_migrated"
-  | "os_auto_update"
-  | "arduino_debug_messages";
+  | "sequence_init_log";

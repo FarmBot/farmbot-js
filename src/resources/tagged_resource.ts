@@ -105,6 +105,7 @@ export type TaggedResource =
   | TaggedUser
   | TaggedWebAppConfig
   | TaggedWebcamFeed;
+
 export type TaggedCrop = Resource<"Crop", Crop>;
 export type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
@@ -157,4 +158,3 @@ export type PointerType =
   | TaggedToolSlotPointer
   | TaggedGenericPointer
   | TaggedPlantPointer;
-
