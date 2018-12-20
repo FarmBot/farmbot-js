@@ -1,4 +1,4 @@
-import { ALLOWED_MESSAGE_TYPES, ALLOWED_CHANNEL_NAMES, PlantStage, Color, Sequence } from "..";
+import { ALLOWED_MESSAGE_TYPES, ALLOWED_CHANNEL_NAMES, PlantStage, Color, Sequence, InternalFarmEventBodyItem } from "..";
 export declare type TimeUnit = "never" | "minutely" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
 export declare type ExecutableType = "Sequence" | "Regimen";
 export declare enum ToolPulloutDirection {
@@ -20,6 +20,7 @@ export interface FarmEvent extends ResourceBase {
     time_unit: TimeUnit;
     executable_id: number;
     executable_type: ExecutableType;
+    body?: InternalFarmEventBodyItem[];
 }
 export interface FarmwareInstallation extends ResourceBase {
     url: string;
