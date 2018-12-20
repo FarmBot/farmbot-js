@@ -3,7 +3,8 @@ import {
   ALLOWED_CHANNEL_NAMES,
   PlantStage,
   Color,
-  Sequence
+  Sequence,
+  InternalFarmEventBodyItem
 } from "..";
 
 export type TimeUnit =
@@ -38,6 +39,7 @@ export interface FarmEvent extends ResourceBase {
   time_unit: TimeUnit;
   executable_id: number;
   executable_type: ExecutableType;
+  body?: InternalFarmEventBodyItem[];
 }
 
 export interface FarmwareInstallation extends ResourceBase {
