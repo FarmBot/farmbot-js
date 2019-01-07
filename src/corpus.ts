@@ -44,9 +44,9 @@ export interface MoveAbsolute {
   kind: "move_absolute";
   args: {
     location: Coordinate
+    | EveryPoint
     | Identifier
     | Point
-    | PointGroup
     | Tool;
     speed: number;
     offset: Coordinate;
@@ -485,9 +485,9 @@ export interface VariableDeclaration {
   args: {
     label: string;
     data_value: Coordinate
+    | EveryPoint
     | Identifier
     | Point
-    | PointGroup
     | Tool;
   };
   comment?: string | undefined;
@@ -557,8 +557,8 @@ export interface InternalEntryPoint {
   body?: undefined;
 }
 
-export interface PointGroup {
-  kind: "point_group";
+export interface EveryPoint {
+  kind: "every_point";
   args: {
     group_type: string;
   };
@@ -632,7 +632,7 @@ export type CeleryNode = NamedPin
   | InstallFirstPartyFarmware
   | InternalFarmEvent
   | InternalEntryPoint
-  | PointGroup
+  | EveryPoint
   | ResourceUpdate;
 export const LATEST_VERSION = 20180209;
 export const DIGITAL = 0;
@@ -719,6 +719,7 @@ export type LegalKindString = "_if"
   | "dump_info"
   | "emergency_lock"
   | "emergency_unlock"
+  | "every_point"
   | "execute"
   | "execute_script"
   | "explanation"
@@ -737,7 +738,6 @@ export type LegalKindString = "_if"
   | "pair"
   | "parameter_declaration"
   | "point"
-  | "point_group"
   | "power_off"
   | "read_pin"
   | "read_status"
