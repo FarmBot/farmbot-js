@@ -44,6 +44,7 @@ export interface FarmEvent extends ResourceBase {
 
 export interface FarmwareInstallation extends ResourceBase {
   url: string;
+  package: string;
 }
 
 
