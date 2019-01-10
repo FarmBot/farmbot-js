@@ -6,6 +6,7 @@ import {
   Sequence,
   InternalFarmEventBodyItem
 } from "..";
+import { VariableDeclaration } from "../corpus";
 
 export type TimeUnit =
   | "never"
@@ -168,6 +169,7 @@ export interface Regimen extends ResourceBase {
   name: string;
   color: Color;
   regimen_items: RegimenItem[];
+  body: VariableDeclaration[];
 }
 
 export interface SavedGarden extends ResourceBase {
