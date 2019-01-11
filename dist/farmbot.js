@@ -85,7 +85,10 @@ var Farmbot = /** @class */ (function () {
             return _this.send(util_1.rpcRequest([{ kind: "emergency_unlock", args: {} }]));
         };
         /** Execute a sequence by its ID on the API. */
-        this.execSequence = function (sequence_id, variables) {
+        this.execSequence = function (sequence_id, 
+        /** A dictionary that maps a variable name to
+         * a valid CeleryScript variable. */
+        variables) {
             if (variables === void 0) { variables = {}; }
             var body = Object
                 .keys(variables)

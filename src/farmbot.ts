@@ -139,7 +139,11 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
   }
   /** Execute a sequence by its ID on the API. */
-  execSequence = (sequence_id: number, variables: VariableDictionary = {}) => {
+  execSequence = (
+    sequence_id: number,
+    /** A dictionary that maps a variable name to
+     * a valid CeleryScript variable. */
+    variables: VariableDictionary = {}) => {
     const body: Corpus.ExecuteBodyItem[] = Object
       .keys(variables)
       .map((label): Corpus.ExecuteBodyItem => {
