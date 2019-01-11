@@ -6,7 +6,7 @@ jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
 import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams, NULL } from "..";
 import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
-import { Pair, Home, WritePin, ReadPin, Coordinate } from "../corpus";
+import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
 
 describe("FarmBot", () => {
@@ -38,34 +38,6 @@ describe("FarmBot", () => {
       rpc(false);
       expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
     })
-  });
-
-  fit("uses the bot object to *SEND* simple RPCs", () => {
-    const bot = fakeFarmbot();
-    const fakeSender = jest.fn();
-    bot.send = fakeSender;
-    const parent: Coordinate = {
-      kind: "coordinate",
-      args: { x: 0, y: 0, z: 0 }
-    };
-    bot.execSequence(2, { parent });
-
-    const expected = rpcRequest([{
-      kind: "execute",
-      args: {
-        sequence_id: 2
-      },
-      body: [
-        {
-          kind: "variable_declaration",
-          args: {
-            label: "parent",
-            data_value: parent
-          }
-        }
-      ]
-    }]);
-    expect(fakeSender).toHaveBeenCalledWith(expected)
   });
 
   it("uses the bot object to *SEND* simple RPCs", () => {

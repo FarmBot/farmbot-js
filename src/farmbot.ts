@@ -32,8 +32,6 @@ type Primitive = string | number | boolean;
 export const NULL = "null";
 
 const RECONNECT_THROTTLE = 1000;
-type VariableDictionary =
-  Dictionary<Corpus.VariableDeclaration["args"]["data_value"]>;
 
 export class Farmbot {
   /** Storage area for all event handlers */
@@ -41,7 +39,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.6.3-rc7";
+  static VERSION = "6.6.3-rc8";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -139,22 +137,10 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
   }
   /** Execute a sequence by its ID on the API. */
-  execSequence = (
-    sequence_id: number,
-    /** A dictionary that maps a variable name to
-     * a valid CeleryScript variable. */
-    variables: VariableDictionary = {}) => {
-    const body: Corpus.ExecuteBodyItem[] = Object
-      .keys(variables)
-      .map((label): Corpus.ExecuteBodyItem => {
-        const data_value = variables[label];
-        return {
-          kind: "variable_declaration",
-          args: { label, data_value }
-        };
-      });
-    return this.send(rpcRequest([{ kind: "execute", args: { sequence_id }, body }]));
-  }
+  execSequence =
+    (sequence_id: number, body: Corpus.VariableDeclaration[] = []) => {
+      return this.send(rpcRequest([{ kind: "execute", args: { sequence_id }, body }]));
+    }
 
   /** Run a preloaded Farmware / script on the SD Card. */
   execScript = (/** Filename of the script */label: string,

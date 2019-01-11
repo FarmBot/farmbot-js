@@ -85,20 +85,8 @@ var Farmbot = /** @class */ (function () {
             return _this.send(util_1.rpcRequest([{ kind: "emergency_unlock", args: {} }]));
         };
         /** Execute a sequence by its ID on the API. */
-        this.execSequence = function (sequence_id, 
-        /** A dictionary that maps a variable name to
-         * a valid CeleryScript variable. */
-        variables) {
-            if (variables === void 0) { variables = {}; }
-            var body = Object
-                .keys(variables)
-                .map(function (label) {
-                var data_value = variables[label];
-                return {
-                    kind: "variable_declaration",
-                    args: { label: label, data_value: data_value }
-                };
-            });
+        this.execSequence = function (sequence_id, body) {
+            if (body === void 0) { body = []; }
             return _this.send(util_1.rpcRequest([{ kind: "execute", args: { sequence_id: sequence_id }, body: body }]));
         };
         /** Run a preloaded Farmware / script on the SD Card. */
@@ -405,7 +393,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "6.6.3-rc7";
+    Farmbot.VERSION = "6.6.3-rc8";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

@@ -37,32 +37,6 @@ describe("FarmBot", function () {
             expect(fakeSender).toHaveBeenCalledWith(__1.rpcRequest([xpectArgs]));
         });
     });
-    fit("uses the bot object to *SEND* simple RPCs", function () {
-        var bot = test_support_1.fakeFarmbot();
-        var fakeSender = jest.fn();
-        bot.send = fakeSender;
-        var parent = {
-            kind: "coordinate",
-            args: { x: 0, y: 0, z: 0 }
-        };
-        bot.execSequence(2, { parent: parent });
-        var expected = __1.rpcRequest([{
-                kind: "execute",
-                args: {
-                    sequence_id: 2
-                },
-                body: [
-                    {
-                        kind: "variable_declaration",
-                        args: {
-                            label: "parent",
-                            data_value: parent
-                        }
-                    }
-                ]
-            }]);
-        expect(fakeSender).toHaveBeenCalledWith(expected);
-    });
     it("uses the bot object to *SEND* simple RPCs", function () {
         var bot = test_support_1.fakeFarmbot();
         var fakeSender = jest.fn();
