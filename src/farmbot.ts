@@ -32,6 +32,8 @@ type Primitive = string | number | boolean;
 export const NULL = "null";
 
 const RECONNECT_THROTTLE = 1000;
+type VariableDictionary =
+  Dictionary<Corpus.VariableDeclaration["args"]["data_value"]>;
 
 export class Farmbot {
   /** Storage area for all event handlers */
@@ -39,7 +41,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.6.3-rc6";
+  static VERSION = "6.6.3-rc7";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -136,10 +138,18 @@ export class Farmbot {
   emergencyUnlock = () => {
     return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
   }
-
   /** Execute a sequence by its ID on the API. */
-  execSequence = (sequence_id: number) => {
-    return this.send(rpcRequest([{ kind: "execute", args: { sequence_id } }]));
+  execSequence = (sequence_id: number, variables: VariableDictionary = {}) => {
+    const body: Corpus.ExecuteBodyItem[] = Object
+      .keys(variables)
+      .map((label): Corpus.ExecuteBodyItem => {
+        const data_value = variables[label];
+        return {
+          kind: "variable_declaration",
+          args: { label, data_value }
+        };
+      });
+    return this.send(rpcRequest([{ kind: "execute", args: { sequence_id }, body }]));
   }
 
   /** Run a preloaded Farmware / script on the SD Card. */

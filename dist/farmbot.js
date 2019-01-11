@@ -85,8 +85,18 @@ var Farmbot = /** @class */ (function () {
             return _this.send(util_1.rpcRequest([{ kind: "emergency_unlock", args: {} }]));
         };
         /** Execute a sequence by its ID on the API. */
-        this.execSequence = function (sequence_id) {
-            return _this.send(util_1.rpcRequest([{ kind: "execute", args: { sequence_id: sequence_id } }]));
+        this.execSequence = function (sequence_id, variables) {
+            if (variables === void 0) { variables = {}; }
+            var body = Object
+                .keys(variables)
+                .map(function (label) {
+                var data_value = variables[label];
+                return {
+                    kind: "variable_declaration",
+                    args: { label: label, data_value: data_value }
+                };
+            });
+            return _this.send(util_1.rpcRequest([{ kind: "execute", args: { sequence_id: sequence_id }, body: body }]));
         };
         /** Run a preloaded Farmware / script on the SD Card. */
         this.execScript = function (/** Filename of the script */ label, 
@@ -392,7 +402,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "6.6.3-rc6";
+    Farmbot.VERSION = "6.6.3-rc7";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

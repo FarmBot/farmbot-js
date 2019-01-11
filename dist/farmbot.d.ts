@@ -44,7 +44,7 @@ export declare class Farmbot {
      * issues. Consider reboot() instead. */
     emergencyUnlock: () => Promise<{}>;
     /** Execute a sequence by its ID on the API. */
-    execSequence: (sequence_id: number) => Promise<{}>;
+    execSequence: (sequence_id: number, variables?: Dictionary<Corpus.Tool | Corpus.Coordinate | Corpus.EveryPoint | Corpus.Identifier | Corpus.Point>) => Promise<{}>;
     /** Run a preloaded Farmware / script on the SD Card. */
     execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<{}>;
     /** Bring a particular axis (or all of them) to position 0. */
