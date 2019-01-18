@@ -33,13 +33,21 @@ export const NULL = "null";
 
 const RECONNECT_THROTTLE = 1000;
 
+/*
+ * Clarification for several terms used:
+ *  * Farmware: Plug-ins for FarmBot OS. Also sometimes referred to as `scripts`.
+ *  * Microcontroller: Directly controls and interfaces with motors,
+ *        peripherals, sensors, etc. May be on an Arduino or Farmduino board.
+ *        Mostly referred to as `arduino`, but also `mcu`.
+ */
+
 export class Farmbot {
   /** Storage area for all event handlers */
   private _events: Dictionary<Function[]>;
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.6.2";
+  static VERSION = "7.0.0-rc0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -47,20 +55,25 @@ export class Farmbot {
     this.resources = new ResourceAdapter(this, this.config.mqttUsername);
   }
 
+  /** Get a Farmbot Constructor Parameter. */
   getConfig = <U extends keyof Conf>(key: U): Conf[U] => this.config[key];
 
+  /** Set a Farmbot Constructor Parameter. */
   setConfig = <U extends keyof Conf>(key: U, value: Conf[U]) => {
     this.config[key] = value;
   }
 
-  /** Installs a "Farmware" (plugin) onto the bot's SD card.
-   * URL must point to a valid Farmware manifest JSON document. */
+  /**
+   * Installs a "Farmware" (plugin) onto the bot's SD card.
+   * URL must point to a valid Farmware manifest JSON document.
+   */
   installFarmware = (url: string) => {
     return this.send(rpcRequest([{ kind: "install_farmware", args: { url } }]));
   }
 
-  /** Checks for updates on a particular Farmware plugin when given the name of
-   * a farmware. `updateFarmware("take-photo")`
+  /**
+   * Checks for updates on a particular Farmware plugin when given the name of
+   * a Farmware. `updateFarmware("take-photo")`
    */
   updateFarmware = (pkg: string) => {
     return this.send(rpcRequest([{
@@ -77,9 +90,10 @@ export class Farmbot {
     }]));
   }
 
-  /** Installs "Farmwares" (plugins) authored by FarmBot.io
- * onto the bot's SD card.
- */
+  /**
+   * Installs "Farmware" (plugins) authored by FarmBot, Inc.
+   * onto the bot's SD card.
+   */
   installFirstPartyFarmware = () => {
     return this.send(rpcRequest([{
       kind: "install_first_party_farmware",
@@ -87,82 +101,92 @@ export class Farmbot {
     }]));
   }
 
-  /** Deactivate FarmBot OS completely. */
+  /**
+   * Deactivate FarmBot OS completely (shutdown).
+   * Useful before unplugging the power.
+   */
   powerOff = () => {
     return this.send(rpcRequest([{ kind: "power_off", args: {} }]));
   }
 
-  /** Cycle device power. */
+  /** Restart FarmBot OS. */
   reboot = () => {
     const r =
       rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
     return this.send(r);
   }
 
+  /** Reinitialize the FarmBot microcontroller firmware. */
   rebootFirmware = () => {
     const r =
       rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
     return this.send(r);
   }
 
-  /** Check for new versions of FarmBot OS. */
+  /** Check for new versions of FarmBot OS. Downloads and installs if available. */
   checkUpdates = () => {
     return this.send(rpcRequest([
       { kind: "check_updates", args: { package: "farmbot_os" } }
     ]));
   }
 
-  /** THIS WILL RESET THE SD CARD! Be careful!! */
+  /** THIS WILL RESET THE SD CARD, deleting all non-factory data! Be careful!! */
   resetOS = () => {
     return this.publish(rpcRequest([
       { kind: "factory_reset", args: { package: "farmbot_os" } }
     ]));
   }
 
+  /** WARNING: will reset all firmware (hardware) settings! */
   resetMCU = () => {
     return this.send(rpcRequest([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }
 
-  /** Lock the bot from moving. This also will pause running regimens and cause
-   *  any running sequences to exit */
+  /**
+   * Lock the bot from moving (E-STOP). Turns off peripherals and motors.
+   * This also will pause running regimens and cause any running sequences to exit.
+   */
   emergencyLock = () => {
     return this.send(rpcRequest([{ kind: "emergency_lock", args: {} }]));
   }
 
-  /** Unlock the bot when the user says it is safe. Currently experiencing
-   * issues. Consider reboot() instead. */
+  /** Unlock the bot when the user says it is safe. */
   emergencyUnlock = () => {
     return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
   }
+  /** Execute a sequence by its ID on the FarmBot API. */
+  execSequence =
+    (sequence_id: number, body: Corpus.VariableDeclaration[] = []) => {
+      return this.send(rpcRequest([{ kind: "execute", args: { sequence_id }, body }]));
+    }
 
-  /** Execute a sequence by its ID on the API. */
-  execSequence = (sequence_id: number) => {
-    return this.send(rpcRequest([{ kind: "execute", args: { sequence_id } }]));
-  }
-
-  /** Run a preloaded Farmware / script on the SD Card. */
-  execScript = (/** Filename of the script */label: string,
-    /** Optional ENV vars to pass the script */
+  /** Run an installed Farmware plugin on the SD Card. */
+  execScript = (
+    /** Name of the Farmware. */
+    label: string,
+    /** Optional ENV vars to pass the Farmware. */
     envVars?: Corpus.Pair[] | undefined) => {
     return this.send(rpcRequest([
       { kind: "execute_script", args: { label }, body: envVars }
     ]));
   }
 
-  /** Bring a particular axis (or all of them) to position 0. */
+  /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
   home = (args: { speed: number, axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(rpcRequest([{ kind: "home", args }]));
   }
 
-  /** Use end stops or encoders to figure out where 0,0,0 is.
-   *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
+  /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis order.
+   *  WON'T WORK WITHOUT ENCODERS OR END STOPS!
+   * A blockage or stall during this command will set that position as zero.
+   * Use carefully. */
   findHome = (args: { speed: number, axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(rpcRequest([{ kind: "find_home", args }]));
   }
 
-  /** Move gantry to an absolute point. */
+  /** Move FarmBot to an absolute point. */
   moveAbsolute = (args: { x: number, y: number, z: number, speed?: number }) => {
     const { x, y, z } = args;
     const speed = args.speed || CONFIG_DEFAULTS.speed;
@@ -178,7 +202,7 @@ export class Farmbot {
     ]));
   }
 
-  /** Move gantry to position relative to its current position. */
+  /** Move FarmBot to position relative to its current position. */
   moveRelative = (args: { x: number, y: number, z: number, speed?: number }) => {
     const { x, y, z } = args;
     const speed = args.speed || CONFIG_DEFAULTS.speed;
@@ -190,7 +214,7 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "write_pin", args }]));
   }
 
-  /** Set a GPIO pin to a particular value. */
+  /** Read the value of a GPIO pin. Will create a SensorReading if it's a sensor. */
   readPin = (args: ReadPin["args"]) => {
     return this.send(rpcRequest([{ kind: "read_pin", args }]));
   }
@@ -211,13 +235,15 @@ export class Farmbot {
   takePhoto =
     (args = {}) => this.send(rpcRequest([{ kind: "take_photo", args }]));
 
-  /** Force device to download all of the latest JSON resources (plants,
-   * account info, etc.) from the FarmBot API. */
+  /** Download/apply all of the latest FarmBot API JSON resources (plants,
+   * account info, etc.) to the device. */
   sync = (args = {}) => this.send(rpcRequest([{ kind: "sync", args }]));
 
-  /** Set the position of the given axis to 0 at the current position of said
-   * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
-   * 255 to 0. */
+  /**
+   * Set the current position of the given axis to 0.
+   * Example: Sending `bot.setZero("x")` at x: 255 will translate position
+   * 255 to 0, causing that position to be x: 0.
+   */
   setZero = (axis: Corpus.ALLOWED_AXIS) => {
     return this.send(rpcRequest([{
       kind: "zero",
@@ -225,7 +251,7 @@ export class Farmbot {
     }]));
   }
 
-  /** Update the Arduino settings */
+  /** Update FarmBot microcontroller settings. */
   updateMcu = (update: Partial<McuParams>) => {
     const body: Corpus.RpcRequestBodyItem[] = [];
     Object
@@ -241,8 +267,10 @@ export class Farmbot {
     return this.send(rpcRequest(body));
   }
 
-  /** Set user ENV vars (usually used by 3rd party Farmware scripts).
-   * Set value to `undefined` to unset. */
+  /**
+   * Set user ENV vars (usually used by 3rd-party Farmware plugins).
+   * Set value to `undefined` to unset.
+   */
   setUserEnv = (configs: Dictionary<(string | undefined)>) => {
     const body = Object
       .keys(configs)
@@ -255,25 +283,7 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
   }
 
-  registerGpio = (input: { pin_number: number, sequence_id: number }) => {
-    const { sequence_id, pin_number } = input;
-    const rpc = rpcRequest([{
-      kind: "register_gpio",
-      args: { sequence_id, pin_number }
-    }]);
-    return this.send(rpc);
-  }
-
-  unregisterGpio = (input: { pin_number: number }) => {
-    const { pin_number } = input;
-    const rpc = rpcRequest([{
-      kind: "unregister_gpio",
-      args: { pin_number }
-    }]);
-    return this.send(rpc);
-  }
-
-
+  /** Control servos on pins 4 and 5. */
   setServoAngle = (args: { pin_number: number; pin_value: number; }) => {
     const result = this.send(rpcRequest([{ kind: "set_servo_angle", args }]));
 
@@ -291,7 +301,7 @@ export class Farmbot {
     return result;
   }
 
-  /** Update a config option for FarmBot OS. */
+  /** Update a config option (setting) for FarmBot OS. */
   updateConfig = (update: Partial<Configuration>) => {
     const body = Object
       .keys(update)
@@ -307,6 +317,10 @@ export class Farmbot {
     }]));
   }
 
+  /**
+   * Find the axis extents using encoder, motor, or end-stop feedback.
+   * Will set a new home position and a new axis length for the given axis.
+   */
   calibrate = (args: { axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
@@ -319,15 +333,10 @@ export class Farmbot {
     }]));
   }
 
-  reinitFirmware() {
-    const r =
-      rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
-    return this.send(r);
-  }
-
-  /** Retrieves all of the event handlers for a particular event.
+  /**
+   * Retrieves all of the event handlers for a particular event.
    * Returns an empty array if the event did not exist.
-    */
+   */
   event = (name: string) => {
     this._events[name] = this._events[name] || [];
     return this._events[name];
@@ -364,7 +373,7 @@ export class Farmbot {
     };
   }
 
-  /** Low level means of sending MQTT packets. Does not check format. Does not
+  /** Low-level means of sending MQTT packets. Does not check format. Does not
    * acknowledge confirmation. Probably not the one you want. */
   publish = (msg: Corpus.RpcRequest, important = true): void => {
     if (this.client) {
@@ -378,7 +387,7 @@ export class Farmbot {
     }
   }
 
-  /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
+  /** Low-level means of sending MQTT RPC commands to the bot. Acknowledges
    * receipt of message, but does not check formatting. Consider using higher
    * level methods like .moveRelative(), .calibrate(), etc....
   */
@@ -422,7 +431,7 @@ export class Farmbot {
             return this.emit(msg.args.label, msg);
           }
 
-          // Still nothing? Emit "malformed", but don't crash incase we're
+          // Still nothing? Emit "malformed", but don't crash in case we're
           // getting outdated messages from a legacy bot.
           console.warn(`Unhandled inbound message from ${chan}`);
           this.emit("malformed", msg);

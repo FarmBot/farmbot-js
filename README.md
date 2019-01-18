@@ -11,7 +11,7 @@ Works on any browser that supports:
  * [Websockets](http://caniuse.com/#feat=websockets).
  * JSON (any browser made after 1942).
 
-Independant developers have reported success when using FarmBotJS in a Node environment, but we do not test against Node based setups. Issue reports related to NodeJS are highly appreciated.
+Independent developers have reported success when using FarmBotJS in a Node environment, but we do not test against Node based setups. Issue reports related to NodeJS are highly appreciated.
 
 ## Installation (NPM)
 
@@ -43,9 +43,9 @@ Please raise an issue if you require support with other package managers.
 
 Login using your API token from the [Farmbot Web App](http://my.farmbot.io).
 
-[Click here for instructions on how to generate an API token](https://github.com/FarmBot/farmbot-web-app#generating-an-api-token)
+[Click here for instructions on how to generate an API token.](https://github.com/FarmBot/farmbot-web-app#generating-an-api-token)
 
-Example:
+### Example:
 
 ```javascript
 
@@ -86,7 +86,7 @@ bot
 
 Call RPC commands using the corresponding method on `bot`. All RPC commands return a promise.
 
-Example:
+### Example:
 
 ```javascript
 
@@ -101,9 +101,9 @@ bot
 
 ```
 
-Currently supported commands:
+### Currently supported commands:
 
-[See the annotated type definitions for available methods and properties](https://github.com/FarmBot/farmbot-js/blob/master/dist/farmbot.d.ts#L24)
+[See the annotated type definitions for available methods and properties.](https://github.com/FarmBot/farmbot-js/blob/master/dist/farmbot.d.ts)
 
 ## Using Events
 
@@ -122,7 +122,7 @@ Currently supported commands:
 
 ## Common Events
 
- * `"logs"`: The bot will send logs to this channel, usually from `STDOUT` on the device.
+ * `"logs"`: The bot will send logs to this channel.
  * `"malformed"`: When the bot gets a bad RPC command, it will notify you via this channel.
  * `"offline"`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
  * `"online"`: Client is connected and subscribed to bot.

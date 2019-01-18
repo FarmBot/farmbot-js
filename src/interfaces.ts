@@ -10,26 +10,29 @@ export interface BotStateTree {
   configuration: Configuration;
   /** READ ONLY meta data about the FarmBot device. */
   readonly informational_settings: InformationalSettings;
-  /** Bag of misc. settings that any script author can use. */
+  /** Bag of misc. ENV vars that any Farmware author can use. */
   user_env: Dictionary<(string | undefined)>;
   /** When you're really curious about how a long-running
-   * task (like farmware downloads) is going to take. */
+   * task (like FarmBot OS update downloads) is going to take. */
   jobs: Dictionary<(JobProgress | undefined)>;
   /** List of user accessible processes running on the bot. */
   process_info: { farmwares: Dictionary<FarmwareManifest>; };
   gpio_registry: { [pin: number]: string | undefined } | undefined;
 }
 
+/** Microcontroller board. */
 export type FirmwareHardware =
   | "arduino"
   | "farmduino"
   | "farmduino_k14";
 
+/** FarmBot motor and encoder positions. */
 export type LocationName =
   | "position"
   | "scaled_encoders"
   | "raw_encoders";
 
+/** Job progress status. */
 export type ProgressStatus =
   | "complete"
   | "working"
@@ -39,19 +42,23 @@ export type JobProgress =
   | PercentageProgress
   | BytesProgress;
 
+/** Percent job progress. */
 export interface PercentageProgress {
   status: ProgressStatus;
   unit: "percent";
   percent: number;
 }
 
+/** Bytes job progress. */
 export interface BytesProgress {
   status: ProgressStatus;
   unit: "bytes";
   bytes: number;
 }
 
+/** Some of the data provided by Farmware author in a Farmware manifest JSON file. */
 export interface FarmwareManifestMeta {
+  /** eg: "6" */
   min_os_version_major: string;
   description: string;
   language: string;
@@ -59,28 +66,28 @@ export interface FarmwareManifestMeta {
   author: string;
   zip: string;
 }
-/** Relates to form builder */
+/**
+ * Configs (inputs) requested by a Farmware.
+ * Can be namespaced and supplied to a run Farmware command.
+ * Also used in FarmBot Web App Farmware page form builder.
+ */
 export type FarmwareConfig = Record<"name" | "label" | "value", string>;
 
-/** The Farmware manifest is a JSON file published by farmware authors.
+/** The Farmware manifest is a JSON file published by Farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades. */
 export interface FarmwareManifest {
   farmware_tools_version?: string;
-  /** The thing that will run the farmware eg: `python`. */
+  /** The thing that will run the Farmware eg: `python`. */
   executable: string;
   uuid: string;
   /** Command line args passed to `executable`. */
   args: string[];
   name: string;
+  /** Farmware manifest URL. */
   url: string;
   path: string;
   meta: FarmwareManifestMeta;
   config: FarmwareConfig[];
-}
-
-export interface ProcessInfo {
-  name: string;
-  uuid: string;
 }
 
 export enum Encoder {
@@ -89,6 +96,7 @@ export enum Encoder {
   differential
 }
 
+/** Microcontroller firmware hardware setting names. */
 export type McuParamName =
   | "encoder_enabled_x"
   | "encoder_enabled_y"
@@ -180,20 +188,24 @@ export type McuParamName =
   | "pin_guard_5_pin_nr"
   | "pin_guard_5_time_out";
 
-// /** Microcontroller configuration and settings. */
+/** Microcontroller configuration and settings. */
 export type McuParams = Partial<Record<McuParamName, (number | undefined)>>;
 
+/** Bot axis names. */
 export type Xyz = "x" | "y" | "z";
 /** 3 dimensional vector. */
 export type Vector3 = Record<Xyz, number>;
 
+/** GPIO pin value record. */
 export interface Pin {
   mode: number;
   value: number;
 }
 
+/** Lookup for pin status, indexed by pin number. */
 export type Pins = Dictionary<Pin | undefined>;
 
+/** FarmBot OS configs. */
 export interface FullConfiguration {
   arduino_debug_messages: number;
   auto_sync: boolean;
@@ -213,11 +225,13 @@ export interface FullConfiguration {
   steps_per_mm_z: number;
 }
 
+/** FarmBot OS configs. */
 export type Configuration = Partial<FullConfiguration>;
 
+/** FarmBot OS config names. */
 export type ConfigurationName = keyof Configuration;
 
-/** The possible values for the sync_msg property on informational_settings */
+/** The possible values for the sync_status property on informational_settings */
 export type SyncStatus =
   | "booting"
   | "maintenance"
@@ -227,36 +241,45 @@ export type SyncStatus =
   | "syncing"
   | "unknown";
 
+/** Various FarmBot OS status data. */
 export interface InformationalSettings {
-  /** System uptime in seconds */
+  /** System uptime in seconds. */
   uptime?: number;
-  /** Percentage of disc space */
+  /** Percentage of disk space used. */
   disk_usage?: number;
-  /** Megabytes of RAM */
+  /** Megabytes of RAM used. */
   memory_usage?: number;
-  /** CPU Temperature (C) of the Pi */
+  /** CPU Temperature (C) of the device running FBOS (RPi). */
   soc_temp?: number;
-  /** Wifi strength (dbm) */
+  /** WiFi strength (dBm). */
   wifi_level?: number;
-  /** Current version of Farmbot OS */
+  /** Current version of FarmBot OS. */
   controller_version?: string | undefined;
-  /** Arduino firmware version. */
+  /** Arduino/Farmduino firmware version. */
   firmware_version?: string | undefined;
-  /** If the rpi is throttled. (and having wifi issues) */
+  /** If the RPi is throttled and/or having WiFi issues. */
   throttled?: string | undefined;
-  /** Farmbot's private Ip address */
+  /** Farmbot's private IP address */
   private_ip?: string | undefined;
   /** The message to be displayed on the frontend for sync status. */
   sync_status?: SyncStatus | undefined;
+  /** Microcontroller status (move in progress, etc.) */
   busy: boolean;
+  /** Emergency stop status. */
   locked: boolean;
-  /**  FBOS commit hash */
+  /** FBOS commit hash. */
   commit: string;
+  /** Microcontroller firmware commit hash. */
   firmware_commit: string;
+  /** FBOS device type (rpi3, etc.). */
   target: string;
+  /** FBOS env (prod, dev, etc.). */
   env: string;
+  /** FBOS node name. */
   node_name: string;
+  /** FBOS is beta? */
   currently_on_beta?: boolean;
+  /** FBOS update available? */
   update_available?: boolean;
 }
 
@@ -274,6 +297,6 @@ export interface APIToken {
    * websocket server. */
   mqtt_ws: string;
 
-  /** UUID of current bot. */
+  /** UUID of current bot, eg: "device_1". */
   bot: string;
 }

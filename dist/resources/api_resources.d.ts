@@ -1,4 +1,5 @@
 import { ALLOWED_MESSAGE_TYPES, ALLOWED_CHANNEL_NAMES, PlantStage, Color, Sequence, InternalFarmEventBodyItem } from "..";
+import { VariableDeclaration } from "../corpus";
 export declare type TimeUnit = "never" | "minutely" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
 export declare type ExecutableType = "Sequence" | "Regimen";
 export declare enum ToolPulloutDirection {
@@ -24,6 +25,8 @@ export interface FarmEvent extends ResourceBase {
 }
 export interface FarmwareInstallation extends ResourceBase {
     url: string;
+    package: string | undefined;
+    package_error: string | undefined;
 }
 export interface Image {
     id?: number | undefined;
@@ -133,6 +136,7 @@ export interface Regimen extends ResourceBase {
     name: string;
     color: Color;
     regimen_items: RegimenItem[];
+    body: VariableDeclaration[];
 }
 export interface SavedGarden extends ResourceBase {
     name?: string;
