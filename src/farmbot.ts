@@ -47,7 +47,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "6.6.3-rc9";
+  static VERSION = "7.0.0-rc0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -283,26 +283,6 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
   }
 
-  /** Deprecated. Now handled by the FarmBot API. */
-  registerGpio = (input: { pin_number: number, sequence_id: number }) => {
-    const { sequence_id, pin_number } = input;
-    const rpc = rpcRequest([{
-      kind: "register_gpio",
-      args: { sequence_id, pin_number }
-    }]);
-    return this.send(rpc);
-  }
-
-  /** Deprecated. Now handled by the FarmBot API. */
-  unregisterGpio = (input: { pin_number: number }) => {
-    const { pin_number } = input;
-    const rpc = rpcRequest([{
-      kind: "unregister_gpio",
-      args: { pin_number }
-    }]);
-    return this.send(rpc);
-  }
-
   /** Control servos on pins 4 and 5. */
   setServoAngle = (args: { pin_number: number; pin_value: number; }) => {
     const result = this.send(rpcRequest([{ kind: "set_servo_angle", args }]));
@@ -351,13 +331,6 @@ export class Farmbot {
       kind: "dump_info",
       args: {}
     }]));
-  }
-
-  /** Duplicate of `rebootFirmware`. May be removed. */
-  reinitFirmware() {
-    const r =
-      rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
-    return this.send(r);
   }
 
   /**

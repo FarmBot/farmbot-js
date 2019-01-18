@@ -221,24 +221,6 @@ var Farmbot = /** @class */ (function () {
             });
             return _this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
         };
-        /** Deprecated. Now handled by the FarmBot API. */
-        this.registerGpio = function (input) {
-            var sequence_id = input.sequence_id, pin_number = input.pin_number;
-            var rpc = util_1.rpcRequest([{
-                    kind: "register_gpio",
-                    args: { sequence_id: sequence_id, pin_number: pin_number }
-                }]);
-            return _this.send(rpc);
-        };
-        /** Deprecated. Now handled by the FarmBot API. */
-        this.unregisterGpio = function (input) {
-            var pin_number = input.pin_number;
-            var rpc = util_1.rpcRequest([{
-                    kind: "unregister_gpio",
-                    args: { pin_number: pin_number }
-                }]);
-            return _this.send(rpc);
-        };
         /** Control servos on pins 4 and 5. */
         this.setServoAngle = function (args) {
             var result = _this.send(util_1.rpcRequest([{ kind: "set_servo_angle", args: args }]));
@@ -406,11 +388,6 @@ var Farmbot = /** @class */ (function () {
         this.config = config_1.generateConfig(input);
         this.resources = new resource_adapter_1.ResourceAdapter(this, this.config.mqttUsername);
     }
-    /** Duplicate of `rebootFirmware`. May be removed. */
-    Farmbot.prototype.reinitFirmware = function () {
-        var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
-        return this.send(r);
-    };
     Object.defineProperty(Farmbot.prototype, "channel", {
         /** Dictionary of all relevant MQTT channels the bot uses. */
         get: function () {
@@ -429,7 +406,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "6.6.3-rc9";
+    Farmbot.VERSION = "7.0.0-rc0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

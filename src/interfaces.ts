@@ -90,11 +90,6 @@ export interface FarmwareManifest {
   config: FarmwareConfig[];
 }
 
-export interface ProcessInfo {
-  name: string;
-  uuid: string;
-}
-
 export enum Encoder {
   unknown = -1,
   quadrature,

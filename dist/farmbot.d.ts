@@ -124,15 +124,6 @@ export declare class Farmbot {
      * Set value to `undefined` to unset.
      */
     setUserEnv: (configs: Dictionary<string | undefined>) => Promise<{}>;
-    /** Deprecated. Now handled by the FarmBot API. */
-    registerGpio: (input: {
-        pin_number: number;
-        sequence_id: number;
-    }) => Promise<{}>;
-    /** Deprecated. Now handled by the FarmBot API. */
-    unregisterGpio: (input: {
-        pin_number: number;
-    }) => Promise<{}>;
     /** Control servos on pins 4 and 5. */
     setServoAngle: (args: {
         pin_number: number;
@@ -149,8 +140,6 @@ export declare class Farmbot {
     }) => Promise<{}>;
     /** Tell the bot to send diagnostic info to the API.*/
     dumpInfo: () => Promise<{}>;
-    /** Duplicate of `rebootFirmware`. May be removed. */
-    reinitFirmware(): Promise<{}>;
     /**
      * Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.

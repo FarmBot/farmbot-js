@@ -74,10 +74,6 @@ export interface FarmwareManifest {
     meta: FarmwareManifestMeta;
     config: FarmwareConfig[];
 }
-export interface ProcessInfo {
-    name: string;
-    uuid: string;
-}
 export declare enum Encoder {
     unknown = -1,
     quadrature = 0,
