@@ -12,60 +12,74 @@ export declare class Farmbot {
     resources: ResourceAdapter;
     static VERSION: string;
     constructor(input: FarmbotConstructorParams);
+    /** Get a Farmbot Constructor Parameter. */
     getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U) => Conf[U];
+    /** Set a Farmbot Constructor Parameter. */
     setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U, value: Conf[U]) => void;
-    /** Installs a "Farmware" (plugin) onto the bot's SD card.
-     * URL must point to a valid Farmware manifest JSON document. */
+    /**
+     * Installs a "Farmware" (plugin) onto the bot's SD card.
+     * URL must point to a valid Farmware manifest JSON document.
+     */
     installFarmware: (url: string) => Promise<{}>;
-    /** Checks for updates on a particular Farmware plugin when given the name of
-     * a farmware. `updateFarmware("take-photo")`
+    /**
+     * Checks for updates on a particular Farmware plugin when given the name of
+     * a Farmware. `updateFarmware("take-photo")`
      */
     updateFarmware: (pkg: string) => Promise<{}>;
     /** Uninstall a Farmware plugin. */
     removeFarmware: (pkg: string) => Promise<{}>;
-    /** Installs "Farmwares" (plugins) authored by FarmBot.io
-   * onto the bot's SD card.
-   */
+    /**
+     * Installs "Farmware" (plugins) authored by FarmBot, Inc.
+     * onto the bot's SD card.
+     */
     installFirstPartyFarmware: () => Promise<{}>;
-    /** Deactivate FarmBot OS completely. */
+    /**
+     * Deactivate FarmBot OS completely (shutdown).
+     * Useful before unplugging the power.
+     */
     powerOff: () => Promise<{}>;
-    /** Cycle device power. */
+    /** Restart FarmBot OS. */
     reboot: () => Promise<{}>;
+    /** Reinitialize the FarmBot microcontroller firmware. */
     rebootFirmware: () => Promise<{}>;
-    /** Check for new versions of FarmBot OS. */
+    /** Check for new versions of FarmBot OS. Downloads and installs if available. */
     checkUpdates: () => Promise<{}>;
-    /** THIS WILL RESET THE SD CARD! Be careful!! */
+    /** THIS WILL RESET THE SD CARD, deleting all non-factory data! Be careful!! */
     resetOS: () => void;
+    /** WARNING: will reset all firmware (hardware) settings! */
     resetMCU: () => Promise<{}>;
-    /** Lock the bot from moving. This also will pause running regimens and cause
-     *  any running sequences to exit */
+    /**
+     * Lock the bot from moving (E-STOP). Turns off peripherals and motors.
+     * This also will pause running regimens and cause any running sequences to exit.
+     */
     emergencyLock: () => Promise<{}>;
-    /** Unlock the bot when the user says it is safe. Currently experiencing
-     * issues. Consider reboot() instead. */
+    /** Unlock the bot when the user says it is safe. */
     emergencyUnlock: () => Promise<{}>;
-    /** Execute a sequence by its ID on the API. */
+    /** Execute a sequence by its ID on the FarmBot API. */
     execSequence: (sequence_id: number, body?: Corpus.VariableDeclaration[]) => Promise<{}>;
-    /** Run a preloaded Farmware / script on the SD Card. */
+    /** Run an installed Farmware plugin on the SD Card. */
     execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<{}>;
-    /** Bring a particular axis (or all of them) to position 0. */
+    /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
     home: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
-    /** Use end stops or encoders to figure out where 0,0,0 is.
-     *  WON'T WORK WITHOUT ENCODERS OR END STOPS! */
+    /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis order.
+     *  WON'T WORK WITHOUT ENCODERS OR END STOPS!
+     * A blockage or stall during this command will set that position as zero.
+     * Use carefully. */
     findHome: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
-    /** Move gantry to an absolute point. */
+    /** Move FarmBot to an absolute point. */
     moveAbsolute: (args: {
         x: number;
         y: number;
         z: number;
         speed?: number | undefined;
     }) => Promise<{}>;
-    /** Move gantry to position relative to its current position. */
+    /** Move FarmBot to position relative to its current position. */
     moveRelative: (args: {
         x: number;
         y: number;
@@ -78,7 +92,7 @@ export declare class Farmbot {
         pin_value: number;
         pin_mode: number;
     }) => Promise<{}>;
-    /** Set a GPIO pin to a particular value. */
+    /** Read the value of a GPIO pin. Will create a SensorReading if it's a sensor. */
     readPin: (args: {
         pin_number: number | Corpus.NamedPin;
         label: string;
@@ -94,40 +108,53 @@ export declare class Farmbot {
     readStatus: (args?: {}) => Promise<{}>;
     /** Snap a photo and send to the API for post processing. */
     takePhoto: (args?: {}) => Promise<{}>;
-    /** Force device to download all of the latest JSON resources (plants,
-     * account info, etc.) from the FarmBot API. */
+    /** Download/apply all of the latest FarmBot API JSON resources (plants,
+     * account info, etc.) to the device. */
     sync: (args?: {}) => Promise<{}>;
-    /** Set the position of the given axis to 0 at the current position of said
-     * axis. Example: Sending bot.setZero("x") at x: 255 will translate position
-     * 255 to 0. */
+    /**
+     * Set the current position of the given axis to 0.
+     * Example: Sending `bot.setZero("x")` at x: 255 will translate position
+     * 255 to 0, causing that position to be x: 0.
+     */
     setZero: (axis: Corpus.ALLOWED_AXIS) => Promise<{}>;
-    /** Update the Arduino settings */
+    /** Update FarmBot microcontroller settings. */
     updateMcu: (update: Partial<Partial<Record<import("./interfaces").McuParamName, number | undefined>>>) => Promise<{}>;
-    /** Set user ENV vars (usually used by 3rd party Farmware scripts).
-     * Set value to `undefined` to unset. */
+    /**
+     * Set user ENV vars (usually used by 3rd-party Farmware plugins).
+     * Set value to `undefined` to unset.
+     */
     setUserEnv: (configs: Dictionary<string | undefined>) => Promise<{}>;
+    /** Deprecated. Now handled by the FarmBot API. */
     registerGpio: (input: {
         pin_number: number;
         sequence_id: number;
     }) => Promise<{}>;
+    /** Deprecated. Now handled by the FarmBot API. */
     unregisterGpio: (input: {
         pin_number: number;
     }) => Promise<{}>;
+    /** Control servos on pins 4 and 5. */
     setServoAngle: (args: {
         pin_number: number;
         pin_value: number;
     }) => Promise<{}>;
-    /** Update a config option for FarmBot OS. */
+    /** Update a config option (setting) for FarmBot OS. */
     updateConfig: (update: Partial<Partial<import("./interfaces").FullConfiguration>>) => Promise<{}>;
+    /**
+     * Find the axis extents using encoder, motor, or end-stop feedback.
+     * Will set a new home position and a new axis length for the given axis.
+     */
     calibrate: (args: {
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
     /** Tell the bot to send diagnostic info to the API.*/
     dumpInfo: () => Promise<{}>;
+    /** Duplicate of `rebootFirmware`. May be removed. */
     reinitFirmware(): Promise<{}>;
-    /** Retrieves all of the event handlers for a particular event.
+    /**
+     * Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
-      */
+     */
     event: (name: string) => Function[];
     on: (event: string, callback: Function) => number;
     emit: (event: string, data: {}) => void;
@@ -142,10 +169,10 @@ export declare class Farmbot {
         sync: string;
         fromAPI: string;
     };
-    /** Low level means of sending MQTT packets. Does not check format. Does not
+    /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
     publish: (msg: Corpus.RpcRequest, important?: boolean) => void;
-    /** Low level means of sending MQTT RPC commands to the bot. Acknowledges
+    /** Low-level means of sending MQTT RPC commands to the bot. Acknowledges
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
     */
