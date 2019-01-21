@@ -42,15 +42,17 @@ export declare class Farmbot {
     reboot: () => Promise<{}>;
     /** Reinitialize the FarmBot microcontroller firmware. */
     rebootFirmware: () => Promise<{}>;
-    /** Check for new versions of FarmBot OS. Downloads and installs if available. */
+    /** Check for new versions of FarmBot OS.
+     * Downloads and installs if available. */
     checkUpdates: () => Promise<{}>;
-    /** THIS WILL RESET THE SD CARD, deleting all non-factory data! Be careful!! */
+    /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
+     * Be careful!! */
     resetOS: () => void;
     /** WARNING: will reset all firmware (hardware) settings! */
     resetMCU: () => Promise<{}>;
     /**
-     * Lock the bot from moving (E-STOP). Turns off peripherals and motors.
-     * This also will pause running regimens and cause any running sequences to exit.
+     * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This
+     * also will pause running regimens and cause any running sequences to exit.
      */
     emergencyLock: () => Promise<{}>;
     /** Unlock the bot when the user says it is safe. */
@@ -64,26 +66,19 @@ export declare class Farmbot {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
-    /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis order.
-     *  WON'T WORK WITHOUT ENCODERS OR END STOPS!
-     * A blockage or stall during this command will set that position as zero.
-     * Use carefully. */
+    /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis
+     * order. WON'T WORK WITHOUT ENCODERS OR END STOPS! A blockage or stall
+     * during this command will set that position as zero. Use carefully. */
     findHome: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
     /** Move FarmBot to an absolute point. */
-    moveAbsolute: (args: {
-        x: number;
-        y: number;
-        z: number;
+    moveAbsolute: (args: Record<import("./interfaces").Xyz, number> & {
         speed?: number | undefined;
     }) => Promise<{}>;
     /** Move FarmBot to position relative to its current position. */
-    moveRelative: (args: {
-        x: number;
-        y: number;
-        z: number;
+    moveRelative: (args: Record<import("./interfaces").Xyz, number> & {
         speed?: number | undefined;
     }) => Promise<{}>;
     /** Set a GPIO pin to a particular value. */
@@ -92,9 +87,10 @@ export declare class Farmbot {
         pin_value: number;
         pin_mode: number;
     }) => Promise<{}>;
-    /** Read the value of a GPIO pin. Will create a SensorReading if it's a sensor. */
+    /** Read the value of a GPIO pin. Will create a SensorReading if it's
+     * a sensor. */
     readPin: (args: {
-        pin_number: number | Corpus.NamedPin;
+        pin_number: number | Corpus.NamedPin; /** Get a Farmbot Constructor Parameter. */
         label: string;
         pin_mode: number;
     }) => Promise<{}>;
@@ -153,10 +149,11 @@ export declare class Farmbot {
         toDevice: string;
         /** From farmbot */
         toClient: string;
-        status: string;
+        legacyStatus: string;
         logs: string;
-        sync: string;
         fromAPI: string;
+        status: string;
+        sync: string;
     };
     /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */

@@ -29,7 +29,7 @@ import {
   CONFIG_DEFAULTS
 } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-import { ChanName } from "./constants";
+import { ChanName, EventName } from "./constants";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 
@@ -49,7 +49,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc0";
+  static VERSION = "7.0.0-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -387,7 +387,7 @@ export class Farmbot {
    * acknowledge confirmation. Probably not the one you want. */
   publish = (msg: Corpus.RpcRequest, important = true): void => {
     if (this.client) {
-      this.emit("sent", msg);
+      this.emit(EventName.sent, msg);
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
@@ -430,17 +430,26 @@ export class Farmbot {
       const msg =
         JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
       switch (chan.split(".")[2]) {
-        case ChanName.logs: return this.emit("logs", msg);
-        case ChanName.legacyStatus: return this.emit("legacy_status", msg);
-        case ChanName.statusV7: return this.emit("status_v7", msg);
-        case ChanName.sync: return this.emit("sync", msg);
+        case ChanName.logs:
+          return this.emit(EventName.logs, msg);
+
+        case ChanName.legacyStatus:
+          return this.emit(EventName.legacy_status, msg);
+
+        case ChanName.statusV7:
+          return this.emit(EventName.status_v7, msg);
+
+        case ChanName.sync:
+          return this.emit(EventName.sync, msg);
+
         default:
-          const label = isCeleryScript(msg) ? msg.args.label : "malformed";
+          const label = isCeleryScript(msg) ?
+            msg.args.label : EventName.malformed;
           return this.emit(label, msg);
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");
-      this.emit("malformed", buffer.toString());
+      this.emit(EventName.malformed, buffer.toString());
     }
   }
 
@@ -457,8 +466,8 @@ export class Farmbot {
     this.client = client;
     this.resources = new ResourceAdapter(this, this.config.mqttUsername);
     client.on("message", this._onmessage);
-    client.on("offline", () => this.emit("offline", {}));
-    client.on("connect", () => this.emit("online", {}));
+    client.on("offline", () => this.emit(EventName.offline, {}));
+    client.on("connect", () => this.emit(EventName.online, {}));
     const channels = [
       this.channel.fromAPI,
       this.channel.logs,
