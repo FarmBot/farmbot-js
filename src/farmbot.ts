@@ -14,10 +14,7 @@ import {
   Configuration,
   Vector3
 } from "./interfaces";
-import {
-  pick,
-  isCeleryScript
-} from "./util";
+import { pick } from "./util";
 import {
   ReadPin,
   WritePin
@@ -30,6 +27,8 @@ import {
 } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
 import { ChanName, EventName } from "./constants";
+import { hasLabel } from "./util/is_celery_script";
+import { deepUnpack } from "./util/deep_unpack";
 type Primitive = string | number | boolean;
 export const NULL = "null";
 
@@ -49,7 +48,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc1";
+  static VERSION = "7.0.0-rc2";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -427,8 +426,7 @@ export class Farmbot {
   /** Main entry point for all MQTT packets. */
   private _onmessage = (chan: string, buffer: Uint8Array) => {
     try {
-      const msg =
-        JSON.parse(buffer.toString()) as Corpus.RpcOk | Corpus.RpcError;
+      const msg = JSON.parse(buffer.toString());
       switch (chan.split(".")[2]) {
         case ChanName.logs:
           return this.emit(EventName.logs, msg);
@@ -437,15 +435,17 @@ export class Farmbot {
           return this.emit(EventName.legacy_status, msg);
 
         case ChanName.statusV7:
-          return this.emit(EventName.status_v7, msg);
+          const path = chan.split("/").slice(3).join(".");
+          return this
+            .emit(EventName.status_v7, deepUnpack(path, msg));
 
         case ChanName.sync:
           return this.emit(EventName.sync, msg);
 
         default:
-          const label = isCeleryScript(msg) ?
+          const event = hasLabel(msg) ?
             msg.args.label : EventName.malformed;
-          return this.emit(label, msg);
+          return this.emit(event, msg);
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");

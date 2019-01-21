@@ -2,25 +2,21 @@ type Value =
   | number
   | boolean
   | string
-  | undefined
-  | null
+  | undefined;
 
 interface DeepObject {
   [key: string]: Value | DeepObject;
 }
 
-
-function recurse(target: DeepObject, keys: string[], val: Value):
-  DeepObject | undefined {
+function recurse(target: DeepObject, keys: string[], val: Value) {
   const key = keys.shift() as string;
   const nextTarget: DeepObject = {};
   target[key] = nextTarget;
 
   if (keys.length > 0) {
-    return recurse(target[key] as {}, keys, val);
+    recurse(target[key] as {}, keys, val);
   } else {
     target[key] = val;
-    return;
   }
 };
 
