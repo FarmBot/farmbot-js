@@ -11,7 +11,7 @@
     "strictNullChecks": true,
     "outDir": "./dist",
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
   },
