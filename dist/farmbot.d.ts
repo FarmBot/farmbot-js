@@ -90,7 +90,7 @@ export declare class Farmbot {
     /** Read the value of a GPIO pin. Will create a SensorReading if it's
      * a sensor. */
     readPin: (args: {
-        pin_number: number | Corpus.NamedPin; /** Get a Farmbot Constructor Parameter. */
+        pin_number: number | Corpus.NamedPin;
         label: string;
         pin_mode: number;
     }) => Promise<{}>;

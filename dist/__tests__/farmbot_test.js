@@ -104,7 +104,11 @@ describe("FarmBot", function () {
         it("executes a sequence", function () {
             var sequence_id = 123;
             bot.execSequence(sequence_id);
-            expectRPC({ kind: "execute", args: { sequence_id: sequence_id } });
+            expectRPC({
+                kind: "execute",
+                args: { sequence_id: sequence_id },
+                body: []
+            });
         });
         it("executes a script", function () {
             var label = "minesweeper.exe";

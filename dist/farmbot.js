@@ -6,6 +6,8 @@ var util_2 = require("./util");
 var config_1 = require("./config");
 var resource_adapter_1 = require("./resources/resource_adapter");
 var constants_1 = require("./constants");
+var is_celery_script_1 = require("./util/is_celery_script");
+var deep_unpack_1 = require("./util/deep_unpack");
 exports.NULL = "null";
 var RECONNECT_THROTTLE = 1000;
 /*
@@ -344,13 +346,15 @@ var Farmbot = /** @class */ (function () {
                     case constants_1.ChanName.legacyStatus:
                         return _this.emit(constants_1.EventName.legacy_status, msg);
                     case constants_1.ChanName.statusV7:
-                        return _this.emit(constants_1.EventName.status_v7, msg);
+                        var path = chan.split("/").slice(3).join(".");
+                        return _this
+                            .emit(constants_1.EventName.status_v7, deep_unpack_1.deepUnpack(path, msg));
                     case constants_1.ChanName.sync:
                         return _this.emit(constants_1.EventName.sync, msg);
                     default:
-                        var label = util_2.isCeleryScript(msg) ?
+                        var event_1 = is_celery_script_1.hasLabel(msg) ?
                             msg.args.label : constants_1.EventName.malformed;
-                        return _this.emit(label, msg);
+                        return _this.emit(event_1, msg);
                 }
             }
             catch (error) {
@@ -414,7 +418,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc1";
+    Farmbot.VERSION = "7.0.0-rc2";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
