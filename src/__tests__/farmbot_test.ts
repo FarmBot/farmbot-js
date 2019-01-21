@@ -113,7 +113,11 @@ describe("FarmBot", () => {
     it("executes a sequence", () => {
       const sequence_id = 123;
       bot.execSequence(sequence_id);
-      expectRPC({ kind: "execute", args: { sequence_id } });
+      expectRPC({
+        kind: "execute",
+        args: { sequence_id },
+        body: []
+      });
     });
 
     it("executes a script", () => {
