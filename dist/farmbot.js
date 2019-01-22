@@ -383,6 +383,7 @@ var Farmbot = /** @class */ (function () {
                 _this.channel.fromAPI,
                 _this.channel.logs,
                 _this.channel.legacyStatus,
+                _this.channel.status,
                 _this.channel.sync,
                 _this.channel.toClient,
             ];
@@ -420,7 +421,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc4";
+    Farmbot.VERSION = "7.0.0-rc5";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

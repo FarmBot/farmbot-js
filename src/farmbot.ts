@@ -44,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc4";
+  static VERSION = "7.0.0-rc5";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -472,6 +472,7 @@ export class Farmbot {
       this.channel.fromAPI,
       this.channel.logs,
       this.channel.legacyStatus,
+      this.channel.status,
       this.channel.sync,
       this.channel.toClient,
     ];
