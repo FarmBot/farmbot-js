@@ -1,6 +1,6 @@
-declare type Value = number | boolean | string | undefined;
+import { Primitive } from "../interfaces";
 interface DeepObject {
-    [key: string]: Value | DeepObject;
+    [key: string]: Primitive | DeepObject | undefined;
 }
-export declare function deepUnpack(path: string, val: Value): DeepObject;
+export declare function deepUnpack(path: string, val: Primitive | undefined): DeepObject;
 export {};

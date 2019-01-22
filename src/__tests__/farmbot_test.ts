@@ -4,10 +4,11 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams, NULL } from "..";
+import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams } from "..";
 import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
+import { Misc } from "../constants";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
@@ -231,7 +232,7 @@ describe("FarmBot", () => {
         kind: "set_user_env",
         args: {},
         body: [
-          { kind: "pair", args: { label: "foo", value: NULL } },
+          { kind: "pair", args: { label: "foo", value: Misc.NULL } },
           { kind: "pair", args: { label: "bar", value: "bz" } },
         ]
       })

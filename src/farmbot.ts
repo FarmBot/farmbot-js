@@ -12,7 +12,8 @@ import {
   Dictionary,
   McuParams,
   Configuration,
-  Vector3
+  Vector3,
+  Primitive
 } from "./interfaces";
 import { pick } from "./util";
 import {
@@ -26,14 +27,9 @@ import {
   CONFIG_DEFAULTS
 } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-import { ChanName, EventName } from "./constants";
+import { ChanName, EventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
-type Primitive = string | number | boolean;
-export const NULL = "null";
-
-const RECONNECT_THROTTLE = 1000;
-
 /*
  * Clarification for several terms used:
  *  * Farmware: Plug-ins for FarmBot OS. Sometimes referred to as `scripts`.
@@ -48,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc3";
+  static VERSION = "7.0.0-rc4";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -284,7 +280,7 @@ export class Farmbot {
       .map(function (label): Corpus.Pair {
         return {
           kind: "pair",
-          args: { label, value: (configs[label] || NULL) }
+          args: { label, value: (configs[label] || Misc.NULL) }
         };
       });
     return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
@@ -427,7 +423,7 @@ export class Farmbot {
   private _onmessage = (chan: string, buffer: Uint8Array) => {
     try {
       const msg = JSON.parse(buffer.toString());
-      switch (chan.split(".")[2]) {
+      switch (chan.split(Misc.MQTT_DELIM)[2]) {
         case ChanName.logs:
           return this.emit(EventName.logs, msg);
 
@@ -435,7 +431,10 @@ export class Farmbot {
           return this.emit(EventName.legacy_status, msg);
 
         case ChanName.statusV8:
-          const path = chan.split("/").slice(3).join(".");
+          const path = chan
+            .split(Misc.MQTT_DELIM)
+            .slice(3)
+            .join(Misc.PATH_DELIM);
           return this
             .emit(EventName.status_v8, deepUnpack(path, msg));
 
@@ -456,12 +455,13 @@ export class Farmbot {
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
     const { mqttUsername, token, mqttServer } = this.config;
+    const reconnectPeriod: number = Misc.RECONNECT_THROTTLE_MS;
     const client = connect(mqttServer, {
       username: mqttUsername,
       password: token,
       clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
-      reconnectPeriod: RECONNECT_THROTTLE
+      reconnectPeriod
     });
     this.client = client;
     this.resources = new ResourceAdapter(this, this.config.mqttUsername);

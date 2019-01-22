@@ -3,7 +3,6 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-export declare const NULL = "null";
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;

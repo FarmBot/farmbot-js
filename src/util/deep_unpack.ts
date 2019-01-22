@@ -1,28 +1,26 @@
-type Value =
-  | number
-  | boolean
-  | string
-  | undefined;
+import { Primitive } from "../interfaces";
+import { Misc } from "../constants";
 
 interface DeepObject {
-  [key: string]: Value | DeepObject;
+  [key: string]: Primitive | DeepObject | undefined;
 }
 
-function recurse(target: DeepObject, keys: string[], val: Value) {
-  const key = keys.shift() as string;
-  const nextTarget: DeepObject = {};
-  target[key] = nextTarget;
+const recurse =
+  (target: DeepObject, keys: string[], val: Primitive | undefined) => {
+    const key = keys.shift() as string;
+    const nextTarget: DeepObject = {};
+    target[key] = nextTarget;
 
-  if (keys.length > 0) {
-    recurse(target[key] as {}, keys, val);
-  } else {
-    target[key] = val;
-  }
-};
+    if (keys.length > 0) {
+      recurse(target[key] as {}, keys, val);
+    } else {
+      target[key] = val;
+    }
+  };
 
-export function deepUnpack(path: string, val: Value): DeepObject {
+export function deepUnpack(path: string, val: Primitive | undefined): DeepObject {
   const target = {};
-  recurse(target, path.split("."), val);
+  recurse(target, path.split(Misc.PATH_DELIM), val);
   return target;
 }
 

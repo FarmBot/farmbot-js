@@ -8,8 +8,6 @@ var resource_adapter_1 = require("./resources/resource_adapter");
 var constants_1 = require("./constants");
 var is_celery_script_1 = require("./util/is_celery_script");
 var deep_unpack_1 = require("./util/deep_unpack");
-exports.NULL = "null";
-var RECONNECT_THROTTLE = 1000;
 /*
  * Clarification for several terms used:
  *  * Farmware: Plug-ins for FarmBot OS. Sometimes referred to as `scripts`.
@@ -227,7 +225,7 @@ var Farmbot = /** @class */ (function () {
                 .map(function (label) {
                 return {
                     kind: "pair",
-                    args: { label: label, value: (configs[label] || exports.NULL) }
+                    args: { label: label, value: (configs[label] || constants_1.Misc.NULL) }
                 };
             });
             return _this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
@@ -340,13 +338,16 @@ var Farmbot = /** @class */ (function () {
         this._onmessage = function (chan, buffer) {
             try {
                 var msg = JSON.parse(buffer.toString());
-                switch (chan.split(".")[2]) {
+                switch (chan.split(constants_1.Misc.MQTT_DELIM)[2]) {
                     case constants_1.ChanName.logs:
                         return _this.emit(constants_1.EventName.logs, msg);
                     case constants_1.ChanName.legacyStatus:
                         return _this.emit(constants_1.EventName.legacy_status, msg);
                     case constants_1.ChanName.statusV8:
-                        var path = chan.split("/").slice(3).join(".");
+                        var path = chan
+                            .split(constants_1.Misc.MQTT_DELIM)
+                            .slice(3)
+                            .join(constants_1.Misc.PATH_DELIM);
                         return _this
                             .emit(constants_1.EventName.status_v8, deep_unpack_1.deepUnpack(path, msg));
                     case constants_1.ChanName.sync:
@@ -365,12 +366,13 @@ var Farmbot = /** @class */ (function () {
         /** Bootstrap the device onto the MQTT broker. */
         this.connect = function () {
             var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
+            var reconnectPeriod = constants_1.Misc.RECONNECT_THROTTLE_MS;
             var client = mqtt_1.connect(mqttServer, {
                 username: mqttUsername,
                 password: token,
                 clean: true,
                 clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
-                reconnectPeriod: RECONNECT_THROTTLE
+                reconnectPeriod: reconnectPeriod
             });
             _this.client = client;
             _this.resources = new resource_adapter_1.ResourceAdapter(_this, _this.config.mqttUsername);
@@ -418,7 +420,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc3";
+    Farmbot.VERSION = "7.0.0-rc4";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

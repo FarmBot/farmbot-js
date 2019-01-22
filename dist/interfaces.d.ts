@@ -1,3 +1,4 @@
+export declare type Primitive = string | number | boolean;
 /** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
     /** Microcontroller configuration and settings. */

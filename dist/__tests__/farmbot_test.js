@@ -8,6 +8,7 @@ jest.mock("../util/uuid", function () { return ({ uuid: function () { return "FA
 var __1 = require("..");
 var test_support_1 = require("../test_support");
 var config_1 = require("../config");
+var constants_1 = require("../constants");
 describe("FarmBot", function () {
     var token = test_support_1.FAKE_TOKEN;
     it("Instantiates a FarmBot", function () {
@@ -207,7 +208,7 @@ describe("FarmBot", function () {
                 kind: "set_user_env",
                 args: {},
                 body: [
-                    { kind: "pair", args: { label: "foo", value: __1.NULL } },
+                    { kind: "pair", args: { label: "foo", value: constants_1.Misc.NULL } },
                     { kind: "pair", args: { label: "bar", value: "bz" } },
                 ]
             });

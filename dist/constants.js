@@ -21,3 +21,14 @@ var EventName;
     EventName["status_v8"] = "status_v8";
     EventName["sync"] = "sync";
 })(EventName = exports.EventName || (exports.EventName = {}));
+var Misc;
+(function (Misc) {
+    /** Channel delimiter for MQTT channels. */
+    Misc["MQTT_DELIM"] = "/";
+    /** Namespace delimiter used by `sync_v7` */
+    Misc["PATH_DELIM"] = ".";
+    /** A null value when dealing with empty `pair` nodes in CeleryScript. */
+    Misc["NULL"] = "null";
+    /** Reconnect internval for MQTT.js */
+    Misc[Misc["RECONNECT_THROTTLE_MS"] = 1000] = "RECONNECT_THROTTLE_MS";
+})(Misc = exports.Misc || (exports.Misc = {}));
