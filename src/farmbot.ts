@@ -27,7 +27,7 @@ import {
   CONFIG_DEFAULTS
 } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-import { ChanName, EventName, Misc } from "./constants";
+import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
 /*
@@ -367,14 +367,14 @@ export class Farmbot {
     const deviceName = this.config.mqttUsername;
     return {
       /** From the browser, usually. */
-      toDevice: `bot/${deviceName}/${ChanName.fromClients}`,
+      toDevice: `bot/${deviceName}/${MqttChanName.fromClients}`,
       /** From farmbot */
-      toClient: `bot/${deviceName}/${ChanName.fromDevice}`,
-      legacyStatus: `bot/${deviceName}/${ChanName.legacyStatus}`,
-      logs: `bot/${deviceName}/${ChanName.logs}`,
-      fromAPI: `bot/${deviceName}/${ChanName.fromApi}`,
-      status: `bot/${deviceName}/${ChanName.statusV8}/#`,
-      sync: `bot/${deviceName}/${ChanName.sync}/#`,
+      toClient: `bot/${deviceName}/${MqttChanName.fromDevice}`,
+      legacyStatus: `bot/${deviceName}/${MqttChanName.legacyStatus}`,
+      logs: `bot/${deviceName}/${MqttChanName.logs}`,
+      fromAPI: `bot/${deviceName}/${MqttChanName.fromApi}`,
+      status: `bot/${deviceName}/${MqttChanName.statusV8}/#`,
+      sync: `bot/${deviceName}/${MqttChanName.sync}/#`,
     };
   }
 
@@ -382,7 +382,7 @@ export class Farmbot {
    * acknowledge confirmation. Probably not the one you want. */
   publish = (msg: Corpus.RpcRequest, important = true): void => {
     if (this.client) {
-      this.emit(EventName.sent, msg);
+      this.emit(FbjsEventName.sent, msg);
       /** SEE: https://github.com/mqttjs/MQTT.js#client */
       this.client.publish(this.channel.toDevice, JSON.stringify(msg));
     } else {
@@ -424,31 +424,31 @@ export class Farmbot {
     try {
       const msg = JSON.parse(buffer.toString());
       switch (chan.split(Misc.MQTT_DELIM)[2]) {
-        case ChanName.logs:
-          return this.emit(EventName.logs, msg);
+        case MqttChanName.logs:
+          return this.emit(FbjsEventName.logs, msg);
 
-        case ChanName.legacyStatus:
-          return this.emit(EventName.legacy_status, msg);
+        case MqttChanName.legacyStatus:
+          return this.emit(FbjsEventName.legacy_status, msg);
 
-        case ChanName.statusV8:
+        case MqttChanName.statusV8:
           const path = chan
             .split(Misc.MQTT_DELIM)
             .slice(3)
             .join(Misc.PATH_DELIM);
           return this
-            .emit(EventName.status_v8, deepUnpack(path, msg));
+            .emit(FbjsEventName.status_v8, deepUnpack(path, msg));
 
-        case ChanName.sync:
-          return this.emit(EventName.sync, msg);
+        case MqttChanName.sync:
+          return this.emit(FbjsEventName.sync, msg);
 
         default:
           const event = hasLabel(msg) ?
-            msg.args.label : EventName.malformed;
+            msg.args.label : FbjsEventName.malformed;
           return this.emit(event, msg);
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");
-      this.emit(EventName.malformed, buffer.toString());
+      this.emit(FbjsEventName.malformed, buffer.toString());
     }
   }
 
@@ -466,8 +466,8 @@ export class Farmbot {
     this.client = client;
     this.resources = new ResourceAdapter(this, this.config.mqttUsername);
     client.on("message", this._onmessage);
-    client.on("offline", () => this.emit(EventName.offline, {}));
-    client.on("connect", () => this.emit(EventName.online, {}));
+    client.on("offline", () => this.emit(FbjsEventName.offline, {}));
+    client.on("connect", () => this.emit(FbjsEventName.online, {}));
     const channels = [
       this.channel.fromAPI,
       this.channel.logs,
