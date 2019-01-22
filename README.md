@@ -15,23 +15,23 @@ Independent developers have reported success when using FarmBotJS in a Node envi
 
 ## Installation (NPM)
 
-```
+```bash
 npm install farmbot
 ```
 
 ## Installation (Vanilla JS)
 
-```
+```html
 <script src="./dist/farmbot_single_file.js"></script>
 <script>
   var farmbot123 = new fbjs.Farmbot({ token: "foo.bar.baz" });
-<script>
+</script>
 ```
 
 ## Running the Test Suite (Advanced)
 
 
-```
+```bash
 npm run test
 ```
 
