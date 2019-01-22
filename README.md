@@ -120,16 +120,19 @@ bot
    // [function(){...}]
 ```
 
-## Common Events
+## Routine Events
 
  * `"logs"`: The bot will send logs to this channel.
- * `"malformed"`: When the bot gets a bad RPC command, it will notify you via this channel.
  * `"offline"`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
  * `"online"`: Client is connected and subscribed to bot.
  * `"sent"`: Triggered when the application begins sending a message.
  * `"status"`: Most important. When the REMOTE device state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
  * `"sync"`: A resource on the API has changed.
+
+## Special Events
+
  * `<random uuid>`: RPC commands have UUIDs when they leave the browser. When the bot responds to that message, FarmbotJS will emit an event named after the request's UUID. Mostly for internal use.
+ * `"malformed"`: When the bot gets a bad RPC command, it will notify you via this channel.
  * `*`: Catch all events (for debugging).
 
 # Q: Where do I report security issues?

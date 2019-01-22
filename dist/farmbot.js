@@ -345,10 +345,10 @@ var Farmbot = /** @class */ (function () {
                         return _this.emit(constants_1.EventName.logs, msg);
                     case constants_1.ChanName.legacyStatus:
                         return _this.emit(constants_1.EventName.legacy_status, msg);
-                    case constants_1.ChanName.statusV7:
+                    case constants_1.ChanName.statusV8:
                         var path = chan.split("/").slice(3).join(".");
                         return _this
-                            .emit(constants_1.EventName.status_v7, deep_unpack_1.deepUnpack(path, msg));
+                            .emit(constants_1.EventName.status_v8, deep_unpack_1.deepUnpack(path, msg));
                     case constants_1.ChanName.sync:
                         return _this.emit(constants_1.EventName.sync, msg);
                     default:
@@ -411,14 +411,14 @@ var Farmbot = /** @class */ (function () {
                 legacyStatus: "bot/" + deviceName + "/" + constants_1.ChanName.legacyStatus,
                 logs: "bot/" + deviceName + "/" + constants_1.ChanName.logs,
                 fromAPI: "bot/" + deviceName + "/" + constants_1.ChanName.fromApi,
-                status: "bot/" + deviceName + "/" + constants_1.ChanName.statusV7 + "/#",
+                status: "bot/" + deviceName + "/" + constants_1.ChanName.statusV8 + "/#",
                 sync: "bot/" + deviceName + "/" + constants_1.ChanName.sync + "/#",
             };
         },
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc2";
+    Farmbot.VERSION = "7.0.0-rc3";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

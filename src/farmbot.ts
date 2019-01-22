@@ -48,7 +48,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc2";
+  static VERSION = "7.0.0-rc3";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -377,7 +377,7 @@ export class Farmbot {
       legacyStatus: `bot/${deviceName}/${ChanName.legacyStatus}`,
       logs: `bot/${deviceName}/${ChanName.logs}`,
       fromAPI: `bot/${deviceName}/${ChanName.fromApi}`,
-      status: `bot/${deviceName}/${ChanName.statusV7}/#`,
+      status: `bot/${deviceName}/${ChanName.statusV8}/#`,
       sync: `bot/${deviceName}/${ChanName.sync}/#`,
     };
   }
@@ -434,10 +434,10 @@ export class Farmbot {
         case ChanName.legacyStatus:
           return this.emit(EventName.legacy_status, msg);
 
-        case ChanName.statusV7:
+        case ChanName.statusV8:
           const path = chan.split("/").slice(3).join(".");
           return this
-            .emit(EventName.status_v7, deepUnpack(path, msg));
+            .emit(EventName.status_v8, deepUnpack(path, msg));
 
         case ChanName.sync:
           return this.emit(EventName.sync, msg);

@@ -4,7 +4,7 @@ export enum ChanName {
   fromDevice = "from_device",
   logs = "logs",
   legacyStatus = "status",
-  statusV7 = "status_v7",
+  statusV8 = "status_v8",
   sync = "sync",
 }
 
@@ -15,6 +15,6 @@ export enum EventName {
   offline = "offline",
   online = "online",
   sent = "sent",
-  status_v7 = "status_v7",
+  status_v8 = "status_v8",
   sync = "sync",
 }
