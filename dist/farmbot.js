@@ -301,7 +301,7 @@ var Farmbot = /** @class */ (function () {
         this.publish = function (msg, important) {
             if (important === void 0) { important = true; }
             if (_this.client) {
-                _this.emit(constants_1.EventName.sent, msg);
+                _this.emit(constants_1.FbjsEventName.sent, msg);
                 /** SEE: https://github.com/mqttjs/MQTT.js#client */
                 _this.client.publish(_this.channel.toDevice, JSON.stringify(msg));
             }
@@ -339,28 +339,28 @@ var Farmbot = /** @class */ (function () {
             try {
                 var msg = JSON.parse(buffer.toString());
                 switch (chan.split(constants_1.Misc.MQTT_DELIM)[2]) {
-                    case constants_1.ChanName.logs:
-                        return _this.emit(constants_1.EventName.logs, msg);
-                    case constants_1.ChanName.legacyStatus:
-                        return _this.emit(constants_1.EventName.legacy_status, msg);
-                    case constants_1.ChanName.statusV8:
+                    case constants_1.MqttChanName.logs:
+                        return _this.emit(constants_1.FbjsEventName.logs, msg);
+                    case constants_1.MqttChanName.legacyStatus:
+                        return _this.emit(constants_1.FbjsEventName.legacy_status, msg);
+                    case constants_1.MqttChanName.statusV8:
                         var path = chan
                             .split(constants_1.Misc.MQTT_DELIM)
                             .slice(3)
                             .join(constants_1.Misc.PATH_DELIM);
                         return _this
-                            .emit(constants_1.EventName.status_v8, deep_unpack_1.deepUnpack(path, msg));
-                    case constants_1.ChanName.sync:
-                        return _this.emit(constants_1.EventName.sync, msg);
+                            .emit(constants_1.FbjsEventName.status_v8, deep_unpack_1.deepUnpack(path, msg));
+                    case constants_1.MqttChanName.sync:
+                        return _this.emit(constants_1.FbjsEventName.sync, msg);
                     default:
                         var event_1 = is_celery_script_1.hasLabel(msg) ?
-                            msg.args.label : constants_1.EventName.malformed;
+                            msg.args.label : constants_1.FbjsEventName.malformed;
                         return _this.emit(event_1, msg);
                 }
             }
             catch (error) {
                 console.warn("Could not parse inbound message from MQTT.");
-                _this.emit(constants_1.EventName.malformed, buffer.toString());
+                _this.emit(constants_1.FbjsEventName.malformed, buffer.toString());
             }
         };
         /** Bootstrap the device onto the MQTT broker. */
@@ -377,8 +377,8 @@ var Farmbot = /** @class */ (function () {
             _this.client = client;
             _this.resources = new resource_adapter_1.ResourceAdapter(_this, _this.config.mqttUsername);
             client.on("message", _this._onmessage);
-            client.on("offline", function () { return _this.emit(constants_1.EventName.offline, {}); });
-            client.on("connect", function () { return _this.emit(constants_1.EventName.online, {}); });
+            client.on("offline", function () { return _this.emit(constants_1.FbjsEventName.offline, {}); });
+            client.on("connect", function () { return _this.emit(constants_1.FbjsEventName.online, {}); });
             var channels = [
                 _this.channel.fromAPI,
                 _this.channel.logs,
@@ -408,20 +408,20 @@ var Farmbot = /** @class */ (function () {
             var deviceName = this.config.mqttUsername;
             return {
                 /** From the browser, usually. */
-                toDevice: "bot/" + deviceName + "/" + constants_1.ChanName.fromClients,
+                toDevice: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromClients,
                 /** From farmbot */
-                toClient: "bot/" + deviceName + "/" + constants_1.ChanName.fromDevice,
-                legacyStatus: "bot/" + deviceName + "/" + constants_1.ChanName.legacyStatus,
-                logs: "bot/" + deviceName + "/" + constants_1.ChanName.logs,
-                fromAPI: "bot/" + deviceName + "/" + constants_1.ChanName.fromApi,
-                status: "bot/" + deviceName + "/" + constants_1.ChanName.statusV8 + "/#",
-                sync: "bot/" + deviceName + "/" + constants_1.ChanName.sync + "/#",
+                toClient: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromDevice,
+                legacyStatus: "bot/" + deviceName + "/" + constants_1.MqttChanName.legacyStatus,
+                logs: "bot/" + deviceName + "/" + constants_1.MqttChanName.logs,
+                fromAPI: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromApi,
+                status: "bot/" + deviceName + "/" + constants_1.MqttChanName.statusV8 + "/#",
+                sync: "bot/" + deviceName + "/" + constants_1.MqttChanName.sync + "/#",
             };
         },
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc5";
+    Farmbot.VERSION = "7.0.0-rc6";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

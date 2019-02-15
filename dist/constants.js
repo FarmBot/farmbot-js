@@ -1,26 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ChanName;
-(function (ChanName) {
-    ChanName["fromApi"] = "from_api";
-    ChanName["fromClients"] = "from_clients";
-    ChanName["fromDevice"] = "from_device";
-    ChanName["logs"] = "logs";
-    ChanName["legacyStatus"] = "status";
-    ChanName["statusV8"] = "status_v8";
-    ChanName["sync"] = "sync";
-})(ChanName = exports.ChanName || (exports.ChanName = {}));
-var EventName;
-(function (EventName) {
-    EventName["legacy_status"] = "legacy_status";
-    EventName["logs"] = "logs";
-    EventName["malformed"] = "malformed";
-    EventName["offline"] = "offline";
-    EventName["online"] = "online";
-    EventName["sent"] = "sent";
-    EventName["status_v8"] = "status_v8";
-    EventName["sync"] = "sync";
-})(EventName = exports.EventName || (exports.EventName = {}));
+var MqttChanName;
+(function (MqttChanName) {
+    MqttChanName["fromApi"] = "from_api";
+    MqttChanName["fromClients"] = "from_clients";
+    MqttChanName["fromDevice"] = "from_device";
+    MqttChanName["logs"] = "logs";
+    MqttChanName["legacyStatus"] = "status";
+    MqttChanName["statusV8"] = "status_v8";
+    MqttChanName["sync"] = "sync";
+})(MqttChanName = exports.MqttChanName || (exports.MqttChanName = {}));
+/** Not to be confused with MqttChanNames or
+ * MQTT.js event names */
+var FbjsEventName;
+(function (FbjsEventName) {
+    FbjsEventName["legacy_status"] = "legacy_status";
+    FbjsEventName["logs"] = "logs";
+    FbjsEventName["malformed"] = "malformed";
+    FbjsEventName["offline"] = "offline";
+    FbjsEventName["online"] = "online";
+    FbjsEventName["sent"] = "sent";
+    FbjsEventName["status_v8"] = "status_v8";
+    FbjsEventName["sync"] = "sync";
+})(FbjsEventName = exports.FbjsEventName || (exports.FbjsEventName = {}));
 var Misc;
 (function (Misc) {
     /** Channel delimiter for MQTT channels. */

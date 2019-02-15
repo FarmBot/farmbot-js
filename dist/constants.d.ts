@@ -1,4 +1,4 @@
-export declare enum ChanName {
+export declare enum MqttChanName {
     fromApi = "from_api",
     fromClients = "from_clients",
     fromDevice = "from_device",
@@ -7,7 +7,9 @@ export declare enum ChanName {
     statusV8 = "status_v8",
     sync = "sync"
 }
-export declare enum EventName {
+/** Not to be confused with MqttChanNames or
+ * MQTT.js event names */
+export declare enum FbjsEventName {
     legacy_status = "legacy_status",
     logs = "logs",
     malformed = "malformed",
