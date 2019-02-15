@@ -57,7 +57,7 @@ export declare class Farmbot {
     /** Unlock the bot when the user says it is safe. */
     emergencyUnlock: () => Promise<{}>;
     /** Execute a sequence by its ID on the FarmBot API. */
-    execSequence: (sequence_id: number, body?: Corpus.VariableDeclaration[]) => Promise<{}>;
+    execSequence: (sequence_id: number, body?: Corpus.ParameterApplication[]) => Promise<{}>;
     /** Run an installed Farmware plugin on the SD Card. */
     execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<{}>;
     /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */

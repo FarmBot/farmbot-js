@@ -44,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc6";
+  static VERSION = "7.0.0-rc7";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -157,7 +157,7 @@ export class Farmbot {
   }
   /** Execute a sequence by its ID on the FarmBot API. */
   execSequence =
-    (sequence_id: number, body: Corpus.VariableDeclaration[] = []) => {
+    (sequence_id: number, body: Corpus.ParameterApplication[] = []) => {
       return this.send(rpcRequest([
         { kind: "execute", args: { sequence_id }, body }
       ]));
