@@ -92,16 +92,6 @@ describe("FarmBot", function () {
             bot.installFarmware(url);
             expectRPC({ kind: "install_farmware", args: { url: url } });
         });
-        it("updates Farmware", function () {
-            var pkg = "a package";
-            bot.updateFarmware(pkg);
-            expectRPC({ kind: "update_farmware", args: { package: pkg } });
-        });
-        it("removes Farmware", function () {
-            var pkg = "a package";
-            bot.removeFarmware(pkg);
-            expectRPC({ kind: "remove_farmware", args: { package: pkg } });
-        });
         it("executes a sequence", function () {
             var sequence_id = 123;
             bot.execSequence(sequence_id);
@@ -184,18 +174,6 @@ describe("FarmBot", function () {
             expectRPC({
                 kind: "zero",
                 args: { axis: axis }
-            });
-        });
-        it("Updates MCU settings", function () {
-            var _a;
-            var label = "encoder_use_for_pos_x";
-            var value = 1;
-            var args = (_a = {}, _a[label] = value, _a);
-            bot.updateMcu(args);
-            expectRPC({
-                kind: "config_update",
-                args: { package: "arduino_firmware" },
-                body: [{ kind: "pair", args: { value: value, label: label } }]
             });
         });
         it("sets ENV vars", function () {

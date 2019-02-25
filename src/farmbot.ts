@@ -8,18 +8,8 @@ import {
   coordinate,
   uuid as genUuid
 } from "./util";
-import {
-  Dictionary,
-  McuParams,
-  Configuration,
-  Vector3,
-  Primitive
-} from "./interfaces";
-import { pick } from "./util";
-import {
-  ReadPin,
-  WritePin
-} from ".";
+import { Dictionary, Vector3 } from "./interfaces";
+import { ReadPin, WritePin } from ".";
 import {
   FarmBotInternalConfig as Conf,
   FarmbotConstructorParams,
@@ -44,7 +34,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc8";
+  static VERSION = "7.0.0-rc9";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -72,7 +62,7 @@ export class Farmbot {
    * Checks for updates on a particular Farmware plugin when given the name of
    * a Farmware. `updateFarmware("take-photo")`
    */
-  updateFarmware = (pkg: string) => {
+  updateFarmware = (pkg: Corpus.ALLOWED_PACKAGES) => {
     return this.send(rpcRequest([{
       kind: "update_farmware",
       args: { package: pkg }
@@ -80,10 +70,12 @@ export class Farmbot {
   }
 
   /** Uninstall a Farmware plugin. */
-  removeFarmware = (pkg: string) => {
+  removeFarmware = (pkg: Corpus.ALLOWED_PACKAGES) => {
     return this.send(rpcRequest([{
       kind: "remove_farmware",
-      args: { package: pkg }
+      args: {
+        package: pkg
+      }
     }]));
   }
 
@@ -254,22 +246,6 @@ export class Farmbot {
     }]));
   }
 
-  /** Update FarmBot microcontroller settings. */
-  updateMcu = (update: Partial<McuParams>) => {
-    const body: Corpus.RpcRequestBodyItem[] = [];
-    Object
-      .keys(update)
-      .forEach(function (label) {
-        const value = pick<Primitive>(update, label, "ERROR");
-        body.push({
-          kind: "config_update",
-          args: { package: "arduino_firmware" },
-          body: [{ kind: "pair", args: { value, label } }]
-        });
-      });
-    return this.send(rpcRequest(body));
-  }
-
   /**
    * Set user ENV vars (usually used by 3rd-party Farmware plugins).
    * Set value to `undefined` to unset.
@@ -302,22 +278,6 @@ export class Farmbot {
     }
 
     return result;
-  }
-
-  /** Update a config option (setting) for FarmBot OS. */
-  updateConfig = (update: Partial<Configuration>) => {
-    const body = Object
-      .keys(update)
-      .map((label): Corpus.Pair => {
-        const value = pick<Primitive>(update, label, "ERROR");
-        return { kind: "pair", args: { value, label } };
-      });
-
-    return this.send(rpcRequest([{
-      kind: "config_update",
-      args: { package: "farmbot_os" },
-      body
-    }]));
   }
 
   /**

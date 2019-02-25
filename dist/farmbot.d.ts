@@ -24,9 +24,9 @@ export declare class Farmbot {
      * Checks for updates on a particular Farmware plugin when given the name of
      * a Farmware. `updateFarmware("take-photo")`
      */
-    updateFarmware: (pkg: string) => Promise<{}>;
+    updateFarmware: (pkg: Corpus.ALLOWED_PACKAGES) => Promise<{}>;
     /** Uninstall a Farmware plugin. */
-    removeFarmware: (pkg: string) => Promise<{}>;
+    removeFarmware: (pkg: Corpus.ALLOWED_PACKAGES) => Promise<{}>;
     /**
      * Installs "Farmware" (plugins) authored by FarmBot, Inc.
      * onto the bot's SD card.
@@ -82,16 +82,16 @@ export declare class Farmbot {
     }) => Promise<{}>;
     /** Set a GPIO pin to a particular value. */
     writePin: (args: {
+        pin_mode: Corpus.ALLOWED_PIN_MODES;
         pin_number: number | Corpus.NamedPin;
         pin_value: number;
-        pin_mode: number;
     }) => Promise<{}>;
     /** Read the value of a GPIO pin. Will create a SensorReading if it's
      * a sensor. */
     readPin: (args: {
-        pin_number: number | Corpus.NamedPin;
         label: string;
-        pin_mode: number;
+        pin_mode: Corpus.ALLOWED_PIN_MODES;
+        pin_number: number | Corpus.NamedPin;
     }) => Promise<{}>;
     /** Reverse the value of a digital pin. */
     togglePin: (args: {
@@ -112,8 +112,6 @@ export declare class Farmbot {
      * 255 to 0, causing that position to be x: 0.
      */
     setZero: (axis: Corpus.ALLOWED_AXIS) => Promise<{}>;
-    /** Update FarmBot microcontroller settings. */
-    updateMcu: (update: Partial<Partial<Record<import("./interfaces").McuParamName, number | undefined>>>) => Promise<{}>;
     /**
      * Set user ENV vars (usually used by 3rd-party Farmware plugins).
      * Set value to `undefined` to unset.
@@ -124,8 +122,6 @@ export declare class Farmbot {
         pin_number: number;
         pin_value: number;
     }) => Promise<{}>;
-    /** Update a config option (setting) for FarmBot OS. */
-    updateConfig: (update: Partial<Partial<import("./interfaces").FullConfiguration>>) => Promise<{}>;
     /**
      * Find the axis extents using encoder, motor, or end-stop feedback.
      * Will set a new home position and a new axis length for the given axis.

@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
-var util_2 = require("./util");
 var config_1 = require("./config");
 var resource_adapter_1 = require("./resources/resource_adapter");
 var constants_1 = require("./constants");
@@ -45,7 +44,9 @@ var Farmbot = /** @class */ (function () {
         this.removeFarmware = function (pkg) {
             return _this.send(util_1.rpcRequest([{
                     kind: "remove_farmware",
-                    args: { package: pkg }
+                    args: {
+                        package: pkg
+                    }
                 }]));
         };
         /**
@@ -200,21 +201,6 @@ var Farmbot = /** @class */ (function () {
                     args: { axis: axis }
                 }]));
         };
-        /** Update FarmBot microcontroller settings. */
-        this.updateMcu = function (update) {
-            var body = [];
-            Object
-                .keys(update)
-                .forEach(function (label) {
-                var value = util_2.pick(update, label, "ERROR");
-                body.push({
-                    kind: "config_update",
-                    args: { package: "arduino_firmware" },
-                    body: [{ kind: "pair", args: { value: value, label: label } }]
-                });
-            });
-            return _this.send(util_1.rpcRequest(body));
-        };
         /**
          * Set user ENV vars (usually used by 3rd-party Farmware plugins).
          * Set value to `undefined` to unset.
@@ -243,20 +229,6 @@ var Farmbot = /** @class */ (function () {
                 throw new Error("Pin value outside of 0...360 range");
             }
             return result;
-        };
-        /** Update a config option (setting) for FarmBot OS. */
-        this.updateConfig = function (update) {
-            var body = Object
-                .keys(update)
-                .map(function (label) {
-                var value = util_2.pick(update, label, "ERROR");
-                return { kind: "pair", args: { value: value, label: label } };
-            });
-            return _this.send(util_1.rpcRequest([{
-                    kind: "config_update",
-                    args: { package: "farmbot_os" },
-                    body: body
-                }]));
         };
         /**
          * Find the axis extents using encoder, motor, or end-stop feedback.
@@ -421,7 +393,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc8";
+    Farmbot.VERSION = "7.0.0-rc9";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

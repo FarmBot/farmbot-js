@@ -4,7 +4,7 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams } from "..";
+import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
 import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
@@ -97,18 +97,6 @@ describe("FarmBot", () => {
       const url = "foo.bar/manifest.json";
       bot.installFarmware(url);
       expectRPC({ kind: "install_farmware", args: { url } });
-    });
-
-    it("updates Farmware", () => {
-      const pkg = "a package";
-      bot.updateFarmware(pkg);
-      expectRPC({ kind: "update_farmware", args: { package: pkg } });
-    });
-
-    it("removes Farmware", () => {
-      const pkg = "a package";
-      bot.removeFarmware(pkg);
-      expectRPC({ kind: "remove_farmware", args: { package: pkg } });
     });
 
     it("executes a sequence", () => {
@@ -207,18 +195,6 @@ describe("FarmBot", () => {
       expectRPC({
         kind: "zero",
         args: { axis }
-      });
-    });
-
-    it("Updates MCU settings", () => {
-      const label: keyof McuParams = "encoder_use_for_pos_x";
-      const value = 1;
-      const args = { [label]: value };
-      bot.updateMcu(args);
-      expectRPC({
-        kind: "config_update",
-        args: { package: "arduino_firmware" },
-        body: [{ kind: "pair", args: { value, label } }]
       });
     });
 
