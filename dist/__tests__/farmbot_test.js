@@ -92,6 +92,16 @@ describe("FarmBot", function () {
             bot.installFarmware(url);
             expectRPC({ kind: "install_farmware", args: { url: url } });
         });
+        it("updates Farmware", function () {
+            var pkg = "a package";
+            bot.updateFarmware(pkg);
+            expectRPC({ kind: "update_farmware", args: { package: pkg } });
+        });
+        it("removes Farmware", function () {
+            var pkg = "farmbot_os";
+            bot.removeFarmware(pkg);
+            expectRPC({ kind: "remove_farmware", args: { package: pkg } });
+        });
         it("executes a sequence", function () {
             var sequence_id = 123;
             bot.execSequence(sequence_id);

@@ -24,9 +24,9 @@ export declare class Farmbot {
      * Checks for updates on a particular Farmware plugin when given the name of
      * a Farmware. `updateFarmware("take-photo")`
      */
-    updateFarmware: (pkg: Corpus.ALLOWED_PACKAGES) => Promise<{}>;
+    updateFarmware: (pkg: string) => Promise<{}>;
     /** Uninstall a Farmware plugin. */
-    removeFarmware: (pkg: Corpus.ALLOWED_PACKAGES) => Promise<{}>;
+    removeFarmware: (pkg: string) => Promise<{}>;
     /**
      * Installs "Farmware" (plugins) authored by FarmBot, Inc.
      * onto the bot's SD card.

@@ -99,6 +99,18 @@ describe("FarmBot", () => {
       expectRPC({ kind: "install_farmware", args: { url } });
     });
 
+    it("updates Farmware", () => {
+      const pkg = "a package";
+      bot.updateFarmware(pkg);
+      expectRPC({ kind: "update_farmware", args: { package: pkg } });
+    });
+
+    it("removes Farmware", () => {
+      const pkg = "farmbot_os";
+      bot.removeFarmware(pkg);
+      expectRPC({ kind: "remove_farmware", args: { package: pkg } });
+    });
+
     it("executes a sequence", () => {
       const sequence_id = 123;
       bot.execSequence(sequence_id);

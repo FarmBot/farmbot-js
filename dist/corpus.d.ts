@@ -23,7 +23,9 @@ export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot";
 export declare type lhs = "pin0" | "pin1" | "pin10" | "pin11" | "pin12" | "pin13" | "pin14" | "pin15" | "pin16" | "pin17" | "pin18" | "pin19" | "pin2" | "pin20" | "pin21" | "pin22" | "pin23" | "pin24" | "pin25" | "pin26" | "pin27" | "pin28" | "pin29" | "pin3" | "pin30" | "pin31" | "pin32" | "pin33" | "pin34" | "pin35" | "pin36" | "pin37" | "pin38" | "pin39" | "pin4" | "pin40" | "pin41" | "pin42" | "pin43" | "pin44" | "pin45" | "pin46" | "pin47" | "pin48" | "pin49" | "pin5" | "pin50" | "pin51" | "pin52" | "pin53" | "pin54" | "pin55" | "pin56" | "pin57" | "pin58" | "pin59" | "pin6" | "pin60" | "pin61" | "pin62" | "pin63" | "pin64" | "pin65" | "pin66" | "pin67" | "pin68" | "pin69" | "pin7" | "pin8" | "pin9" | "x" | "y" | "z";
 export declare type resource_type = "Device" | "FarmEvent" | "GenericPointer" | "Image" | "Log" | "Peripheral" | "Plant" | "Point" | "Regimen" | "Sequence" | "Tool" | "ToolSlot" | "User";
 export declare type IfBodyItem = (Pair);
-/**  Tag properties: *. */
+/** _if
+
+ Tag properties: *. */
 export interface If {
     comment?: string | undefined;
     kind: "_if";
@@ -37,7 +39,9 @@ export interface If {
     body?: IfBodyItem[] | undefined;
 }
 export declare type CalibrateBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** calibrate
+
+ Tag properties: firmware_user, function. */
 export interface Calibrate {
     comment?: string | undefined;
     kind: "calibrate";
@@ -47,7 +51,9 @@ export interface Calibrate {
     body?: CalibrateBodyItem[] | undefined;
 }
 export declare type ChangeOwnershipBodyItem = (Pair);
-/** Not a commonly used node. May be removed without notice. Tag properties: api_writer, cuts_power, disk_user, function, network_user. */
+/** change_ownership
+Not a commonly used node. May be removed without notice.
+ Tag properties: api_writer, cuts_power, disk_user, function, network_user. */
 export interface ChangeOwnership {
     comment?: string | undefined;
     kind: "change_ownership";
@@ -55,7 +61,9 @@ export interface ChangeOwnership {
     body?: ChangeOwnershipBodyItem[] | undefined;
 }
 export declare type ChannelBodyItem = never;
-/** Specifies a communication path for log messages. Tag properties: data. */
+/** channel
+Specifies a communication path for log messages.
+ Tag properties: data. */
 export interface Channel {
     comment?: string | undefined;
     kind: "channel";
@@ -65,17 +73,21 @@ export interface Channel {
     body?: ChannelBodyItem[] | undefined;
 }
 export declare type CheckUpdatesBodyItem = never;
-/**  Tag properties: cuts_power, disk_user, function, network_user. */
+/** check_updates
+
+ Tag properties: cuts_power, disk_user, function, network_user. */
 export interface CheckUpdates {
     comment?: string | undefined;
     kind: "check_updates";
     args: {
-        package: ALLOWED_PACKAGES;
+        package: CSString;
     };
     body?: CheckUpdatesBodyItem[] | undefined;
 }
 export declare type CoordinateBodyItem = never;
-/**  Tag properties: data, location_like. */
+/** coordinate
+
+ Tag properties: data, location_like. */
 export interface Coordinate {
     comment?: string | undefined;
     kind: "coordinate";
@@ -87,7 +99,9 @@ export interface Coordinate {
     body?: CoordinateBodyItem[] | undefined;
 }
 export declare type DumpInfoBodyItem = never;
-/** Sends an info dump to server administrators for troubleshooting. Tag properties: api_writer, disk_user, function, network_user. */
+/** dump_info
+Sends an info dump to server administrators for troubleshooting.
+ Tag properties: api_writer, disk_user, function, network_user. */
 export interface DumpInfo {
     comment?: string | undefined;
     kind: "dump_info";
@@ -95,7 +109,9 @@ export interface DumpInfo {
     body?: DumpInfoBodyItem[] | undefined;
 }
 export declare type EmergencyLockBodyItem = never;
-/**  Tag properties: control_flow, firmware_user, function. */
+/** emergency_lock
+
+ Tag properties: control_flow, firmware_user, function. */
 export interface EmergencyLock {
     comment?: string | undefined;
     kind: "emergency_lock";
@@ -103,7 +119,9 @@ export interface EmergencyLock {
     body?: EmergencyLockBodyItem[] | undefined;
 }
 export declare type EmergencyUnlockBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** emergency_unlock
+
+ Tag properties: firmware_user, function. */
 export interface EmergencyUnlock {
     comment?: string | undefined;
     kind: "emergency_unlock";
@@ -111,7 +129,9 @@ export interface EmergencyUnlock {
     body?: EmergencyUnlockBodyItem[] | undefined;
 }
 export declare type EveryPointBodyItem = never;
-/** Experimental node used for iteration. Tag properties: control_flow, data, list_like. */
+/** every_point
+Experimental node used for iteration.
+ Tag properties: control_flow, data, list_like. */
 export interface EveryPoint {
     comment?: string | undefined;
     kind: "every_point";
@@ -121,7 +141,9 @@ export interface EveryPoint {
     body?: EveryPointBodyItem[] | undefined;
 }
 export declare type ExecuteScriptBodyItem = (Pair);
-/**  Tag properties: *. */
+/** execute_script
+
+ Tag properties: *. */
 export interface ExecuteScript {
     comment?: string | undefined;
     kind: "execute_script";
@@ -131,7 +153,9 @@ export interface ExecuteScript {
     body?: ExecuteScriptBodyItem[] | undefined;
 }
 export declare type ExecuteBodyItem = (ParameterApplication);
-/**  Tag properties: *. */
+/** execute
+
+ Tag properties: *. */
 export interface Execute {
     comment?: string | undefined;
     kind: "execute";
@@ -141,7 +165,9 @@ export interface Execute {
     body?: ExecuteBodyItem[] | undefined;
 }
 export declare type ExplanationBodyItem = never;
-/**  Tag properties: data. */
+/** explanation
+
+ Tag properties: data. */
 export interface Explanation {
     comment?: string | undefined;
     kind: "explanation";
@@ -151,17 +177,21 @@ export interface Explanation {
     body?: ExplanationBodyItem[] | undefined;
 }
 export declare type FactoryResetBodyItem = never;
-/**  Tag properties: cuts_power, function. */
+/** factory_reset
+
+ Tag properties: cuts_power, function. */
 export interface FactoryReset {
     comment?: string | undefined;
     kind: "factory_reset";
     args: {
-        package: ALLOWED_PACKAGES;
+        package: CSString;
     };
     body?: FactoryResetBodyItem[] | undefined;
 }
 export declare type FindHomeBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** find_home
+
+ Tag properties: firmware_user, function. */
 export interface FindHome {
     comment?: string | undefined;
     kind: "find_home";
@@ -172,7 +202,9 @@ export interface FindHome {
     body?: FindHomeBodyItem[] | undefined;
 }
 export declare type HomeBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** home
+
+ Tag properties: firmware_user, function. */
 export interface Home {
     comment?: string | undefined;
     kind: "home";
@@ -183,7 +215,9 @@ export interface Home {
     body?: HomeBodyItem[] | undefined;
 }
 export declare type IdentifierBodyItem = never;
-/**  Tag properties: data. */
+/** identifier
+
+ Tag properties: data. */
 export interface Identifier {
     comment?: string | undefined;
     kind: "identifier";
@@ -193,7 +227,9 @@ export interface Identifier {
     body?: IdentifierBodyItem[] | undefined;
 }
 export declare type InstallFarmwareBodyItem = never;
-/**  Tag properties: api_writer, disk_user, function, network_user. */
+/** install_farmware
+
+ Tag properties: api_writer, disk_user, function, network_user. */
 export interface InstallFarmware {
     comment?: string | undefined;
     kind: "install_farmware";
@@ -203,7 +239,9 @@ export interface InstallFarmware {
     body?: InstallFarmwareBodyItem[] | undefined;
 }
 export declare type InstallFirstPartyFarmwareBodyItem = never;
-/**  Tag properties: function, network_user. */
+/** install_first_party_farmware
+
+ Tag properties: function, network_user. */
 export interface InstallFirstPartyFarmware {
     comment?: string | undefined;
     kind: "install_first_party_farmware";
@@ -211,7 +249,9 @@ export interface InstallFirstPartyFarmware {
     body?: InstallFirstPartyFarmwareBodyItem[] | undefined;
 }
 export declare type InternalFarmEventBodyItem = (ParameterApplication);
-/**  Tag properties: . */
+/** internal_farm_event
+
+ Tag properties: . */
 export interface InternalFarmEvent {
     comment?: string | undefined;
     kind: "internal_farm_event";
@@ -219,7 +259,9 @@ export interface InternalFarmEvent {
     body?: InternalFarmEventBodyItem[] | undefined;
 }
 export declare type InternalRegimenBodyItem = (ParameterApplication | ParameterDeclaration | VariableDeclaration);
-/**  Tag properties: . */
+/** internal_regimen
+
+ Tag properties: . */
 export interface InternalRegimen {
     comment?: string | undefined;
     kind: "internal_regimen";
@@ -227,7 +269,9 @@ export interface InternalRegimen {
     body?: InternalRegimenBodyItem[] | undefined;
 }
 export declare type MoveRelativeBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** move_relative
+
+ Tag properties: firmware_user, function. */
 export interface MoveRelative {
     comment?: string | undefined;
     kind: "move_relative";
@@ -240,7 +284,9 @@ export interface MoveRelative {
     body?: MoveRelativeBodyItem[] | undefined;
 }
 export declare type NothingBodyItem = never;
-/**  Tag properties: data, function. */
+/** nothing
+
+ Tag properties: data, function. */
 export interface Nothing {
     comment?: string | undefined;
     kind: "nothing";
@@ -248,7 +294,9 @@ export interface Nothing {
     body?: NothingBodyItem[] | undefined;
 }
 export declare type PairBodyItem = never;
-/**  Tag properties: data. */
+/** pair
+
+ Tag properties: data. */
 export interface Pair {
     comment?: string | undefined;
     kind: "pair";
@@ -259,7 +307,9 @@ export interface Pair {
     body?: PairBodyItem[] | undefined;
 }
 export declare type ParameterApplicationBodyItem = never;
-/**  Tag properties: control_flow, function, scope_writer. */
+/** parameter_application
+
+ Tag properties: control_flow, function, scope_writer. */
 export interface ParameterApplication {
     comment?: string | undefined;
     kind: "parameter_application";
@@ -270,7 +320,9 @@ export interface ParameterApplication {
     body?: ParameterApplicationBodyItem[] | undefined;
 }
 export declare type ParameterDeclarationBodyItem = never;
-/**  Tag properties: scope_writer. */
+/** parameter_declaration
+
+ Tag properties: scope_writer. */
 export interface ParameterDeclaration {
     comment?: string | undefined;
     kind: "parameter_declaration";
@@ -281,7 +333,9 @@ export interface ParameterDeclaration {
     body?: ParameterDeclarationBodyItem[] | undefined;
 }
 export declare type PointBodyItem = never;
-/**  Tag properties: data, location_like. */
+/** point
+
+ Tag properties: data, location_like. */
 export interface Point {
     comment?: string | undefined;
     kind: "point";
@@ -292,7 +346,9 @@ export interface Point {
     body?: PointBodyItem[] | undefined;
 }
 export declare type PowerOffBodyItem = never;
-/**  Tag properties: cuts_power, function. */
+/** power_off
+
+ Tag properties: cuts_power, function. */
 export interface PowerOff {
     comment?: string | undefined;
     kind: "power_off";
@@ -300,7 +356,9 @@ export interface PowerOff {
     body?: PowerOffBodyItem[] | undefined;
 }
 export declare type ReadStatusBodyItem = never;
-/**  Tag properties: function. */
+/** read_status
+
+ Tag properties: function. */
 export interface ReadStatus {
     comment?: string | undefined;
     kind: "read_status";
@@ -308,27 +366,33 @@ export interface ReadStatus {
     body?: ReadStatusBodyItem[] | undefined;
 }
 export declare type RebootBodyItem = never;
-/**  Tag properties: cuts_power, firmware_user, function. */
+/** reboot
+
+ Tag properties: cuts_power, firmware_user, function. */
 export interface Reboot {
     comment?: string | undefined;
     kind: "reboot";
     args: {
-        package: ALLOWED_PACKAGES;
+        package: CSString;
     };
     body?: RebootBodyItem[] | undefined;
 }
 export declare type RemoveFarmwareBodyItem = never;
-/**  Tag properties: function. */
+/** remove_farmware
+
+ Tag properties: function. */
 export interface RemoveFarmware {
     comment?: string | undefined;
     kind: "remove_farmware";
     args: {
-        package: ALLOWED_PACKAGES;
+        package: CSString;
     };
     body?: RemoveFarmwareBodyItem[] | undefined;
 }
 export declare type RpcErrorBodyItem = (Explanation);
-/**  Tag properties: data. */
+/** rpc_error
+
+ Tag properties: data. */
 export interface RpcError {
     comment?: string | undefined;
     kind: "rpc_error";
@@ -338,7 +402,9 @@ export interface RpcError {
     body?: RpcErrorBodyItem[] | undefined;
 }
 export declare type RpcOkBodyItem = never;
-/**  Tag properties: data. */
+/** rpc_ok
+
+ Tag properties: data. */
 export interface RpcOk {
     comment?: string | undefined;
     kind: "rpc_ok";
@@ -348,7 +414,9 @@ export interface RpcOk {
     body?: RpcOkBodyItem[] | undefined;
 }
 export declare type RpcRequestBodyItem = (If | Calibrate | ChangeOwnership | CheckUpdates | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | Home | InstallFarmware | InstallFirstPartyFarmware | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | SendMessage | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | Wait | WritePin | Zero);
-/**  Tag properties: *. */
+/** rpc_request
+
+ Tag properties: *. */
 export interface RpcRequest {
     comment?: string | undefined;
     kind: "rpc_request";
@@ -358,7 +426,9 @@ export interface RpcRequest {
     body?: RpcRequestBodyItem[] | undefined;
 }
 export declare type ScopeDeclarationBodyItem = (ParameterDeclaration | VariableDeclaration);
-/**  Tag properties: scope_writer. */
+/** scope_declaration
+
+ Tag properties: scope_writer. */
 export interface ScopeDeclaration {
     comment?: string | undefined;
     kind: "scope_declaration";
@@ -366,7 +436,9 @@ export interface ScopeDeclaration {
     body?: ScopeDeclarationBodyItem[] | undefined;
 }
 export declare type SendMessageBodyItem = (Channel);
-/**  Tag properties: function. */
+/** send_message
+
+ Tag properties: function. */
 export interface SendMessage {
     comment?: string | undefined;
     kind: "send_message";
@@ -377,7 +449,9 @@ export interface SendMessage {
     body?: SendMessageBodyItem[] | undefined;
 }
 export declare type SequenceBodyItem = (If | Calibrate | ChangeOwnership | CheckUpdates | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | Home | InstallFarmware | InstallFirstPartyFarmware | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | SendMessage | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | Wait | WritePin | Zero);
-/**  Tag properties: *. */
+/** sequence
+
+ Tag properties: *. */
 export interface Sequence {
     comment?: string | undefined;
     kind: "sequence";
@@ -388,7 +462,9 @@ export interface Sequence {
     body?: SequenceBodyItem[] | undefined;
 }
 export declare type SetServoAngleBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** set_servo_angle
+
+ Tag properties: firmware_user, function. */
 export interface SetServoAngle {
     comment?: string | undefined;
     kind: "set_servo_angle";
@@ -399,7 +475,9 @@ export interface SetServoAngle {
     body?: SetServoAngleBodyItem[] | undefined;
 }
 export declare type SetUserEnvBodyItem = (Pair);
-/**  Tag properties: disk_user, function. */
+/** set_user_env
+
+ Tag properties: disk_user, function. */
 export interface SetUserEnv {
     comment?: string | undefined;
     kind: "set_user_env";
@@ -407,7 +485,9 @@ export interface SetUserEnv {
     body?: SetUserEnvBodyItem[] | undefined;
 }
 export declare type SyncBodyItem = never;
-/**  Tag properties: disk_user, function, network_user. */
+/** sync
+
+ Tag properties: disk_user, function, network_user. */
 export interface Sync {
     comment?: string | undefined;
     kind: "sync";
@@ -415,7 +495,9 @@ export interface Sync {
     body?: SyncBodyItem[] | undefined;
 }
 export declare type TakePhotoBodyItem = never;
-/**  Tag properties: disk_user, function. */
+/** take_photo
+
+ Tag properties: disk_user, function. */
 export interface TakePhoto {
     comment?: string | undefined;
     kind: "take_photo";
@@ -423,7 +505,9 @@ export interface TakePhoto {
     body?: TakePhotoBodyItem[] | undefined;
 }
 export declare type TogglePinBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** toggle_pin
+
+ Tag properties: firmware_user, function. */
 export interface TogglePin {
     comment?: string | undefined;
     kind: "toggle_pin";
@@ -433,7 +517,9 @@ export interface TogglePin {
     body?: TogglePinBodyItem[] | undefined;
 }
 export declare type ToolBodyItem = never;
-/**  Tag properties: api_validated, data, location_like. */
+/** tool
+
+ Tag properties: api_validated, data, location_like. */
 export interface Tool {
     comment?: string | undefined;
     kind: "tool";
@@ -443,17 +529,21 @@ export interface Tool {
     body?: ToolBodyItem[] | undefined;
 }
 export declare type UpdateFarmwareBodyItem = never;
-/**  Tag properties: api_validated, function, network_user. */
+/** update_farmware
+
+ Tag properties: api_validated, function, network_user. */
 export interface UpdateFarmware {
     comment?: string | undefined;
     kind: "update_farmware";
     args: {
-        package: ALLOWED_PACKAGES;
+        package: CSString;
     };
     body?: UpdateFarmwareBodyItem[] | undefined;
 }
 export declare type VariableDeclarationBodyItem = never;
-/**  Tag properties: function, scope_writer. */
+/** variable_declaration
+
+ Tag properties: function, scope_writer. */
 export interface VariableDeclaration {
     comment?: string | undefined;
     kind: "variable_declaration";
@@ -464,7 +554,9 @@ export interface VariableDeclaration {
     body?: VariableDeclarationBodyItem[] | undefined;
 }
 export declare type WaitBodyItem = never;
-/**  Tag properties: function. */
+/** wait
+
+ Tag properties: function. */
 export interface Wait {
     comment?: string | undefined;
     kind: "wait";
@@ -474,7 +566,9 @@ export interface Wait {
     body?: WaitBodyItem[] | undefined;
 }
 export declare type ZeroBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** zero
+
+ Tag properties: firmware_user, function. */
 export interface Zero {
     comment?: string | undefined;
     kind: "zero";
@@ -484,7 +578,9 @@ export interface Zero {
     body?: ZeroBodyItem[] | undefined;
 }
 export declare type NamedPinBodyItem = never;
-/**  Tag properties: api_validated, data, firmware_user, function, rpi_user. */
+/** named_pin
+
+ Tag properties: api_validated, data, firmware_user, function, rpi_user. */
 export interface NamedPin {
     comment?: string | undefined;
     kind: "named_pin";
@@ -495,7 +591,9 @@ export interface NamedPin {
     body?: NamedPinBodyItem[] | undefined;
 }
 export declare type MoveAbsoluteBodyItem = never;
-/**  Tag properties: firmware_user, function. */
+/** move_absolute
+
+ Tag properties: firmware_user, function. */
 export interface MoveAbsolute {
     comment?: string | undefined;
     kind: "move_absolute";
@@ -507,7 +605,9 @@ export interface MoveAbsolute {
     body?: MoveAbsoluteBodyItem[] | undefined;
 }
 export declare type WritePinBodyItem = never;
-/**  Tag properties: firmware_user, function, rpi_user. */
+/** write_pin
+
+ Tag properties: firmware_user, function, rpi_user. */
 export interface WritePin {
     comment?: string | undefined;
     kind: "write_pin";
@@ -519,7 +619,9 @@ export interface WritePin {
     body?: WritePinBodyItem[] | undefined;
 }
 export declare type ReadPinBodyItem = never;
-/**  Tag properties: firmware_user, function, rpi_user. */
+/** read_pin
+
+ Tag properties: firmware_user, function, rpi_user. */
 export interface ReadPin {
     comment?: string | undefined;
     kind: "read_pin";
@@ -531,7 +633,9 @@ export interface ReadPin {
     body?: ReadPinBodyItem[] | undefined;
 }
 export declare type ResourceUpdateBodyItem = never;
-/**  Tag properties: api_writer, function, network_user. */
+/** resource_update
+
+ Tag properties: api_writer, function, network_user. */
 export interface ResourceUpdate {
     comment?: string | undefined;
     kind: "resource_update";

@@ -34,7 +34,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc9";
+  static VERSION = "7.0.0-rc10";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -62,7 +62,7 @@ export class Farmbot {
    * Checks for updates on a particular Farmware plugin when given the name of
    * a Farmware. `updateFarmware("take-photo")`
    */
-  updateFarmware = (pkg: Corpus.ALLOWED_PACKAGES) => {
+  updateFarmware = (pkg: string) => {
     return this.send(rpcRequest([{
       kind: "update_farmware",
       args: { package: pkg }
@@ -70,7 +70,7 @@ export class Farmbot {
   }
 
   /** Uninstall a Farmware plugin. */
-  removeFarmware = (pkg: Corpus.ALLOWED_PACKAGES) => {
+  removeFarmware = (pkg: string) => {
     return this.send(rpcRequest([{
       kind: "remove_farmware",
       args: {
