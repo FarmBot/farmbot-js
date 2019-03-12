@@ -34,7 +34,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.0-rc10";
+  static VERSION = "7.0.0-rc11";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -332,7 +332,6 @@ export class Farmbot {
       toClient: `bot/${deviceName}/${MqttChanName.fromDevice}`,
       legacyStatus: `bot/${deviceName}/${MqttChanName.legacyStatus}`,
       logs: `bot/${deviceName}/${MqttChanName.logs}`,
-      fromAPI: `bot/${deviceName}/${MqttChanName.fromApi}`,
       status: `bot/${deviceName}/${MqttChanName.statusV8}/#`,
       sync: `bot/${deviceName}/${MqttChanName.sync}/#`,
     };
@@ -429,7 +428,6 @@ export class Farmbot {
     client.on("offline", () => this.emit(FbjsEventName.offline, {}));
     client.on("connect", () => this.emit(FbjsEventName.online, {}));
     const channels = [
-      this.channel.fromAPI,
       this.channel.logs,
       this.channel.legacyStatus,
       this.channel.status,

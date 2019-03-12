@@ -352,7 +352,6 @@ var Farmbot = /** @class */ (function () {
             client.on("offline", function () { return _this.emit(constants_1.FbjsEventName.offline, {}); });
             client.on("connect", function () { return _this.emit(constants_1.FbjsEventName.online, {}); });
             var channels = [
-                _this.channel.fromAPI,
                 _this.channel.logs,
                 _this.channel.legacyStatus,
                 _this.channel.status,
@@ -385,7 +384,6 @@ var Farmbot = /** @class */ (function () {
                 toClient: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromDevice,
                 legacyStatus: "bot/" + deviceName + "/" + constants_1.MqttChanName.legacyStatus,
                 logs: "bot/" + deviceName + "/" + constants_1.MqttChanName.logs,
-                fromAPI: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromApi,
                 status: "bot/" + deviceName + "/" + constants_1.MqttChanName.statusV8 + "/#",
                 sync: "bot/" + deviceName + "/" + constants_1.MqttChanName.sync + "/#",
             };
@@ -393,7 +391,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc10";
+    Farmbot.VERSION = "7.0.0-rc11";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

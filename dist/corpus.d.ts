@@ -11,12 +11,11 @@ export declare type ALLOWED_MESSAGE_TYPES = "busy" | "debug" | "error" | "fun" |
 export declare type ALLOWED_OPS = "<" | ">" | "is" | "is_undefined" | "not";
 export declare type ALLOWED_PACKAGES = "arduino_firmware" | "farmbot_os";
 export declare type ALLOWED_PIN_MODES = 0 | 1;
-export declare type AllowedGroupTypes = "GenericPointer" | "Plant" | "Tool" | "ToolSlot";
 export declare type AllowedPinTypes = "BoxLed3" | "BoxLed4" | "Peripheral" | "Sensor";
 export declare type Color = "blue" | "gray" | "green" | "orange" | "pink" | "purple" | "red" | "yellow";
 export declare type DataChangeType = "add" | "remove" | "update";
-export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "data_value" | "default_value" | "every_point_type" | "label" | "lhs" | "locals" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_id" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "pointer_id" | "pointer_type" | "radius" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
-export declare type LegalKindString = "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "DumpInfo" | "EmergencyLock" | "EmergencyUnlock" | "EveryPoint" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PowerOff" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "Sync" | "TakePhoto" | "TogglePin" | "Tool" | "UpdateFarmware" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
+export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "data_value" | "default_value" | "label" | "lhs" | "locals" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_id" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "pointer_id" | "pointer_type" | "radius" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
+export declare type LegalKindString = "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "DumpInfo" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PowerOff" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "Sync" | "TakePhoto" | "TogglePin" | "Tool" | "UpdateFarmware" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
 export declare type LegalSequenceKind = "_if" | "calibrate" | "change_ownership" | "check_updates" | "dump_info" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "home" | "install_farmware" | "install_first_party_farmware" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "resource_update" | "send_message" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "wait" | "write_pin" | "zero";
 export declare type PlantStage = "harvested" | "planned" | "planted" | "sprouted";
 export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot";
@@ -127,18 +126,6 @@ export interface EmergencyUnlock {
     kind: "emergency_unlock";
     args: {};
     body?: EmergencyUnlockBodyItem[] | undefined;
-}
-export declare type EveryPointBodyItem = never;
-/** every_point
-Experimental node used for iteration.
- Tag properties: control_flow, data, list_like. */
-export interface EveryPoint {
-    comment?: string | undefined;
-    kind: "every_point";
-    args: {
-        every_point_type: PointType;
-    };
-    body?: EveryPointBodyItem[] | undefined;
 }
 export declare type ExecuteScriptBodyItem = (Pair);
 /** execute_script
@@ -314,7 +301,7 @@ export interface ParameterApplication {
     comment?: string | undefined;
     kind: "parameter_application";
     args: {
-        data_value: Tool | Coordinate | Point | Identifier | EveryPoint;
+        data_value: Tool | Coordinate | Point | Identifier;
         label: CSString;
     };
     body?: ParameterApplicationBodyItem[] | undefined;
@@ -327,7 +314,7 @@ export interface ParameterDeclaration {
     comment?: string | undefined;
     kind: "parameter_declaration";
     args: {
-        default_value: Tool | Coordinate | Point | Identifier | EveryPoint;
+        default_value: Tool | Coordinate | Point | Identifier;
         label: CSString;
     };
     body?: ParameterDeclarationBodyItem[] | undefined;
@@ -548,7 +535,7 @@ export interface VariableDeclaration {
     comment?: string | undefined;
     kind: "variable_declaration";
     args: {
-        data_value: Tool | Coordinate | Point | Identifier | EveryPoint;
+        data_value: Tool | Coordinate | Point | Identifier;
         label: CSString;
     };
     body?: VariableDeclarationBodyItem[] | undefined;
@@ -598,7 +585,7 @@ export interface MoveAbsolute {
     comment?: string | undefined;
     kind: "move_absolute";
     args: {
-        location: Tool | Coordinate | Point | Identifier | EveryPoint;
+        location: Tool | Coordinate | Point | Identifier;
         offset: Coordinate;
         speed: CSInteger;
     };
@@ -647,4 +634,4 @@ export interface ResourceUpdate {
     };
     body?: ResourceUpdateBodyItem[] | undefined;
 }
-export declare type CeleryNode = Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | DumpInfo | EmergencyLock | EmergencyUnlock | EveryPoint | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | MoveAbsolute | MoveRelative | NamedPin | Nothing | Pair | ParameterApplication | ParameterDeclaration | Point | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | RpcError | RpcOk | RpcRequest | ScopeDeclaration | SendMessage | Sequence | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | Tool | UpdateFarmware | VariableDeclaration | Wait | WritePin | Zero;
+export declare type CeleryNode = Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | MoveAbsolute | MoveRelative | NamedPin | Nothing | Pair | ParameterApplication | ParameterDeclaration | Point | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | RpcError | RpcOk | RpcRequest | ScopeDeclaration | SendMessage | Sequence | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | Tool | UpdateFarmware | VariableDeclaration | Wait | WritePin | Zero;

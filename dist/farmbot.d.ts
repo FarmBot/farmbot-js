@@ -146,7 +146,6 @@ export declare class Farmbot {
         toClient: string;
         legacyStatus: string;
         logs: string;
-        fromAPI: string;
         status: string;
         sync: string;
     };
