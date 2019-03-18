@@ -18,7 +18,7 @@ export interface BotStateTree {
     jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
-        farmwares: Dictionary<FarmwareManifest>;
+        farmwares: Dictionary<LegacyFarmwareManifest>;
     };
     gpio_registry: {
         [pin: number]: string | undefined;
@@ -57,11 +57,11 @@ export interface FarmwareManifestMeta {
  * Configs (inputs) requested by a Farmware.
  * Can be namespaced and supplied to a run Farmware command.
  * Also used in FarmBot Web App Farmware page form builder.
+ * Last used in FBOS 7.0.2
  */
-export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
-/** The Farmware manifest is a JSON file published by Farmware authors.
- * It is used by FarmBot OS to perform installation and upgrades. */
-export interface FarmwareManifest {
+export declare type LegacyFarmwareConfig = Record<"name" | "label" | "value", string>;
+/** Last used in FBOS 7.0.2 */
+export interface LegacyFarmwareManifest {
     farmware_tools_version?: string;
     /** The thing that will run the Farmware eg: `python`. */
     executable: string;
@@ -73,7 +73,29 @@ export interface FarmwareManifest {
     url: string;
     path: string;
     meta: FarmwareManifestMeta;
-    config: FarmwareConfig[];
+    config: LegacyFarmwareConfig[];
+}
+export interface FarmwareConfig {
+    label: string;
+    value: string;
+    order?: number;
+}
+/** The Farmware manifest is a JSON file published by Farmware authors.
+ * It is used by FarmBot OS to perform installation and upgrades. */
+export interface FarmwareManifest {
+    args: string;
+    author: string;
+    config: Dictionary<FarmwareConfig>;
+    description: string;
+    executable: string;
+    farmbot_os_version_requirement: string;
+    farmware_manifest_version_requirement: string;
+    farmware_manifest_version: string;
+    language: string;
+    package_version: string;
+    package: string;
+    url: string;
+    zip: string;
 }
 export declare enum Encoder {
     unknown = -1,
