@@ -78,7 +78,7 @@ export interface LegacyFarmwareManifest {
 export interface FarmwareConfig {
     label: string;
     value: string;
-    order?: number;
+    order: number;
 }
 /** The Farmware manifest is a JSON file published by Farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades. */
@@ -89,7 +89,6 @@ export interface FarmwareManifest {
     description: string;
     executable: string;
     farmbot_os_version_requirement: string;
-    farmware_manifest_version_requirement: string;
     farmware_manifest_version: string;
     language: string;
     package_version: string;
