@@ -18,7 +18,7 @@ export interface BotStateTree {
     jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
-        farmwares: Dictionary<LegacyFarmwareManifest>;
+        farmwares: Dictionary<FarmwareManifest | LegacyFarmwareManifest>;
     };
     gpio_registry: {
         [pin: number]: string | undefined;
@@ -43,8 +43,11 @@ export interface BytesProgress {
     unit: "bytes";
     bytes: number;
 }
-/** Some of the data provided by Farmware author in a Farmware manifest JSON file. */
-export interface FarmwareManifestMeta {
+/**
+ * Some of the data provided by Farmware author in a Farmware manifest JSON file.
+ * Used in FarmBot OS < v8, since this info is now included in `FarmwareManifest`.
+ */
+export interface LegacyFarmwareManifestMeta {
     /** eg: "6" */
     min_os_version_major: string;
     description: string;
@@ -57,10 +60,13 @@ export interface FarmwareManifestMeta {
  * Configs (inputs) requested by a Farmware.
  * Can be namespaced and supplied to a run Farmware command.
  * Also used in FarmBot Web App Farmware page form builder.
- * Last used in FBOS 7.0.2
  */
-export declare type LegacyFarmwareConfig = Record<"name" | "label" | "value", string>;
-/** Last used in FBOS 7.0.2 */
+export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
+/**
+ * The Farmware manifest is a JSON file published by Farmware authors.
+ * It is used by FarmBot OS to perform installation and upgrades.
+ * Used in FarmBot OS < v8. For FarmBot OS >= v8, use `FarmwareManifest`.
+ */
 export interface LegacyFarmwareManifest {
     farmware_tools_version?: string;
     /** The thing that will run the Farmware eg: `python`. */
@@ -72,28 +78,40 @@ export interface LegacyFarmwareManifest {
     /** Farmware manifest URL. */
     url: string;
     path: string;
-    meta: FarmwareManifestMeta;
-    config: LegacyFarmwareConfig[];
+    meta: LegacyFarmwareManifestMeta;
+    config: FarmwareConfig[];
 }
-export interface FarmwareConfig {
-    label: string;
-    value: string;
-    order: number;
-}
-/** The Farmware manifest is a JSON file published by Farmware authors.
- * It is used by FarmBot OS to perform installation and upgrades. */
+/**
+ * The Farmware manifest is a JSON file published by Farmware authors.
+ * It is used by FarmBot OS to perform installation and upgrades.
+ * Used in FarmBot OS >= v8. For FarmBot OS < v8, use `LegacyFarmwareManifest`.
+ */
 export interface FarmwareManifest {
-    args: string;
-    author: string;
-    config: Dictionary<FarmwareConfig>;
-    description: string;
-    executable: string;
-    farmbot_os_version_requirement: string;
+    /** "2.0" */
     farmware_manifest_version: string;
-    language: string;
-    package_version: string;
+    /** Farmware name. */
     package: string;
+    /** Farmware version. */
+    package_version: string;
+    /** Farmware description (optional). */
+    description: string;
+    /** Farmware author. */
+    author: string;
+    /** Farmware language, eg: `python` (optional). */
+    language: string;
+    /** The thing that will run the Farmware eg: `python`. */
+    executable: string;
+    /** Command line args (combined into a string) passed to `executable`. */
+    args: string;
+    /** Dictionary of `FarmwareConfig` with number (i.e., "1") keys. (optional) */
+    config: Dictionary<FarmwareConfig>;
+    /** Required FarmBot OS version to run the Farmware, i.e., ">=8.0.0" */
+    farmbot_os_version_requirement: string;
+    /** Required Farmware Tools version. Use ">=0.0.0" for latest version. */
+    farmware_tools_version_requirement: string;
+    /** Farmware manifest URL (optional). */
     url: string;
+    /** Zipped Farmware files URL. */
     zip: string;
 }
 export declare enum Encoder {
