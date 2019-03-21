@@ -1,4 +1,11 @@
 export declare type Primitive = string | number | boolean;
+interface Enigma {
+    created_at: string;
+    updated_at: string;
+    problem_tag: string;
+    priority: number;
+}
+declare type EnigmaDictionary = Dictionary<Enigma | undefined>;
 /** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
     /** Microcontroller configuration and settings. */
@@ -23,6 +30,7 @@ export interface BotStateTree {
     gpio_registry: {
         [pin: number]: string | undefined;
     } | undefined;
+    enigmas: EnigmaDictionary;
 }
 /** Microcontroller board. */
 export declare type FirmwareHardware = "arduino" | "farmduino" | "farmduino_k14";
@@ -215,3 +223,4 @@ export interface APIToken {
     /** UUID of current bot, eg: "device_1". */
     bot: string;
 }
+export {};

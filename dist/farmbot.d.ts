@@ -49,7 +49,6 @@ export declare class Farmbot {
     resetOS: () => void;
     /** WARNING: will reset all firmware (hardware) settings! */
     resetMCU: () => Promise<{}>;
-    /** firmware_kind is one of: `arduino` `farmduino` `farmduino_k14` */
     flashFirmware: (firmware_name: string) => Promise<{}>;
     /**
      * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This

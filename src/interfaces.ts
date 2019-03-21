@@ -1,4 +1,12 @@
 export type Primitive = string | number | boolean;
+interface Enigma {
+  created_at: string;
+  updated_at: string;
+  problem_tag: string;
+  priority: number;
+}
+
+type EnigmaDictionary = Dictionary<Enigma | undefined>;
 
 /** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
@@ -20,6 +28,7 @@ export interface BotStateTree {
   /** List of user accessible processes running on the bot. */
   process_info: { farmwares: Dictionary<FarmwareManifest | LegacyFarmwareManifest>; };
   gpio_registry: { [pin: number]: string | undefined } | undefined;
+  enigmas: EnigmaDictionary;
 }
 
 /** Microcontroller board. */

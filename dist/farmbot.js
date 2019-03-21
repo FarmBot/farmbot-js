@@ -98,9 +98,11 @@ var Farmbot = /** @class */ (function () {
                 { kind: "factory_reset", args: { package: "arduino_firmware" } }
             ]));
         };
-        /** firmware_kind is one of: `arduino` `farmduino` `farmduino_k14` */
-        this.flashFirmware = function (firmware_name) {
-            return _this.send(util_1.rpcRequest([{
+        this.flashFirmware = function (
+        /** one of: "arduino"|"farmduino"|"farmduino_k14" */
+        firmware_name) {
+            return _this
+                .send(util_1.rpcRequest([{
                     kind: "flash_firmware",
                     args: {
                         package: firmware_name
@@ -400,7 +402,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc15";
+    Farmbot.VERSION = "7.0.0-rc17";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
