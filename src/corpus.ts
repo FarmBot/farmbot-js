@@ -149,6 +149,7 @@ export type LegalSequenceKind = "_if" |
   "execute_script" |
   "factory_reset" |
   "find_home" |
+  "flash_firmware" |
   "home" |
   "install_farmware" |
   "install_first_party_farmware" |
@@ -334,19 +335,6 @@ export interface CheckUpdates {
   body?: CheckUpdatesBodyItem[] | undefined;
 }
 
-export type FlashFirmwareBodyItem = never;
-/** flash_firmware
-
- Tag properties: api_writer, disk_user, firmware_user, function, network_user. */
-export interface FlashFirmware {
-  comment?: string | undefined;
-  kind: "flash_firmware";
-  args: {
-    package: CSString;
-  }
-  body?: FlashFirmwareBodyItem[] | undefined;
-}
-
 export type CoordinateBodyItem = never;
 /** coordinate
 
@@ -465,6 +453,19 @@ export interface FindHome {
     speed: CSInteger;
   }
   body?: FindHomeBodyItem[] | undefined;
+}
+
+export type FlashFirmwareBodyItem = never;
+/** flash_firmware
+
+ Tag properties: api_writer, disk_user, firmware_user, function, network_user. */
+export interface FlashFirmware {
+  comment?: string | undefined;
+  kind: "flash_firmware";
+  args: {
+    package: CSString;
+  }
+  body?: FlashFirmwareBodyItem[] | undefined;
 }
 
 export type HomeBodyItem = never;
@@ -727,6 +728,7 @@ export type RpcRequestBodyItem = (If |
   ExecuteScript |
   FactoryReset |
   FindHome |
+  FlashFirmware |
   Home |
   InstallFarmware |
   InstallFirstPartyFarmware |
@@ -798,6 +800,7 @@ export type SequenceBodyItem = (If |
   ExecuteScript |
   FactoryReset |
   FindHome |
+  FlashFirmware |
   Home |
   InstallFarmware |
   InstallFirstPartyFarmware |

@@ -16,7 +16,7 @@ export declare type Color = "blue" | "gray" | "green" | "orange" | "pink" | "pur
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "data_value" | "default_value" | "label" | "lhs" | "locals" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_id" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "pointer_id" | "pointer_type" | "radius" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
 export declare type LegalKindString = "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "DumpInfo" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PowerOff" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "Sync" | "TakePhoto" | "TogglePin" | "Tool" | "UpdateFarmware" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
-export declare type LegalSequenceKind = "_if" | "calibrate" | "change_ownership" | "check_updates" | "dump_info" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "home" | "install_farmware" | "install_first_party_farmware" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "resource_update" | "send_message" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "wait" | "write_pin" | "zero";
+export declare type LegalSequenceKind = "_if" | "calibrate" | "change_ownership" | "check_updates" | "dump_info" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "flash_firmware" | "home" | "install_farmware" | "install_first_party_farmware" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "resource_update" | "send_message" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "wait" | "write_pin" | "zero";
 export declare type PlantStage = "harvested" | "planned" | "planted" | "sprouted";
 export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot";
 export declare type lhs = "pin0" | "pin1" | "pin10" | "pin11" | "pin12" | "pin13" | "pin14" | "pin15" | "pin16" | "pin17" | "pin18" | "pin19" | "pin2" | "pin20" | "pin21" | "pin22" | "pin23" | "pin24" | "pin25" | "pin26" | "pin27" | "pin28" | "pin29" | "pin3" | "pin30" | "pin31" | "pin32" | "pin33" | "pin34" | "pin35" | "pin36" | "pin37" | "pin38" | "pin39" | "pin4" | "pin40" | "pin41" | "pin42" | "pin43" | "pin44" | "pin45" | "pin46" | "pin47" | "pin48" | "pin49" | "pin5" | "pin50" | "pin51" | "pin52" | "pin53" | "pin54" | "pin55" | "pin56" | "pin57" | "pin58" | "pin59" | "pin6" | "pin60" | "pin61" | "pin62" | "pin63" | "pin64" | "pin65" | "pin66" | "pin67" | "pin68" | "pin69" | "pin7" | "pin8" | "pin9" | "x" | "y" | "z";
@@ -82,18 +82,6 @@ export interface CheckUpdates {
         package: CSString;
     };
     body?: CheckUpdatesBodyItem[] | undefined;
-}
-export declare type FlashFirmwareBodyItem = never;
-/** flash_firmware
-
- Tag properties: api_writer, disk_user, firmware_user, function, network_user. */
-export interface FlashFirmware {
-    comment?: string | undefined;
-    kind: "flash_firmware";
-    args: {
-        package: CSString;
-    };
-    body?: FlashFirmwareBodyItem[] | undefined;
 }
 export declare type CoordinateBodyItem = never;
 /** coordinate
@@ -199,6 +187,18 @@ export interface FindHome {
         speed: CSInteger;
     };
     body?: FindHomeBodyItem[] | undefined;
+}
+export declare type FlashFirmwareBodyItem = never;
+/** flash_firmware
+
+ Tag properties: api_writer, disk_user, firmware_user, function, network_user. */
+export interface FlashFirmware {
+    comment?: string | undefined;
+    kind: "flash_firmware";
+    args: {
+        package: CSString;
+    };
+    body?: FlashFirmwareBodyItem[] | undefined;
 }
 export declare type HomeBodyItem = never;
 /** home
@@ -412,7 +412,7 @@ export interface RpcOk {
     };
     body?: RpcOkBodyItem[] | undefined;
 }
-export declare type RpcRequestBodyItem = (If | Calibrate | ChangeOwnership | CheckUpdates | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | Home | InstallFarmware | InstallFirstPartyFarmware | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | SendMessage | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | Wait | WritePin | Zero);
+export declare type RpcRequestBodyItem = (If | Calibrate | ChangeOwnership | CheckUpdates | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | FlashFirmware | Home | InstallFarmware | InstallFirstPartyFarmware | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | SendMessage | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | Wait | WritePin | Zero);
 /** rpc_request
 
  Tag properties: *. */
@@ -447,7 +447,7 @@ export interface SendMessage {
     };
     body?: SendMessageBodyItem[] | undefined;
 }
-export declare type SequenceBodyItem = (If | Calibrate | ChangeOwnership | CheckUpdates | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | Home | InstallFarmware | InstallFirstPartyFarmware | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | SendMessage | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | Wait | WritePin | Zero);
+export declare type SequenceBodyItem = (If | Calibrate | ChangeOwnership | CheckUpdates | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | FlashFirmware | Home | InstallFarmware | InstallFirstPartyFarmware | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | SendMessage | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | Wait | WritePin | Zero);
 /** sequence
 
  Tag properties: *. */

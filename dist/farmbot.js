@@ -98,6 +98,15 @@ var Farmbot = /** @class */ (function () {
                 { kind: "factory_reset", args: { package: "arduino_firmware" } }
             ]));
         };
+        /** firmware_kind is one of: `arduino` `farmduino` `farmduino_k14` */
+        this.flashFirmware = function (firmware_name) {
+            return _this.send(util_1.rpcRequest([{
+                    kind: "flash_firmware",
+                    args: {
+                        package: firmware_name
+                    }
+                }]));
+        };
         /**
          * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This
          * also will pause running regimens and cause any running sequences to exit.
