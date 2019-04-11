@@ -42,50 +42,55 @@ export interface WebAppConfig {
   show_motor_plot: boolean;
   show_historic_points: boolean;
   show_sensor_readings: boolean;
+  time_format_24_hour: boolean;
 }
 
-export type NumberConfigKey = "id"
-  | "device_id"
+export type NumberConfigKey =
+  | "id"
   | "bot_origin_quadrant"
-  | "zoom_level"
-  | "success_log"
   | "busy_log"
-  | "warn_log"
+  | "debug_log"
+  | "device_id"
   | "error_log"
-  | "info_log"
   | "fun_log"
-  | "debug_log";
+  | "info_log"
+  | "success_log"
+  | "warn_log"
+  | "zoom_level";
 
-export type StringConfigKey = "created_at"
-  | "updated_at"
+export type StringConfigKey =
+  | "created_at"
   | "photo_filter_begin"
-  | "photo_filter_end";
+  | "photo_filter_end"
+  | "updated_at";
 
-export type BooleanConfigKey = "confirm_step_deletion"
+export type BooleanConfigKey =
+  | "confirm_step_deletion"
   | "disable_animations"
   | "disable_i18n"
+  | "discard_unsaved"
   | "display_trail"
   | "dynamic_map"
+  | "enable_browser_speak"
   | "encoder_figure"
   | "hide_webcam_widget"
+  | "home_button_homing"
   | "legend_menu_open"
   | "map_xl"
   | "raw_encoders"
   | "scaled_encoders"
-  | "show_spread"
   | "show_farmbot"
+  | "show_first_party_farmware"
+  | "show_historic_points"
+  | "show_images"
+  | "show_motor_plot"
   | "show_plants"
   | "show_points"
-  | "x_axis_inverted"
-  | "y_axis_inverted"
-  | "z_axis_inverted"
+  | "show_sensor_readings"
+  | "show_spread"
   | "stub_config"
-  | "show_first_party_farmware"
-  | "enable_browser_speak"
-  | "show_images"
-  | "discard_unsaved"
+  | "time_format_24_hour"
+  | "x_axis_inverted"
   | "xy_swap"
-  | "home_button_homing"
-  | "show_motor_plot"
-  | "show_historic_points"
-  | "show_sensor_readings";
+  | "y_axis_inverted"
+  | "z_axis_inverted";

@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
-var util_2 = require("./util");
 var config_1 = require("./config");
 var resource_adapter_1 = require("./resources/resource_adapter");
-exports.NULL = "null";
-var RECONNECT_THROTTLE = 1000;
+var constants_1 = require("./constants");
+var is_celery_script_1 = require("./util/is_celery_script");
+var deep_unpack_1 = require("./util/deep_unpack");
 /*
  * Clarification for several terms used:
- *  * Farmware: Plug-ins for FarmBot OS. Also sometimes referred to as `scripts`.
+ *  * Farmware: Plug-ins for FarmBot OS. Sometimes referred to as `scripts`.
  *  * Microcontroller: Directly controls and interfaces with motors,
  *        peripherals, sensors, etc. May be on an Arduino or Farmduino board.
  *        Mostly referred to as `arduino`, but also `mcu`.
@@ -44,7 +44,9 @@ var Farmbot = /** @class */ (function () {
         this.removeFarmware = function (pkg) {
             return _this.send(util_1.rpcRequest([{
                     kind: "remove_farmware",
-                    args: { package: pkg }
+                    args: {
+                        package: pkg
+                    }
                 }]));
         };
         /**
@@ -66,21 +68,25 @@ var Farmbot = /** @class */ (function () {
         };
         /** Restart FarmBot OS. */
         this.reboot = function () {
-            var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "farmbot_os" } }]);
-            return _this.send(r);
+            return _this.send(util_1.rpcRequest([
+                { kind: "reboot", args: { package: "farmbot_os" } }
+            ]));
         };
         /** Reinitialize the FarmBot microcontroller firmware. */
         this.rebootFirmware = function () {
-            var r = util_1.rpcRequest([{ kind: "reboot", args: { package: "arduino_firmware" } }]);
-            return _this.send(r);
+            return _this.send(util_1.rpcRequest([
+                { kind: "reboot", args: { package: "arduino_firmware" } }
+            ]));
         };
-        /** Check for new versions of FarmBot OS. Downloads and installs if available. */
+        /** Check for new versions of FarmBot OS.
+         * Downloads and installs if available. */
         this.checkUpdates = function () {
             return _this.send(util_1.rpcRequest([
                 { kind: "check_updates", args: { package: "farmbot_os" } }
             ]));
         };
-        /** THIS WILL RESET THE SD CARD, deleting all non-factory data! Be careful!! */
+        /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
+         * Be careful!! */
         this.resetOS = function () {
             return _this.publish(util_1.rpcRequest([
                 { kind: "factory_reset", args: { package: "farmbot_os" } }
@@ -92,9 +98,20 @@ var Farmbot = /** @class */ (function () {
                 { kind: "factory_reset", args: { package: "arduino_firmware" } }
             ]));
         };
+        this.flashFirmware = function (
+        /** one of: "arduino"|"farmduino"|"farmduino_k14" */
+        firmware_name) {
+            return _this
+                .send(util_1.rpcRequest([{
+                    kind: "flash_firmware",
+                    args: {
+                        package: firmware_name
+                    }
+                }]));
+        };
         /**
-         * Lock the bot from moving (E-STOP). Turns off peripherals and motors.
-         * This also will pause running regimens and cause any running sequences to exit.
+         * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This
+         * also will pause running regimens and cause any running sequences to exit.
          */
         this.emergencyLock = function () {
             return _this.send(util_1.rpcRequest([{ kind: "emergency_lock", args: {} }]));
@@ -106,7 +123,9 @@ var Farmbot = /** @class */ (function () {
         /** Execute a sequence by its ID on the FarmBot API. */
         this.execSequence = function (sequence_id, body) {
             if (body === void 0) { body = []; }
-            return _this.send(util_1.rpcRequest([{ kind: "execute", args: { sequence_id: sequence_id }, body: body }]));
+            return _this.send(util_1.rpcRequest([
+                { kind: "execute", args: { sequence_id: sequence_id }, body: body }
+            ]));
         };
         /** Run an installed Farmware plugin on the SD Card. */
         this.execScript = function (
@@ -122,10 +141,9 @@ var Farmbot = /** @class */ (function () {
         this.home = function (args) {
             return _this.send(util_1.rpcRequest([{ kind: "home", args: args }]));
         };
-        /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis order.
-         *  WON'T WORK WITHOUT ENCODERS OR END STOPS!
-         * A blockage or stall during this command will set that position as zero.
-         * Use carefully. */
+        /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis
+         * order. WON'T WORK WITHOUT ENCODERS OR END STOPS! A blockage or stall
+         * during this command will set that position as zero. Use carefully. */
         this.findHome = function (args) {
             return _this.send(util_1.rpcRequest([{ kind: "find_home", args: args }]));
         };
@@ -148,13 +166,16 @@ var Farmbot = /** @class */ (function () {
         this.moveRelative = function (args) {
             var x = args.x, y = args.y, z = args.z;
             var speed = args.speed || config_1.CONFIG_DEFAULTS.speed;
-            return _this.send(util_1.rpcRequest([{ kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }]));
+            return _this.send(util_1.rpcRequest([
+                { kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }
+            ]));
         };
         /** Set a GPIO pin to a particular value. */
         this.writePin = function (args) {
             return _this.send(util_1.rpcRequest([{ kind: "write_pin", args: args }]));
         };
-        /** Read the value of a GPIO pin. Will create a SensorReading if it's a sensor. */
+        /** Read the value of a GPIO pin. Will create a SensorReading if it's
+         * a sensor. */
         this.readPin = function (args) {
             return _this.send(util_1.rpcRequest([{ kind: "read_pin", args: args }]));
         };
@@ -191,21 +212,6 @@ var Farmbot = /** @class */ (function () {
                     args: { axis: axis }
                 }]));
         };
-        /** Update FarmBot microcontroller settings. */
-        this.updateMcu = function (update) {
-            var body = [];
-            Object
-                .keys(update)
-                .forEach(function (label) {
-                var value = util_2.pick(update, label, "ERROR");
-                body.push({
-                    kind: "config_update",
-                    args: { package: "arduino_firmware" },
-                    body: [{ kind: "pair", args: { value: value, label: label } }]
-                });
-            });
-            return _this.send(util_1.rpcRequest(body));
-        };
         /**
          * Set user ENV vars (usually used by 3rd-party Farmware plugins).
          * Set value to `undefined` to unset.
@@ -216,7 +222,7 @@ var Farmbot = /** @class */ (function () {
                 .map(function (label) {
                 return {
                     kind: "pair",
-                    args: { label: label, value: (configs[label] || exports.NULL) }
+                    args: { label: label, value: (configs[label] || constants_1.Misc.NULL) }
                 };
             });
             return _this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
@@ -234,20 +240,6 @@ var Farmbot = /** @class */ (function () {
                 throw new Error("Pin value outside of 0...360 range");
             }
             return result;
-        };
-        /** Update a config option (setting) for FarmBot OS. */
-        this.updateConfig = function (update) {
-            var body = Object
-                .keys(update)
-                .map(function (label) {
-                var value = util_2.pick(update, label, "ERROR");
-                return { kind: "pair", args: { value: value, label: label } };
-            });
-            return _this.send(util_1.rpcRequest([{
-                    kind: "config_update",
-                    args: { package: "farmbot_os" },
-                    body: body
-                }]));
         };
         /**
          * Find the axis extents using encoder, motor, or end-stop feedback.
@@ -280,7 +272,8 @@ var Farmbot = /** @class */ (function () {
                         handler(data, event);
                     }
                     catch (e) {
-                        console.warn("Exception thrown while handling `" + event + "` event.");
+                        var msg = "Exception thrown while handling '" + event + " event.";
+                        console.warn(msg);
                         console.dir(e);
                     }
                 });
@@ -291,7 +284,7 @@ var Farmbot = /** @class */ (function () {
         this.publish = function (msg, important) {
             if (important === void 0) { important = true; }
             if (_this.client) {
-                _this.emit("sent", msg);
+                _this.emit(constants_1.FbjsEventName.sent, msg);
                 /** SEE: https://github.com/mqttjs/MQTT.js#client */
                 _this.client.publish(_this.channel.toDevice, JSON.stringify(msg));
             }
@@ -308,67 +301,70 @@ var Farmbot = /** @class */ (function () {
         this.send = function (input) {
             return new Promise(function (resolve, reject) {
                 _this.publish(input);
-                _this.on(input.args.label, function (response) {
+                function handler(response) {
                     switch (response.kind) {
                         case "rpc_ok": return resolve(response);
                         case "rpc_error":
-                            var reason = (response.body || []).map(function (x) { return x.args.message; }).join(", ");
+                            var reason = (response.body || [])
+                                .map(function (x) { return x.args.message; })
+                                .join(", ");
                             return reject(new Error("Problem sending RPC command: " + reason));
                         default:
                             console.dir(response);
                             throw new Error("Got a bad CeleryScript node.");
                     }
-                });
+                }
+                _this.on(input.args.label, handler);
             });
         };
         /** Main entry point for all MQTT packets. */
         this._onmessage = function (chan, buffer) {
             try {
-                /** UNSAFE CODE: TODO: Add user defined type guards? */
                 var msg = JSON.parse(buffer.toString());
-                switch (chan) {
-                    case _this.channel.logs: return _this.emit("logs", msg);
-                    case _this.channel.status: return _this.emit("status", msg);
-                    case _this.channel.toClient:
-                    case _this.channel.fromAPI:
+                switch (chan.split(constants_1.Misc.MQTT_DELIM)[2]) {
+                    case constants_1.MqttChanName.logs:
+                        return _this.emit(constants_1.FbjsEventName.logs, msg);
+                    case constants_1.MqttChanName.legacyStatus:
+                        return _this.emit(constants_1.FbjsEventName.legacy_status, msg);
+                    case constants_1.MqttChanName.statusV8:
+                        var path = chan
+                            .split(constants_1.Misc.MQTT_DELIM)
+                            .slice(3)
+                            .join(constants_1.Misc.PATH_DELIM);
+                        return _this
+                            .emit(constants_1.FbjsEventName.status_v8, deep_unpack_1.deepUnpack(path, msg));
+                    case constants_1.MqttChanName.sync:
+                        return _this.emit(constants_1.FbjsEventName.sync, msg);
                     default:
-                        // Did it come from the auto_sync channel? Process it as such.
-                        if (chan.includes("sync")) {
-                            return _this.emit("sync", msg);
-                        }
-                        // Is it valid CS? Probably a batch resource or RPC operation.
-                        if (util_2.isCeleryScript(msg)) {
-                            return _this.emit(msg.args.label, msg);
-                        }
-                        // Still nothing? Emit "malformed", but don't crash in case we're
-                        // getting outdated messages from a legacy bot.
-                        console.warn("Unhandled inbound message from " + chan);
-                        _this.emit("malformed", msg);
+                        var event_1 = is_celery_script_1.hasLabel(msg) ?
+                            msg.args.label : constants_1.FbjsEventName.malformed;
+                        return _this.emit(event_1, msg);
                 }
             }
             catch (error) {
                 console.warn("Could not parse inbound message from MQTT.");
-                _this.emit("malformed", buffer.toString());
+                _this.emit(constants_1.FbjsEventName.malformed, buffer.toString());
             }
         };
         /** Bootstrap the device onto the MQTT broker. */
         this.connect = function () {
             var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
+            var reconnectPeriod = constants_1.Misc.RECONNECT_THROTTLE_MS;
             var client = mqtt_1.connect(mqttServer, {
                 username: mqttUsername,
                 password: token,
                 clean: true,
                 clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
-                reconnectPeriod: RECONNECT_THROTTLE
+                reconnectPeriod: reconnectPeriod
             });
             _this.client = client;
             _this.resources = new resource_adapter_1.ResourceAdapter(_this, _this.config.mqttUsername);
             client.on("message", _this._onmessage);
-            client.on("offline", function () { return _this.emit("offline", {}); });
-            client.on("connect", function () { return _this.emit("online", {}); });
+            client.on("offline", function () { return _this.emit(constants_1.FbjsEventName.offline, {}); });
+            client.on("connect", function () { return _this.emit(constants_1.FbjsEventName.online, {}); });
             var channels = [
-                _this.channel.fromAPI,
                 _this.channel.logs,
+                _this.channel.legacyStatus,
                 _this.channel.status,
                 _this.channel.sync,
                 _this.channel.toClient,
@@ -394,19 +390,19 @@ var Farmbot = /** @class */ (function () {
             var deviceName = this.config.mqttUsername;
             return {
                 /** From the browser, usually. */
-                toDevice: "bot/" + deviceName + "/from_clients",
+                toDevice: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromClients,
                 /** From farmbot */
-                toClient: "bot/" + deviceName + "/from_device",
-                status: "bot/" + deviceName + "/status",
-                logs: "bot/" + deviceName + "/logs",
-                sync: "bot/" + deviceName + "/sync/#",
-                fromAPI: "bot/" + deviceName + "/from_api",
+                toClient: "bot/" + deviceName + "/" + constants_1.MqttChanName.fromDevice,
+                legacyStatus: "bot/" + deviceName + "/" + constants_1.MqttChanName.legacyStatus,
+                logs: "bot/" + deviceName + "/" + constants_1.MqttChanName.logs,
+                status: "bot/" + deviceName + "/" + constants_1.MqttChanName.statusV8 + "/#",
+                sync: "bot/" + deviceName + "/" + constants_1.MqttChanName.sync + "/#",
             };
         },
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.0-rc0";
+    Farmbot.VERSION = "7.0.2";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

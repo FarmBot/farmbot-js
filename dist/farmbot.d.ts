@@ -3,7 +3,6 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-export declare const NULL = "null";
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
@@ -42,21 +41,24 @@ export declare class Farmbot {
     reboot: () => Promise<{}>;
     /** Reinitialize the FarmBot microcontroller firmware. */
     rebootFirmware: () => Promise<{}>;
-    /** Check for new versions of FarmBot OS. Downloads and installs if available. */
+    /** Check for new versions of FarmBot OS.
+     * Downloads and installs if available. */
     checkUpdates: () => Promise<{}>;
-    /** THIS WILL RESET THE SD CARD, deleting all non-factory data! Be careful!! */
+    /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
+     * Be careful!! */
     resetOS: () => void;
     /** WARNING: will reset all firmware (hardware) settings! */
     resetMCU: () => Promise<{}>;
+    flashFirmware: (firmware_name: string) => Promise<{}>;
     /**
-     * Lock the bot from moving (E-STOP). Turns off peripherals and motors.
-     * This also will pause running regimens and cause any running sequences to exit.
+     * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This
+     * also will pause running regimens and cause any running sequences to exit.
      */
     emergencyLock: () => Promise<{}>;
     /** Unlock the bot when the user says it is safe. */
     emergencyUnlock: () => Promise<{}>;
     /** Execute a sequence by its ID on the FarmBot API. */
-    execSequence: (sequence_id: number, body?: Corpus.VariableDeclaration[]) => Promise<{}>;
+    execSequence: (sequence_id: number, body?: Corpus.ParameterApplication[]) => Promise<{}>;
     /** Run an installed Farmware plugin on the SD Card. */
     execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<{}>;
     /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
@@ -64,39 +66,33 @@ export declare class Farmbot {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
-    /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis order.
-     *  WON'T WORK WITHOUT ENCODERS OR END STOPS!
-     * A blockage or stall during this command will set that position as zero.
-     * Use carefully. */
+    /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis
+     * order. WON'T WORK WITHOUT ENCODERS OR END STOPS! A blockage or stall
+     * during this command will set that position as zero. Use carefully. */
     findHome: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<{}>;
     /** Move FarmBot to an absolute point. */
-    moveAbsolute: (args: {
-        x: number;
-        y: number;
-        z: number;
+    moveAbsolute: (args: Record<import("./interfaces").Xyz, number> & {
         speed?: number | undefined;
     }) => Promise<{}>;
     /** Move FarmBot to position relative to its current position. */
-    moveRelative: (args: {
-        x: number;
-        y: number;
-        z: number;
+    moveRelative: (args: Record<import("./interfaces").Xyz, number> & {
         speed?: number | undefined;
     }) => Promise<{}>;
     /** Set a GPIO pin to a particular value. */
     writePin: (args: {
+        pin_mode: Corpus.ALLOWED_PIN_MODES;
         pin_number: number | Corpus.NamedPin;
         pin_value: number;
-        pin_mode: number;
     }) => Promise<{}>;
-    /** Read the value of a GPIO pin. Will create a SensorReading if it's a sensor. */
+    /** Read the value of a GPIO pin. Will create a SensorReading if it's
+     * a sensor. */
     readPin: (args: {
-        pin_number: number | Corpus.NamedPin;
         label: string;
-        pin_mode: number;
+        pin_mode: Corpus.ALLOWED_PIN_MODES;
+        pin_number: number | Corpus.NamedPin;
     }) => Promise<{}>;
     /** Reverse the value of a digital pin. */
     togglePin: (args: {
@@ -117,8 +113,6 @@ export declare class Farmbot {
      * 255 to 0, causing that position to be x: 0.
      */
     setZero: (axis: Corpus.ALLOWED_AXIS) => Promise<{}>;
-    /** Update FarmBot microcontroller settings. */
-    updateMcu: (update: Partial<Partial<Record<import("./interfaces").McuParamName, number | undefined>>>) => Promise<{}>;
     /**
      * Set user ENV vars (usually used by 3rd-party Farmware plugins).
      * Set value to `undefined` to unset.
@@ -129,8 +123,6 @@ export declare class Farmbot {
         pin_number: number;
         pin_value: number;
     }) => Promise<{}>;
-    /** Update a config option (setting) for FarmBot OS. */
-    updateConfig: (update: Partial<Partial<import("./interfaces").FullConfiguration>>) => Promise<{}>;
     /**
      * Find the axis extents using encoder, motor, or end-stop feedback.
      * Will set a new home position and a new axis length for the given axis.
@@ -153,10 +145,10 @@ export declare class Farmbot {
         toDevice: string;
         /** From farmbot */
         toClient: string;
-        status: string;
+        legacyStatus: string;
         logs: string;
+        status: string;
         sync: string;
-        fromAPI: string;
     };
     /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */

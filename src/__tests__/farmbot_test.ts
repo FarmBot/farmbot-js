@@ -4,10 +4,11 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest, coordinate, McuParams, NULL } from "..";
+import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
 import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
+import { Misc } from "../constants";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
@@ -105,7 +106,7 @@ describe("FarmBot", () => {
     });
 
     it("removes Farmware", () => {
-      const pkg = "a package";
+      const pkg = "farmbot_os";
       bot.removeFarmware(pkg);
       expectRPC({ kind: "remove_farmware", args: { package: pkg } });
     });
@@ -113,7 +114,11 @@ describe("FarmBot", () => {
     it("executes a sequence", () => {
       const sequence_id = 123;
       bot.execSequence(sequence_id);
-      expectRPC({ kind: "execute", args: { sequence_id } });
+      expectRPC({
+        kind: "execute",
+        args: { sequence_id },
+        body: []
+      });
     });
 
     it("executes a script", () => {
@@ -205,18 +210,6 @@ describe("FarmBot", () => {
       });
     });
 
-    it("Updates MCU settings", () => {
-      const label: keyof McuParams = "encoder_use_for_pos_x";
-      const value = 1;
-      const args = { [label]: value };
-      bot.updateMcu(args);
-      expectRPC({
-        kind: "config_update",
-        args: { package: "arduino_firmware" },
-        body: [{ kind: "pair", args: { value, label } }]
-      });
-    });
-
     it("sets ENV vars", () => {
       const xmp = {
         foo: undefined,
@@ -227,7 +220,7 @@ describe("FarmBot", () => {
         kind: "set_user_env",
         args: {},
         body: [
-          { kind: "pair", args: { label: "foo", value: NULL } },
+          { kind: "pair", args: { label: "foo", value: Misc.NULL } },
           { kind: "pair", args: { label: "bar", value: "bz" } },
         ]
       })

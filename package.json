@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "7.0.0-rc0",
+  "version": "7.0.2",
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh",
@@ -11,12 +11,12 @@
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^23.3.9",
-    "@types/node": "^10.12.2",
-    "coveralls": "^3.0.2",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.4",
-    "typescript": "^3.1.6"
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.4",
+    "coveralls": "^3.0.3",
+    "jest": "^24.7.1",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.4.3"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

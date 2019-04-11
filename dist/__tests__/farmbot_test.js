@@ -8,6 +8,7 @@ jest.mock("../util/uuid", function () { return ({ uuid: function () { return "FA
 var __1 = require("..");
 var test_support_1 = require("../test_support");
 var config_1 = require("../config");
+var constants_1 = require("../constants");
 describe("FarmBot", function () {
     var token = test_support_1.FAKE_TOKEN;
     it("Instantiates a FarmBot", function () {
@@ -97,14 +98,18 @@ describe("FarmBot", function () {
             expectRPC({ kind: "update_farmware", args: { package: pkg } });
         });
         it("removes Farmware", function () {
-            var pkg = "a package";
+            var pkg = "farmbot_os";
             bot.removeFarmware(pkg);
             expectRPC({ kind: "remove_farmware", args: { package: pkg } });
         });
         it("executes a sequence", function () {
             var sequence_id = 123;
             bot.execSequence(sequence_id);
-            expectRPC({ kind: "execute", args: { sequence_id: sequence_id } });
+            expectRPC({
+                kind: "execute",
+                args: { sequence_id: sequence_id },
+                body: []
+            });
         });
         it("executes a script", function () {
             var label = "minesweeper.exe";
@@ -181,18 +186,6 @@ describe("FarmBot", function () {
                 args: { axis: axis }
             });
         });
-        it("Updates MCU settings", function () {
-            var _a;
-            var label = "encoder_use_for_pos_x";
-            var value = 1;
-            var args = (_a = {}, _a[label] = value, _a);
-            bot.updateMcu(args);
-            expectRPC({
-                kind: "config_update",
-                args: { package: "arduino_firmware" },
-                body: [{ kind: "pair", args: { value: value, label: label } }]
-            });
-        });
         it("sets ENV vars", function () {
             var xmp = {
                 foo: undefined,
@@ -203,7 +196,7 @@ describe("FarmBot", function () {
                 kind: "set_user_env",
                 args: {},
                 body: [
-                    { kind: "pair", args: { label: "foo", value: __1.NULL } },
+                    { kind: "pair", args: { label: "foo", value: constants_1.Misc.NULL } },
                     { kind: "pair", args: { label: "bar", value: "bz" } },
                 ]
             });

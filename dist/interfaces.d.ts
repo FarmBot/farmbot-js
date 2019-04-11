@@ -1,3 +1,4 @@
+export declare type Primitive = string | number | boolean;
 /** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
     /** Microcontroller configuration and settings. */
@@ -17,11 +18,13 @@ export interface BotStateTree {
     jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
-        farmwares: Dictionary<FarmwareManifest>;
+        farmwares: Dictionary<FarmwareManifest | LegacyFarmwareManifest>;
     };
     gpio_registry: {
         [pin: number]: string | undefined;
     } | undefined;
+    /** Alerts for problems identified by FarmBot OS. */
+    enigmas: Dictionary<Enigma | undefined> | undefined;
 }
 /** Microcontroller board. */
 export declare type FirmwareHardware = "arduino" | "farmduino" | "farmduino_k14";
@@ -42,8 +45,18 @@ export interface BytesProgress {
     unit: "bytes";
     bytes: number;
 }
-/** Some of the data provided by Farmware author in a Farmware manifest JSON file. */
-export interface FarmwareManifestMeta {
+/** Identified FarmBot OS problem. */
+export interface Enigma {
+    created_at: number;
+    problem_tag: string;
+    priority: number;
+    uuid: string;
+}
+/**
+ * Some of the data provided by Farmware author in a Farmware manifest JSON file.
+ * Used in FarmBot OS < v8, since this info is now included in `FarmwareManifest`.
+ */
+export interface LegacyFarmwareManifestMeta {
     /** eg: "6" */
     min_os_version_major: string;
     description: string;
@@ -58,9 +71,12 @@ export interface FarmwareManifestMeta {
  * Also used in FarmBot Web App Farmware page form builder.
  */
 export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
-/** The Farmware manifest is a JSON file published by Farmware authors.
- * It is used by FarmBot OS to perform installation and upgrades. */
-export interface FarmwareManifest {
+/**
+ * The Farmware manifest is a JSON file published by Farmware authors.
+ * It is used by FarmBot OS to perform installation and upgrades.
+ * Used in FarmBot OS < v8. For FarmBot OS >= v8, use `FarmwareManifest`.
+ */
+export interface LegacyFarmwareManifest {
     farmware_tools_version?: string;
     /** The thing that will run the Farmware eg: `python`. */
     executable: string;
@@ -71,8 +87,41 @@ export interface FarmwareManifest {
     /** Farmware manifest URL. */
     url: string;
     path: string;
-    meta: FarmwareManifestMeta;
+    meta: LegacyFarmwareManifestMeta;
     config: FarmwareConfig[];
+}
+/**
+ * The Farmware manifest is a JSON file published by Farmware authors.
+ * It is used by FarmBot OS to perform installation and upgrades.
+ * Used in FarmBot OS >= v8. For FarmBot OS < v8, use `LegacyFarmwareManifest`.
+ */
+export interface FarmwareManifest {
+    /** "2.0" */
+    farmware_manifest_version: string;
+    /** Farmware name. */
+    package: string;
+    /** Farmware version. */
+    package_version: string;
+    /** Farmware description (optional). */
+    description: string;
+    /** Farmware author. */
+    author: string;
+    /** Farmware language, eg: `python` (optional). */
+    language: string;
+    /** The thing that will run the Farmware eg: `python`. */
+    executable: string;
+    /** Command line args (combined into a string) passed to `executable`. */
+    args: string;
+    /** Dictionary of `FarmwareConfig` with number (i.e., "1") keys. (optional) */
+    config: Dictionary<FarmwareConfig>;
+    /** Required FarmBot OS version to run the Farmware, i.e., ">=8.0.0" */
+    farmbot_os_version_requirement: string;
+    /** Required Farmware Tools version. Use ">=0.0.0" for latest version. */
+    farmware_tools_version_requirement: string;
+    /** Farmware manifest URL (optional). */
+    url: string;
+    /** Zipped Farmware files URL. */
+    zip: string;
 }
 export declare enum Encoder {
     unknown = -1,
@@ -109,9 +158,6 @@ export interface FullConfiguration {
     sequence_body_log: boolean;
     sequence_complete_log: boolean;
     sequence_init_log: boolean;
-    steps_per_mm_x: number;
-    steps_per_mm_y: number;
-    steps_per_mm_z: number;
 }
 /** FarmBot OS configs. */
 export declare type Configuration = Partial<FullConfiguration>;
