@@ -1,11 +1,4 @@
 export declare type Primitive = string | number | boolean;
-interface Enigma {
-    created_at: string;
-    updated_at: string;
-    problem_tag: string;
-    priority: number;
-}
-declare type EnigmaDictionary = Dictionary<Enigma | undefined>;
 /** Everything the farmbot knows about itself at a given moment in time. */
 export interface BotStateTree {
     /** Microcontroller configuration and settings. */
@@ -30,7 +23,8 @@ export interface BotStateTree {
     gpio_registry: {
         [pin: number]: string | undefined;
     } | undefined;
-    enigmas: EnigmaDictionary;
+    /** Alerts for problems identified by FarmBot OS. */
+    enigmas: Dictionary<Enigma | undefined> | undefined;
 }
 /** Microcontroller board. */
 export declare type FirmwareHardware = "arduino" | "farmduino" | "farmduino_k14";
@@ -50,6 +44,13 @@ export interface BytesProgress {
     status: ProgressStatus;
     unit: "bytes";
     bytes: number;
+}
+/** Identified FarmBot OS problem. */
+export interface Enigma {
+    created_at: number;
+    problem_tag: string;
+    priority: number;
+    uuid: string;
 }
 /**
  * Some of the data provided by Farmware author in a Farmware manifest JSON file.
@@ -157,9 +158,6 @@ export interface FullConfiguration {
     sequence_body_log: boolean;
     sequence_complete_log: boolean;
     sequence_init_log: boolean;
-    steps_per_mm_x: number;
-    steps_per_mm_y: number;
-    steps_per_mm_z: number;
 }
 /** FarmBot OS configs. */
 export declare type Configuration = Partial<FullConfiguration>;
@@ -223,4 +221,3 @@ export interface APIToken {
     /** UUID of current bot, eg: "device_1". */
     bot: string;
 }
-export {};
