@@ -3,46 +3,47 @@ export interface WebAppConfig {
   device_id: number;
   created_at: string;
   updated_at: string;
+  bot_origin_quadrant: number;
+  busy_log: number;
   confirm_step_deletion: boolean;
+  debug_log: number;
   disable_animations: boolean;
   disable_i18n: boolean;
+  discard_unsaved: boolean;
   display_trail: boolean;
   dynamic_map: boolean;
+  enable_browser_speak: boolean;
   encoder_figure: boolean;
+  error_log: number;
+  fun_log: number;
   hide_webcam_widget: boolean;
+  home_button_homing: boolean;
+  info_log: number;
   legend_menu_open: boolean;
   map_xl: boolean;
+  photo_filter_begin: string;
+  photo_filter_end: string;
   raw_encoders: boolean;
   scaled_encoders: boolean;
-  show_spread: boolean;
   show_farmbot: boolean;
+  show_first_party_farmware: boolean;
+  show_historic_points: boolean;
+  show_images: boolean;
+  show_motor_plot: boolean;
+  show_pins: boolean;
   show_plants: boolean;
   show_points: boolean;
+  show_sensor_readings: boolean;
+  show_spread: boolean;
+  stub_config: boolean;
+  success_log: number;
+  time_format_24_hour: boolean;
+  warn_log: number;
+  xy_swap: boolean;
   x_axis_inverted: boolean;
   y_axis_inverted: boolean;
   z_axis_inverted: boolean;
-  bot_origin_quadrant: number;
   zoom_level: number;
-  success_log: number;
-  busy_log: number;
-  warn_log: number;
-  error_log: number;
-  info_log: number;
-  fun_log: number;
-  debug_log: number;
-  stub_config: boolean;
-  show_first_party_farmware: boolean;
-  enable_browser_speak: boolean;
-  show_images: boolean;
-  photo_filter_begin: string;
-  photo_filter_end: string;
-  discard_unsaved: boolean;
-  xy_swap: boolean;
-  home_button_homing: boolean;
-  show_motor_plot: boolean;
-  show_historic_points: boolean;
-  show_sensor_readings: boolean;
-  time_format_24_hour: boolean;
 }
 
 export type NumberConfigKey =
@@ -84,6 +85,7 @@ export type BooleanConfigKey =
   | "show_historic_points"
   | "show_images"
   | "show_motor_plot"
+  | "show_pins"
   | "show_plants"
   | "show_points"
   | "show_sensor_readings"
