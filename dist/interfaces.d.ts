@@ -47,6 +47,7 @@ export interface BytesProgress {
 }
 /** Identified FarmBot OS problem. */
 export interface Enigma {
+    id?: number;
     created_at: number;
     problem_tag: string;
     priority: number;
