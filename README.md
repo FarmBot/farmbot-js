@@ -5,13 +5,11 @@
 
 ## Browser Support
 
-Works on any browser that supports:
+Works on all _modern_ browsers that were released in the last 12 months.
 
- * [Native Promise objects](http://caniuse.com/#feat=promises).
- * [Websockets](http://caniuse.com/#feat=websockets).
- * JSON (any browser made after 1942).
+## NodeJS Support
 
-Independent developers have reported success when using FarmBotJS in a Node environment, but we do not test against Node based setups. Issue reports related to NodeJS are highly appreciated.
+Independent developers have reported success when using FarmBotJS in a Node environment, but we do not test against Node based setups, nor do we (FarmBot, Inc) use FarmBotJS in a production Node environment. Issue reports related to NodeJS are highly appreciated.
 
 ## Installation (NPM)
 
@@ -22,7 +20,7 @@ npm install farmbot
 ## Installation (Vanilla JS)
 
 ```
-<script src="./dist/farmbot_single_file.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/farmbot@latest/dist/farmbot_single_file.js"></script>
 <script>
   var farmbot123 = new fbjs.Farmbot({ token: "foo.bar.baz" });
 <script>

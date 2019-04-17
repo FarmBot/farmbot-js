@@ -8,6 +8,7 @@ export interface WebAppConfig {
   confirm_step_deletion: boolean;
   debug_log: number;
   disable_animations: boolean;
+  disable_emergency_unlock_confirmation: boolean;
   disable_i18n: boolean;
   discard_unsaved: boolean;
   display_trail: boolean;
@@ -39,8 +40,8 @@ export interface WebAppConfig {
   success_log: number;
   time_format_24_hour: boolean;
   warn_log: number;
-  xy_swap: boolean;
   x_axis_inverted: boolean;
+  xy_swap: boolean;
   y_axis_inverted: boolean;
   z_axis_inverted: boolean;
   zoom_level: number;
@@ -68,6 +69,7 @@ export type StringConfigKey =
 export type BooleanConfigKey =
   | "confirm_step_deletion"
   | "disable_animations"
+  | "disable_emergency_unlock_confirmation"
   | "disable_i18n"
   | "discard_unsaved"
   | "display_trail"
@@ -95,4 +97,5 @@ export type BooleanConfigKey =
   | "x_axis_inverted"
   | "xy_swap"
   | "y_axis_inverted"
-  | "z_axis_inverted";
+  | "z_axis_inverted"
+  ;

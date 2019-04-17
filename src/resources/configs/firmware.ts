@@ -96,10 +96,12 @@ export interface FirmwareConfig {
   movement_invert_2_endpoints_x: number;
   movement_invert_2_endpoints_y: number;
   movement_invert_2_endpoints_z: number;
+  movement_microsteps_x: number;
+  movement_microsteps_y: number;
+  movement_microsteps_z: number;
 }
 
-export type NumberConfigKey = "id"
-  | "device_id"
+export type NumberConfigKey =
   | "encoder_enabled_x"
   | "encoder_enabled_y"
   | "encoder_enabled_z"
@@ -136,6 +138,9 @@ export type NumberConfigKey = "id"
   | "movement_home_up_x"
   | "movement_home_up_y"
   | "movement_home_up_z"
+  | "movement_invert_2_endpoints_x"
+  | "movement_invert_2_endpoints_y"
+  | "movement_invert_2_endpoints_z"
   | "movement_invert_endpoints_x"
   | "movement_invert_endpoints_y"
   | "movement_invert_endpoints_z"
@@ -148,6 +153,9 @@ export type NumberConfigKey = "id"
   | "movement_max_spd_x"
   | "movement_max_spd_y"
   | "movement_max_spd_z"
+  | "movement_microsteps_x"
+  | "movement_microsteps_y"
+  | "movement_microsteps_z"
   | "movement_min_spd_x"
   | "movement_min_spd_y"
   | "movement_min_spd_z"
@@ -188,12 +196,8 @@ export type NumberConfigKey = "id"
   | "pin_guard_4_time_out"
   | "pin_guard_5_active_state"
   | "pin_guard_5_pin_nr"
-  | "pin_guard_5_time_out"
-  | "movement_invert_2_endpoints_x"
-  | "movement_invert_2_endpoints_y"
-  | "movement_invert_2_endpoints_z";
+  | "pin_guard_5_time_out";
 
-export type StringConfigKey = "created_at"
-  | "updated_at";
+export type StringConfigKey = "created_at" | "updated_at";
 
 export type BooleanConfigKey = "api_migrated";
