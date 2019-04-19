@@ -52,7 +52,7 @@ export interface Alert {
     created_at: number;
     problem_tag: string;
     priority: number;
-    uuid: string;
+    slug: string;
 }
 /**
  * Some of the data provided by Farmware author in a Farmware manifest JSON file.

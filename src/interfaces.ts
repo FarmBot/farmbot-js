@@ -68,7 +68,7 @@ export interface Alert {
   created_at: number;
   problem_tag: string;
   priority: number;
-  uuid: string;
+  slug: string;
 }
 
 /**
