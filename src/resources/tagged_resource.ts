@@ -24,13 +24,13 @@ import {
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
 import { WebAppConfig } from "./configs/web_app";
-import { Enigma } from "../interfaces";
+import { Alert } from "../interfaces";
 
 export type ResourceName =
   | "Crop"
   | "Device"
   | "DiagnosticDump"
-  | "Enigma"
+  | "Alert"
   | "FarmEvent"
   | "FarmwareEnv"
   | "FarmwareInstallation"
@@ -87,7 +87,7 @@ export type TaggedResource =
   | TaggedCrop
   | TaggedDevice
   | TaggedDiagnosticDump
-  | TaggedEnigma
+  | TaggedAlert
   | TaggedFarmEvent
   | TaggedFarmwareEnv
   | TaggedFarmwareInstallation
@@ -129,7 +129,7 @@ export type TaggedSensor = Resource<"Sensor", Sensor>;
 export type TaggedSavedGarden = Resource<"SavedGarden", SavedGarden>;
 export type TaggedPlantTemplate = Resource<"PlantTemplate", PlantTemplate>;
 export type TaggedDiagnosticDump = Resource<"DiagnosticDump", DiagnosticDump>;
-export type TaggedEnigma = Resource<"Enigma", Enigma>;
+export type TaggedAlert = Resource<"Alert", Alert>;
 
 type PointUnion =
   | GenericPointer

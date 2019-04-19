@@ -25,7 +25,7 @@ export interface BotStateTree {
         [pin: number]: string | undefined;
     } | undefined;
     /** Alerts for problems identified by FarmBot OS. */
-    enigmas: Dictionary<Enigma | undefined> | undefined;
+    alerts: Dictionary<Alert | undefined> | undefined;
 }
 /** Microcontroller board. */
 export declare type FirmwareHardware = "arduino" | "farmduino" | "farmduino_k14";
@@ -47,7 +47,7 @@ export interface BytesProgress {
     bytes: number;
 }
 /** Identified FarmBot OS problem. */
-export interface Enigma {
+export interface Alert {
     id?: number;
     created_at: number;
     problem_tag: string;

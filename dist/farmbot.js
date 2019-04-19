@@ -402,7 +402,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.4";
+    Farmbot.VERSION = "7.0.5-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

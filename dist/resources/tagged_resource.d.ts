@@ -2,8 +2,8 @@ import { Crop, DeviceAccountSettings, FarmwareEnv, FarmEvent, FarmwareInstallati
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
 import { WebAppConfig } from "./configs/web_app";
-import { Enigma } from "../interfaces";
-export declare type ResourceName = "Crop" | "Device" | "DiagnosticDump" | "Enigma" | "FarmEvent" | "FarmwareEnv" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WebcamFeed";
+import { Alert } from "../interfaces";
+export declare type ResourceName = "Crop" | "Device" | "DiagnosticDump" | "Alert" | "FarmEvent" | "FarmwareEnv" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WebcamFeed";
 export interface TaggedResourceBase {
     kind: ResourceName;
     /** Unique identifier and index key.
@@ -30,7 +30,7 @@ export interface Resource<T extends ResourceName, U extends object> extends Tagg
     kind: T;
     body: U;
 }
-export declare type TaggedResource = TaggedCrop | TaggedDevice | TaggedDiagnosticDump | TaggedEnigma | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
+export declare type TaggedResource = TaggedCrop | TaggedDevice | TaggedDiagnosticDump | TaggedAlert | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
 export declare type TaggedCrop = Resource<"Crop", Crop>;
 export declare type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export declare type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
@@ -51,7 +51,7 @@ export declare type TaggedSensor = Resource<"Sensor", Sensor>;
 export declare type TaggedSavedGarden = Resource<"SavedGarden", SavedGarden>;
 export declare type TaggedPlantTemplate = Resource<"PlantTemplate", PlantTemplate>;
 export declare type TaggedDiagnosticDump = Resource<"DiagnosticDump", DiagnosticDump>;
-export declare type TaggedEnigma = Resource<"Enigma", Enigma>;
+export declare type TaggedAlert = Resource<"Alert", Alert>;
 declare type PointUnion = GenericPointer | PlantPointer | ToolSlotPointer;
 export declare type TaggedGenericPointer = Resource<"Point", GenericPointer>;
 export declare type TaggedPlantPointer = Resource<"Point", PlantPointer>;
