@@ -45,6 +45,8 @@ export interface WebAppConfig {
     y_axis_inverted: boolean;
     z_axis_inverted: boolean;
     zoom_level: number;
+    map_size_x: number;
+    map_size_y: number;
 }
 export declare type NumberConfigKey = "id" | "bot_origin_quadrant" | "busy_log" | "debug_log" | "device_id" | "error_log" | "fun_log" | "info_log" | "success_log" | "warn_log" | "zoom_level";
 export declare type StringConfigKey = "created_at" | "photo_filter_begin" | "photo_filter_end" | "updated_at";

@@ -45,6 +45,8 @@ export interface WebAppConfig {
   y_axis_inverted: boolean;
   z_axis_inverted: boolean;
   zoom_level: number;
+  map_size_x: number;
+  map_size_y: number;
 }
 
 export type NumberConfigKey =
