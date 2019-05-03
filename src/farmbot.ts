@@ -34,7 +34,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.0.7";
+  static VERSION = "7.0.8";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -136,7 +136,7 @@ export class Farmbot {
   }
 
   flashFirmware = (
-    /** one of: "arduino"|"farmduino"|"farmduino_k14" */
+    /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
     firmware_name: string) => {
     return this
       .send(rpcRequest([{

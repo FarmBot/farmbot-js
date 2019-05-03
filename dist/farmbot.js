@@ -99,7 +99,7 @@ var Farmbot = /** @class */ (function () {
             ]));
         };
         this.flashFirmware = function (
-        /** one of: "arduino"|"farmduino"|"farmduino_k14" */
+        /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
         firmware_name) {
             return _this
                 .send(util_1.rpcRequest([{
@@ -402,7 +402,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.0.7";
+    Farmbot.VERSION = "7.0.8";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

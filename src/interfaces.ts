@@ -29,8 +29,9 @@ export interface BotStateTree {
 /** Microcontroller board. */
 export type FirmwareHardware =
   | "arduino"
-  | "farmduino"
-  | "farmduino_k14";
+  | "express_k10"
+  | "farmduino_k14"
+  | "farmduino";
 
 /** FarmBot motor and encoder positions. */
 export type LocationName =
