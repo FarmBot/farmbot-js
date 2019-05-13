@@ -28,7 +28,7 @@ export interface BotStateTree {
     alerts: Dictionary<Alert | undefined> | undefined;
 }
 /** Microcontroller board. */
-export declare type FirmwareHardware = "arduino" | "express_k10" | "farmduino_k14" | "farmduino";
+export declare type FirmwareHardware = "arduino" | "express_k10" | "farmduino_k14" | "farmduino" | "none";
 /** FarmBot motor and encoder positions. */
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
 /** Job progress status. */
