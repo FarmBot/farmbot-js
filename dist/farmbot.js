@@ -321,6 +321,9 @@ var Farmbot = /** @class */ (function () {
         this._onmessage = function (chan, buffer) {
             try {
                 var msg = JSON.parse(buffer.toString());
+                if (chan == constants_1.MqttChanName.publicBroadcast) {
+                    return _this.emit(constants_1.MqttChanName.publicBroadcast, msg);
+                }
                 switch (chan.split(constants_1.Misc.MQTT_DELIM)[2]) {
                     case constants_1.MqttChanName.logs:
                         return _this.emit(constants_1.FbjsEventName.logs, msg);

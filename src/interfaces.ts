@@ -31,8 +31,7 @@ export type FirmwareHardware =
   | "arduino"
   | "express_k10"
   | "farmduino_k14"
-  | "farmduino"
-  | "none";
+  | "farmduino";
 
 /** FarmBot motor and encoder positions. */
 export type LocationName =

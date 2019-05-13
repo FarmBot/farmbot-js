@@ -9,6 +9,8 @@ var MqttChanName;
     MqttChanName["legacyStatus"] = "status";
     MqttChanName["statusV8"] = "status_v8";
     MqttChanName["sync"] = "sync";
+    /** THIS ONE IS SPECIAL. */
+    MqttChanName["publicBroadcast"] = "public_broadcast";
 })(MqttChanName = exports.MqttChanName || (exports.MqttChanName = {}));
 /** Not to be confused with MqttChanNames or
  * MQTT.js event names */
