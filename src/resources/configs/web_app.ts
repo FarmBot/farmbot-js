@@ -58,6 +58,8 @@ export type NumberConfigKey =
   | "error_log"
   | "fun_log"
   | "info_log"
+  | "map_size_x"
+  | "map_size_y"
   | "success_log"
   | "warn_log"
   | "zoom_level";

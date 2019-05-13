@@ -117,6 +117,7 @@ export interface ToolSlotPointer extends BasePoint {
     tool_id: number | undefined;
     pointer_type: "ToolSlot";
     pullout_direction: ToolPulloutDirection;
+    gantry_mounted: boolean;
 }
 export interface GenericPointer extends BasePoint {
     pointer_type: "GenericPointer";
