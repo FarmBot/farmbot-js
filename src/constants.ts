@@ -6,6 +6,8 @@ export enum MqttChanName {
   legacyStatus = "status",
   statusV8 = "status_v8",
   sync = "sync",
+  /** THIS ONE IS SPECIAL. */
+  publicBroadcast = "public_broadcast"
 }
 
 /** Not to be confused with MqttChanNames or

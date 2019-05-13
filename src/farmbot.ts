@@ -20,6 +20,7 @@ import { ResourceAdapter } from "./resources/resource_adapter";
 import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
+
 /*
  * Clarification for several terms used:
  *  * Farmware: Plug-ins for FarmBot OS. Sometimes referred to as `scripts`.
@@ -394,6 +395,11 @@ export class Farmbot {
   private _onmessage = (chan: string, buffer: Uint8Array) => {
     try {
       const msg = JSON.parse(buffer.toString());
+
+      if (chan == MqttChanName.publicBroadcast) {
+        return this.emit(MqttChanName.publicBroadcast, msg);
+      }
+
       switch (chan.split(Misc.MQTT_DELIM)[2]) {
         case MqttChanName.logs:
           return this.emit(FbjsEventName.logs, msg);
