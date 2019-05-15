@@ -37,7 +37,7 @@
   "jest": {
     "setupFiles": [],
     "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx)": "ts-jest"
     },
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.ts?(x)"

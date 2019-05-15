@@ -15,7 +15,27 @@ export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
   "KBSFCVqwRA-NKWLpPMV_q7fRwiEGWj7R-KZqRweALXuvCLF765E6-ENxA";
 
 export const fakeFarmbot =
-  (token = FAKE_TOKEN) => new Farmbot({ token, speed: 100, secure: false });
+  (token = FAKE_TOKEN) => {
+    const result = new Farmbot({ token, speed: 100, secure: false })
+    const fakeClient: any = {
+      emit: jest.fn((chan: string, payload: Uint8Array) => {
+        (result as any)._onmessage(chan, payload);
+      })
+    };
+    result.client = fakeClient;
+    return result;
+  };
+
+export function fakeEmit(bot: Farmbot,
+  chan: string,
+  payload: Uint8Array) {
+
+  (bot.client as any).emit(chan, payload);
+}
+
+export function expectEmitFrom(bot: Farmbot) {
+  return expect((bot.client as any).emit)
+}
 
 export const fakeFarmbotLike =
   (): FarmbotLike => ({ on: jest.fn(), client: { publish: jest.fn() } });
