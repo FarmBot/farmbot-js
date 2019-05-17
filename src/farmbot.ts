@@ -286,12 +286,12 @@ export class Farmbot {
     // Celery script can't validate `pin_number` and `pin_value` the way we need
     // for `set_servo_angle`. We will send the RPC command off, but also
     // crash the client to aid debugging.
-    if (![4, 5].includes(args.pin_number)) {
+    if (![4, 5, 6, 11].includes(args.pin_number)) {
       throw new Error("Servos only work on pins 4 and 5");
     }
 
-    if (args.pin_value > 360 || args.pin_value < 0) {
-      throw new Error("Pin value outside of 0...360 range");
+    if (args.pin_value > 180 || args.pin_value < 0) {
+      throw new Error("Pin value outside of 0...180 range");
     }
 
     return result;

@@ -73,7 +73,7 @@ describe("FarmBot", () => {
       () => bot.setServoAngle({ pin_number: 0, pin_value: 90 });
     const bad_angle =
       () => bot.setServoAngle({ pin_number: 4, pin_value: 900 });
-    expect(bad_angle).toThrowError("Pin value outside of 0...360 range");
+    expect(bad_angle).toThrowError("Pin value outside of 0...180 range");
     expect(bad_pin).toThrowError("Servos only work on pins 4 and 5");
   });
 
