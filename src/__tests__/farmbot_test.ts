@@ -32,6 +32,26 @@ describe("FarmBot", () => {
       [
         bot.resetMCU,
         { kind: "factory_reset", args: { package: "arduino_firmware" } }
+      ],
+      [
+        bot.reboot,
+        { kind: "reboot", args: { package: "farmbot_os" } }
+      ],
+      [
+        bot.rebootFirmware,
+        { kind: "reboot", args: { package: "arduino_firmware" } }
+      ],
+      [
+        () => bot.flashFirmware("foo"),
+        { kind: "flash_firmware", args: { package: "foo" } }
+      ],
+      [
+        () => bot.setServoAngle({ pin_number: 4, pin_value: 6 }),
+        { kind: "set_servo_angle", args: { pin_number: 4, pin_value: 6 } }
+      ],
+      [
+        () => bot.calibrate({ axis: "all" }),
+        { kind: "calibrate", args: { axis: "all" } }
       ]
     ];
     expectations.map(([rpc, xpectArgs]) => {
@@ -39,6 +59,22 @@ describe("FarmBot", () => {
       rpc(false);
       expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
     })
+  });
+
+  it("sets config values", () => {
+    const bot = fakeFarmbot();
+    bot.setConfig("speed", 12344)
+    expect(bot.getConfig("speed")).toEqual(12344);
+  });
+
+  it("has restriction on servos and angles", () => {
+    const bot = fakeFarmbot();
+    const bad_pin =
+      () => bot.setServoAngle({ pin_number: 0, pin_value: 90 });
+    const bad_angle =
+      () => bot.setServoAngle({ pin_number: 4, pin_value: 900 });
+    expect(bad_angle).toThrowError("Pin value outside of 0...360 range");
+    expect(bad_pin).toThrowError("Servos only work on pins 4 and 5");
   });
 
   it("uses the bot object to *SEND* simple RPCs", () => {
@@ -76,6 +112,7 @@ describe("FarmBot", () => {
         { kind: "dump_info", args: {} }
       ]
     ];
+
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);

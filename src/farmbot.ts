@@ -408,6 +408,10 @@ export class Farmbot {
           return this.emit(FbjsEventName.legacy_status, msg);
 
         case MqttChanName.statusV8:
+
+          if (this.config.interim_flag_is_legacy_fbos) {
+            this.setConfig("interim_flag_is_legacy_fbos", false);
+          }
           const path = chan
             .split(Misc.MQTT_DELIM)
             .slice(3)
