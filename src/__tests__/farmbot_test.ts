@@ -4,7 +4,7 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
+import { RpcRequestBodyItem, coordinate } from "..";
 import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
@@ -57,7 +57,7 @@ describe("FarmBot", () => {
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
+      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
     })
   });
 
@@ -116,7 +116,7 @@ describe("FarmBot", () => {
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
+      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
     })
   });
 
@@ -127,7 +127,7 @@ describe("FarmBot", () => {
 
     beforeEach(() => fakeSender.mockClear());
     function expectRPC(item: RpcRequestBodyItem) {
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([item]));
+      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([item]));
     }
 
     it("installs Farmware", () => {
