@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
 var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
-exports.CONFIG_DEFAULTS = { speed: 100 };
+exports.CONFIG_DEFAULTS = {
+    speed: 100,
+    interim_flag_is_legacy_fbos: true
+};
 var ERR_MISSING_MQTT_USERNAME = "MISSING_MQTT_USERNAME";
 var FIX_ATOB_FIRST = "NOTE TO NODEJS USERS:\n\nThis library requires an 'atob()' function.\nPlease fix this first.\nSOLUTION: https://github.com/FarmBot/farmbot-js/issues/33";
 var parseToken = function (input) {
@@ -27,5 +30,6 @@ exports.generateConfig = function (input) {
         mqttUsername: t.bot || ERR_MISSING_MQTT_USERNAME,
         LAST_PING_OUT: 0,
         LAST_PING_IN: 0,
+        interim_flag_is_legacy_fbos: true,
     };
 };

@@ -1,2 +1,2 @@
 import { RpcRequestBodyItem, RpcRequest } from "..";
-export declare function rpcRequest(body: RpcRequestBodyItem[]): RpcRequest;
+export declare function rpcRequest(body: RpcRequestBodyItem[], legacy: boolean): RpcRequest;

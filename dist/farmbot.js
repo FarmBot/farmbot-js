@@ -17,6 +17,10 @@ var deep_unpack_1 = require("./util/deep_unpack");
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
+        /** Delete this shim after FBOS v7 hits end of life. */
+        this.rpcShim = function (body) {
+            return util_1.rpcRequest(body, _this.getConfig("interim_flag_is_legacy_fbos"));
+        };
         /** Get a Farmbot Constructor Parameter. */
         this.getConfig = function (key) { return _this.config[key]; };
         /** Set a Farmbot Constructor Parameter. */
@@ -28,21 +32,21 @@ var Farmbot = /** @class */ (function () {
          * URL must point to a valid Farmware manifest JSON document.
          */
         this.installFarmware = function (url) {
-            return _this.send(util_1.rpcRequest([{ kind: "install_farmware", args: { url: url } }]));
+            return _this.send(_this.rpcShim([{ kind: "install_farmware", args: { url: url } }]));
         };
         /**
          * Checks for updates on a particular Farmware plugin when given the name of
          * a Farmware. `updateFarmware("take-photo")`
          */
         this.updateFarmware = function (pkg) {
-            return _this.send(util_1.rpcRequest([{
+            return _this.send(_this.rpcShim([{
                     kind: "update_farmware",
                     args: { package: pkg }
                 }]));
         };
         /** Uninstall a Farmware plugin. */
         this.removeFarmware = function (pkg) {
-            return _this.send(util_1.rpcRequest([{
+            return _this.send(_this.rpcShim([{
                     kind: "remove_farmware",
                     args: {
                         package: pkg
@@ -54,7 +58,7 @@ var Farmbot = /** @class */ (function () {
          * onto the bot's SD card.
          */
         this.installFirstPartyFarmware = function () {
-            return _this.send(util_1.rpcRequest([{
+            return _this.send(_this.rpcShim([{
                     kind: "install_first_party_farmware",
                     args: {}
                 }]));
@@ -64,37 +68,37 @@ var Farmbot = /** @class */ (function () {
          * Useful before unplugging the power.
          */
         this.powerOff = function () {
-            return _this.send(util_1.rpcRequest([{ kind: "power_off", args: {} }]));
+            return _this.send(_this.rpcShim([{ kind: "power_off", args: {} }]));
         };
         /** Restart FarmBot OS. */
         this.reboot = function () {
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "reboot", args: { package: "farmbot_os" } }
             ]));
         };
         /** Reinitialize the FarmBot microcontroller firmware. */
         this.rebootFirmware = function () {
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "reboot", args: { package: "arduino_firmware" } }
             ]));
         };
         /** Check for new versions of FarmBot OS.
          * Downloads and installs if available. */
         this.checkUpdates = function () {
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "check_updates", args: { package: "farmbot_os" } }
             ]));
         };
         /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
          * Be careful!! */
         this.resetOS = function () {
-            return _this.publish(util_1.rpcRequest([
+            return _this.publish(_this.rpcShim([
                 { kind: "factory_reset", args: { package: "farmbot_os" } }
             ]));
         };
         /** WARNING: will reset all firmware (hardware) settings! */
         this.resetMCU = function () {
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "factory_reset", args: { package: "arduino_firmware" } }
             ]));
         };
@@ -102,7 +106,7 @@ var Farmbot = /** @class */ (function () {
         /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
         firmware_name) {
             return _this
-                .send(util_1.rpcRequest([{
+                .send(_this.rpcShim([{
                     kind: "flash_firmware",
                     args: {
                         package: firmware_name
@@ -114,16 +118,16 @@ var Farmbot = /** @class */ (function () {
          * also will pause running regimens and cause any running sequences to exit.
          */
         this.emergencyLock = function () {
-            return _this.send(util_1.rpcRequest([{ kind: "emergency_lock", args: {} }]));
+            return _this.send(_this.rpcShim([{ kind: "emergency_lock", args: {} }]));
         };
         /** Unlock the bot when the user says it is safe. */
         this.emergencyUnlock = function () {
-            return _this.send(util_1.rpcRequest([{ kind: "emergency_unlock", args: {} }]));
+            return _this.send(_this.rpcShim([{ kind: "emergency_unlock", args: {} }]));
         };
         /** Execute a sequence by its ID on the FarmBot API. */
         this.execSequence = function (sequence_id, body) {
             if (body === void 0) { body = []; }
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "execute", args: { sequence_id: sequence_id }, body: body }
             ]));
         };
@@ -133,25 +137,25 @@ var Farmbot = /** @class */ (function () {
         label, 
         /** Optional ENV vars to pass the Farmware. */
         envVars) {
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "execute_script", args: { label: label }, body: envVars }
             ]));
         };
         /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
         this.home = function (args) {
-            return _this.send(util_1.rpcRequest([{ kind: "home", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "home", args: args }]));
         };
         /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis
          * order. WON'T WORK WITHOUT ENCODERS OR END STOPS! A blockage or stall
          * during this command will set that position as zero. Use carefully. */
         this.findHome = function (args) {
-            return _this.send(util_1.rpcRequest([{ kind: "find_home", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "find_home", args: args }]));
         };
         /** Move FarmBot to an absolute point. */
         this.moveAbsolute = function (args) {
             var x = args.x, y = args.y, z = args.z;
             var speed = args.speed || config_1.CONFIG_DEFAULTS.speed;
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 {
                     kind: "move_absolute",
                     args: {
@@ -166,40 +170,40 @@ var Farmbot = /** @class */ (function () {
         this.moveRelative = function (args) {
             var x = args.x, y = args.y, z = args.z;
             var speed = args.speed || config_1.CONFIG_DEFAULTS.speed;
-            return _this.send(util_1.rpcRequest([
+            return _this.send(_this.rpcShim([
                 { kind: "move_relative", args: { x: x, y: y, z: z, speed: speed } }
             ]));
         };
         /** Set a GPIO pin to a particular value. */
         this.writePin = function (args) {
-            return _this.send(util_1.rpcRequest([{ kind: "write_pin", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "write_pin", args: args }]));
         };
         /** Read the value of a GPIO pin. Will create a SensorReading if it's
          * a sensor. */
         this.readPin = function (args) {
-            return _this.send(util_1.rpcRequest([{ kind: "read_pin", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "read_pin", args: args }]));
         };
         /** Reverse the value of a digital pin. */
         this.togglePin = function (args) {
-            return _this.send(util_1.rpcRequest([{ kind: "toggle_pin", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "toggle_pin", args: args }]));
         };
         /** Read the status of the bot. Should not be needed unless you are first
          * logging in to the device, since the device pushes new states out on
          * every update. */
         this.readStatus = function (args) {
             if (args === void 0) { args = {}; }
-            return _this.send(util_1.rpcRequest([{ kind: "read_status", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "read_status", args: args }]));
         };
         /** Snap a photo and send to the API for post processing. */
         this.takePhoto = function (args) {
             if (args === void 0) { args = {}; }
-            return _this.send(util_1.rpcRequest([{ kind: "take_photo", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "take_photo", args: args }]));
         };
         /** Download/apply all of the latest FarmBot API JSON resources (plants,
          * account info, etc.) to the device. */
         this.sync = function (args) {
             if (args === void 0) { args = {}; }
-            return _this.send(util_1.rpcRequest([{ kind: "sync", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "sync", args: args }]));
         };
         /**
          * Set the current position of the given axis to 0.
@@ -207,7 +211,7 @@ var Farmbot = /** @class */ (function () {
          * 255 to 0, causing that position to be x: 0.
          */
         this.setZero = function (axis) {
-            return _this.send(util_1.rpcRequest([{
+            return _this.send(_this.rpcShim([{
                     kind: "zero",
                     args: { axis: axis }
                 }]));
@@ -225,11 +229,11 @@ var Farmbot = /** @class */ (function () {
                     args: { label: label, value: (configs[label] || constants_1.Misc.NULL) }
                 };
             });
-            return _this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
+            return _this.send(_this.rpcShim([{ kind: "set_user_env", args: {}, body: body }]));
         };
         /** Control servos on pins 4 and 5. */
         this.setServoAngle = function (args) {
-            var result = _this.send(util_1.rpcRequest([{ kind: "set_servo_angle", args: args }]));
+            var result = _this.send(_this.rpcShim([{ kind: "set_servo_angle", args: args }]));
             // Celery script can't validate `pin_number` and `pin_value` the way we need
             // for `set_servo_angle`. We will send the RPC command off, but also
             // crash the client to aid debugging.
@@ -246,11 +250,11 @@ var Farmbot = /** @class */ (function () {
          * Will set a new home position and a new axis length for the given axis.
          */
         this.calibrate = function (args) {
-            return _this.send(util_1.rpcRequest([{ kind: "calibrate", args: args }]));
+            return _this.send(_this.rpcShim([{ kind: "calibrate", args: args }]));
         };
         /** Tell the bot to send diagnostic info to the API.*/
         this.dumpInfo = function () {
-            return _this.send(util_1.rpcRequest([{
+            return _this.send(_this.rpcShim([{
                     kind: "dump_info",
                     args: {}
                 }]));
@@ -330,6 +334,9 @@ var Farmbot = /** @class */ (function () {
                     case constants_1.MqttChanName.legacyStatus:
                         return _this.emit(constants_1.FbjsEventName.legacy_status, msg);
                     case constants_1.MqttChanName.statusV8:
+                        if (_this.config.interim_flag_is_legacy_fbos) {
+                            _this.setConfig("interim_flag_is_legacy_fbos", false);
+                        }
                         var path = chan
                             .split(constants_1.Misc.MQTT_DELIM)
                             .slice(3)
@@ -405,7 +412,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "7.1.0";
+    Farmbot.VERSION = "8.0.0-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

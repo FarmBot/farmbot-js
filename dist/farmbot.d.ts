@@ -11,10 +11,12 @@ export declare class Farmbot {
     resources: ResourceAdapter;
     static VERSION: string;
     constructor(input: FarmbotConstructorParams);
+    /** Delete this shim after FBOS v7 hits end of life. */
+    rpcShim: (body: (Corpus.If | Corpus.Execute | Corpus.Calibrate | Corpus.ChangeOwnership | Corpus.CheckUpdates | Corpus.DumpInfo | Corpus.EmergencyLock | Corpus.EmergencyUnlock | Corpus.ExecuteScript | Corpus.FactoryReset | Corpus.FindHome | Corpus.FlashFirmware | Corpus.Home | Corpus.InstallFarmware | Corpus.InstallFirstPartyFarmware | Corpus.MoveRelative | Corpus.PowerOff | Corpus.ReadStatus | Corpus.Reboot | Corpus.RemoveFarmware | Corpus.MoveAbsolute | Corpus.ReadPin | Corpus.ResourceUpdate | Corpus.SendMessage | Corpus.SetServoAngle | Corpus.SetUserEnv | Corpus.Sync | Corpus.TakePhoto | Corpus.TogglePin | Corpus.UpdateFarmware | Corpus.Wait | Corpus.WritePin | Corpus.Zero)[]) => Corpus.RpcRequest;
     /** Get a Farmbot Constructor Parameter. */
-    getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U) => Conf[U];
+    getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U) => Conf[U];
     /** Set a Farmbot Constructor Parameter. */
-    setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U, value: Conf[U]) => void;
+    setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U, value: Conf[U]) => void;
     /**
      * Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document.
