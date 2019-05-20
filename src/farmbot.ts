@@ -9,7 +9,7 @@ import {
   uuid as genUuid
 } from "./util";
 import { Dictionary, Vector3 } from "./interfaces";
-import { ReadPin, WritePin } from ".";
+import { ReadPin, WritePin, bufferToString } from ".";
 import {
   FarmBotInternalConfig as Conf,
   FarmbotConstructorParams,
@@ -396,9 +396,10 @@ export class Farmbot {
   }
 
   /** Main entry point for all MQTT packets. */
-  private _onmessage = (chan: string, buffer: Uint8Array) => {
+  _onmessage = (chan: string, buffer: Uint8Array) => {
+    const original = bufferToString(buffer);
     try {
-      const msg = JSON.parse(buffer.toString());
+      const msg = JSON.parse(original);
 
       if (chan == MqttChanName.publicBroadcast) {
         return this.emit(MqttChanName.publicBroadcast, msg);
@@ -433,7 +434,7 @@ export class Farmbot {
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");
-      this.emit(FbjsEventName.malformed, buffer.toString());
+      this.emit(FbjsEventName.malformed, original);
     }
   }
 

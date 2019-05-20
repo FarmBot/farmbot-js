@@ -22,7 +22,8 @@ describe("generateConfig", () => {
   });
 
   it("warns users when atob is missing", () => {
-    expect(isNode()).toBe(true); // Just to verify mock- not part of test.
+    // Just to verify mock- not part of test.
+    expect(isNode()).toBe(true);
     (global as any).atob = undefined;
     const boom = () => generateConfig({ token: "{}" });
     expect(boom).toThrowError(FIX_ATOB_FIRST);

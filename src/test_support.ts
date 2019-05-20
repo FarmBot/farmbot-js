@@ -1,4 +1,4 @@
-import { Farmbot } from ".";
+import { Farmbot, stringToBuffer } from ".";
 import { FarmbotLike } from "./resources/interfaces";
 
 export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
@@ -16,21 +16,21 @@ export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
 
 export const fakeFarmbot =
   (token = FAKE_TOKEN) => {
-    const result = new Farmbot({ token, speed: 100, secure: false })
+    const bot = new Farmbot({ token, speed: 100, secure: false })
     const fakeClient: any = {
       emit: jest.fn((chan: string, payload: Uint8Array) => {
-        (result as any)._onmessage(chan, payload);
+        bot._onmessage(chan, payload);
       })
     };
-    result.client = fakeClient;
-    return result;
+    bot.client = fakeClient;
+    return bot;
   };
 
 export function fakeEmit(bot: Farmbot,
   chan: string,
-  payload: Uint8Array) {
+  payload: object) {
 
-  (bot.client as any).emit(chan, payload);
+  (bot.client as any).emit(chan, stringToBuffer(JSON.stringify(payload)));
 }
 
 export function expectEmitFrom(bot: Farmbot) {

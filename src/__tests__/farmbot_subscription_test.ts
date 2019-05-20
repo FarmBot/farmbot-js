@@ -10,6 +10,7 @@ import {
   fakeEmit,
   expectEmitFrom
 } from "../test_support";
+import { stringToBuffer } from "../util";
 
 describe("FarmBot", () => {
   it("Instantiates a FarmBot", () => {
@@ -21,15 +22,17 @@ describe("FarmBot", () => {
 
   it("subscribes to status_v8/upsert", (done) => {
     const bot = fakeFarmbot();
-    const bar = new Uint8Array([70, 70]);
+    const bar = { bar: "bar" };
     const foo = "FOO";
-    bot.on("malformed", (x: unknown) => {
-      expect(x).toEqual("70,70");
+    bot.on("malformed", (x: object) => {
+      expect(x).toEqual(bar);
       done();
     });
     fakeEmit(bot, foo, bar);
-    expectEmitFrom(bot).toHaveBeenCalledWith(foo, bar);
+    expectEmitFrom(bot)
+      .toHaveBeenCalledWith(foo, stringToBuffer(JSON.stringify(bar)));
   });
 
-  test.todo("subscribes to status_v8/delete");
+  // it("subscribes to status_v8/upsert");
+  // it("subscribes to status_v8/delete");
 });
