@@ -40,7 +40,7 @@ export const CONFIG_DEFAULTS = {
 };
 
 const ERR_MISSING_MQTT_USERNAME = "MISSING_MQTT_USERNAME";
-const FIX_ATOB_FIRST =
+export const FIX_ATOB_FIRST =
   `NOTE TO NODEJS USERS:
 
 This library requires an 'atob()' function.
