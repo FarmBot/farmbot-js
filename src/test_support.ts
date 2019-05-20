@@ -26,9 +26,9 @@ export const fakeFarmbot =
     return bot;
   };
 
-export function fakeEmit(bot: Farmbot,
+export function fakeMqttEmission<T>(bot: Farmbot,
   chan: string,
-  payload: object) {
+  payload: T) {
 
   (bot.client as any).emit(chan, stringToBuffer(JSON.stringify(payload)));
 }

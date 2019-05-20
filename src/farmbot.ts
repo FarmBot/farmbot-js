@@ -8,7 +8,7 @@ import {
   coordinate,
   uuid as genUuid
 } from "./util";
-import { Dictionary, Vector3 } from "./interfaces";
+import { Dictionary, Vector3, Primitive } from "./interfaces";
 import { ReadPin, WritePin, bufferToString } from ".";
 import {
   FarmBotInternalConfig as Conf,
@@ -398,44 +398,43 @@ export class Farmbot {
   /** Main entry point for all MQTT packets. */
   _onmessage = (chan: string, buffer: Uint8Array) => {
     const original = bufferToString(buffer);
+    const segments = chan.split(Misc.MQTT_DELIM);
+    const { emit } = this;
+
     try {
       const msg = JSON.parse(original);
 
-      if (chan == MqttChanName.publicBroadcast) {
-        return this.emit(MqttChanName.publicBroadcast, msg);
+      if (segments[0] == MqttChanName.publicBroadcast) {
+        return emit(MqttChanName.publicBroadcast, msg);
       }
 
-      switch (chan.split(Misc.MQTT_DELIM)[2]) {
-        case MqttChanName.logs:
-          return this.emit(FbjsEventName.logs, msg);
-
-        case MqttChanName.legacyStatus:
-          return this.emit(FbjsEventName.legacy_status, msg);
-
-        case MqttChanName.statusV8:
-
-          if (this.config.interim_flag_is_legacy_fbos) {
-            this.setConfig("interim_flag_is_legacy_fbos", false);
-          }
-          const path = chan
-            .split(Misc.MQTT_DELIM)
-            .slice(3)
-            .join(Misc.PATH_DELIM);
-          return this
-            .emit(FbjsEventName.status_v8, deepUnpack(path, msg));
-
-        case MqttChanName.sync:
-          return this.emit(FbjsEventName.sync, msg);
-
+      switch (segments[2]) {
+        case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
+        case MqttChanName.legacyStatus: return emit(FbjsEventName.legacy_status, msg);
+        case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
+        case MqttChanName.statusV8: return this.statusV8(segments, msg);
         default:
-          const event = hasLabel(msg) ?
-            msg.args.label : FbjsEventName.malformed;
-          return this.emit(event, msg);
+          const ev = hasLabel(msg) ? msg.args.label : FbjsEventName.malformed;
+          return emit(ev, msg);
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");
-      this.emit(FbjsEventName.malformed, original);
+      emit(FbjsEventName.malformed, original);
     }
+  }
+
+  private statusV8 = (segments: string[], msg: Primitive) => {
+    if (this.config.interim_flag_is_legacy_fbos) {
+      this.setConfig("interim_flag_is_legacy_fbos", false);
+    }
+    const path = segments.slice(3).join(Misc.PATH_DELIM);
+    switch (segments[3]) {
+      case "upsert":
+        return this.emit(FbjsEventName.upsert, deepUnpack(path, msg));
+      case "remove":
+        return this.emit(FbjsEventName.remove, {});
+    }
+
   }
 
   /** Bootstrap the device onto the MQTT broker. */
