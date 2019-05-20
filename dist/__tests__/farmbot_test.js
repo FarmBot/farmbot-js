@@ -67,7 +67,7 @@ describe("FarmBot", function () {
         var bot = test_support_1.fakeFarmbot();
         var bad_pin = function () { return bot.setServoAngle({ pin_number: 0, pin_value: 90 }); };
         var bad_angle = function () { return bot.setServoAngle({ pin_number: 4, pin_value: 900 }); };
-        expect(bad_angle).toThrowError("Pin value outside of 0...360 range");
+        expect(bad_angle).toThrowError("Pin value outside of 0...180 range");
         expect(bad_pin).toThrowError("Servos only work on pins 4 and 5");
     });
     it("uses the bot object to *SEND* simple RPCs", function () {

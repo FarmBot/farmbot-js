@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", function () { return ({ uuid: function () { return "FAKE_UUID"; } }); });
 var test_support_1 = require("../test_support");
+var util_1 = require("../util");
+var constants_1 = require("../constants");
 describe("FarmBot", function () {
     it("Instantiates a FarmBot", function () {
         var bot = test_support_1.fakeFarmbot();
@@ -15,14 +17,39 @@ describe("FarmBot", function () {
     });
     it("subscribes to status_v8/upsert", function (done) {
         var bot = test_support_1.fakeFarmbot();
-        var bar = new Uint8Array([70, 70]);
-        var foo = "FOO";
+        var payload = { bar: "bar" };
+        var chan = "FOO";
         bot.on("malformed", function (x) {
-            expect(x).toEqual("70,70");
+            expect(x).toEqual(payload);
             done();
         });
-        test_support_1.fakeEmit(bot, foo, bar);
-        test_support_1.expectEmitFrom(bot).toHaveBeenCalledWith(foo, bar);
+        test_support_1.fakeMqttEmission(bot, chan, payload);
+        test_support_1.expectEmitFrom(bot)
+            .toHaveBeenCalledWith(chan, util_1.stringToBuffer(JSON.stringify(payload)));
     });
-    test.todo("subscribes to status_v8/delete");
+    it("subscribes to status_v8/upsert", function () {
+        var bot = test_support_1.fakeFarmbot();
+        var payload = 23;
+        var chan = "bot/device_1/status_v8/upsert/location_data/scaled_encoders/x";
+        bot.emit = jest.fn();
+        test_support_1.fakeMqttEmission(bot, chan, payload);
+        var expected = {
+            upsert: {
+                location_data: {
+                    scaled_encoders: {
+                        x: 23
+                    }
+                }
+            }
+        };
+        expect(bot.emit).toHaveBeenCalledWith(constants_1.FbjsEventName.upsert, expected);
+    });
+    it("subscribes to status_v8/remove", function () {
+        var bot = test_support_1.fakeFarmbot();
+        var payload = null;
+        var chan = "bot/device_1/status_v8/remove/location_data/scaled_encoders/x";
+        bot.emit = jest.fn();
+        test_support_1.fakeMqttEmission(bot, chan, payload);
+        expect(bot.emit).toHaveBeenCalledWith(constants_1.FbjsEventName.remove, {});
+    });
 });

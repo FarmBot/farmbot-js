@@ -7,7 +7,7 @@ exports.CONFIG_DEFAULTS = {
     interim_flag_is_legacy_fbos: true
 };
 var ERR_MISSING_MQTT_USERNAME = "MISSING_MQTT_USERNAME";
-var FIX_ATOB_FIRST = "NOTE TO NODEJS USERS:\n\nThis library requires an 'atob()' function.\nPlease fix this first.\nSOLUTION: https://github.com/FarmBot/farmbot-js/issues/33";
+exports.FIX_ATOB_FIRST = "NOTE TO NODEJS USERS:\n\nThis library requires an 'atob()' function.\nPlease fix this first.\nSOLUTION: https://github.com/FarmBot/farmbot-js/issues/33";
 var parseToken = function (input) {
     try {
         return JSON.parse(atob(input.split(".")[1]));
@@ -19,7 +19,7 @@ var parseToken = function (input) {
 };
 exports.generateConfig = function (input) {
     if (util_1.isNode() && !global.atob) {
-        throw new Error(FIX_ATOB_FIRST);
+        throw new Error(exports.FIX_ATOB_FIRST);
     }
     var t = parseToken(input.token);
     return {

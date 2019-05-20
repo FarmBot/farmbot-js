@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
+var _1 = require(".");
 var config_1 = require("./config");
 var resource_adapter_1 = require("./resources/resource_adapter");
 var constants_1 = require("./constants");
@@ -237,11 +238,11 @@ var Farmbot = /** @class */ (function () {
             // Celery script can't validate `pin_number` and `pin_value` the way we need
             // for `set_servo_angle`. We will send the RPC command off, but also
             // crash the client to aid debugging.
-            if (![4, 5].includes(args.pin_number)) {
+            if (![4, 5, 6, 11].includes(args.pin_number)) {
                 throw new Error("Servos only work on pins 4 and 5");
             }
-            if (args.pin_value > 360 || args.pin_value < 0) {
-                throw new Error("Pin value outside of 0...360 range");
+            if (args.pin_value > 180 || args.pin_value < 0) {
+                throw new Error("Pin value outside of 0...180 range");
             }
             return result;
         };
@@ -323,37 +324,41 @@ var Farmbot = /** @class */ (function () {
         };
         /** Main entry point for all MQTT packets. */
         this._onmessage = function (chan, buffer) {
+            var original = _1.bufferToString(buffer);
+            var segments = chan.split(constants_1.Misc.MQTT_DELIM);
+            var emit = _this.emit;
             try {
-                var msg = JSON.parse(buffer.toString());
-                if (chan == constants_1.MqttChanName.publicBroadcast) {
-                    return _this.emit(constants_1.MqttChanName.publicBroadcast, msg);
+                var msg = JSON.parse(original);
+                if (segments[0] == constants_1.MqttChanName.publicBroadcast) {
+                    return emit(constants_1.MqttChanName.publicBroadcast, msg);
                 }
-                switch (chan.split(constants_1.Misc.MQTT_DELIM)[2]) {
+                switch (segments[2]) {
                     case constants_1.MqttChanName.logs:
-                        return _this.emit(constants_1.FbjsEventName.logs, msg);
-                    case constants_1.MqttChanName.legacyStatus:
-                        return _this.emit(constants_1.FbjsEventName.legacy_status, msg);
-                    case constants_1.MqttChanName.statusV8:
-                        if (_this.config.interim_flag_is_legacy_fbos) {
-                            _this.setConfig("interim_flag_is_legacy_fbos", false);
-                        }
-                        var path = chan
-                            .split(constants_1.Misc.MQTT_DELIM)
-                            .slice(3)
-                            .join(constants_1.Misc.PATH_DELIM);
-                        return _this
-                            .emit(constants_1.FbjsEventName.status_v8, deep_unpack_1.deepUnpack(path, msg));
-                    case constants_1.MqttChanName.sync:
-                        return _this.emit(constants_1.FbjsEventName.sync, msg);
+                        return emit(constants_1.FbjsEventName.logs, msg);
+                        ;
+                    case constants_1.MqttChanName.legacyStatus: return emit(constants_1.FbjsEventName.legacy_status, msg);
+                    case constants_1.MqttChanName.sync: return emit(constants_1.FbjsEventName.sync, msg);
+                    case constants_1.MqttChanName.statusV8: return _this.statusV8(segments, msg);
                     default:
-                        var event_1 = is_celery_script_1.hasLabel(msg) ?
-                            msg.args.label : constants_1.FbjsEventName.malformed;
-                        return _this.emit(event_1, msg);
+                        var ev = is_celery_script_1.hasLabel(msg) ? msg.args.label : constants_1.FbjsEventName.malformed;
+                        return emit(ev, msg);
                 }
             }
             catch (error) {
                 console.warn("Could not parse inbound message from MQTT.");
-                _this.emit(constants_1.FbjsEventName.malformed, buffer.toString());
+                emit(constants_1.FbjsEventName.malformed, original);
+            }
+        };
+        this.statusV8 = function (segments, msg) {
+            if (_this.config.interim_flag_is_legacy_fbos) {
+                _this.setConfig("interim_flag_is_legacy_fbos", false);
+            }
+            var path = segments.slice(3).join(constants_1.Misc.PATH_DELIM);
+            switch (segments[3]) {
+                case "upsert":
+                    return _this.emit(constants_1.FbjsEventName.upsert, deep_unpack_1.deepUnpack(path, msg));
+                case "remove":
+                    return _this.emit(constants_1.FbjsEventName.remove, {});
             }
         };
         /** Bootstrap the device onto the MQTT broker. */

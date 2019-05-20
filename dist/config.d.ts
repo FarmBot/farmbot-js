@@ -28,4 +28,5 @@ export declare const CONFIG_DEFAULTS: {
     speed: number;
     interim_flag_is_legacy_fbos: boolean;
 };
+export declare const FIX_ATOB_FIRST = "NOTE TO NODEJS USERS:\n\nThis library requires an 'atob()' function.\nPlease fix this first.\nSOLUTION: https://github.com/FarmBot/farmbot-js/issues/33";
 export declare const generateConfig: (input: FarmbotConstructorParams) => FarmBotInternalConfig;
