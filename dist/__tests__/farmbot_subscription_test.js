@@ -34,11 +34,9 @@ describe("FarmBot", function () {
         bot.emit = jest.fn();
         test_support_1.fakeMqttEmission(bot, chan, payload);
         var expected = {
-            upsert: {
-                location_data: {
-                    scaled_encoders: {
-                        x: 23
-                    }
+            location_data: {
+                scaled_encoders: {
+                    x: 23
                 }
             }
         };

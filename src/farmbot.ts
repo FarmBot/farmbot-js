@@ -35,7 +35,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.0-rc2";
+  static VERSION = "8.0.0-rc3";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -427,7 +427,7 @@ export class Farmbot {
     if (this.config.interim_flag_is_legacy_fbos) {
       this.setConfig("interim_flag_is_legacy_fbos", false);
     }
-    const path = segments.slice(3).join(Misc.PATH_DELIM);
+    const path = segments.slice(4).join(Misc.PATH_DELIM);
     switch (segments[3]) {
       case "upsert":
         return this.emit(FbjsEventName.upsert, deepUnpack(path, msg));

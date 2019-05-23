@@ -353,7 +353,7 @@ var Farmbot = /** @class */ (function () {
             if (_this.config.interim_flag_is_legacy_fbos) {
                 _this.setConfig("interim_flag_is_legacy_fbos", false);
             }
-            var path = segments.slice(3).join(constants_1.Misc.PATH_DELIM);
+            var path = segments.slice(4).join(constants_1.Misc.PATH_DELIM);
             switch (segments[3]) {
                 case "upsert":
                     return _this.emit(constants_1.FbjsEventName.upsert, deep_unpack_1.deepUnpack(path, msg));
@@ -417,7 +417,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.0-rc2";
+    Farmbot.VERSION = "8.0.0-rc3";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

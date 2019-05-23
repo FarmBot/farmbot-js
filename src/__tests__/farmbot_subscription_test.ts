@@ -41,14 +41,12 @@ describe("FarmBot", () => {
     bot.emit = jest.fn();
     fakeMqttEmission(bot, chan, payload);
     const expected = {
-      upsert: {
-        location_data: {
-          scaled_encoders: {
-            x: 23
-          }
+      location_data: {
+        scaled_encoders: {
+          x: 23
         }
       }
-    }
+    };
     expect(bot.emit).toHaveBeenCalledWith(FbjsEventName.upsert, expected);
   });
 
