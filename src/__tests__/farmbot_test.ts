@@ -19,6 +19,20 @@ describe("FarmBot", () => {
     expect(bot.getConfig("secure")).toEqual(false);
   });
 
+  it("disallows publishing when disconnected", () => {
+    const bot = fakeFarmbot();
+    bot.client = undefined;
+    const boom = () => bot.publish({
+      kind: "rpc_request",
+      args: {
+        label: "nope",
+        priority: 0
+      },
+      body: []
+    });
+    expect(boom).toThrowError("Not connected to server");
+  });
+
   it("uses the bot object to *BROADCAST* simple RPCs", () => {
     const bot = fakeFarmbot();
     const fakeSender = jest.fn();
