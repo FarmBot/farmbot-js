@@ -331,7 +331,7 @@ export class Farmbot {
           try {
             handler(data, event);
           } catch (e) {
-            const msg = `Exception thrown while handling '${event} event.`;
+            const msg = `Exception thrown while handling '${event}' event.`;
             console.warn(msg);
             console.dir(e);
           }
