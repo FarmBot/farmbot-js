@@ -370,6 +370,7 @@ var Farmbot = /** @class */ (function () {
             }
         };
         this.ping = function (timeout, now) {
+            if (timeout === void 0) { timeout = 3000; }
             if (now === void 0) { now = time_1.timestamp(); }
             // if (this.getConfig("interim_flag_is_legacy_fbos")) {
             //   return this.send(this.rpcShim([]));
