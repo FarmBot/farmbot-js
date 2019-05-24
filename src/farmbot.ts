@@ -20,6 +20,7 @@ import { ResourceAdapter } from "./resources/resource_adapter";
 import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
+import { timestamp } from "./util/time";
 
 /*
  * Clarification for several terms used:
@@ -29,9 +30,16 @@ import { deepUnpack } from "./util/deep_unpack";
  *        Mostly referred to as `arduino`, but also `mcu`.
  */
 
+/** Meta data that wraps an event callback */
+interface CallbackWrapper {
+  once: boolean;
+  event: string;
+  value: Function;
+}
+
 export class Farmbot {
   /** Storage area for all event handlers */
-  private _events: Dictionary<Function[]>;
+  private _events: Dictionary<CallbackWrapper[]>;
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
@@ -322,21 +330,29 @@ export class Farmbot {
     return this._events[name];
   }
 
-  on = (event: string, callback: Function) => this.event(event).push(callback);
+  on = (event: string, value: Function, once = false) => {
+    this.event(event).push({ value, once, event });
+  };
 
   emit = (event: string, data: {}) => {
-    [this.event(event), this.event("*")]
-      .forEach(function (handlers) {
-        handlers.forEach(function (handler: Function) {
-          try {
-            handler(data, event);
-          } catch (e) {
-            const msg = `Exception thrown while handling '${event}' event.`;
-            console.warn(msg);
-            console.dir(e);
+    const nextArray: CallbackWrapper[] = [];
+
+    this.event(event)
+      .concat(this.event("*"))
+      .forEach(function (handler) {
+        try {
+          handler.value(data, event);
+          if (!handler.once && handler.event === event) {
+            nextArray.push(handler);
           }
-        });
+        } catch (e) {
+          const msg = `Exception thrown while handling '${event}' event.`;
+          console.warn(msg);
+          console.dir(e);
+        }
       });
+
+    this._events[event] = nextArray;
   }
 
   /** Dictionary of all relevant MQTT channels the bot uses. */
@@ -436,6 +452,20 @@ export class Farmbot {
     }
 
   }
+
+  ping = (timeout: number): Promise<{}> => {
+    if (this.getConfig("interim_flag_is_legacy_fbos")) {
+      return this.send(this.rpcShim([]));
+    } else {
+      return this.doPing("" + timestamp(), timeout);
+    }
+  }
+
+  private doPing = (_payload: string, _timeout: number): Promise<{}> => {
+    return new Promise((_res, _rej) => {
+      throw new Error("???");
+    });
+  };
 
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
