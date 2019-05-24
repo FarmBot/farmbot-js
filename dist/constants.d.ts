@@ -7,7 +7,8 @@ export declare enum MqttChanName {
     statusV8 = "status_v8",
     sync = "sync",
     /** THIS ONE IS SPECIAL. */
-    publicBroadcast = "public_broadcast"
+    publicBroadcast = "public_broadcast",
+    pong = "pong"
 }
 /** Not to be confused with MqttChanNames or
  * MQTT.js event names */

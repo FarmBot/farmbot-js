@@ -8,6 +8,7 @@ var resource_adapter_1 = require("./resources/resource_adapter");
 var constants_1 = require("./constants");
 var is_celery_script_1 = require("./util/is_celery_script");
 var deep_unpack_1 = require("./util/deep_unpack");
+var time_1 = require("./util/time");
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
@@ -344,6 +345,8 @@ var Farmbot = /** @class */ (function () {
                     case constants_1.MqttChanName.legacyStatus: return emit(constants_1.FbjsEventName.legacy_status, msg);
                     case constants_1.MqttChanName.sync: return emit(constants_1.FbjsEventName.sync, msg);
                     case constants_1.MqttChanName.statusV8: return _this.statusV8(segments, msg);
+                    case constants_1.MqttChanName.pong:
+                        return emit(segments[2], msg);
                     default:
                         var ev = is_celery_script_1.hasLabel(msg) ? msg.args.label : constants_1.FbjsEventName.malformed;
                         return emit(ev, msg);
@@ -366,18 +369,43 @@ var Farmbot = /** @class */ (function () {
                     return _this.emit(constants_1.FbjsEventName.remove, {});
             }
         };
-        // ping = (timeout: number): Promise<{}> => {
-        // if (this.getConfig("interim_flag_is_legacy_fbos")) {
-        //   return this.send(this.rpcShim([]));
-        // } else {
-        //   return this.doPing("" + timestamp(), timeout);
-        // }
-        // }
-        // private doPing = (_payload: string, _timeout: number): Promise<{}> => {
-        //   return new Promise((_res, _rej) => {
-        //     throw new Error("???");
-        //   });
-        // };
+        this.ping = function (timeout, now) {
+            if (now === void 0) { now = time_1.timestamp(); }
+            // if (this.getConfig("interim_flag_is_legacy_fbos")) {
+            //   return this.send(this.rpcShim([]));
+            // } else {
+            console.log("NOT TO SELF: Uncomment legacy shim after QA");
+            return _this.doPing(now, timeout);
+            // }
+        };
+        // STEP 0: Subscribe to `bot/device_23/pong/#`
+        // STEP 0: Send         `bot/device_23/ping/3123123`
+        // STEP 0: Receive      `bot/device_23/pong/3123123`
+        this.doPing = function (startedAt, timeout) {
+            return new Promise(function (resolve, reject) {
+                if (_this.client) {
+                    var meta_1 = { isDone: false };
+                    var maybeReject = function () {
+                        if (!meta_1.isDone) {
+                            meta_1.isDone = true;
+                            reject(-0);
+                        }
+                    };
+                    var maybeResolve = function () {
+                        if (!meta_1.isDone) {
+                            meta_1.isDone = true;
+                            resolve(time_1.timestamp() - startedAt);
+                        }
+                    };
+                    setTimeout(maybeReject, timeout);
+                    _this.on("" + startedAt, maybeResolve, true);
+                    _this.client.publish(_this.channel.ping(startedAt), JSON.stringify(startedAt));
+                }
+                else {
+                    reject("Not connected");
+                }
+            });
+        };
         /** Bootstrap the device onto the MQTT broker. */
         this.connect = function () {
             var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
@@ -400,6 +428,7 @@ var Farmbot = /** @class */ (function () {
                 _this.channel.status,
                 _this.channel.sync,
                 _this.channel.toClient,
+                _this.channel.pong
             ];
             client.subscribe(channels);
             return new Promise(function (resolve, _reject) {
@@ -429,7 +458,10 @@ var Farmbot = /** @class */ (function () {
                 logs: "bot/" + deviceName + "/" + constants_1.MqttChanName.logs,
                 status: "bot/" + deviceName + "/" + constants_1.MqttChanName.statusV8 + "/#",
                 sync: "bot/" + deviceName + "/" + constants_1.MqttChanName.sync + "/#",
-                pong: "bot/" + deviceName + "/pong"
+                /** Read only */
+                pong: "bot/" + deviceName + "/pong/#",
+                /** Write only: bot/${deviceName}/ping/${timestamp} */
+                ping: function (timestamp) { return "bot/" + deviceName + "/ping/" + timestamp; }
             };
         },
         enumerable: true,

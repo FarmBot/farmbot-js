@@ -11,6 +11,7 @@ var MqttChanName;
     MqttChanName["sync"] = "sync";
     /** THIS ONE IS SPECIAL. */
     MqttChanName["publicBroadcast"] = "public_broadcast";
+    MqttChanName["pong"] = "pong";
 })(MqttChanName = exports.MqttChanName || (exports.MqttChanName = {}));
 /** Not to be confused with MqttChanNames or
  * MQTT.js event names */

@@ -157,7 +157,10 @@ export declare class Farmbot {
         logs: string;
         status: string;
         sync: string;
+        /** Read only */
         pong: string;
+        /** Write only: bot/${deviceName}/ping/${timestamp} */
+        ping: (timestamp: number) => string;
     };
     /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
@@ -170,6 +173,8 @@ export declare class Farmbot {
     /** Main entry point for all MQTT packets. */
     _onmessage: (chan: string, buffer: Uint8Array) => void;
     private statusV8;
+    ping: (timeout: number, now?: number) => Promise<{}>;
+    private doPing;
     /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<{}>;
 }

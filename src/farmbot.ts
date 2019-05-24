@@ -20,7 +20,7 @@ import { ResourceAdapter } from "./resources/resource_adapter";
 import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
-// import { timestamp } from "./util/time";
+import { timestamp } from "./util/time";
 
 /*
  * Clarification for several terms used:
@@ -371,7 +371,10 @@ export class Farmbot {
       logs: `bot/${deviceName}/${MqttChanName.logs}`,
       status: `bot/${deviceName}/${MqttChanName.statusV8}/#`,
       sync: `bot/${deviceName}/${MqttChanName.sync}/#`,
-      pong: `bot/${deviceName}/pong`
+      /** Read only */
+      pong: `bot/${deviceName}/pong/#`,
+      /** Write only: bot/${deviceName}/ping/${timestamp} */
+      ping: (timestamp: number) => `bot/${deviceName}/ping/${timestamp}`
     };
   }
 
@@ -434,6 +437,8 @@ export class Farmbot {
         case MqttChanName.legacyStatus: return emit(FbjsEventName.legacy_status, msg);
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.statusV8: return this.statusV8(segments, msg);
+        case MqttChanName.pong:
+          return emit(segments[2], msg);
         default:
           const ev = hasLabel(msg) ? msg.args.label : FbjsEventName.malformed;
           return emit(ev, msg);
@@ -458,19 +463,45 @@ export class Farmbot {
 
   }
 
-  // ping = (timeout: number): Promise<{}> => {
-  // if (this.getConfig("interim_flag_is_legacy_fbos")) {
-  //   return this.send(this.rpcShim([]));
-  // } else {
-  //   return this.doPing("" + timestamp(), timeout);
-  // }
-  // }
+  ping = (timeout: number, now = timestamp()): Promise<{}> => {
+    // if (this.getConfig("interim_flag_is_legacy_fbos")) {
+    //   return this.send(this.rpcShim([]));
+    // } else {
+    console.log("NOT TO SELF: Uncomment legacy shim after QA");
+    return this.doPing(now, timeout);
+    // }
+  }
 
-  // private doPing = (_payload: string, _timeout: number): Promise<{}> => {
-  //   return new Promise((_res, _rej) => {
-  //     throw new Error("???");
-  //   });
-  // };
+  // STEP 0: Subscribe to `bot/device_23/pong/#`
+  // STEP 0: Send         `bot/device_23/ping/3123123`
+  // STEP 0: Receive      `bot/device_23/pong/3123123`
+  private doPing = (startedAt: number, timeout: number): Promise<{}> => {
+    return new Promise<{}>((resolve, reject) => {
+      if (this.client) {
+        const meta = { isDone: false };
+
+        const maybeReject = () => {
+          if (!meta.isDone) {
+            meta.isDone = true;
+            reject(-0);
+          }
+        };
+
+        const maybeResolve = () => {
+          if (!meta.isDone) {
+            meta.isDone = true;
+            resolve(timestamp() - startedAt);
+          }
+        };
+
+        setTimeout(maybeReject, timeout);
+        this.on("" + startedAt, maybeResolve, true);
+        this.client.publish(this.channel.ping(startedAt), JSON.stringify(startedAt))
+      } else {
+        reject("Not connected");
+      }
+    });
+  };
 
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
@@ -494,6 +525,7 @@ export class Farmbot {
       this.channel.status,
       this.channel.sync,
       this.channel.toClient,
+      this.channel.pong
     ];
     client.subscribe(channels);
     return new Promise((resolve, _reject) => {

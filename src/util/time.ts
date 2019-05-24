@@ -1,7 +1,7 @@
 /** Returns a timestamp in ms. */
-// export function timestamp() {
-//   return Math.round((new Date()).getTime() / 100);
-// }
+export function timestamp() {
+  return Math.round((new Date()).getTime() / 100);
+}
 
 // type RejectFn = (reason?: any) => void;
 // type ResolveFn<T> = (value?: T | PromiseLike<T>) => void;
