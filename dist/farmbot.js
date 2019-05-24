@@ -282,7 +282,12 @@ var Farmbot = /** @class */ (function () {
                     console.dir(e);
                 }
             });
-            _this._events[event] = nextArray;
+            if (nextArray.length === 0) {
+                delete _this._events[event];
+            }
+            else {
+                _this._events[event] = nextArray;
+            }
         };
         /** Low-level means of sending MQTT packets. Does not check format. Does not
          * acknowledge confirmation. Probably not the one you want. */

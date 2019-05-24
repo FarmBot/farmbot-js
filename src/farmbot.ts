@@ -352,7 +352,11 @@ export class Farmbot {
         }
       });
 
-    this._events[event] = nextArray;
+    if (nextArray.length === 0) {
+      delete this._events[event];
+    } else {
+      this._events[event] = nextArray;
+    }
   }
 
   /** Dictionary of all relevant MQTT channels the bot uses. */
