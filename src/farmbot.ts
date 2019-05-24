@@ -20,7 +20,7 @@ import { ResourceAdapter } from "./resources/resource_adapter";
 import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
-import { timestamp } from "./util/time";
+// import { timestamp } from "./util/time";
 
 /*
  * Clarification for several terms used:
@@ -43,7 +43,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.0-rc3";
+  static VERSION = "8.0.0-rc4";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -367,6 +367,7 @@ export class Farmbot {
       logs: `bot/${deviceName}/${MqttChanName.logs}`,
       status: `bot/${deviceName}/${MqttChanName.statusV8}/#`,
       sync: `bot/${deviceName}/${MqttChanName.sync}/#`,
+      pong: `bot/${deviceName}/pong`
     };
   }
 
@@ -407,7 +408,7 @@ export class Farmbot {
         }
       }
 
-      this.on(input.args.label, handler);
+      this.on(input.args.label, handler, true);
     });
   }
 
@@ -453,19 +454,19 @@ export class Farmbot {
 
   }
 
-  ping = (timeout: number): Promise<{}> => {
-    if (this.getConfig("interim_flag_is_legacy_fbos")) {
-      return this.send(this.rpcShim([]));
-    } else {
-      return this.doPing("" + timestamp(), timeout);
-    }
-  }
+  // ping = (timeout: number): Promise<{}> => {
+  // if (this.getConfig("interim_flag_is_legacy_fbos")) {
+  //   return this.send(this.rpcShim([]));
+  // } else {
+  //   return this.doPing("" + timestamp(), timeout);
+  // }
+  // }
 
-  private doPing = (_payload: string, _timeout: number): Promise<{}> => {
-    return new Promise((_res, _rej) => {
-      throw new Error("???");
-    });
-  };
+  // private doPing = (_payload: string, _timeout: number): Promise<{}> => {
+  //   return new Promise((_res, _rej) => {
+  //     throw new Error("???");
+  //   });
+  // };
 
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {

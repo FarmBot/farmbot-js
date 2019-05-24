@@ -3,6 +3,12 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
+/** Meta data that wraps an event callback */
+interface CallbackWrapper {
+    once: boolean;
+    event: string;
+    value: Function;
+}
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
@@ -138,8 +144,8 @@ export declare class Farmbot {
      * Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
      */
-    event: (name: string) => Function[];
-    on: (event: string, callback: Function) => number;
+    event: (name: string) => CallbackWrapper[];
+    on: (event: string, value: Function, once?: boolean) => void;
     emit: (event: string, data: {}) => void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
@@ -151,6 +157,7 @@ export declare class Farmbot {
         logs: string;
         status: string;
         sync: string;
+        pong: string;
     };
     /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
@@ -166,3 +173,4 @@ export declare class Farmbot {
     /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<{}>;
 }
+export {};

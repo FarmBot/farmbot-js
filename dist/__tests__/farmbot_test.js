@@ -17,6 +17,19 @@ describe("FarmBot", function () {
         expect(bot.getConfig("speed")).toEqual(100);
         expect(bot.getConfig("secure")).toEqual(false);
     });
+    it("disallows publishing when disconnected", function () {
+        var bot = test_support_1.fakeFarmbot();
+        bot.client = undefined;
+        var boom = function () { return bot.publish({
+            kind: "rpc_request",
+            args: {
+                label: "nope",
+                priority: 0
+            },
+            body: []
+        }); };
+        expect(boom).toThrowError("Not connected to server");
+    });
     it("uses the bot object to *BROADCAST* simple RPCs", function () {
         var bot = test_support_1.fakeFarmbot();
         var fakeSender = jest.fn();

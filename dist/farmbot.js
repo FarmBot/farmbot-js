@@ -8,13 +8,6 @@ var resource_adapter_1 = require("./resources/resource_adapter");
 var constants_1 = require("./constants");
 var is_celery_script_1 = require("./util/is_celery_script");
 var deep_unpack_1 = require("./util/deep_unpack");
-/*
- * Clarification for several terms used:
- *  * Farmware: Plug-ins for FarmBot OS. Sometimes referred to as `scripts`.
- *  * Microcontroller: Directly controls and interfaces with motors,
- *        peripherals, sensors, etc. May be on an Arduino or Farmduino board.
- *        Mostly referred to as `arduino`, but also `mcu`.
- */
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
@@ -268,21 +261,28 @@ var Farmbot = /** @class */ (function () {
             _this._events[name] = _this._events[name] || [];
             return _this._events[name];
         };
-        this.on = function (event, callback) { return _this.event(event).push(callback); };
+        this.on = function (event, value, once) {
+            if (once === void 0) { once = false; }
+            _this.event(event).push({ value: value, once: once, event: event });
+        };
         this.emit = function (event, data) {
-            [_this.event(event), _this.event("*")]
-                .forEach(function (handlers) {
-                handlers.forEach(function (handler) {
-                    try {
-                        handler(data, event);
+            var nextArray = [];
+            _this.event(event)
+                .concat(_this.event("*"))
+                .forEach(function (handler) {
+                try {
+                    handler.value(data, event);
+                    if (!handler.once && handler.event === event) {
+                        nextArray.push(handler);
                     }
-                    catch (e) {
-                        var msg = "Exception thrown while handling '" + event + " event.";
-                        console.warn(msg);
-                        console.dir(e);
-                    }
-                });
+                }
+                catch (e) {
+                    var msg = "Exception thrown while handling '" + event + "' event.";
+                    console.warn(msg);
+                    console.dir(e);
+                }
             });
+            _this._events[event] = nextArray;
         };
         /** Low-level means of sending MQTT packets. Does not check format. Does not
          * acknowledge confirmation. Probably not the one you want. */
@@ -319,7 +319,7 @@ var Farmbot = /** @class */ (function () {
                             throw new Error("Got a bad CeleryScript node.");
                     }
                 }
-                _this.on(input.args.label, handler);
+                _this.on(input.args.label, handler, true);
             });
         };
         /** Main entry point for all MQTT packets. */
@@ -361,6 +361,18 @@ var Farmbot = /** @class */ (function () {
                     return _this.emit(constants_1.FbjsEventName.remove, {});
             }
         };
+        // ping = (timeout: number): Promise<{}> => {
+        // if (this.getConfig("interim_flag_is_legacy_fbos")) {
+        //   return this.send(this.rpcShim([]));
+        // } else {
+        //   return this.doPing("" + timestamp(), timeout);
+        // }
+        // }
+        // private doPing = (_payload: string, _timeout: number): Promise<{}> => {
+        //   return new Promise((_res, _rej) => {
+        //     throw new Error("???");
+        //   });
+        // };
         /** Bootstrap the device onto the MQTT broker. */
         this.connect = function () {
             var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
@@ -412,12 +424,13 @@ var Farmbot = /** @class */ (function () {
                 logs: "bot/" + deviceName + "/" + constants_1.MqttChanName.logs,
                 status: "bot/" + deviceName + "/" + constants_1.MqttChanName.statusV8 + "/#",
                 sync: "bot/" + deviceName + "/" + constants_1.MqttChanName.sync + "/#",
+                pong: "bot/" + deviceName + "/pong"
             };
         },
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.0-rc3";
+    Farmbot.VERSION = "8.0.0-rc4";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
