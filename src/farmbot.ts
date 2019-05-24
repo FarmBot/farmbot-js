@@ -463,7 +463,7 @@ export class Farmbot {
 
   }
 
-  ping = (timeout: number, now = timestamp()): Promise<{}> => {
+  ping = (timeout = 3000, now = timestamp()): Promise<{}> => {
     // if (this.getConfig("interim_flag_is_legacy_fbos")) {
     //   return this.send(this.rpcShim([]));
     // } else {
