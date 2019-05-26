@@ -346,7 +346,7 @@ var Farmbot = /** @class */ (function () {
                     case constants_1.MqttChanName.sync: return emit(constants_1.FbjsEventName.sync, msg);
                     case constants_1.MqttChanName.statusV8: return _this.statusV8(segments, msg);
                     case constants_1.MqttChanName.pong:
-                        return emit(segments[2], msg);
+                        return emit(segments[3], msg);
                     default:
                         var ev = is_celery_script_1.hasLabel(msg) ? msg.args.label : constants_1.FbjsEventName.malformed;
                         return emit(ev, msg);

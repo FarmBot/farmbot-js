@@ -438,7 +438,7 @@ export class Farmbot {
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.statusV8: return this.statusV8(segments, msg);
         case MqttChanName.pong:
-          return emit(segments[2], msg);
+          return emit(segments[3], msg);
         default:
           const ev = hasLabel(msg) ? msg.args.label : FbjsEventName.malformed;
           return emit(ev, msg);
