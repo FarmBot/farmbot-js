@@ -464,43 +464,41 @@ export class Farmbot {
   }
 
   ping = (timeout = 3000, now = timestamp()): Promise<{}> => {
-    // if (this.getConfig("interim_flag_is_legacy_fbos")) {
-    //   return this.send(this.rpcShim([]));
-    // } else {
-    console.log("NOT TO SELF: Uncomment legacy shim after QA");
-    return this.doPing(now, timeout);
-    // }
+    this.setConfig("LAST_PING_OUT", now)
+    if (this.getConfig("interim_flag_is_legacy_fbos")) {
+      return this.doLegacyPing();
+    } else {
+      return this.doPing(now, timeout);
+    }
+  }
+
+  private doLegacyPing = () => {
+    console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+    const rpc = this.rpcShim([]);
+    rpc.args.label = "ping";
+    const ok = () => this.setConfig("LAST_PING_IN", timestamp());
+    this.on(rpc.args.label, ok, true);
+    return this.send(rpc);
   }
 
   // STEP 0: Subscribe to `bot/device_23/pong/#`
   // STEP 0: Send         `bot/device_23/ping/3123123`
   // STEP 0: Receive      `bot/device_23/pong/3123123`
-  private doPing = (startedAt: number, timeout: number): Promise<{}> => {
-    return new Promise<{}>((resolve, reject) => {
-      if (this.client) {
-        const meta = { isDone: false };
-
-        const maybeReject = () => {
-          if (!meta.isDone) {
-            meta.isDone = true;
-            reject(-0);
-          }
-        };
-
-        const maybeResolve = () => {
-          if (!meta.isDone) {
-            meta.isDone = true;
-            resolve(timestamp() - startedAt);
-          }
-        };
-
-        setTimeout(maybeReject, timeout);
-        this.on("" + startedAt, maybeResolve, true);
-        this.client.publish(this.channel.ping(startedAt), JSON.stringify(startedAt))
-      } else {
-        reject("Not connected");
+  private doPing = (startedAt: number, timeout: number): Promise<number> => {
+    const timeoutPromise =
+      new Promise<number>((_, rej) => setTimeout(() => rej(-0), timeout));
+    const pingPromise = new Promise<number>((res, _) => {
+      const ok = () => {
+        const t = timestamp();
+        this.setConfig("LAST_PING_IN", t);
+        res(t - startedAt);
       }
+      this.on("" + startedAt, ok, true);
+      const chan = this.channel.ping(startedAt);
+      this.client && this.client.publish(chan, JSON.stringify(startedAt))
     });
+
+    return Promise.race([timeoutPromise, pingPromise])
   };
 
   /** Bootstrap the device onto the MQTT broker. */

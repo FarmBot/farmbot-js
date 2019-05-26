@@ -372,40 +372,38 @@ var Farmbot = /** @class */ (function () {
         this.ping = function (timeout, now) {
             if (timeout === void 0) { timeout = 3000; }
             if (now === void 0) { now = time_1.timestamp(); }
-            // if (this.getConfig("interim_flag_is_legacy_fbos")) {
-            //   return this.send(this.rpcShim([]));
-            // } else {
-            console.log("NOT TO SELF: Uncomment legacy shim after QA");
-            return _this.doPing(now, timeout);
-            // }
+            _this.setConfig("LAST_PING_OUT", now);
+            if (_this.getConfig("interim_flag_is_legacy_fbos")) {
+                return _this.doLegacyPing();
+            }
+            else {
+                return _this.doPing(now, timeout);
+            }
+        };
+        this.doLegacyPing = function () {
+            console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+            var rpc = _this.rpcShim([]);
+            rpc.args.label = "ping";
+            var ok = function () { return _this.setConfig("LAST_PING_IN", time_1.timestamp()); };
+            _this.on(rpc.args.label, ok, true);
+            return _this.send(rpc);
         };
         // STEP 0: Subscribe to `bot/device_23/pong/#`
         // STEP 0: Send         `bot/device_23/ping/3123123`
         // STEP 0: Receive      `bot/device_23/pong/3123123`
         this.doPing = function (startedAt, timeout) {
-            return new Promise(function (resolve, reject) {
-                if (_this.client) {
-                    var meta_1 = { isDone: false };
-                    var maybeReject = function () {
-                        if (!meta_1.isDone) {
-                            meta_1.isDone = true;
-                            reject(-0);
-                        }
-                    };
-                    var maybeResolve = function () {
-                        if (!meta_1.isDone) {
-                            meta_1.isDone = true;
-                            resolve(time_1.timestamp() - startedAt);
-                        }
-                    };
-                    setTimeout(maybeReject, timeout);
-                    _this.on("" + startedAt, maybeResolve, true);
-                    _this.client.publish(_this.channel.ping(startedAt), JSON.stringify(startedAt));
-                }
-                else {
-                    reject("Not connected");
-                }
+            var timeoutPromise = new Promise(function (_, rej) { return setTimeout(function () { return rej(-0); }, timeout); });
+            var pingPromise = new Promise(function (res, _) {
+                var ok = function () {
+                    var t = time_1.timestamp();
+                    _this.setConfig("LAST_PING_IN", t);
+                    res(t - startedAt);
+                };
+                _this.on("" + startedAt, ok, true);
+                var chan = _this.channel.ping(startedAt);
+                _this.client && _this.client.publish(chan, JSON.stringify(startedAt));
             });
+            return Promise.race([timeoutPromise, pingPromise]);
         };
         /** Bootstrap the device onto the MQTT broker. */
         this.connect = function () {

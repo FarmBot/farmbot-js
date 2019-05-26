@@ -174,6 +174,7 @@ export declare class Farmbot {
     _onmessage: (chan: string, buffer: Uint8Array) => void;
     private statusV8;
     ping: (timeout?: number, now?: number) => Promise<{}>;
+    private doLegacyPing;
     private doPing;
     /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<{}>;
