@@ -9,9 +9,22 @@ export interface FarmBotInternalConfig {
   token: string;
   secure: boolean;
   mqttServer: string;
-  mqttUsername: string; // formerly "uuid".
+  mqttUsername: string;
   LAST_PING_OUT: number;
   LAST_PING_IN: number;
+  /** INTERIM FLAG: Delete after FBOS <v8 support window ends. - RC, 17 MAY 19
+   *
+   * WHY:      FarmbotOS v7 will ignore `rpc_request`s with extra args
+   *           FarmbotOS v8 added a new `priority` tag to said requests.
+   *           We (and by we, I mean everyone that uses this lib
+   *           including Farmbot inc.) need a way of knowing the
+   *           client's FBOS version, but that information is not
+   *           available.
+   *
+   * SOLUTION: Use a flag to selectively delete the `priority` tag.
+   * DEFAULT:  `true`
+   */
+  interim_flag_is_legacy_fbos: boolean;
 }
 
 export interface FarmbotConstructorParams extends Partial<FarmBotInternalConfig> {
@@ -20,9 +33,14 @@ export interface FarmbotConstructorParams extends Partial<FarmBotInternalConfig>
 }
 
 const ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
-export const CONFIG_DEFAULTS = { speed: 100 };
+
+export const CONFIG_DEFAULTS = {
+  speed: 100,
+  interim_flag_is_legacy_fbos: true
+};
+
 const ERR_MISSING_MQTT_USERNAME = "MISSING_MQTT_USERNAME";
-const FIX_ATOB_FIRST =
+export const FIX_ATOB_FIRST =
   `NOTE TO NODEJS USERS:
 
 This library requires an 'atob()' function.
@@ -50,5 +68,6 @@ export const generateConfig = (input: FarmbotConstructorParams): FarmBotInternal
     mqttUsername: t.bot || ERR_MISSING_MQTT_USERNAME,
     LAST_PING_OUT: 0,
     LAST_PING_IN: 0,
+    interim_flag_is_legacy_fbos: true,
   };
 }

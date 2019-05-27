@@ -1,4 +1,4 @@
-import { Farmbot } from ".";
+import { Farmbot, stringToBuffer } from ".";
 import { FarmbotLike } from "./resources/interfaces";
 
 export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
@@ -15,7 +15,27 @@ export const FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
   "KBSFCVqwRA-NKWLpPMV_q7fRwiEGWj7R-KZqRweALXuvCLF765E6-ENxA";
 
 export const fakeFarmbot =
-  (token = FAKE_TOKEN) => new Farmbot({ token, speed: 100, secure: false });
+  (token = FAKE_TOKEN) => {
+    const bot = new Farmbot({ token, speed: 100, secure: false })
+    const fakeClient: any = {
+      emit: jest.fn((chan: string, payload: Uint8Array) => {
+        bot._onmessage(chan, payload);
+      })
+    };
+    bot.client = fakeClient;
+    return bot;
+  };
+
+export function fakeMqttEmission<T>(bot: Farmbot,
+  chan: string,
+  payload: T) {
+
+  (bot.client as any).emit(chan, stringToBuffer(JSON.stringify(payload)));
+}
+
+export function expectEmitFrom(bot: Farmbot) {
+  return expect((bot.client as any).emit)
+}
 
 export const fakeFarmbotLike =
   (): FarmbotLike => ({ on: jest.fn(), client: { publish: jest.fn() } });

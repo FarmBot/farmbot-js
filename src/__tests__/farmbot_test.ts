@@ -4,7 +4,7 @@
  * Stubs out uuid() calls to always be the same. */
 jest.mock("../util/uuid", () => ({ uuid: () => "FAKE_UUID" }));
 
-import { RpcRequestBodyItem, rpcRequest, coordinate } from "..";
+import { RpcRequestBodyItem, coordinate } from "..";
 import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
@@ -17,6 +17,20 @@ describe("FarmBot", () => {
     expect(bot.getConfig("token")).toEqual(token);
     expect(bot.getConfig("speed")).toEqual(100);
     expect(bot.getConfig("secure")).toEqual(false);
+  });
+
+  it("disallows publishing when disconnected", () => {
+    const bot = fakeFarmbot();
+    bot.client = undefined;
+    const boom = () => bot.publish({
+      kind: "rpc_request",
+      args: {
+        label: "nope",
+        priority: 0
+      },
+      body: []
+    });
+    expect(boom).toThrowError("Not connected to server");
   });
 
   it("uses the bot object to *BROADCAST* simple RPCs", () => {
@@ -32,13 +46,49 @@ describe("FarmBot", () => {
       [
         bot.resetMCU,
         { kind: "factory_reset", args: { package: "arduino_firmware" } }
+      ],
+      [
+        bot.reboot,
+        { kind: "reboot", args: { package: "farmbot_os" } }
+      ],
+      [
+        bot.rebootFirmware,
+        { kind: "reboot", args: { package: "arduino_firmware" } }
+      ],
+      [
+        () => bot.flashFirmware("foo"),
+        { kind: "flash_firmware", args: { package: "foo" } }
+      ],
+      [
+        () => bot.setServoAngle({ pin_number: 4, pin_value: 6 }),
+        { kind: "set_servo_angle", args: { pin_number: 4, pin_value: 6 } }
+      ],
+      [
+        () => bot.calibrate({ axis: "all" }),
+        { kind: "calibrate", args: { axis: "all" } }
       ]
     ];
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
+      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
     })
+  });
+
+  it("sets config values", () => {
+    const bot = fakeFarmbot();
+    bot.setConfig("speed", 12344)
+    expect(bot.getConfig("speed")).toEqual(12344);
+  });
+
+  it("has restriction on servos and angles", () => {
+    const bot = fakeFarmbot();
+    const bad_pin =
+      () => bot.setServoAngle({ pin_number: 0, pin_value: 90 });
+    const bad_angle =
+      () => bot.setServoAngle({ pin_number: 4, pin_value: 900 });
+    expect(bad_angle).toThrowError("Pin value outside of 0...180 range");
+    expect(bad_pin).toThrowError("Servos only work on pins 4 and 5");
   });
 
   it("uses the bot object to *SEND* simple RPCs", () => {
@@ -76,10 +126,11 @@ describe("FarmBot", () => {
         { kind: "dump_info", args: {} }
       ]
     ];
+
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
+      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
     })
   });
 
@@ -90,7 +141,7 @@ describe("FarmBot", () => {
 
     beforeEach(() => fakeSender.mockClear());
     function expectRPC(item: RpcRequestBodyItem) {
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([item]));
+      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([item]));
     }
 
     it("installs Farmware", () => {

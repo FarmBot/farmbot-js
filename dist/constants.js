@@ -11,19 +11,32 @@ var MqttChanName;
     MqttChanName["sync"] = "sync";
     /** THIS ONE IS SPECIAL. */
     MqttChanName["publicBroadcast"] = "public_broadcast";
+    MqttChanName["pong"] = "pong";
 })(MqttChanName = exports.MqttChanName || (exports.MqttChanName = {}));
 /** Not to be confused with MqttChanNames or
  * MQTT.js event names */
 var FbjsEventName;
 (function (FbjsEventName) {
+    /** This can be removed 60 days after FBOS v8 release. */
     FbjsEventName["legacy_status"] = "legacy_status";
+    /** When a log is received */
     FbjsEventName["logs"] = "logs";
+    /** When an unexpected message is received */
     FbjsEventName["malformed"] = "malformed";
+    /** Unreliable. */
     FbjsEventName["offline"] = "offline";
+    /** Fired on connect. */
     FbjsEventName["online"] = "online";
+    /** Fires when the API sends an MQTT message to users. */
+    FbjsEventName["publicBroadcast"] = "public_broadcast";
+    /** Fires after any message is sent from current client. */
     FbjsEventName["sent"] = "sent";
-    FbjsEventName["status_v8"] = "status_v8";
+    /** Used by resource auto-sync. */
     FbjsEventName["sync"] = "sync";
+    /** When a key is removed from the device state tree. */
+    FbjsEventName["remove"] = "remove";
+    /** When a key is updated/inserted from the device state tree. */
+    FbjsEventName["upsert"] = "upsert";
 })(FbjsEventName = exports.FbjsEventName || (exports.FbjsEventName = {}));
 var Misc;
 (function (Misc) {

@@ -8,8 +8,8 @@ import {
   coordinate,
   uuid as genUuid
 } from "./util";
-import { Dictionary, Vector3 } from "./interfaces";
-import { ReadPin, WritePin } from ".";
+import { Dictionary, Vector3, Primitive } from "./interfaces";
+import { ReadPin, WritePin, bufferToString } from ".";
 import {
   FarmBotInternalConfig as Conf,
   FarmbotConstructorParams,
@@ -20,6 +20,7 @@ import { ResourceAdapter } from "./resources/resource_adapter";
 import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
+import { timestamp } from "./util/time";
 
 /*
  * Clarification for several terms used:
@@ -29,13 +30,20 @@ import { deepUnpack } from "./util/deep_unpack";
  *        Mostly referred to as `arduino`, but also `mcu`.
  */
 
+/** Meta data that wraps an event callback */
+interface CallbackWrapper {
+  once: boolean;
+  event: string;
+  value: Function;
+}
+
 export class Farmbot {
   /** Storage area for all event handlers */
-  private _events: Dictionary<Function[]>;
+  private _events: Dictionary<CallbackWrapper[]>;
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "7.1.0";
+  static VERSION = "8.0.1-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -43,6 +51,10 @@ export class Farmbot {
     this.resources = new ResourceAdapter(this, this.config.mqttUsername);
   }
 
+  /** Delete this shim after FBOS v7 hits end of life. */
+  rpcShim = (body: Corpus.RpcRequestBodyItem[]) => {
+    return rpcRequest(body, this.getConfig("interim_flag_is_legacy_fbos"));
+  };
   /** Get a Farmbot Constructor Parameter. */
   getConfig = <U extends keyof Conf>(key: U): Conf[U] => this.config[key];
 
@@ -56,7 +68,7 @@ export class Farmbot {
    * URL must point to a valid Farmware manifest JSON document.
    */
   installFarmware = (url: string) => {
-    return this.send(rpcRequest([{ kind: "install_farmware", args: { url } }]));
+    return this.send(this.rpcShim([{ kind: "install_farmware", args: { url } }]));
   }
 
   /**
@@ -64,7 +76,7 @@ export class Farmbot {
    * a Farmware. `updateFarmware("take-photo")`
    */
   updateFarmware = (pkg: string) => {
-    return this.send(rpcRequest([{
+    return this.send(this.rpcShim([{
       kind: "update_farmware",
       args: { package: pkg }
     }]));
@@ -72,7 +84,7 @@ export class Farmbot {
 
   /** Uninstall a Farmware plugin. */
   removeFarmware = (pkg: string) => {
-    return this.send(rpcRequest([{
+    return this.send(this.rpcShim([{
       kind: "remove_farmware",
       args: {
         package: pkg
@@ -85,7 +97,7 @@ export class Farmbot {
    * onto the bot's SD card.
    */
   installFirstPartyFarmware = () => {
-    return this.send(rpcRequest([{
+    return this.send(this.rpcShim([{
       kind: "install_first_party_farmware",
       args: {}
     }]));
@@ -96,19 +108,19 @@ export class Farmbot {
    * Useful before unplugging the power.
    */
   powerOff = () => {
-    return this.send(rpcRequest([{ kind: "power_off", args: {} }]));
+    return this.send(this.rpcShim([{ kind: "power_off", args: {} }]));
   }
 
   /** Restart FarmBot OS. */
   reboot = () => {
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       { kind: "reboot", args: { package: "farmbot_os" } }
     ]));
   }
 
   /** Reinitialize the FarmBot microcontroller firmware. */
   rebootFirmware = () => {
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       { kind: "reboot", args: { package: "arduino_firmware" } }
     ]));
   }
@@ -116,7 +128,7 @@ export class Farmbot {
   /** Check for new versions of FarmBot OS.
    * Downloads and installs if available. */
   checkUpdates = () => {
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       { kind: "check_updates", args: { package: "farmbot_os" } }
     ]));
   }
@@ -124,14 +136,14 @@ export class Farmbot {
   /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
    * Be careful!! */
   resetOS = () => {
-    return this.publish(rpcRequest([
+    return this.publish(this.rpcShim([
       { kind: "factory_reset", args: { package: "farmbot_os" } }
     ]));
   }
 
   /** WARNING: will reset all firmware (hardware) settings! */
   resetMCU = () => {
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       { kind: "factory_reset", args: { package: "arduino_firmware" } }
     ]));
   }
@@ -140,7 +152,7 @@ export class Farmbot {
     /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
     firmware_name: string) => {
     return this
-      .send(rpcRequest([{
+      .send(this.rpcShim([{
         kind: "flash_firmware",
         args: {
           package: firmware_name
@@ -153,17 +165,17 @@ export class Farmbot {
    * also will pause running regimens and cause any running sequences to exit.
    */
   emergencyLock = () => {
-    return this.send(rpcRequest([{ kind: "emergency_lock", args: {} }]));
+    return this.send(this.rpcShim([{ kind: "emergency_lock", args: {} }]));
   }
 
   /** Unlock the bot when the user says it is safe. */
   emergencyUnlock = () => {
-    return this.send(rpcRequest([{ kind: "emergency_unlock", args: {} }]));
+    return this.send(this.rpcShim([{ kind: "emergency_unlock", args: {} }]));
   }
   /** Execute a sequence by its ID on the FarmBot API. */
   execSequence =
     (sequence_id: number, body: Corpus.ParameterApplication[] = []) => {
-      return this.send(rpcRequest([
+      return this.send(this.rpcShim([
         { kind: "execute", args: { sequence_id }, body }
       ]));
     }
@@ -174,28 +186,28 @@ export class Farmbot {
     label: string,
     /** Optional ENV vars to pass the Farmware. */
     envVars?: Corpus.Pair[] | undefined) => {
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       { kind: "execute_script", args: { label }, body: envVars }
     ]));
   }
 
   /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
   home = (args: { speed: number, axis: Corpus.ALLOWED_AXIS }) => {
-    return this.send(rpcRequest([{ kind: "home", args }]));
+    return this.send(this.rpcShim([{ kind: "home", args }]));
   }
 
   /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis
    * order. WON'T WORK WITHOUT ENCODERS OR END STOPS! A blockage or stall
    * during this command will set that position as zero. Use carefully. */
   findHome = (args: { speed: number, axis: Corpus.ALLOWED_AXIS }) => {
-    return this.send(rpcRequest([{ kind: "find_home", args }]));
+    return this.send(this.rpcShim([{ kind: "find_home", args }]));
   }
 
   /** Move FarmBot to an absolute point. */
   moveAbsolute = (args: Vector3 & { speed?: number }) => {
     const { x, y, z } = args;
     const speed = args.speed || CONFIG_DEFAULTS.speed;
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       {
         kind: "move_absolute",
         args: {
@@ -211,41 +223,41 @@ export class Farmbot {
   moveRelative = (args: Vector3 & { speed?: number }) => {
     const { x, y, z } = args;
     const speed = args.speed || CONFIG_DEFAULTS.speed;
-    return this.send(rpcRequest([
+    return this.send(this.rpcShim([
       { kind: "move_relative", args: { x, y, z, speed } }
     ]));
   }
 
   /** Set a GPIO pin to a particular value. */
   writePin = (args: WritePin["args"]) => {
-    return this.send(rpcRequest([{ kind: "write_pin", args }]));
+    return this.send(this.rpcShim([{ kind: "write_pin", args }]));
   }
 
   /** Read the value of a GPIO pin. Will create a SensorReading if it's
    * a sensor. */
   readPin = (args: ReadPin["args"]) => {
-    return this.send(rpcRequest([{ kind: "read_pin", args }]));
+    return this.send(this.rpcShim([{ kind: "read_pin", args }]));
   }
 
   /** Reverse the value of a digital pin. */
   togglePin = (args: { pin_number: number; }) => {
-    return this.send(rpcRequest([{ kind: "toggle_pin", args }]));
+    return this.send(this.rpcShim([{ kind: "toggle_pin", args }]));
   }
 
   /** Read the status of the bot. Should not be needed unless you are first
    * logging in to the device, since the device pushes new states out on
    * every update. */
   readStatus = (args = {}) => {
-    return this.send(rpcRequest([{ kind: "read_status", args }]));
+    return this.send(this.rpcShim([{ kind: "read_status", args }]));
   }
 
   /** Snap a photo and send to the API for post processing. */
   takePhoto =
-    (args = {}) => this.send(rpcRequest([{ kind: "take_photo", args }]));
+    (args = {}) => this.send(this.rpcShim([{ kind: "take_photo", args }]));
 
   /** Download/apply all of the latest FarmBot API JSON resources (plants,
    * account info, etc.) to the device. */
-  sync = (args = {}) => this.send(rpcRequest([{ kind: "sync", args }]));
+  sync = (args = {}) => this.send(this.rpcShim([{ kind: "sync", args }]));
 
   /**
    * Set the current position of the given axis to 0.
@@ -253,7 +265,7 @@ export class Farmbot {
    * 255 to 0, causing that position to be x: 0.
    */
   setZero = (axis: Corpus.ALLOWED_AXIS) => {
-    return this.send(rpcRequest([{
+    return this.send(this.rpcShim([{
       kind: "zero",
       args: { axis }
     }]));
@@ -272,22 +284,22 @@ export class Farmbot {
           args: { label, value: (configs[label] || Misc.NULL) }
         };
       });
-    return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
+    return this.send(this.rpcShim([{ kind: "set_user_env", args: {}, body }]));
   }
 
   /** Control servos on pins 4 and 5. */
   setServoAngle = (args: { pin_number: number; pin_value: number; }) => {
-    const result = this.send(rpcRequest([{ kind: "set_servo_angle", args }]));
+    const result = this.send(this.rpcShim([{ kind: "set_servo_angle", args }]));
 
     // Celery script can't validate `pin_number` and `pin_value` the way we need
     // for `set_servo_angle`. We will send the RPC command off, but also
     // crash the client to aid debugging.
-    if (![4, 5].includes(args.pin_number)) {
+    if (![4, 5, 6, 11].includes(args.pin_number)) {
       throw new Error("Servos only work on pins 4 and 5");
     }
 
-    if (args.pin_value > 360 || args.pin_value < 0) {
-      throw new Error("Pin value outside of 0...360 range");
+    if (args.pin_value > 180 || args.pin_value < 0) {
+      throw new Error("Pin value outside of 0...180 range");
     }
 
     return result;
@@ -298,12 +310,12 @@ export class Farmbot {
    * Will set a new home position and a new axis length for the given axis.
    */
   calibrate = (args: { axis: Corpus.ALLOWED_AXIS }) => {
-    return this.send(rpcRequest([{ kind: "calibrate", args }]));
+    return this.send(this.rpcShim([{ kind: "calibrate", args }]));
   }
 
   /** Tell the bot to send diagnostic info to the API.*/
   dumpInfo = () => {
-    return this.send(rpcRequest([{
+    return this.send(this.rpcShim([{
       kind: "dump_info",
       args: {}
     }]));
@@ -318,21 +330,33 @@ export class Farmbot {
     return this._events[name];
   }
 
-  on = (event: string, callback: Function) => this.event(event).push(callback);
+  on = (event: string, value: Function, once = false) => {
+    this.event(event).push({ value, once, event });
+  };
 
   emit = (event: string, data: {}) => {
-    [this.event(event), this.event("*")]
-      .forEach(function (handlers) {
-        handlers.forEach(function (handler: Function) {
-          try {
-            handler(data, event);
-          } catch (e) {
-            const msg = `Exception thrown while handling '${event} event.`;
-            console.warn(msg);
-            console.dir(e);
+    const nextArray: CallbackWrapper[] = [];
+
+    this.event(event)
+      .concat(this.event("*"))
+      .forEach(function (handler) {
+        try {
+          handler.value(data, event);
+          if (!handler.once && handler.event === event) {
+            nextArray.push(handler);
           }
-        });
+        } catch (e) {
+          const msg = `Exception thrown while handling '${event}' event.`;
+          console.warn(msg);
+          console.dir(e);
+        }
       });
+
+    if (nextArray.length === 0) {
+      delete this._events[event];
+    } else {
+      this._events[event] = nextArray;
+    }
   }
 
   /** Dictionary of all relevant MQTT channels the bot uses. */
@@ -347,6 +371,10 @@ export class Farmbot {
       logs: `bot/${deviceName}/${MqttChanName.logs}`,
       status: `bot/${deviceName}/${MqttChanName.statusV8}/#`,
       sync: `bot/${deviceName}/${MqttChanName.sync}/#`,
+      /** Read only */
+      pong: `bot/${deviceName}/pong/#`,
+      /** Write only: bot/${deviceName}/ping/${timestamp} */
+      ping: (timestamp: number) => `bot/${deviceName}/ping/${timestamp}`
     };
   }
 
@@ -387,47 +415,91 @@ export class Farmbot {
         }
       }
 
-      this.on(input.args.label, handler);
+      this.on(input.args.label, handler, true);
     });
   }
 
   /** Main entry point for all MQTT packets. */
-  private _onmessage = (chan: string, buffer: Uint8Array) => {
-    try {
-      const msg = JSON.parse(buffer.toString());
+  _onmessage = (chan: string, buffer: Uint8Array) => {
+    const original = bufferToString(buffer);
+    const segments = chan.split(Misc.MQTT_DELIM);
+    const { emit } = this;
 
-      if (chan == MqttChanName.publicBroadcast) {
-        return this.emit(MqttChanName.publicBroadcast, msg);
+    try {
+      const msg = JSON.parse(original);
+
+      if (segments[0] == MqttChanName.publicBroadcast) {
+        return emit(MqttChanName.publicBroadcast, msg);
       }
 
-      switch (chan.split(Misc.MQTT_DELIM)[2]) {
-        case MqttChanName.logs:
-          return this.emit(FbjsEventName.logs, msg);
-
-        case MqttChanName.legacyStatus:
-          return this.emit(FbjsEventName.legacy_status, msg);
-
-        case MqttChanName.statusV8:
-          const path = chan
-            .split(Misc.MQTT_DELIM)
-            .slice(3)
-            .join(Misc.PATH_DELIM);
-          return this
-            .emit(FbjsEventName.status_v8, deepUnpack(path, msg));
-
-        case MqttChanName.sync:
-          return this.emit(FbjsEventName.sync, msg);
-
+      switch (segments[2]) {
+        case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
+        case MqttChanName.legacyStatus: return emit(FbjsEventName.legacy_status, msg);
+        case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
+        case MqttChanName.statusV8: return this.statusV8(segments, msg);
+        case MqttChanName.pong:
+          return emit(segments[3], msg);
         default:
-          const event = hasLabel(msg) ?
-            msg.args.label : FbjsEventName.malformed;
-          return this.emit(event, msg);
+          const ev = hasLabel(msg) ? msg.args.label : FbjsEventName.malformed;
+          return emit(ev, msg);
       }
     } catch (error) {
       console.warn("Could not parse inbound message from MQTT.");
-      this.emit(FbjsEventName.malformed, buffer.toString());
+      emit(FbjsEventName.malformed, original);
     }
   }
+
+  private statusV8 = (segments: string[], msg: Primitive) => {
+    if (this.config.interim_flag_is_legacy_fbos) {
+      this.setConfig("interim_flag_is_legacy_fbos", false);
+    }
+    const path = segments.slice(4).join(Misc.PATH_DELIM);
+    switch (segments[3]) {
+      case "upsert":
+        return this.emit(FbjsEventName.upsert, deepUnpack(path, msg));
+      case "remove":
+        return this.emit(FbjsEventName.remove, {});
+    }
+
+  }
+
+  ping = (timeout = 10000, now = timestamp()): Promise<{}> => {
+    this.setConfig("LAST_PING_OUT", now)
+    if (this.getConfig("interim_flag_is_legacy_fbos")) {
+      return this.doLegacyPing();
+    } else {
+      return this.doPing(now, timeout);
+    }
+  }
+
+  private doLegacyPing = () => {
+    console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+    const rpc = this.rpcShim([]);
+    rpc.args.label = "ping";
+    const ok = () => this.setConfig("LAST_PING_IN", timestamp());
+    this.on(rpc.args.label, ok, true);
+    return this.send(rpc);
+  }
+
+  // STEP 0: Subscribe to `bot/device_23/pong/#`
+  // STEP 0: Send         `bot/device_23/ping/3123123`
+  // STEP 0: Receive      `bot/device_23/pong/3123123`
+  private doPing = (startedAt: number, timeout: number): Promise<number> => {
+    const timeoutPromise =
+      new Promise<number>((_, rej) => setTimeout(() => rej(-0), timeout));
+    const pingPromise = new Promise<number>((res, _) => {
+      const ok = () => {
+        const t = timestamp();
+        this.setConfig("LAST_PING_IN", t);
+        res(t - startedAt);
+      }
+      this.on("" + startedAt, ok, true);
+      const chan = this.channel.ping(startedAt);
+      this.client && this.client.publish(chan, JSON.stringify(startedAt))
+    });
+
+    return Promise.race([timeoutPromise, pingPromise])
+  };
 
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
@@ -451,6 +523,7 @@ export class Farmbot {
       this.channel.status,
       this.channel.sync,
       this.channel.toClient,
+      this.channel.pong
     ];
     client.subscribe(channels);
     return new Promise((resolve, _reject) => {

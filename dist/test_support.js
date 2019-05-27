@@ -15,6 +15,21 @@ exports.FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
     "KBSFCVqwRA-NKWLpPMV_q7fRwiEGWj7R-KZqRweALXuvCLF765E6-ENxA";
 exports.fakeFarmbot = function (token) {
     if (token === void 0) { token = exports.FAKE_TOKEN; }
-    return new _1.Farmbot({ token: token, speed: 100, secure: false });
+    var bot = new _1.Farmbot({ token: token, speed: 100, secure: false });
+    var fakeClient = {
+        emit: jest.fn(function (chan, payload) {
+            bot._onmessage(chan, payload);
+        })
+    };
+    bot.client = fakeClient;
+    return bot;
 };
+function fakeMqttEmission(bot, chan, payload) {
+    bot.client.emit(chan, _1.stringToBuffer(JSON.stringify(payload)));
+}
+exports.fakeMqttEmission = fakeMqttEmission;
+function expectEmitFrom(bot) {
+    return expect(bot.client.emit);
+}
+exports.expectEmitFrom = expectEmitFrom;
 exports.fakeFarmbotLike = function () { return ({ on: jest.fn(), client: { publish: jest.fn() } }); };

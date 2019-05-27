@@ -3,6 +3,12 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
+/** Meta data that wraps an event callback */
+interface CallbackWrapper {
+    once: boolean;
+    event: string;
+    value: Function;
+}
 export declare class Farmbot {
     /** Storage area for all event handlers */
     private _events;
@@ -11,10 +17,12 @@ export declare class Farmbot {
     resources: ResourceAdapter;
     static VERSION: string;
     constructor(input: FarmbotConstructorParams);
+    /** Delete this shim after FBOS v7 hits end of life. */
+    rpcShim: (body: (Corpus.If | Corpus.Execute | Corpus.Calibrate | Corpus.ChangeOwnership | Corpus.CheckUpdates | Corpus.DumpInfo | Corpus.EmergencyLock | Corpus.EmergencyUnlock | Corpus.ExecuteScript | Corpus.FactoryReset | Corpus.FindHome | Corpus.FlashFirmware | Corpus.Home | Corpus.InstallFarmware | Corpus.InstallFirstPartyFarmware | Corpus.MoveRelative | Corpus.PowerOff | Corpus.ReadStatus | Corpus.Reboot | Corpus.RemoveFarmware | Corpus.MoveAbsolute | Corpus.ReadPin | Corpus.ResourceUpdate | Corpus.SendMessage | Corpus.SetServoAngle | Corpus.SetUserEnv | Corpus.Sync | Corpus.TakePhoto | Corpus.TogglePin | Corpus.UpdateFarmware | Corpus.Wait | Corpus.WritePin | Corpus.Zero)[]) => Corpus.RpcRequest;
     /** Get a Farmbot Constructor Parameter. */
-    getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U) => Conf[U];
+    getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U) => Conf[U];
     /** Set a Farmbot Constructor Parameter. */
-    setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN">(key: U, value: Conf[U]) => void;
+    setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U, value: Conf[U]) => void;
     /**
      * Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document.
@@ -136,8 +144,8 @@ export declare class Farmbot {
      * Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
      */
-    event: (name: string) => Function[];
-    on: (event: string, callback: Function) => number;
+    event: (name: string) => CallbackWrapper[];
+    on: (event: string, value: Function, once?: boolean) => void;
     emit: (event: string, data: {}) => void;
     /** Dictionary of all relevant MQTT channels the bot uses. */
     readonly channel: {
@@ -149,6 +157,10 @@ export declare class Farmbot {
         logs: string;
         status: string;
         sync: string;
+        /** Read only */
+        pong: string;
+        /** Write only: bot/${deviceName}/ping/${timestamp} */
+        ping: (timestamp: number) => string;
     };
     /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */
@@ -159,7 +171,12 @@ export declare class Farmbot {
     */
     send: (input: Corpus.RpcRequest) => Promise<{}>;
     /** Main entry point for all MQTT packets. */
-    private _onmessage;
+    _onmessage: (chan: string, buffer: Uint8Array) => void;
+    private statusV8;
+    ping: (timeout?: number, now?: number) => Promise<{}>;
+    private doLegacyPing;
+    private doPing;
     /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<{}>;
 }
+export {};

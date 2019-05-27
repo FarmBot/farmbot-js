@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+jest.mock("../util/is_node", function () {
+    return { isNode: function () { return true; } };
+});
 var config_1 = require("../config");
 var test_support_1 = require("../test_support");
+var is_node_1 = require("../util/is_node");
 describe("generateConfig", function () {
     it("crashes when given malformed token", function () {
         expect(function () { return config_1.generateConfig({ token: "no.no.no" }); })
@@ -14,5 +18,12 @@ describe("generateConfig", function () {
         expect(result.secure).toEqual(true);
         expect(result.LAST_PING_OUT).toEqual(0);
         expect(result.LAST_PING_IN).toEqual(0);
+    });
+    it("warns users when atob is missing", function () {
+        // Just to verify mock- not part of test.
+        expect(is_node_1.isNode()).toBe(true);
+        global.atob = undefined;
+        var boom = function () { return config_1.generateConfig({ token: "{}" }); };
+        expect(boom).toThrowError(config_1.FIX_ATOB_FIRST);
     });
 });
