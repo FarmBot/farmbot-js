@@ -43,7 +43,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.1-rc0";
+  static VERSION = "8.0.1-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -463,7 +463,7 @@ export class Farmbot {
 
   }
 
-  ping = (timeout = 3000, now = timestamp()): Promise<{}> => {
+  ping = (timeout = 10000, now = timestamp()): Promise<{}> => {
     this.setConfig("LAST_PING_OUT", now)
     if (this.getConfig("interim_flag_is_legacy_fbos")) {
       return this.doLegacyPing();

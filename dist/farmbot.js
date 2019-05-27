@@ -370,7 +370,7 @@ var Farmbot = /** @class */ (function () {
             }
         };
         this.ping = function (timeout, now) {
-            if (timeout === void 0) { timeout = 3000; }
+            if (timeout === void 0) { timeout = 10000; }
             if (now === void 0) { now = time_1.timestamp(); }
             _this.setConfig("LAST_PING_OUT", now);
             if (_this.getConfig("interim_flag_is_legacy_fbos")) {
@@ -466,7 +466,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.1-rc0";
+    Farmbot.VERSION = "8.0.1-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
