@@ -9,8 +9,19 @@ var __1 = require("..");
 var test_support_1 = require("../test_support");
 var config_1 = require("../config");
 var constants_1 = require("../constants");
+var rpc_request_1 = require("../util/rpc_request");
 describe("FarmBot", function () {
     var token = test_support_1.FAKE_TOKEN;
+    it("creates RPCs", function () {
+        var bot = test_support_1.fakeFarmbot();
+        bot.setConfig("interim_flag_is_legacy_fbos", false);
+        [rpc_request_1.Priority.HIGHEST, rpc_request_1.Priority.LOWEST].map(function (priority) {
+            var x = bot.rpcShim([], priority);
+            expect(x.args.priority).toEqual(priority);
+        });
+        var x = bot.rpcShim([]);
+        expect(x.args.priority).toEqual(rpc_request_1.Priority.NORMAL);
+    });
     it("Instantiates a FarmBot", function () {
         var bot = test_support_1.fakeFarmbot();
         expect(bot.getConfig("token")).toEqual(token);

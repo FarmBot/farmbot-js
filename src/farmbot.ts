@@ -21,6 +21,7 @@ import { MqttChanName, FbjsEventName, Misc } from "./constants";
 import { hasLabel } from "./util/is_celery_script";
 import { deepUnpack } from "./util/deep_unpack";
 import { timestamp } from "./util/time";
+import { Priority } from "./util/rpc_request";
 
 /*
  * Clarification for several terms used:
@@ -43,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.1-rc1";
+  static VERSION = "8.0.1-rc2";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -52,9 +53,12 @@ export class Farmbot {
   }
 
   /** Delete this shim after FBOS v7 hits end of life. */
-  rpcShim = (body: Corpus.RpcRequestBodyItem[]) => {
-    return rpcRequest(body, this.getConfig("interim_flag_is_legacy_fbos"));
+  rpcShim = (body: Corpus.RpcRequestBodyItem[], priority = Priority.NORMAL) => {
+    return rpcRequest(body,
+      this.getConfig("interim_flag_is_legacy_fbos"),
+      priority);
   };
+
   /** Get a Farmbot Constructor Parameter. */
   getConfig = <U extends keyof Conf>(key: U): Conf[U] => this.config[key];
 
@@ -165,12 +169,20 @@ export class Farmbot {
    * also will pause running regimens and cause any running sequences to exit.
    */
   emergencyLock = () => {
-    return this.send(this.rpcShim([{ kind: "emergency_lock", args: {} }]));
+    const body: Corpus.RpcRequestBodyItem[] =
+      [{ kind: "emergency_lock", args: {} }];
+    const rpc = this.rpcShim(body, Priority.HIGHEST);
+
+    return this.send(rpc);
   }
 
   /** Unlock the bot when the user says it is safe. */
   emergencyUnlock = () => {
-    return this.send(this.rpcShim([{ kind: "emergency_unlock", args: {} }]));
+    const body: Corpus.RpcRequestBodyItem[] =
+      [{ kind: "emergency_unlock", args: {} }];
+    const rpc = this.rpcShim(body, Priority.HIGHEST);
+
+    return this.send(rpc);
   }
   /** Execute a sequence by its ID on the FarmBot API. */
   execSequence =

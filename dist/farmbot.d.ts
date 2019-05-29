@@ -3,6 +3,7 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
+import { Priority } from "./util/rpc_request";
 /** Meta data that wraps an event callback */
 interface CallbackWrapper {
     once: boolean;
@@ -18,7 +19,7 @@ export declare class Farmbot {
     static VERSION: string;
     constructor(input: FarmbotConstructorParams);
     /** Delete this shim after FBOS v7 hits end of life. */
-    rpcShim: (body: (Corpus.If | Corpus.Execute | Corpus.Calibrate | Corpus.ChangeOwnership | Corpus.CheckUpdates | Corpus.DumpInfo | Corpus.EmergencyLock | Corpus.EmergencyUnlock | Corpus.ExecuteScript | Corpus.FactoryReset | Corpus.FindHome | Corpus.FlashFirmware | Corpus.Home | Corpus.InstallFarmware | Corpus.InstallFirstPartyFarmware | Corpus.MoveRelative | Corpus.PowerOff | Corpus.ReadStatus | Corpus.Reboot | Corpus.RemoveFarmware | Corpus.MoveAbsolute | Corpus.ReadPin | Corpus.ResourceUpdate | Corpus.SendMessage | Corpus.SetServoAngle | Corpus.SetUserEnv | Corpus.Sync | Corpus.TakePhoto | Corpus.TogglePin | Corpus.UpdateFarmware | Corpus.Wait | Corpus.WritePin | Corpus.Zero)[]) => Corpus.RpcRequest;
+    rpcShim: (body: (Corpus.If | Corpus.Execute | Corpus.Calibrate | Corpus.ChangeOwnership | Corpus.CheckUpdates | Corpus.DumpInfo | Corpus.EmergencyLock | Corpus.EmergencyUnlock | Corpus.ExecuteScript | Corpus.FactoryReset | Corpus.FindHome | Corpus.FlashFirmware | Corpus.Home | Corpus.InstallFarmware | Corpus.InstallFirstPartyFarmware | Corpus.MoveRelative | Corpus.PowerOff | Corpus.ReadStatus | Corpus.Reboot | Corpus.RemoveFarmware | Corpus.MoveAbsolute | Corpus.ReadPin | Corpus.ResourceUpdate | Corpus.SendMessage | Corpus.SetServoAngle | Corpus.SetUserEnv | Corpus.Sync | Corpus.TakePhoto | Corpus.TogglePin | Corpus.UpdateFarmware | Corpus.Wait | Corpus.WritePin | Corpus.Zero)[], priority?: Priority) => Corpus.RpcRequest;
     /** Get a Farmbot Constructor Parameter. */
     getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U) => Conf[U];
     /** Set a Farmbot Constructor Parameter. */
