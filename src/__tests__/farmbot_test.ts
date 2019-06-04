@@ -9,9 +9,25 @@ import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
 import { Misc } from "../constants";
+import { Priority } from "../util/rpc_request";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
+
+  it("creates RPCs", () => {
+    const bot = fakeFarmbot();
+
+    bot.setConfig("interim_flag_is_legacy_fbos", false);
+
+    [Priority.HIGHEST, Priority.LOWEST].map(priority => {
+      const x = bot.rpcShim([], priority);
+      expect(x.args.priority).toEqual(priority);
+    });
+
+    const x = bot.rpcShim([]);
+    expect(x.args.priority).toEqual(Priority.NORMAL);
+  });
+
   it("Instantiates a FarmBot", () => {
     const bot = fakeFarmbot();
     expect(bot.getConfig("token")).toEqual(token);

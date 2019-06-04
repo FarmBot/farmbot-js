@@ -99,6 +99,12 @@ export interface FirmwareConfig {
   movement_microsteps_x: number;
   movement_microsteps_y: number;
   movement_microsteps_z: number;
+  movement_motor_current_x: number;
+  movement_motor_current_y: number;
+  movement_motor_current_z: number;
+  movement_stall_sensitivity_x: number;
+  movement_stall_sensitivity_y: number;
+  movement_stall_sensitivity_z: number;
 }
 
 export type NumberConfigKey =
@@ -159,8 +165,14 @@ export type NumberConfigKey =
   | "movement_min_spd_x"
   | "movement_min_spd_y"
   | "movement_min_spd_z"
+  | "movement_motor_current_x"
+  | "movement_motor_current_y"
+  | "movement_motor_current_z"
   | "movement_secondary_motor_invert_x"
   | "movement_secondary_motor_x"
+  | "movement_stall_sensitivity_x"
+  | "movement_stall_sensitivity_y"
+  | "movement_stall_sensitivity_z"
   | "movement_step_per_mm_x"
   | "movement_step_per_mm_y"
   | "movement_step_per_mm_z"

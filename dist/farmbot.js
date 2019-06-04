@@ -9,12 +9,14 @@ var constants_1 = require("./constants");
 var is_celery_script_1 = require("./util/is_celery_script");
 var deep_unpack_1 = require("./util/deep_unpack");
 var time_1 = require("./util/time");
+var rpc_request_1 = require("./util/rpc_request");
 var Farmbot = /** @class */ (function () {
     function Farmbot(input) {
         var _this = this;
         /** Delete this shim after FBOS v7 hits end of life. */
-        this.rpcShim = function (body) {
-            return util_1.rpcRequest(body, _this.getConfig("interim_flag_is_legacy_fbos"));
+        this.rpcShim = function (body, priority) {
+            if (priority === void 0) { priority = rpc_request_1.Priority.NORMAL; }
+            return util_1.rpcRequest(body, _this.getConfig("interim_flag_is_legacy_fbos"), priority);
         };
         /** Get a Farmbot Constructor Parameter. */
         this.getConfig = function (key) { return _this.config[key]; };
@@ -113,11 +115,15 @@ var Farmbot = /** @class */ (function () {
          * also will pause running regimens and cause any running sequences to exit.
          */
         this.emergencyLock = function () {
-            return _this.send(_this.rpcShim([{ kind: "emergency_lock", args: {} }]));
+            var body = [{ kind: "emergency_lock", args: {} }];
+            var rpc = _this.rpcShim(body, rpc_request_1.Priority.HIGHEST);
+            return _this.send(rpc);
         };
         /** Unlock the bot when the user says it is safe. */
         this.emergencyUnlock = function () {
-            return _this.send(_this.rpcShim([{ kind: "emergency_unlock", args: {} }]));
+            var body = [{ kind: "emergency_unlock", args: {} }];
+            var rpc = _this.rpcShim(body, rpc_request_1.Priority.HIGHEST);
+            return _this.send(rpc);
         };
         /** Execute a sequence by its ID on the FarmBot API. */
         this.execSequence = function (sequence_id, body) {
@@ -466,7 +472,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.1-rc1";
+    Farmbot.VERSION = "8.0.1-rc3";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
