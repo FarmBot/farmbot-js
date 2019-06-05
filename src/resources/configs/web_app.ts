@@ -16,7 +16,7 @@ export interface WebAppConfig {
   enable_browser_speak: boolean;
   encoder_figure: boolean;
   error_log: number;
-  expand_step_options: string;
+  expand_step_options: boolean;
   fun_log: number;
   hide_webcam_widget: boolean;
   home_button_homing: boolean;
@@ -67,7 +67,6 @@ export type NumberConfigKey =
 
 export type StringConfigKey =
   | "created_at"
-  | "expand_step_options"
   | "photo_filter_begin"
   | "photo_filter_end"
   | "updated_at";
@@ -82,6 +81,7 @@ export type BooleanConfigKey =
   | "dynamic_map"
   | "enable_browser_speak"
   | "encoder_figure"
+  | "expand_step_options"
   | "hide_webcam_widget"
   | "home_button_homing"
   | "legend_menu_open"
