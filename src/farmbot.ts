@@ -446,7 +446,19 @@ export class Farmbot {
 
       switch (segments[2]) {
         case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
-        case MqttChanName.legacyStatus: return emit(FbjsEventName.legacy_status, msg);
+        case MqttChanName.legacyStatus:
+          const major_version = msg
+            .hardware
+            .informational_settings
+            .controller_version
+            .split(".")[0];
+          if (major_version == "8") {
+            console.log("PING!");
+            this.setConfig("interim_flag_is_legacy_fbos", false);
+          } else {
+            console.log("PONG!");
+          }
+          return emit(FbjsEventName.legacy_status, msg);
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.statusV8: return this.statusV8(segments, msg);
         case MqttChanName.pong:

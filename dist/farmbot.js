@@ -348,7 +348,20 @@ var Farmbot = /** @class */ (function () {
                     case constants_1.MqttChanName.logs:
                         return emit(constants_1.FbjsEventName.logs, msg);
                         ;
-                    case constants_1.MqttChanName.legacyStatus: return emit(constants_1.FbjsEventName.legacy_status, msg);
+                    case constants_1.MqttChanName.legacyStatus:
+                        var major_version = msg
+                            .hardware
+                            .informational_settings
+                            .controller_version
+                            .split(".")[0];
+                        if (major_version == "8") {
+                            console.log("PING!");
+                            _this.setConfig("interim_flag_is_legacy_fbos", false);
+                        }
+                        else {
+                            console.log("PONG!");
+                        }
+                        return emit(constants_1.FbjsEventName.legacy_status, msg);
                     case constants_1.MqttChanName.sync: return emit(constants_1.FbjsEventName.sync, msg);
                     case constants_1.MqttChanName.statusV8: return _this.statusV8(segments, msg);
                     case constants_1.MqttChanName.pong:
