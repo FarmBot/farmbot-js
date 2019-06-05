@@ -447,7 +447,7 @@ export class Farmbot {
       switch (segments[2]) {
         case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
         case MqttChanName.legacyStatus:
-          temporaryHeuristic(msg);
+          this.temporaryHeuristic(msg);
           return emit(FbjsEventName.legacy_status, msg);
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.statusV8: return this.statusV8(segments, msg);
@@ -458,7 +458,8 @@ export class Farmbot {
           return emit(ev, msg);
       }
     } catch (error) {
-      console.warn("Could not parse inbound message from MQTT.");
+      console
+        .dir({ text: "Could not parse inbound message from MQTT.", error });
       emit(FbjsEventName.malformed, original);
     }
   }
@@ -467,8 +468,10 @@ export class Farmbot {
   private temporaryHeuristic = (msg: BotStateTree) => {
     let major_version = "6";
     try {
-      const { controller_version } = msg.informational_settings;
-      major_version = (controller_version || "7").split(".")[0];
+      const s = (msg &&
+        msg.informational_settings &&
+        (msg.informational_settings.controller_version || "6")) || "6";
+      major_version = s.split(".")[0];
     } catch (error) {
       console.error("Crashed during FBOS v8 detection heuristic");
     }

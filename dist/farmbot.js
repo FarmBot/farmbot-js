@@ -349,18 +349,7 @@ var Farmbot = /** @class */ (function () {
                         return emit(constants_1.FbjsEventName.logs, msg);
                         ;
                     case constants_1.MqttChanName.legacyStatus:
-                        var major_version = msg
-                            .hardware
-                            .informational_settings
-                            .controller_version
-                            .split(".")[0];
-                        if (major_version == "8") {
-                            console.log("PING!");
-                            _this.setConfig("interim_flag_is_legacy_fbos", false);
-                        }
-                        else {
-                            console.log("PONG!");
-                        }
+                        _this.temporaryHeuristic(msg);
                         return emit(constants_1.FbjsEventName.legacy_status, msg);
                     case constants_1.MqttChanName.sync: return emit(constants_1.FbjsEventName.sync, msg);
                     case constants_1.MqttChanName.statusV8: return _this.statusV8(segments, msg);
@@ -372,8 +361,26 @@ var Farmbot = /** @class */ (function () {
                 }
             }
             catch (error) {
-                console.warn("Could not parse inbound message from MQTT.");
+                console
+                    .dir({ test: "Could not parse inbound message from MQTT.", error: error });
                 emit(constants_1.FbjsEventName.malformed, original);
+            }
+        };
+        /** Delete this after FBOS v7 deprecation. */
+        this.temporaryHeuristic = function (msg) {
+            var major_version = "6";
+            try {
+                var s = (msg &&
+                    msg.informational_settings &&
+                    (msg.informational_settings.controller_version || "6")) || "6";
+                major_version = s.split(".")[0];
+            }
+            catch (error) {
+                console.error("Crashed during FBOS v8 detection heuristic");
+            }
+            if (_this.config.interim_flag_is_legacy_fbos && major_version == "8") {
+                console.log("FBOS v8 detected.");
+                _this.setConfig("interim_flag_is_legacy_fbos", false);
             }
         };
         this.statusV8 = function (segments, msg) {
