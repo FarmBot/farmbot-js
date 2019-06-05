@@ -8,7 +8,7 @@ import {
   coordinate,
   uuid as genUuid
 } from "./util";
-import { Dictionary, Vector3, Primitive } from "./interfaces";
+import { Dictionary, Vector3, Primitive, BotStateTree } from "./interfaces";
 import { ReadPin, WritePin, bufferToString } from ".";
 import {
   FarmBotInternalConfig as Conf,
@@ -447,17 +447,7 @@ export class Farmbot {
       switch (segments[2]) {
         case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
         case MqttChanName.legacyStatus:
-          const major_version = msg
-            .hardware
-            .informational_settings
-            .controller_version
-            .split(".")[0];
-          if (major_version == "8") {
-            console.log("PING!");
-            this.setConfig("interim_flag_is_legacy_fbos", false);
-          } else {
-            console.log("PONG!");
-          }
+          temporaryHeuristic(msg);
           return emit(FbjsEventName.legacy_status, msg);
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.statusV8: return this.statusV8(segments, msg);
@@ -473,6 +463,21 @@ export class Farmbot {
     }
   }
 
+  /** Delete this after FBOS v7 deprecation. */
+  private temporaryHeuristic = (msg: BotStateTree) => {
+    let major_version = "6";
+    try {
+      const { controller_version } = msg.informational_settings;
+      major_version = (controller_version || "7").split(".")[0];
+    } catch (error) {
+      console.error("Crashed during FBOS v8 detection heuristic");
+    }
+
+    if (this.config.interim_flag_is_legacy_fbos && major_version == "8") {
+      console.log("FBOS v8 detected.");
+      this.setConfig("interim_flag_is_legacy_fbos", false);
+    }
+  }
   private statusV8 = (segments: string[], msg: Primitive) => {
     if (this.config.interim_flag_is_legacy_fbos) {
       this.setConfig("interim_flag_is_legacy_fbos", false);
