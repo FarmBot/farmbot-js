@@ -173,6 +173,8 @@ export declare class Farmbot {
     send: (input: Corpus.RpcRequest) => Promise<{}>;
     /** Main entry point for all MQTT packets. */
     _onmessage: (chan: string, buffer: Uint8Array) => void;
+    /** Delete this after FBOS v7 deprecation. */
+    private temporaryHeuristic;
     private statusV8;
     ping: (timeout?: number, now?: number) => Promise<{}>;
     private doLegacyPing;

@@ -8,7 +8,7 @@ import {
   coordinate,
   uuid as genUuid
 } from "./util";
-import { Dictionary, Vector3, Primitive } from "./interfaces";
+import { Dictionary, Vector3, Primitive, BotStateTree } from "./interfaces";
 import { ReadPin, WritePin, bufferToString } from ".";
 import {
   FarmBotInternalConfig as Conf,
@@ -44,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.1-rc3";
+  static VERSION = "8.0.1-rc4";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -446,7 +446,9 @@ export class Farmbot {
 
       switch (segments[2]) {
         case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
-        case MqttChanName.legacyStatus: return emit(FbjsEventName.legacy_status, msg);
+        case MqttChanName.legacyStatus:
+          this.temporaryHeuristic(msg);
+          return emit(FbjsEventName.legacy_status, msg);
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.statusV8: return this.statusV8(segments, msg);
         case MqttChanName.pong:
@@ -456,11 +458,29 @@ export class Farmbot {
           return emit(ev, msg);
       }
     } catch (error) {
-      console.warn("Could not parse inbound message from MQTT.");
+      console
+        .dir({ text: "Could not parse inbound message from MQTT.", error });
       emit(FbjsEventName.malformed, original);
     }
   }
 
+  /** Delete this after FBOS v7 deprecation. */
+  private temporaryHeuristic = (msg: BotStateTree) => {
+    let major_version = "6";
+    try {
+      const s = (msg &&
+        msg.informational_settings &&
+        (msg.informational_settings.controller_version || "6")) || "6";
+      major_version = s.split(".")[0];
+    } catch (error) {
+      console.error("Crashed during FBOS v8 detection heuristic");
+    }
+
+    if (this.config.interim_flag_is_legacy_fbos && major_version == "8") {
+      console.log("FBOS v8 detected.");
+      this.setConfig("interim_flag_is_legacy_fbos", false);
+    }
+  }
   private statusV8 = (segments: string[], msg: Primitive) => {
     if (this.config.interim_flag_is_legacy_fbos) {
       this.setConfig("interim_flag_is_legacy_fbos", false);
