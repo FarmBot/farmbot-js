@@ -362,7 +362,7 @@ var Farmbot = /** @class */ (function () {
             }
             catch (error) {
                 console
-                    .dir({ test: "Could not parse inbound message from MQTT.", error: error });
+                    .dir({ text: "Could not parse inbound message from MQTT.", error: error });
                 emit(constants_1.FbjsEventName.malformed, original);
             }
         };
@@ -492,7 +492,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.1-rc3";
+    Farmbot.VERSION = "8.0.1-rc4";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
