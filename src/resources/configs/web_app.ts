@@ -18,10 +18,13 @@ export interface WebAppConfig {
   error_log: number;
   expand_step_options: boolean;
   fun_log: number;
+  hide_sensors: boolean;
   hide_webcam_widget: boolean;
   home_button_homing: boolean;
   info_log: number;
   legend_menu_open: boolean;
+  map_size_x: number;
+  map_size_y: number;
   map_xl: boolean;
   photo_filter_begin: string;
   photo_filter_end: string;
@@ -46,8 +49,6 @@ export interface WebAppConfig {
   y_axis_inverted: boolean;
   z_axis_inverted: boolean;
   zoom_level: number;
-  map_size_x: number;
-  map_size_y: number;
 }
 
 export type NumberConfigKey =
@@ -83,6 +84,7 @@ export type BooleanConfigKey =
   | "encoder_figure"
   | "expand_step_options"
   | "hide_webcam_widget"
+  | "hide_sensors"
   | "home_button_homing"
   | "legend_menu_open"
   | "map_xl"
