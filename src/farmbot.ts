@@ -44,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.1-rc5";
+  static VERSION = "8.0.1-rc6";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -538,11 +538,13 @@ export class Farmbot {
     const { mqttUsername, token, mqttServer } = this.config;
     const reconnectPeriod: number = Misc.RECONNECT_THROTTLE_MS;
     const client = connect(mqttServer, {
-      username: mqttUsername,
-      password: token,
       clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
-      reconnectPeriod
+      password: token,
+      protocolId: "MQIsdp",
+      protocolVersion: 3,
+      reconnectPeriod,
+      username: mqttUsername,
     });
     this.client = client;
     this.resources = new ResourceAdapter(this, this.config.mqttUsername);
