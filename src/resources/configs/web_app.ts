@@ -5,6 +5,7 @@ export interface WebAppConfig {
   updated_at: string;
   bot_origin_quadrant: number;
   busy_log: number;
+  confirm_plant_deletion: boolean;
   confirm_step_deletion: boolean;
   debug_log: number;
   disable_animations: boolean;
@@ -18,11 +19,13 @@ export interface WebAppConfig {
   error_log: number;
   expand_step_options: boolean;
   fun_log: number;
+  hide_sensors: boolean;
   hide_webcam_widget: boolean;
   home_button_homing: boolean;
   info_log: number;
   legend_menu_open: boolean;
-  map_xl: boolean;
+  map_size_x: number;
+  map_size_y: number;
   photo_filter_begin: string;
   photo_filter_end: string;
   raw_encoders: boolean;
@@ -46,8 +49,6 @@ export interface WebAppConfig {
   y_axis_inverted: boolean;
   z_axis_inverted: boolean;
   zoom_level: number;
-  map_size_x: number;
-  map_size_y: number;
 }
 
 export type NumberConfigKey =
@@ -72,6 +73,7 @@ export type StringConfigKey =
   | "updated_at";
 
 export type BooleanConfigKey =
+  | "confirm_plant_deletion"
   | "confirm_step_deletion"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
@@ -82,10 +84,10 @@ export type BooleanConfigKey =
   | "enable_browser_speak"
   | "encoder_figure"
   | "expand_step_options"
+  | "hide_sensors"
   | "hide_webcam_widget"
   | "home_button_homing"
   | "legend_menu_open"
-  | "map_xl"
   | "raw_encoders"
   | "scaled_encoders"
   | "show_farmbot"
@@ -103,5 +105,4 @@ export type BooleanConfigKey =
   | "x_axis_inverted"
   | "xy_swap"
   | "y_axis_inverted"
-  | "z_axis_inverted"
-  ;
+  | "z_axis_inverted";

@@ -436,11 +436,13 @@ var Farmbot = /** @class */ (function () {
             var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
             var reconnectPeriod = constants_1.Misc.RECONNECT_THROTTLE_MS;
             var client = mqtt_1.connect(mqttServer, {
-                username: mqttUsername,
-                password: token,
                 clean: true,
                 clientId: "FBJS-" + Farmbot.VERSION + "-" + util_1.uuid(),
-                reconnectPeriod: reconnectPeriod
+                password: token,
+                protocolId: "MQIsdp",
+                protocolVersion: 3,
+                reconnectPeriod: reconnectPeriod,
+                username: mqttUsername,
             });
             _this.client = client;
             _this.resources = new resource_adapter_1.ResourceAdapter(_this, _this.config.mqttUsername);
@@ -492,7 +494,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.1-rc4";
+    Farmbot.VERSION = "8.0.1-rc7";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

@@ -5,6 +5,7 @@ export interface WebAppConfig {
     updated_at: string;
     bot_origin_quadrant: number;
     busy_log: number;
+    confirm_plant_deletion: boolean;
     confirm_step_deletion: boolean;
     debug_log: number;
     disable_animations: boolean;
@@ -18,11 +19,13 @@ export interface WebAppConfig {
     error_log: number;
     expand_step_options: boolean;
     fun_log: number;
+    hide_sensors: boolean;
     hide_webcam_widget: boolean;
     home_button_homing: boolean;
     info_log: number;
     legend_menu_open: boolean;
-    map_xl: boolean;
+    map_size_x: number;
+    map_size_y: number;
     photo_filter_begin: string;
     photo_filter_end: string;
     raw_encoders: boolean;
@@ -46,9 +49,7 @@ export interface WebAppConfig {
     y_axis_inverted: boolean;
     z_axis_inverted: boolean;
     zoom_level: number;
-    map_size_x: number;
-    map_size_y: number;
 }
 export declare type NumberConfigKey = "id" | "bot_origin_quadrant" | "busy_log" | "debug_log" | "device_id" | "error_log" | "fun_log" | "info_log" | "map_size_x" | "map_size_y" | "success_log" | "warn_log" | "zoom_level";
 export declare type StringConfigKey = "created_at" | "photo_filter_begin" | "photo_filter_end" | "updated_at";
-export declare type BooleanConfigKey = "confirm_step_deletion" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "encoder_figure" | "expand_step_options" | "hide_webcam_widget" | "home_button_homing" | "legend_menu_open" | "map_xl" | "raw_encoders" | "scaled_encoders" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_pins" | "show_plants" | "show_points" | "show_sensor_readings" | "show_spread" | "stub_config" | "time_format_24_hour" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
+export declare type BooleanConfigKey = "confirm_plant_deletion" | "confirm_step_deletion" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_pins" | "show_plants" | "show_points" | "show_sensor_readings" | "show_spread" | "stub_config" | "time_format_24_hour" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
