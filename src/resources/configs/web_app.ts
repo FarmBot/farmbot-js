@@ -5,6 +5,7 @@ export interface WebAppConfig {
   updated_at: string;
   bot_origin_quadrant: number;
   busy_log: number;
+  confirm_plant_deletion: boolean;
   confirm_step_deletion: boolean;
   debug_log: number;
   disable_animations: boolean;
@@ -25,7 +26,6 @@ export interface WebAppConfig {
   legend_menu_open: boolean;
   map_size_x: number;
   map_size_y: number;
-  map_xl: boolean;
   photo_filter_begin: string;
   photo_filter_end: string;
   raw_encoders: boolean;
@@ -73,6 +73,7 @@ export type StringConfigKey =
   | "updated_at";
 
 export type BooleanConfigKey =
+  | "confirm_plant_deletion"
   | "confirm_step_deletion"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
@@ -83,11 +84,10 @@ export type BooleanConfigKey =
   | "enable_browser_speak"
   | "encoder_figure"
   | "expand_step_options"
-  | "hide_webcam_widget"
   | "hide_sensors"
+  | "hide_webcam_widget"
   | "home_button_homing"
   | "legend_menu_open"
-  | "map_xl"
   | "raw_encoders"
   | "scaled_encoders"
   | "show_farmbot"
@@ -105,5 +105,4 @@ export type BooleanConfigKey =
   | "x_axis_inverted"
   | "xy_swap"
   | "y_axis_inverted"
-  | "z_axis_inverted"
-  ;
+  | "z_axis_inverted";

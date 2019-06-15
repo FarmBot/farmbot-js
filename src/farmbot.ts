@@ -44,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.1-rc6";
+  static VERSION = "8.0.1-rc7";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
