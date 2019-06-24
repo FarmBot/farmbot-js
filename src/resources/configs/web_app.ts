@@ -11,6 +11,7 @@ export interface WebAppConfig {
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
   disable_i18n: boolean;
+  discard_unsaved_sequences: boolean;
   discard_unsaved: boolean;
   display_trail: boolean;
   dynamic_map: boolean;
@@ -78,6 +79,7 @@ export type BooleanConfigKey =
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
   | "disable_i18n"
+  | "discard_unsaved_sequences"
   | "discard_unsaved"
   | "display_trail"
   | "dynamic_map"
