@@ -28,6 +28,7 @@ export interface BotStateTree {
 
 /** Microcontroller board. */
 export type FirmwareHardware =
+  | "none"
   | "arduino"
   | "express_k10"
   | "farmduino_k14"

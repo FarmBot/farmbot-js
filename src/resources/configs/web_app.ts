@@ -7,6 +7,7 @@ export interface WebAppConfig {
   busy_log: number;
   confirm_plant_deletion: boolean;
   confirm_step_deletion: boolean;
+  confirm_sequence_deletion: boolean;
   debug_log: number;
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
@@ -75,6 +76,7 @@ export type StringConfigKey =
 
 export type BooleanConfigKey =
   | "confirm_plant_deletion"
+  | "confirm_sequence_deletion"
   | "confirm_step_deletion"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
