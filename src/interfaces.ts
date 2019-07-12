@@ -22,8 +22,6 @@ export interface BotStateTree {
   /** List of user accessible processes running on the bot. */
   process_info: { farmwares: Dictionary<FarmwareManifest | LegacyFarmwareManifest>; };
   gpio_registry: { [pin: number]: string | undefined } | undefined;
-  /** Alerts for problems identified by FarmBot OS. */
-  alerts: Dictionary<Alert | undefined> | undefined;
 }
 
 /** Microcontroller board. */
