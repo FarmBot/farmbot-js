@@ -24,8 +24,6 @@ export interface BotStateTree {
     gpio_registry: {
         [pin: number]: string | undefined;
     } | undefined;
-    /** Alerts for problems identified by FarmBot OS. */
-    alerts: Dictionary<Alert | undefined> | undefined;
 }
 /** Microcontroller board. */
 export declare type FirmwareHardware = "none" | "arduino" | "express_k10" | "farmduino_k14" | "farmduino";
