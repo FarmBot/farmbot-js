@@ -12,7 +12,7 @@ export interface FbosConfig {
     sequence_complete_log: boolean;
     sequence_init_log: boolean;
     network_not_found_timer: number;
-    firmware_hardware: string;
+    firmware_hardware?: string;
     api_migrated: boolean;
     os_auto_update: boolean;
     arduino_debug_messages: boolean;
