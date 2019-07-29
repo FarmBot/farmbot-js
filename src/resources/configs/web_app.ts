@@ -6,8 +6,8 @@ export interface WebAppConfig {
   bot_origin_quadrant: number;
   busy_log: number;
   confirm_plant_deletion: boolean;
-  confirm_step_deletion: boolean;
   confirm_sequence_deletion: boolean;
+  confirm_step_deletion: boolean;
   debug_log: number;
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
@@ -45,6 +45,7 @@ export interface WebAppConfig {
   stub_config: boolean;
   success_log: number;
   time_format_24_hour: boolean;
+  user_interface_read_only_mode: boolean;
   warn_log: number;
   x_axis_inverted: boolean;
   xy_swap: boolean;
@@ -106,6 +107,7 @@ export type BooleanConfigKey =
   | "show_spread"
   | "stub_config"
   | "time_format_24_hour"
+  | "user_interface_read_only_mode"
   | "x_axis_inverted"
   | "xy_swap"
   | "y_axis_inverted"
