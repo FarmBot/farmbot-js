@@ -237,3 +237,8 @@ export interface DeviceAccountSettings extends ResourceBase {
   last_saw_api?: string | undefined;
   last_saw_mq?: string | undefined;
 }
+
+export interface PointGroup extends ResourceBase {
+  name: string;
+  point_ids: number[];
+}
