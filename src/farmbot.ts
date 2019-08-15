@@ -44,7 +44,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.0.4";
+  static VERSION = "8.0.5";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -503,9 +503,12 @@ export class Farmbot {
       return this.doPing(now, timeout);
     }
   }
-
+  tempLegacyFlag = true;
   private doLegacyPing = () => {
-    console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+    if (this.tempLegacyFlag) {
+      console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+      this.tempLegacyFlag = false;
+    }
     const rpc = this.rpcShim([]);
     rpc.args.label = "ping";
     const ok = () => this.setConfig("LAST_PING_IN", timestamp());

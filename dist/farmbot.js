@@ -406,8 +406,12 @@ var Farmbot = /** @class */ (function () {
                 return _this.doPing(now, timeout);
             }
         };
+        this.tempLegacyFlag = true;
         this.doLegacyPing = function () {
-            console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+            if (_this.tempLegacyFlag) {
+                console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+                _this.tempLegacyFlag = false;
+            }
             var rpc = _this.rpcShim([]);
             rpc.args.label = "ping";
             var ok = function () { return _this.setConfig("LAST_PING_IN", time_1.timestamp()); };
@@ -494,7 +498,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.0.4";
+    Farmbot.VERSION = "8.0.5";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

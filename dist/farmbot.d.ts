@@ -177,6 +177,7 @@ export declare class Farmbot {
     private temporaryHeuristic;
     private statusV8;
     ping: (timeout?: number, now?: number) => Promise<{}>;
+    tempLegacyFlag: boolean;
     private doLegacyPing;
     private doPing;
     /** Bootstrap the device onto the MQTT broker. */
