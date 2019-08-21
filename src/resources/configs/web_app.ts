@@ -6,11 +6,13 @@ export interface WebAppConfig {
   bot_origin_quadrant: number;
   busy_log: number;
   confirm_plant_deletion: boolean;
+  confirm_sequence_deletion: boolean;
   confirm_step_deletion: boolean;
   debug_log: number;
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
   disable_i18n: boolean;
+  discard_unsaved_sequences: boolean;
   discard_unsaved: boolean;
   display_trail: boolean;
   dynamic_map: boolean;
@@ -43,6 +45,7 @@ export interface WebAppConfig {
   stub_config: boolean;
   success_log: number;
   time_format_24_hour: boolean;
+  user_interface_read_only_mode: boolean;
   warn_log: number;
   x_axis_inverted: boolean;
   xy_swap: boolean;
@@ -74,10 +77,12 @@ export type StringConfigKey =
 
 export type BooleanConfigKey =
   | "confirm_plant_deletion"
+  | "confirm_sequence_deletion"
   | "confirm_step_deletion"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
   | "disable_i18n"
+  | "discard_unsaved_sequences"
   | "discard_unsaved"
   | "display_trail"
   | "dynamic_map"
@@ -102,6 +107,7 @@ export type BooleanConfigKey =
   | "show_spread"
   | "stub_config"
   | "time_format_24_hour"
+  | "user_interface_read_only_mode"
   | "x_axis_inverted"
   | "xy_swap"
   | "y_axis_inverted"
