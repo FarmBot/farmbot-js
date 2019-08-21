@@ -5,6 +5,7 @@ export declare type CSBoolean = boolean;
 export declare type CSFloat = number;
 export declare type CSInteger = number;
 export declare type CSString = string;
+export declare type ALLOWED_ASSERTION_TYPES = "abort" | "abort_recover" | "recover";
 export declare type ALLOWED_AXIS = "all" | "x" | "y" | "z";
 export declare type ALLOWED_CHANNEL_NAMES = "email" | "espeak" | "ticker" | "toast";
 export declare type ALLOWED_MESSAGE_TYPES = "busy" | "debug" | "error" | "fun" | "info" | "success" | "warn";
@@ -14,13 +15,27 @@ export declare type ALLOWED_PIN_MODES = 0 | 1;
 export declare type AllowedPinTypes = "BoxLed3" | "BoxLed4" | "Peripheral" | "Sensor";
 export declare type Color = "blue" | "gray" | "green" | "orange" | "pink" | "purple" | "red" | "yellow";
 export declare type DataChangeType = "add" | "remove" | "update";
-export declare type LegalArgString = "_else" | "_then" | "axis" | "channel_name" | "data_value" | "default_value" | "label" | "lhs" | "locals" | "location" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_id" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
-export declare type LegalKindString = "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "DumpInfo" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PowerOff" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "Sync" | "TakePhoto" | "TogglePin" | "Tool" | "UpdateFarmware" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
+export declare type LegalArgString = "_else" | "_then" | "assertion_type" | "axis" | "channel_name" | "data_value" | "default_value" | "label" | "lhs" | "locals" | "location" | "lua" | "message" | "message_type" | "milliseconds" | "offset" | "op" | "package" | "pin_id" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "tool_id" | "url" | "value" | "version" | "x" | "y" | "z";
+export declare type LegalKindString = "Assertion" | "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "DumpInfo" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PowerOff" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "Sync" | "TakePhoto" | "TogglePin" | "Tool" | "UpdateFarmware" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
 export declare type LegalSequenceKind = "_if" | "calibrate" | "change_ownership" | "check_updates" | "dump_info" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "flash_firmware" | "home" | "install_farmware" | "install_first_party_farmware" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "resource_update" | "send_message" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "wait" | "write_pin" | "zero";
 export declare type PlantStage = "harvested" | "planned" | "planted" | "sprouted";
 export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot";
 export declare type lhs = "pin0" | "pin1" | "pin10" | "pin11" | "pin12" | "pin13" | "pin14" | "pin15" | "pin16" | "pin17" | "pin18" | "pin19" | "pin2" | "pin20" | "pin21" | "pin22" | "pin23" | "pin24" | "pin25" | "pin26" | "pin27" | "pin28" | "pin29" | "pin3" | "pin30" | "pin31" | "pin32" | "pin33" | "pin34" | "pin35" | "pin36" | "pin37" | "pin38" | "pin39" | "pin4" | "pin40" | "pin41" | "pin42" | "pin43" | "pin44" | "pin45" | "pin46" | "pin47" | "pin48" | "pin49" | "pin5" | "pin50" | "pin51" | "pin52" | "pin53" | "pin54" | "pin55" | "pin56" | "pin57" | "pin58" | "pin59" | "pin6" | "pin60" | "pin61" | "pin62" | "pin63" | "pin64" | "pin65" | "pin66" | "pin67" | "pin68" | "pin69" | "pin7" | "pin8" | "pin9" | "x" | "y" | "z";
-export declare type resource_type = "Device" | "FarmEvent" | "GenericPointer" | "Image" | "Log" | "Peripheral" | "Plant" | "Point" | "Regimen" | "Sequence" | "Tool" | "ToolSlot" | "User";
+export declare type resource_type = "Device" | "GenericPointer" | "Plant" | "Point" | "ToolSlot";
+export declare type AssertionBodyItem = never;
+/** assertion
+
+ Tag properties: *. */
+export interface Assertion {
+    comment?: string | undefined;
+    kind: "assertion";
+    args: {
+        _then: Execute | Nothing;
+        assertion_type: ALLOWED_ASSERTION_TYPES;
+        lua: CSString;
+    };
+    body?: AssertionBodyItem[] | undefined;
+}
 export declare type IfBodyItem = (Pair);
 /** _if
 
@@ -647,4 +662,4 @@ export interface ResourceUpdate {
     };
     body?: ResourceUpdateBodyItem[] | undefined;
 }
-export declare type CeleryNode = Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | FlashFirmware | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | MoveAbsolute | MoveRelative | NamedPin | Nothing | Pair | ParameterApplication | ParameterDeclaration | Point | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | RpcError | RpcOk | RpcRequest | ScopeDeclaration | SendMessage | Sequence | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | Tool | UpdateFarmware | VariableDeclaration | Wait | WritePin | Zero;
+export declare type CeleryNode = Assertion | Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | DumpInfo | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | FlashFirmware | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | MoveAbsolute | MoveRelative | NamedPin | Nothing | Pair | ParameterApplication | ParameterDeclaration | Point | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | ResourceUpdate | RpcError | RpcOk | RpcRequest | ScopeDeclaration | SendMessage | Sequence | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | Tool | UpdateFarmware | VariableDeclaration | Wait | WritePin | Zero;
