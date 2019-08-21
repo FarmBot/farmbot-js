@@ -146,6 +146,7 @@ export type LegalKindString = "Assertion" |
   "WritePin" |
   "Zero";
 export type LegalSequenceKind = "_if" |
+  "assertion" |
   "calibrate" |
   "change_ownership" |
   "check_updates" |
@@ -733,6 +734,7 @@ export interface RpcOk {
 }
 
 export type RpcRequestBodyItem = (If |
+  Assertion |
   Calibrate |
   ChangeOwnership |
   CheckUpdates |
@@ -806,6 +808,7 @@ export interface SendMessage {
 }
 
 export type SequenceBodyItem = (If |
+  Assertion |
   Calibrate |
   ChangeOwnership |
   CheckUpdates |
