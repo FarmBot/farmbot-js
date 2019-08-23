@@ -3,6 +3,7 @@ export interface WebAppConfig {
   device_id: number;
   created_at: string;
   updated_at: string;
+  assertion_log: number;
   bot_origin_quadrant: number;
   busy_log: number;
   confirm_plant_deletion: boolean;
