@@ -56,17 +56,18 @@ export interface WebAppConfig {
 
 export type NumberConfigKey =
   | "id"
-  | "bot_origin_quadrant"
+  | "device_id"
+  | "assertion_log"
   | "busy_log"
   | "debug_log"
-  | "device_id"
   | "error_log"
   | "fun_log"
   | "info_log"
-  | "map_size_x"
-  | "map_size_y"
   | "success_log"
   | "warn_log"
+  | "bot_origin_quadrant"
+  | "map_size_x"
+  | "map_size_y"
   | "zoom_level";
 
 export type StringConfigKey =
