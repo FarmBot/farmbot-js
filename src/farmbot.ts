@@ -23,6 +23,8 @@ import { deepUnpack } from "./util/deep_unpack";
 import { timestamp } from "./util/time";
 import { Priority } from "./util/rpc_request";
 
+type RpcResponse = Promise<Corpus.RpcOk | Corpus.RpcError>;
+
 /*
  * Clarification for several terms used:
  *  * Farmware: Plug-ins for FarmBot OS. Sometimes referred to as `scripts`.
@@ -44,7 +46,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.1.6";
+  static VERSION = "8.2.0-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -139,7 +141,7 @@ export class Farmbot {
 
   /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
    * Be careful!! */
-  resetOS = () => {
+  resetOS = (): void => {
     return this.publish(this.rpcShim([
       { kind: "factory_reset", args: { package: "farmbot_os" } }
     ]));
@@ -155,13 +157,12 @@ export class Farmbot {
   flashFirmware = (
     /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
     firmware_name: string) => {
-    return this
-      .send(this.rpcShim([{
-        kind: "flash_firmware",
-        args: {
-          package: firmware_name
-        }
-      }]));
+    return this.send(this.rpcShim([{
+      kind: "flash_firmware",
+      args: {
+        package: firmware_name
+      }
+    }]));
   }
 
   /**
@@ -408,7 +409,7 @@ export class Farmbot {
    * receipt of message, but does not check formatting. Consider using higher
    * level methods like .moveRelative(), .calibrate(), etc....
   */
-  send = (input: Corpus.RpcRequest) => {
+  send = (input: Corpus.RpcRequest): RpcResponse => {
     return new Promise((resolve, reject) => {
 
       this.publish(input);
@@ -495,25 +496,36 @@ export class Farmbot {
 
   }
 
-  ping = (timeout = 10000, now = timestamp()): Promise<{}> => {
+  ping = (timeout = 10000, now = timestamp()): Promise<number> => {
     this.setConfig("LAST_PING_OUT", now)
     if (this.getConfig("interim_flag_is_legacy_fbos")) {
-      return this.doLegacyPing() as Promise<{}>;
+      return this.doLegacyPing(timeout);
     } else {
       return this.doPing(now, timeout);
     }
   }
   tempLegacyFlag = true;
-  private doLegacyPing = () => {
+  private doLegacyPing = (timeout: number): Promise<number> => {
+    // Part I: Warn user about which mechanism used.
+    // This makes debugging less painful.
     if (this.tempLegacyFlag) {
       console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
       this.tempLegacyFlag = false;
     }
+
+    // Part II: Initial prep
+    const start = timestamp();
     const rpc = this.rpcShim([]);
-    rpc.args.label = "ping";
+    rpc.args.label = "ping"; // This is a "magic string". Can't change it.
+
+    // This is inadequate for latency detection. It will go away when v7 does.
     const ok = () => this.setConfig("LAST_PING_IN", timestamp());
     this.on(rpc.args.label, ok, true);
-    return this.send(rpc);
+
+    return Promise.race([
+      this.send(rpc).then(() => timestamp() - start, () => -1),
+      new Promise<number>((_, rej) => setTimeout(() => rej(-1), timeout))
+    ]);
   }
 
   // STEP 0: Subscribe to `bot/device_23/pong/#`

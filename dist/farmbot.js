@@ -102,8 +102,7 @@ var Farmbot = /** @class */ (function () {
         this.flashFirmware = function (
         /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
         firmware_name) {
-            return _this
-                .send(_this.rpcShim([{
+            return _this.send(_this.rpcShim([{
                     kind: "flash_firmware",
                     args: {
                         package: firmware_name
@@ -400,23 +399,31 @@ var Farmbot = /** @class */ (function () {
             if (now === void 0) { now = time_1.timestamp(); }
             _this.setConfig("LAST_PING_OUT", now);
             if (_this.getConfig("interim_flag_is_legacy_fbos")) {
-                return _this.doLegacyPing();
+                return _this.doLegacyPing(timeout);
             }
             else {
                 return _this.doPing(now, timeout);
             }
         };
         this.tempLegacyFlag = true;
-        this.doLegacyPing = function () {
+        this.doLegacyPing = function (timeout) {
+            // Part I: Warn user about which mechanism used.
+            // This makes debugging less painful.
             if (_this.tempLegacyFlag) {
                 console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
                 _this.tempLegacyFlag = false;
             }
+            // Part II: Initial prep
+            var start = time_1.timestamp();
             var rpc = _this.rpcShim([]);
-            rpc.args.label = "ping";
+            rpc.args.label = "ping"; // This is a "magic string". Can't change it.
+            // This is inadequate for latency detection. It will go away when v7 does.
             var ok = function () { return _this.setConfig("LAST_PING_IN", time_1.timestamp()); };
             _this.on(rpc.args.label, ok, true);
-            return _this.send(rpc);
+            return Promise.race([
+                _this.send(rpc).then(function () { return time_1.timestamp() - start; }, function () { return -1; }),
+                new Promise(function (_, rej) { return setTimeout(function () { return rej(-1); }, timeout); })
+            ]);
         };
         // STEP 0: Subscribe to `bot/device_23/pong/#`
         // STEP 0: Send         `bot/device_23/ping/3123123`
@@ -498,7 +505,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.1.6";
+    Farmbot.VERSION = "8.2.0-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

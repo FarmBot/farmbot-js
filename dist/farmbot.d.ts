@@ -28,119 +28,119 @@ export declare class Farmbot {
      * Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document.
      */
-    installFarmware: (url: string) => Promise<unknown>;
+    installFarmware: (url: string) => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Checks for updates on a particular Farmware plugin when given the name of
      * a Farmware. `updateFarmware("take-photo")`
      */
-    updateFarmware: (pkg: string) => Promise<unknown>;
+    updateFarmware: (pkg: string) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Uninstall a Farmware plugin. */
-    removeFarmware: (pkg: string) => Promise<unknown>;
+    removeFarmware: (pkg: string) => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Installs "Farmware" (plugins) authored by FarmBot, Inc.
      * onto the bot's SD card.
      */
-    installFirstPartyFarmware: () => Promise<unknown>;
+    installFirstPartyFarmware: () => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Deactivate FarmBot OS completely (shutdown).
      * Useful before unplugging the power.
      */
-    powerOff: () => Promise<unknown>;
+    powerOff: () => Promise<import("./resources/interfaces").RpcResponse>;
     /** Restart FarmBot OS. */
-    reboot: () => Promise<unknown>;
+    reboot: () => Promise<import("./resources/interfaces").RpcResponse>;
     /** Reinitialize the FarmBot microcontroller firmware. */
-    rebootFirmware: () => Promise<unknown>;
+    rebootFirmware: () => Promise<import("./resources/interfaces").RpcResponse>;
     /** Check for new versions of FarmBot OS.
      * Downloads and installs if available. */
-    checkUpdates: () => Promise<unknown>;
+    checkUpdates: () => Promise<import("./resources/interfaces").RpcResponse>;
     /** THIS WILL RESET THE SD CARD, deleting all non-factory data!
      * Be careful!! */
     resetOS: () => void;
     /** WARNING: will reset all firmware (hardware) settings! */
-    resetMCU: () => Promise<unknown>;
-    flashFirmware: (firmware_name: string) => Promise<unknown>;
+    resetMCU: () => Promise<import("./resources/interfaces").RpcResponse>;
+    flashFirmware: (firmware_name: string) => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This
      * also will pause running regimens and cause any running sequences to exit.
      */
-    emergencyLock: () => Promise<unknown>;
+    emergencyLock: () => Promise<import("./resources/interfaces").RpcResponse>;
     /** Unlock the bot when the user says it is safe. */
-    emergencyUnlock: () => Promise<unknown>;
+    emergencyUnlock: () => Promise<import("./resources/interfaces").RpcResponse>;
     /** Execute a sequence by its ID on the FarmBot API. */
-    execSequence: (sequence_id: number, body?: Corpus.ParameterApplication[]) => Promise<unknown>;
+    execSequence: (sequence_id: number, body?: Corpus.ParameterApplication[]) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Run an installed Farmware plugin on the SD Card. */
-    execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<unknown>;
+    execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
     home: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Use end stops or encoders to figure out where 0,0,0 is in Z Y X axis
      * order. WON'T WORK WITHOUT ENCODERS OR END STOPS! A blockage or stall
      * during this command will set that position as zero. Use carefully. */
     findHome: (args: {
         speed: number;
         axis: Corpus.ALLOWED_AXIS;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Move FarmBot to an absolute point. */
     moveAbsolute: (args: Record<import("./interfaces").Xyz, number> & {
         speed?: number | undefined;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Move FarmBot to position relative to its current position. */
     moveRelative: (args: Record<import("./interfaces").Xyz, number> & {
         speed?: number | undefined;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Set a GPIO pin to a particular value. */
     writePin: (args: {
         pin_mode: Corpus.ALLOWED_PIN_MODES;
         pin_number: number | Corpus.NamedPin;
         pin_value: number;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Read the value of a GPIO pin. Will create a SensorReading if it's
      * a sensor. */
     readPin: (args: {
         label: string;
         pin_mode: Corpus.ALLOWED_PIN_MODES;
         pin_number: number | Corpus.NamedPin;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Reverse the value of a digital pin. */
     togglePin: (args: {
         pin_number: number;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Read the status of the bot. Should not be needed unless you are first
      * logging in to the device, since the device pushes new states out on
      * every update. */
-    readStatus: (args?: {}) => Promise<unknown>;
+    readStatus: (args?: {}) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Snap a photo and send to the API for post processing. */
-    takePhoto: (args?: {}) => Promise<unknown>;
+    takePhoto: (args?: {}) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Download/apply all of the latest FarmBot API JSON resources (plants,
      * account info, etc.) to the device. */
-    sync: (args?: {}) => Promise<unknown>;
+    sync: (args?: {}) => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Set the current position of the given axis to 0.
      * Example: Sending `bot.setZero("x")` at x: 255 will translate position
      * 255 to 0, causing that position to be x: 0.
      */
-    setZero: (axis: Corpus.ALLOWED_AXIS) => Promise<unknown>;
+    setZero: (axis: Corpus.ALLOWED_AXIS) => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Set user ENV vars (usually used by 3rd-party Farmware plugins).
      * Set value to `undefined` to unset.
      */
-    setUserEnv: (configs: Dictionary<string | undefined>) => Promise<unknown>;
+    setUserEnv: (configs: Dictionary<string | undefined>) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Control servos on pins 4 and 5. */
     setServoAngle: (args: {
         pin_number: number;
         pin_value: number;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Find the axis extents using encoder, motor, or end-stop feedback.
      * Will set a new home position and a new axis length for the given axis.
      */
     calibrate: (args: {
         axis: Corpus.ALLOWED_AXIS;
-    }) => Promise<unknown>;
+    }) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Tell the bot to send diagnostic info to the API.*/
-    dumpInfo: () => Promise<unknown>;
+    dumpInfo: () => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.
@@ -170,13 +170,13 @@ export declare class Farmbot {
      * receipt of message, but does not check formatting. Consider using higher
      * level methods like .moveRelative(), .calibrate(), etc....
     */
-    send: (input: Corpus.RpcRequest) => Promise<unknown>;
+    send: (input: Corpus.RpcRequest) => Promise<import("./resources/interfaces").RpcResponse>;
     /** Main entry point for all MQTT packets. */
     _onmessage: (chan: string, buffer: Uint8Array) => void;
     /** Delete this after FBOS v7 deprecation. */
     private temporaryHeuristic;
     private statusV8;
-    ping: (timeout?: number, now?: number) => Promise<{}>;
+    ping: (timeout?: number, now?: number) => Promise<number>;
     tempLegacyFlag: boolean;
     private doLegacyPing;
     private doPing;
