@@ -189,6 +189,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     fbos_version?: string | undefined;
     last_saw_api?: string | undefined;
     last_saw_mq?: string | undefined;
+    turnkey_sequence_id?: number | undefined;
 }
 export interface PointGroup extends ResourceBase {
     name: string;
