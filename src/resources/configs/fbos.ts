@@ -18,11 +18,14 @@ export interface FbosConfig {
   arduino_debug_messages: boolean;
   firmware_path?: string;
   firmware_debug_log?: boolean;
+  turnkey_sequence_id?: number;
 }
 
-export type NumberConfigKey = "id"
+export type NumberConfigKey =
+  | "id"
   | "device_id"
-  | "network_not_found_timer";
+  | "network_not_found_timer"
+  | "turnkey_sequence_id";
 
 export type StringConfigKey =
   | "firmware_hardware"
