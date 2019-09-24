@@ -237,7 +237,7 @@ export interface DeviceAccountSettings extends ResourceBase {
   last_saw_api?: string | undefined;
   last_saw_mq?: string | undefined;
   last_ota?: string | undefined;
-  last_ota_check?: string | undefined;
+  last_ota_checkup?: string | undefined;
 }
 
 export interface PointGroup extends ResourceBase {
