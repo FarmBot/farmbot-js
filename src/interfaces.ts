@@ -245,6 +245,8 @@ export interface InformationalSettings {
   currently_on_beta?: boolean;
   /** FBOS update available? */
   update_available?: boolean;
+  wifi_level_percent?: number;
+  cpu_usage?: number;
 }
 
 export type MQTTEventName = "connect" | "message";
