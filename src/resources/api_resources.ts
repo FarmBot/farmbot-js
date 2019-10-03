@@ -243,10 +243,9 @@ export interface DeviceAccountSettings extends ResourceBase {
 export type PointGroupSortType =
   | "random"
   | "xy_ascending"
-  | "xy_decending"
+  | "xy_descending"
   | "yx_ascending"
-  | "yx_decending";
-
+  | "yx_descending";
 export interface PointGroup extends ResourceBase {
   name: string;
   sort_type: PointGroupSortType;
