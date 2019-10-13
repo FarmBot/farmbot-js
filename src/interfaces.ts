@@ -219,6 +219,8 @@ export interface InformationalSettings {
   wifi_level?: number;
   /** Current version of FarmBot OS. */
   controller_version?: string | undefined;
+  /** Current uuid of FarmBot OS firmware. */
+  controller_uuid?: string | undefined;
   /** Arduino/Farmduino firmware version. */
   firmware_version?: string | undefined;
   /** If the RPi is throttled and/or having WiFi issues. */
