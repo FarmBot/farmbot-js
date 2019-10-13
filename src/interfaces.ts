@@ -211,12 +211,18 @@ export interface InformationalSettings {
   uptime?: number;
   /** Percentage of disk space used. */
   disk_usage?: number;
+  /** CPU utilization (percent). */
+  cpu_usage?: number;
+  /** Scheduler utilization (percent). */
+  scheduler_usage?: number;
   /** Megabytes of RAM used. */
   memory_usage?: number;
   /** CPU Temperature (C) of the device running FBOS (RPi). */
   soc_temp?: number;
-  /** WiFi strength (dBm). */
+  /** WiFi signal strength (dBm). */
   wifi_level?: number;
+  /** WiFi signal strength (percent). */
+  wifi_level_percent?: number;
   /** Current version of FarmBot OS. */
   controller_version?: string | undefined;
   /** Current uuid of FarmBot OS firmware. */
@@ -247,8 +253,6 @@ export interface InformationalSettings {
   currently_on_beta?: boolean;
   /** FBOS update available? */
   update_available?: boolean;
-  wifi_level_percent?: number;
-  cpu_usage?: number;
 }
 
 export type MQTTEventName = "connect" | "message";
