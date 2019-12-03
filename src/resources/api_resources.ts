@@ -215,6 +215,7 @@ export interface Folder extends ResourceBase {
 export interface SequenceResource extends Sequence, ResourceBase {
   color: Color;
   name: string;
+  folder_id: number | undefined;
 }
 
 export interface Crop extends ResourceBase {
