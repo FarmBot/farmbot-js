@@ -1,9 +1,10 @@
 import {
   Crop,
   DeviceAccountSettings,
-  FarmwareEnv,
   FarmEvent,
+  FarmwareEnv,
   FarmwareInstallation,
+  Folder,
   GenericPointer,
   Image,
   Log,
@@ -11,6 +12,7 @@ import {
   PinBinding,
   PlantPointer,
   PlantTemplate,
+  PointGroup,
   Regimen,
   SavedGarden,
   Sensor,
@@ -20,7 +22,6 @@ import {
   ToolSlotPointer,
   User,
   WebcamFeed,
-  PointGroup,
 } from "./api_resources";
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
@@ -37,6 +38,7 @@ export type ResourceName =
   | "FarmwareInstallation"
   | "FbosConfig"
   | "FirmwareConfig"
+  | "Folder"
   | "Image"
   | "Log"
   | "Peripheral"
@@ -95,6 +97,7 @@ export type TaggedResource =
   | TaggedFarmwareInstallation
   | TaggedFbosConfig
   | TaggedFirmwareConfig
+  | TaggedFolder
   | TaggedImage
   | TaggedLog
   | TaggedPeripheral
@@ -121,6 +124,7 @@ export type TaggedAlert = Resource<"Alert", Alert>;
 export type TaggedCrop = Resource<"Crop", Crop>;
 export type TaggedDevice = Resource<"Device", DeviceAccountSettings>;
 export type TaggedDiagnosticDump = Resource<"DiagnosticDump", DiagnosticDump>;
+export type TaggedFolder = Resource<"Folder", Folder>;
 export type TaggedFarmEvent = Resource<"FarmEvent", FarmEvent>;
 export type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
 export type TaggedFarmwareInstallation = Resource<"FarmwareInstallation", FarmwareInstallation>;

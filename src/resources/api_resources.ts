@@ -206,6 +206,12 @@ export interface WebcamFeed extends ResourceBase {
   name: string;
 }
 
+export interface Folder extends ResourceBase {
+  color: Color;
+  parent_id?: number;
+  name: string;
+}
+
 export interface SequenceResource extends Sequence, ResourceBase {
   color: Color;
   name: string;
