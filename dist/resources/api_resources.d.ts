@@ -198,6 +198,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     ota_hour?: number;
     last_ota?: string | undefined;
     last_ota_checkup?: string | undefined;
+    mounted_tool_id?: number | undefined;
 }
 export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
 export interface PointGroup extends ResourceBase {
