@@ -246,6 +246,7 @@ export interface DeviceAccountSettings extends ResourceBase {
   ota_hour?: number;
   last_ota?: string | undefined;
   last_ota_checkup?: string | undefined;
+  mounted_tool_id?: number | undefined;
 }
 
 export type PointGroupSortType =
