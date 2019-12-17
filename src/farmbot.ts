@@ -46,7 +46,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "8.4.2";
+  static VERSION = "9.0.0-rc1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -474,11 +474,12 @@ export class Farmbot {
         (msg.informational_settings.controller_version || "6")) || "6";
       major_version = s.split(".")[0];
     } catch (error) {
-      console.error("Crashed during FBOS v8 detection heuristic");
+      console.error("Crashed during FBOS version detection heuristic");
     }
 
-    if (this.config.interim_flag_is_legacy_fbos && major_version == "8") {
-      console.log("FBOS v8 detected.");
+    const majorInt = parseInt(major_version, 10);
+    if (this.config.interim_flag_is_legacy_fbos && majorInt >= 8) {
+      console.log("FBOS >v7 detected.");
       this.setConfig("interim_flag_is_legacy_fbos", false);
     }
   }
@@ -509,7 +510,7 @@ export class Farmbot {
     // Part I: Warn user about which mechanism used.
     // This makes debugging less painful.
     if (this.tempLegacyFlag) {
-      console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+      console.warn("Using legacy ping() mechanism (FBOS <= v7 detected)");
       this.tempLegacyFlag = false;
     }
 

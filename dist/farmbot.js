@@ -375,10 +375,11 @@ var Farmbot = /** @class */ (function () {
                 major_version = s.split(".")[0];
             }
             catch (error) {
-                console.error("Crashed during FBOS v8 detection heuristic");
+                console.error("Crashed during FBOS version detection heuristic");
             }
-            if (_this.config.interim_flag_is_legacy_fbos && major_version == "8") {
-                console.log("FBOS v8 detected.");
+            var majorInt = parseInt(major_version, 10);
+            if (_this.config.interim_flag_is_legacy_fbos && majorInt >= 8) {
+                console.log("FBOS >v7 detected.");
                 _this.setConfig("interim_flag_is_legacy_fbos", false);
             }
         };
@@ -410,7 +411,7 @@ var Farmbot = /** @class */ (function () {
             // Part I: Warn user about which mechanism used.
             // This makes debugging less painful.
             if (_this.tempLegacyFlag) {
-                console.warn("Using legacy ping() mechanism (FBOS v8 not detected)");
+                console.warn("Using legacy ping() mechanism (FBOS <= v7 detected)");
                 _this.tempLegacyFlag = false;
             }
             // Part II: Initial prep
@@ -505,7 +506,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "8.4.2";
+    Farmbot.VERSION = "9.0.0-rc1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
