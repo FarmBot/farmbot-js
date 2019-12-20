@@ -154,6 +154,7 @@ export interface SensorReading extends ResourceBase {
     value: number;
     mode: number;
     pin: number;
+    read_at: string;
 }
 export interface Tool extends ResourceBase {
     name?: string;
