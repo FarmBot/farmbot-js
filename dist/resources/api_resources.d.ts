@@ -202,9 +202,20 @@ export interface DeviceAccountSettings extends ResourceBase {
     mounted_tool_id?: number | undefined;
 }
 export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
+interface PointGroupCriteria {
+    day: {
+        op: ">" | "<";
+        days: number;
+    };
+    string_eq: Record<string, string[] | undefined>;
+    number_eq: Record<string, number | undefined>;
+    number_gt: Record<string, number | undefined>;
+    number_lt: Record<string, number | undefined>;
+}
 export interface PointGroup extends ResourceBase {
     name: string;
     sort_type: PointGroupSortType;
     point_ids: number[];
+    criteria: PointGroupCriteria;
 }
 export {};
