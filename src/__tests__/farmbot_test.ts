@@ -136,10 +136,6 @@ describe("FarmBot", () => {
       [
         bot.emergencyUnlock,
         { kind: "emergency_unlock", args: {} }
-      ],
-      [
-        bot.dumpInfo,
-        { kind: "dump_info", args: {} }
       ]
     ];
 

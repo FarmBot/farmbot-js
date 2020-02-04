@@ -139,8 +139,6 @@ export declare class Farmbot {
     calibrate: (args: {
         axis: Corpus.ALLOWED_AXIS;
     }) => Promise<import("./resources/interfaces").RpcResponse>;
-    /** Tell the bot to send diagnostic info to the API.*/
-    dumpInfo: () => Promise<import("./resources/interfaces").RpcResponse>;
     /**
      * Retrieves all of the event handlers for a particular event.
      * Returns an empty array if the event did not exist.

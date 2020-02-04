@@ -32,7 +32,6 @@ export type ResourceName =
   | "Alert"
   | "Crop"
   | "Device"
-  | "DiagnosticDump"
   | "FarmEvent"
   | "FarmwareEnv"
   | "FarmwareInstallation"
@@ -91,7 +90,6 @@ export type TaggedResource =
   | TaggedAlert
   | TaggedCrop
   | TaggedDevice
-  | TaggedDiagnosticDump
   | TaggedFarmEvent
   | TaggedFarmwareEnv
   | TaggedFarmwareInstallation
@@ -123,7 +121,6 @@ type PointUnion =
 export type TaggedAlert = Resource<"Alert", Alert>;
 export type TaggedCrop = Resource<"Crop", Crop>;
 export type TaggedDevice = Resource<"Device", DeviceAccountSettings>;
-export type TaggedDiagnosticDump = Resource<"DiagnosticDump", DiagnosticDump>;
 export type TaggedFolder = Resource<"Folder", Folder>;
 export type TaggedFarmEvent = Resource<"FarmEvent", FarmEvent>;
 export type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
@@ -149,20 +146,6 @@ export type TaggedToolSlotPointer = Resource<"Point", ToolSlotPointer>;
 export type TaggedUser = Resource<"User", User>;
 export type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
 export type TaggedWebcamFeed = Resource<"WebcamFeed", WebcamFeed>;
-
-export interface DiagnosticDump {
-  id: number;
-  device_id: number;
-  ticket_identifier: string;
-  fbos_commit: string;
-  fbos_version: string;
-  firmware_commit: string;
-  firmware_state: string;
-  network_interface: string;
-  fbos_dmesg_dump: string;
-  created_at: string;
-  updated_at: string;
-}
 
 export type PointerType =
   | TaggedToolSlotPointer
