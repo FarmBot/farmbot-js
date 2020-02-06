@@ -43,6 +43,7 @@ export interface WebAppConfig {
   show_points: boolean;
   show_sensor_readings: boolean;
   show_spread: boolean;
+  show_zones: boolean;
   stub_config: boolean;
   success_log: number;
   time_format_24_hour: boolean;
@@ -107,6 +108,7 @@ export type BooleanConfigKey =
   | "show_points"
   | "show_sensor_readings"
   | "show_spread"
+  | "show_zones"
   | "stub_config"
   | "time_format_24_hour"
   | "user_interface_read_only_mode"
