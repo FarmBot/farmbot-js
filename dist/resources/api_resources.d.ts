@@ -208,7 +208,7 @@ interface PointGroupCriteria {
         days: number;
     };
     string_eq: Record<string, string[] | undefined>;
-    number_eq: Record<string, number | undefined>;
+    number_eq: Record<string, number[] | undefined>;
     number_gt: Record<string, number | undefined>;
     number_lt: Record<string, number | undefined>;
 }
