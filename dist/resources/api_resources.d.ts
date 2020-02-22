@@ -205,7 +205,7 @@ export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descend
 interface PointGroupCriteria {
     day: {
         op: ">" | "<";
-        days: number;
+        days_ago: number;
     };
     string_eq: Record<string, string[] | undefined>;
     number_eq: Record<string, number[] | undefined>;

@@ -260,7 +260,7 @@ export type PointGroupSortType =
 interface PointGroupCriteria {
   day: {
     op: ">" | "<",
-    days: number
+    days_ago: number
   };
   string_eq: Record<string, string[] | undefined>,
   number_eq: Record<string, number[] | undefined>,
