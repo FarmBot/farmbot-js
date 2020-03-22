@@ -154,6 +154,10 @@ export interface GenericPointer extends BasePoint {
   pointer_type: "GenericPointer";
 }
 
+export interface Weed extends BasePoint {
+  pointer_type: "Weed";
+}
+
 export type Point =
   | GenericPointer
   | ToolSlotPointer
