@@ -125,7 +125,7 @@ export interface GenericPointer extends BasePoint {
 export interface Weed extends BasePoint {
     pointer_type: "Weed";
 }
-export declare type Point = GenericPointer | ToolSlotPointer | PlantPointer;
+export declare type Point = GenericPointer | PlantPointer | ToolSlotPointer | Weed;
 /** Individual step that a regimen will execute at a point in time. */
 export interface RegimenItem {
     id?: number;
