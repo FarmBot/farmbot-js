@@ -1,4 +1,4 @@
-import { Crop, DeviceAccountSettings, FarmEvent, FarmwareEnv, FarmwareInstallation, Folder, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, PointGroup, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebcamFeed } from "./api_resources";
+import { Crop, DeviceAccountSettings, FarmEvent, FarmwareEnv, FarmwareInstallation, Folder, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, PointGroup, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebcamFeed, WeedPointer } from "./api_resources";
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
 import { WebAppConfig } from "./configs/web_app";
@@ -31,7 +31,7 @@ export interface Resource<T extends ResourceName, U extends object> extends Tagg
     body: U;
 }
 export declare type TaggedResource = TaggedAlert | TaggedCrop | TaggedDevice | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedFolder | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedPointGroup | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
-declare type PointUnion = GenericPointer | PlantPointer | ToolSlotPointer;
+declare type PointUnion = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
 export declare type TaggedAlert = Resource<"Alert", Alert>;
 export declare type TaggedCrop = Resource<"Crop", Crop>;
 export declare type TaggedDevice = Resource<"Device", DeviceAccountSettings>;
@@ -60,5 +60,6 @@ export declare type TaggedToolSlotPointer = Resource<"Point", ToolSlotPointer>;
 export declare type TaggedUser = Resource<"User", User>;
 export declare type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
 export declare type TaggedWebcamFeed = Resource<"WebcamFeed", WebcamFeed>;
-export declare type PointerType = TaggedToolSlotPointer | TaggedGenericPointer | TaggedPlantPointer;
+export declare type TaggedWeedPointer = Resource<"Point", WeedPointer>;
+export declare type PointerType = TaggedToolSlotPointer | TaggedGenericPointer | TaggedPlantPointer | TaggedWeedPointer;
 export {};
