@@ -22,6 +22,7 @@ import {
   ToolSlotPointer,
   User,
   WebcamFeed,
+  WeedPointer,
 } from "./api_resources";
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
@@ -116,7 +117,8 @@ export type TaggedResource =
 type PointUnion =
   | GenericPointer
   | PlantPointer
-  | ToolSlotPointer;
+  | ToolSlotPointer
+  | WeedPointer;
 
 export type TaggedAlert = Resource<"Alert", Alert>;
 export type TaggedCrop = Resource<"Crop", Crop>;
@@ -146,8 +148,10 @@ export type TaggedToolSlotPointer = Resource<"Point", ToolSlotPointer>;
 export type TaggedUser = Resource<"User", User>;
 export type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
 export type TaggedWebcamFeed = Resource<"WebcamFeed", WebcamFeed>;
+export type TaggedWeedPointer = Resource<"Point", WeedPointer>;
 
 export type PointerType =
   | TaggedToolSlotPointer
   | TaggedGenericPointer
-  | TaggedPlantPointer;
+  | TaggedPlantPointer
+  | TaggedWeedPointer;
