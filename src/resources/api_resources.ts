@@ -267,9 +267,10 @@ interface PointGroupCriteria {
   day: {
     op: ">" | "<",
     days_ago: number
-  };
+  } | undefined;
   string_eq: Record<string, string[] | undefined>,
   number_eq: Record<string, number[] | undefined>,
+  boolean_eq: Record<string, boolean[] | undefined>,
   number_gt: Record<string, number | undefined>,
   number_lt: Record<string, number | undefined>,
 }
@@ -278,5 +279,6 @@ export interface PointGroup extends ResourceBase {
   name: string;
   sort_type: PointGroupSortType;
   point_ids: number[];
+  group_type: string[];
   criteria: PointGroupCriteria;
 }
