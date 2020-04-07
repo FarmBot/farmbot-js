@@ -252,13 +252,6 @@ var Farmbot = /** @class */ (function () {
         this.calibrate = function (args) {
             return _this.send(_this.rpcShim([{ kind: "calibrate", args: args }]));
         };
-        /** Tell the bot to send diagnostic info to the API.*/
-        this.dumpInfo = function () {
-            return _this.send(_this.rpcShim([{
-                    kind: "dump_info",
-                    args: {}
-                }]));
-        };
         /**
          * Retrieves all of the event handlers for a particular event.
          * Returns an empty array if the event did not exist.
@@ -506,7 +499,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "9.0.0";
+    Farmbot.VERSION = "9.2.3";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

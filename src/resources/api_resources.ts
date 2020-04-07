@@ -154,10 +154,16 @@ export interface GenericPointer extends BasePoint {
   pointer_type: "GenericPointer";
 }
 
+export interface WeedPointer extends BasePoint {
+  pointer_type: "Weed";
+}
+
 export type Point =
   | GenericPointer
+  | PlantPointer
   | ToolSlotPointer
-  | PlantPointer;
+  | PlantPointer
+  | WeedPointer;
 
 /** Individual step that a regimen will execute at a point in time. */
 export interface RegimenItem {
@@ -256,8 +262,21 @@ export type PointGroupSortType =
   | "xy_descending"
   | "yx_ascending"
   | "yx_descending";
+
+interface PointGroupCriteria {
+  day: {
+    op: ">" | "<",
+    days_ago: number
+  };
+  string_eq: Record<string, string[] | undefined>,
+  number_eq: Record<string, number[] | undefined>,
+  number_gt: Record<string, number | undefined>,
+  number_lt: Record<string, number | undefined>,
+}
+
 export interface PointGroup extends ResourceBase {
   name: string;
   sort_type: PointGroupSortType;
   point_ids: number[];
+  criteria: PointGroupCriteria;
 }

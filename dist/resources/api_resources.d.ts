@@ -122,7 +122,10 @@ export interface ToolSlotPointer extends BasePoint {
 export interface GenericPointer extends BasePoint {
     pointer_type: "GenericPointer";
 }
-export declare type Point = GenericPointer | ToolSlotPointer | PlantPointer;
+export interface WeedPointer extends BasePoint {
+    pointer_type: "Weed";
+}
+export declare type Point = GenericPointer | PlantPointer | ToolSlotPointer | PlantPointer | WeedPointer;
 /** Individual step that a regimen will execute at a point in time. */
 export interface RegimenItem {
     id?: number;
@@ -202,9 +205,20 @@ export interface DeviceAccountSettings extends ResourceBase {
     mounted_tool_id?: number | undefined;
 }
 export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
+interface PointGroupCriteria {
+    day: {
+        op: ">" | "<";
+        days_ago: number;
+    };
+    string_eq: Record<string, string[] | undefined>;
+    number_eq: Record<string, number[] | undefined>;
+    number_gt: Record<string, number | undefined>;
+    number_lt: Record<string, number | undefined>;
+}
 export interface PointGroup extends ResourceBase {
     name: string;
     sort_type: PointGroupSortType;
     point_ids: number[];
+    criteria: PointGroupCriteria;
 }
 export {};

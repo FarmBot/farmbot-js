@@ -46,7 +46,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "9.0.0";
+  static VERSION = "9.2.3";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -324,14 +324,6 @@ export class Farmbot {
    */
   calibrate = (args: { axis: Corpus.ALLOWED_AXIS }) => {
     return this.send(this.rpcShim([{ kind: "calibrate", args }]));
-  }
-
-  /** Tell the bot to send diagnostic info to the API.*/
-  dumpInfo = () => {
-    return this.send(this.rpcShim([{
-      kind: "dump_info",
-      args: {}
-    }]));
   }
 
   /**

@@ -43,6 +43,8 @@ export interface WebAppConfig {
     show_points: boolean;
     show_sensor_readings: boolean;
     show_spread: boolean;
+    show_weeds: boolean;
+    show_zones: boolean;
     stub_config: boolean;
     success_log: number;
     time_format_24_hour: boolean;
@@ -56,4 +58,4 @@ export interface WebAppConfig {
 }
 export declare type NumberConfigKey = "id" | "device_id" | "assertion_log" | "busy_log" | "debug_log" | "error_log" | "fun_log" | "info_log" | "success_log" | "warn_log" | "bot_origin_quadrant" | "map_size_x" | "map_size_y" | "zoom_level";
 export declare type StringConfigKey = "created_at" | "photo_filter_begin" | "photo_filter_end" | "updated_at";
-export declare type BooleanConfigKey = "confirm_plant_deletion" | "confirm_sequence_deletion" | "confirm_step_deletion" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved_sequences" | "discard_unsaved" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_pins" | "show_plants" | "show_points" | "show_sensor_readings" | "show_spread" | "stub_config" | "time_format_24_hour" | "user_interface_read_only_mode" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
+export declare type BooleanConfigKey = "confirm_plant_deletion" | "confirm_sequence_deletion" | "confirm_step_deletion" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved_sequences" | "discard_unsaved" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_pins" | "show_plants" | "show_points" | "show_sensor_readings" | "show_spread" | "show_weeds" | "show_zones" | "stub_config" | "time_format_24_hour" | "user_interface_read_only_mode" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
