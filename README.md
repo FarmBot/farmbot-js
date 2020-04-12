@@ -41,7 +41,7 @@ Please raise an issue if you require support with other package managers.
 
 Login using your API token from the [Farmbot Web App](http://my.farmbot.io).
 
-[Click here for instructions on how to generate an API token.](https://github.com/FarmBot/farmbot-web-app#generating-an-api-token)
+[Click here for instructions on how to generate an API token.](https://developer.farm.bot/docs/rest-api#section-generating-an-api-token)
 
 ### Example:
 
