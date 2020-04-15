@@ -81,7 +81,7 @@ export enum SpecialStatus {
   SAVED = ""
 }
 
-export interface Resource<T extends ResourceName, U extends object>
+export interface RestResource<T extends ResourceName, U extends object>
   extends TaggedResourceBase {
   kind: T;
   body: U;
@@ -120,35 +120,35 @@ type PointUnion =
   | ToolSlotPointer
   | WeedPointer;
 
-export type TaggedAlert = Resource<"Alert", Alert>;
-export type TaggedCrop = Resource<"Crop", Crop>;
-export type TaggedDevice = Resource<"Device", DeviceAccountSettings>;
-export type TaggedFolder = Resource<"Folder", Folder>;
-export type TaggedFarmEvent = Resource<"FarmEvent", FarmEvent>;
-export type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
-export type TaggedFarmwareInstallation = Resource<"FarmwareInstallation", FarmwareInstallation>;
-export type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
-export type TaggedFirmwareConfig = Resource<"FirmwareConfig", FirmwareConfig>;
-export type TaggedGenericPointer = Resource<"Point", GenericPointer>;
-export type TaggedImage = Resource<"Image", Image>;
-export type TaggedLog = Resource<"Log", Log>;
-export type TaggedPeripheral = Resource<"Peripheral", Peripheral>;
-export type TaggedPinBinding = Resource<"PinBinding", PinBinding>;
-export type TaggedPlantPointer = Resource<"Point", PlantPointer>;
-export type TaggedPlantTemplate = Resource<"PlantTemplate", PlantTemplate>;
-export type TaggedPoint = Resource<"Point", PointUnion>;
-export type TaggedPointGroup = Resource<"PointGroup", PointGroup>;
-export type TaggedRegimen = Resource<"Regimen", Regimen>;
-export type TaggedSavedGarden = Resource<"SavedGarden", SavedGarden>;
-export type TaggedSensor = Resource<"Sensor", Sensor>;
-export type TaggedSensorReading = Resource<"SensorReading", SensorReading>;
-export type TaggedSequence = Resource<"Sequence", SequenceResource>;
-export type TaggedTool = Resource<"Tool", Tool>;
-export type TaggedToolSlotPointer = Resource<"Point", ToolSlotPointer>;
-export type TaggedUser = Resource<"User", User>;
-export type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
-export type TaggedWebcamFeed = Resource<"WebcamFeed", WebcamFeed>;
-export type TaggedWeedPointer = Resource<"Point", WeedPointer>;
+export type TaggedAlert = RestResource<"Alert", Alert>;
+export type TaggedCrop = RestResource<"Crop", Crop>;
+export type TaggedDevice = RestResource<"Device", DeviceAccountSettings>;
+export type TaggedFolder = RestResource<"Folder", Folder>;
+export type TaggedFarmEvent = RestResource<"FarmEvent", FarmEvent>;
+export type TaggedFarmwareEnv = RestResource<"FarmwareEnv", FarmwareEnv>;
+export type TaggedFarmwareInstallation = RestResource<"FarmwareInstallation", FarmwareInstallation>;
+export type TaggedFbosConfig = RestResource<"FbosConfig", FbosConfig>;
+export type TaggedFirmwareConfig = RestResource<"FirmwareConfig", FirmwareConfig>;
+export type TaggedGenericPointer = RestResource<"Point", GenericPointer>;
+export type TaggedImage = RestResource<"Image", Image>;
+export type TaggedLog = RestResource<"Log", Log>;
+export type TaggedPeripheral = RestResource<"Peripheral", Peripheral>;
+export type TaggedPinBinding = RestResource<"PinBinding", PinBinding>;
+export type TaggedPlantPointer = RestResource<"Point", PlantPointer>;
+export type TaggedPlantTemplate = RestResource<"PlantTemplate", PlantTemplate>;
+export type TaggedPoint = RestResource<"Point", PointUnion>;
+export type TaggedPointGroup = RestResource<"PointGroup", PointGroup>;
+export type TaggedRegimen = RestResource<"Regimen", Regimen>;
+export type TaggedSavedGarden = RestResource<"SavedGarden", SavedGarden>;
+export type TaggedSensor = RestResource<"Sensor", Sensor>;
+export type TaggedSensorReading = RestResource<"SensorReading", SensorReading>;
+export type TaggedSequence = RestResource<"Sequence", SequenceResource>;
+export type TaggedTool = RestResource<"Tool", Tool>;
+export type TaggedToolSlotPointer = RestResource<"Point", ToolSlotPointer>;
+export type TaggedUser = RestResource<"User", User>;
+export type TaggedWebAppConfig = RestResource<"WebAppConfig", WebAppConfig>;
+export type TaggedWebcamFeed = RestResource<"WebcamFeed", WebcamFeed>;
+export type TaggedWeedPointer = RestResource<"Point", WeedPointer>;
 
 export type PointerType =
   | TaggedToolSlotPointer

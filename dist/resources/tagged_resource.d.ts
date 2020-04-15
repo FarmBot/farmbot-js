@@ -26,40 +26,40 @@ export declare enum SpecialStatus {
      * `undefined` value */
     SAVED = ""
 }
-export interface Resource<T extends ResourceName, U extends object> extends TaggedResourceBase {
+export interface RestResource<T extends ResourceName, U extends object> extends TaggedResourceBase {
     kind: T;
     body: U;
 }
 export declare type TaggedResource = TaggedAlert | TaggedCrop | TaggedDevice | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedFolder | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedPointGroup | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
 declare type PointUnion = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
-export declare type TaggedAlert = Resource<"Alert", Alert>;
-export declare type TaggedCrop = Resource<"Crop", Crop>;
-export declare type TaggedDevice = Resource<"Device", DeviceAccountSettings>;
-export declare type TaggedFolder = Resource<"Folder", Folder>;
-export declare type TaggedFarmEvent = Resource<"FarmEvent", FarmEvent>;
-export declare type TaggedFarmwareEnv = Resource<"FarmwareEnv", FarmwareEnv>;
-export declare type TaggedFarmwareInstallation = Resource<"FarmwareInstallation", FarmwareInstallation>;
-export declare type TaggedFbosConfig = Resource<"FbosConfig", FbosConfig>;
-export declare type TaggedFirmwareConfig = Resource<"FirmwareConfig", FirmwareConfig>;
-export declare type TaggedGenericPointer = Resource<"Point", GenericPointer>;
-export declare type TaggedImage = Resource<"Image", Image>;
-export declare type TaggedLog = Resource<"Log", Log>;
-export declare type TaggedPeripheral = Resource<"Peripheral", Peripheral>;
-export declare type TaggedPinBinding = Resource<"PinBinding", PinBinding>;
-export declare type TaggedPlantPointer = Resource<"Point", PlantPointer>;
-export declare type TaggedPlantTemplate = Resource<"PlantTemplate", PlantTemplate>;
-export declare type TaggedPoint = Resource<"Point", PointUnion>;
-export declare type TaggedPointGroup = Resource<"PointGroup", PointGroup>;
-export declare type TaggedRegimen = Resource<"Regimen", Regimen>;
-export declare type TaggedSavedGarden = Resource<"SavedGarden", SavedGarden>;
-export declare type TaggedSensor = Resource<"Sensor", Sensor>;
-export declare type TaggedSensorReading = Resource<"SensorReading", SensorReading>;
-export declare type TaggedSequence = Resource<"Sequence", SequenceResource>;
-export declare type TaggedTool = Resource<"Tool", Tool>;
-export declare type TaggedToolSlotPointer = Resource<"Point", ToolSlotPointer>;
-export declare type TaggedUser = Resource<"User", User>;
-export declare type TaggedWebAppConfig = Resource<"WebAppConfig", WebAppConfig>;
-export declare type TaggedWebcamFeed = Resource<"WebcamFeed", WebcamFeed>;
-export declare type TaggedWeedPointer = Resource<"Point", WeedPointer>;
+export declare type TaggedAlert = RestResource<"Alert", Alert>;
+export declare type TaggedCrop = RestResource<"Crop", Crop>;
+export declare type TaggedDevice = RestResource<"Device", DeviceAccountSettings>;
+export declare type TaggedFolder = RestResource<"Folder", Folder>;
+export declare type TaggedFarmEvent = RestResource<"FarmEvent", FarmEvent>;
+export declare type TaggedFarmwareEnv = RestResource<"FarmwareEnv", FarmwareEnv>;
+export declare type TaggedFarmwareInstallation = RestResource<"FarmwareInstallation", FarmwareInstallation>;
+export declare type TaggedFbosConfig = RestResource<"FbosConfig", FbosConfig>;
+export declare type TaggedFirmwareConfig = RestResource<"FirmwareConfig", FirmwareConfig>;
+export declare type TaggedGenericPointer = RestResource<"Point", GenericPointer>;
+export declare type TaggedImage = RestResource<"Image", Image>;
+export declare type TaggedLog = RestResource<"Log", Log>;
+export declare type TaggedPeripheral = RestResource<"Peripheral", Peripheral>;
+export declare type TaggedPinBinding = RestResource<"PinBinding", PinBinding>;
+export declare type TaggedPlantPointer = RestResource<"Point", PlantPointer>;
+export declare type TaggedPlantTemplate = RestResource<"PlantTemplate", PlantTemplate>;
+export declare type TaggedPoint = RestResource<"Point", PointUnion>;
+export declare type TaggedPointGroup = RestResource<"PointGroup", PointGroup>;
+export declare type TaggedRegimen = RestResource<"Regimen", Regimen>;
+export declare type TaggedSavedGarden = RestResource<"SavedGarden", SavedGarden>;
+export declare type TaggedSensor = RestResource<"Sensor", Sensor>;
+export declare type TaggedSensorReading = RestResource<"SensorReading", SensorReading>;
+export declare type TaggedSequence = RestResource<"Sequence", SequenceResource>;
+export declare type TaggedTool = RestResource<"Tool", Tool>;
+export declare type TaggedToolSlotPointer = RestResource<"Point", ToolSlotPointer>;
+export declare type TaggedUser = RestResource<"User", User>;
+export declare type TaggedWebAppConfig = RestResource<"WebAppConfig", WebAppConfig>;
+export declare type TaggedWebcamFeed = RestResource<"WebcamFeed", WebcamFeed>;
+export declare type TaggedWeedPointer = RestResource<"Point", WeedPointer>;
 export declare type PointerType = TaggedToolSlotPointer | TaggedGenericPointer | TaggedPlantPointer | TaggedWeedPointer;
 export {};
