@@ -98,7 +98,6 @@ export enum PinBindingSpecialAction {
   sync = "sync",
   reboot = "reboot",
   power_off = "power_off",
-  dump_info = "dump_info",
   read_status = "read_status",
   take_photo = "take_photo",
 }
@@ -126,8 +125,6 @@ export interface PlantTemplate extends ResourceBase {
 }
 
 interface BasePoint extends ResourceBase {
-  discarded_at?: string | undefined;
-  radius: number;
   x: number;
   y: number;
   z: number;
@@ -137,32 +134,35 @@ interface BasePoint extends ResourceBase {
 }
 
 export interface PlantPointer extends BasePoint {
-  openfarm_slug: string;
   pointer_type: "Plant";
+  openfarm_slug: string;
   planted_at?: string;
   plant_stage: PlantStage;
+  radius: number;
 }
 
 export interface ToolSlotPointer extends BasePoint {
-  tool_id: number | undefined;
   pointer_type: "ToolSlot";
+  tool_id: number | undefined;
   pullout_direction: ToolPulloutDirection;
   gantry_mounted: boolean;
 }
 
 export interface GenericPointer extends BasePoint {
   pointer_type: "GenericPointer";
+  radius: number;
 }
 
 export interface WeedPointer extends BasePoint {
   pointer_type: "Weed";
+  plant_stage: PlantStage;
+  radius: number;
 }
 
 export type Point =
   | GenericPointer
   | PlantPointer
   | ToolSlotPointer
-  | PlantPointer
   | WeedPointer;
 
 /** Individual step that a regimen will execute at a point in time. */
