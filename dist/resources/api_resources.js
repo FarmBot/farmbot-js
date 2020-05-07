@@ -20,7 +20,6 @@ var PinBindingSpecialAction;
     PinBindingSpecialAction["sync"] = "sync";
     PinBindingSpecialAction["reboot"] = "reboot";
     PinBindingSpecialAction["power_off"] = "power_off";
-    PinBindingSpecialAction["dump_info"] = "dump_info";
     PinBindingSpecialAction["read_status"] = "read_status";
     PinBindingSpecialAction["take_photo"] = "take_photo";
 })(PinBindingSpecialAction = exports.PinBindingSpecialAction || (exports.PinBindingSpecialAction = {}));
