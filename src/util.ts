@@ -1,3 +1,5 @@
+import { isNode } from "./util/is_node";
+
 export * from "./util/coordinate";
 export * from "./util/is_celery_script";
 export * from "./util/is_node";
@@ -11,7 +13,8 @@ export function stringToBuffer(str: string) {
   return data16;
 }
 
-const td = new TextDecoder();
+declare const util: { TextDecoder: typeof TextDecoder };
+const td = new (isNode() ? util.TextDecoder : TextDecoder)();
 
 /** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior

@@ -3,6 +3,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
+var is_node_1 = require("./util/is_node");
 __export(require("./util/coordinate"));
 __export(require("./util/is_celery_script"));
 __export(require("./util/is_node"));
@@ -15,7 +16,7 @@ function stringToBuffer(str) {
     return data16;
 }
 exports.stringToBuffer = stringToBuffer;
-var td = new TextDecoder();
+var td = new (is_node_1.isNode() ? util.TextDecoder : TextDecoder)();
 /** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior
  * between environments, leading to testing
