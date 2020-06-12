@@ -46,7 +46,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "10.1.0-rc2";
+  static VERSION = "10.1.0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -502,7 +502,6 @@ export class Farmbot {
     // Part I: Warn user about which mechanism used.
     // This makes debugging less painful.
     if (this.tempLegacyFlag) {
-      console.warn("Using legacy ping() mechanism (FBOS <= v7 detected)");
       this.tempLegacyFlag = false;
     }
 

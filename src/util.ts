@@ -16,14 +16,7 @@ declare const util: { TextDecoder: typeof TextDecoder };
 interface DecoderLike {
   decode(input: Uint8Array): string;
 }
-const UPGRADE_NODE = `
-Your platform does not support the TextDecoder API. Please
-consider upgrading NodeJS / Browser to a newer version.
 
-Expected to find window.TextDecoder or util.TextDecoder.
-Found neither.
-Your session will not support unicode.
-`;
 function newDecoder(): DecoderLike {
   if (typeof util !== "undefined" && util.TextDecoder) {
     return new util.TextDecoder()
@@ -32,8 +25,6 @@ function newDecoder(): DecoderLike {
   if (typeof window !== "undefined" && window.TextDecoder) {
     return new window.TextDecoder();
   }
-
-  console.warn(UPGRADE_NODE);
 
   return {
     decode(buffer) {
