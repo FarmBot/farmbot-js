@@ -3,7 +3,6 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-var is_node_1 = require("./util/is_node");
 __export(require("./util/coordinate"));
 __export(require("./util/is_celery_script"));
 __export(require("./util/is_node"));
@@ -16,7 +15,24 @@ function stringToBuffer(str) {
     return data16;
 }
 exports.stringToBuffer = stringToBuffer;
-var td = new (is_node_1.isNode() ? util.TextDecoder : TextDecoder)();
+var UPGRADE_NODE = "\nYour platform does not support the TextDecoder API. Please\nconsider upgrading NodeJS / Browser to a newer version.\n\nExpected to find window.TextDecoder or util.TextDecoder.\nFound neither.\nYour session will not support unicode.\n";
+function newDecoder() {
+    if (typeof util !== "undefined" && util.TextDecoder) {
+        return new util.TextDecoder();
+    }
+    if (typeof window !== "undefined" && window.TextDecoder) {
+        return new window.TextDecoder();
+    }
+    console.warn(UPGRADE_NODE);
+    return {
+        decode: function (buffer) {
+            var chars = [];
+            buffer.forEach(function (x) { return chars.push(String.fromCharCode(x)); });
+            return chars.join("");
+        }
+    };
+}
+var td = newDecoder();
 /** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior
  * between environments, leading to testing

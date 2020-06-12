@@ -1,5 +1,3 @@
-import { isNode } from "./util/is_node";
-
 export * from "./util/coordinate";
 export * from "./util/is_celery_script";
 export * from "./util/is_node";
@@ -14,8 +12,39 @@ export function stringToBuffer(str: string) {
 }
 
 declare const util: { TextDecoder: typeof TextDecoder };
-const td = new (isNode() ? util.TextDecoder : TextDecoder)();
 
+interface DecoderLike {
+  decode(input: Uint8Array): string;
+}
+const UPGRADE_NODE = `
+Your platform does not support the TextDecoder API. Please
+consider upgrading NodeJS / Browser to a newer version.
+
+Expected to find window.TextDecoder or util.TextDecoder.
+Found neither.
+Your session will not support unicode.
+`;
+function newDecoder(): DecoderLike {
+  if (typeof util !== "undefined" && util.TextDecoder) {
+    return new util.TextDecoder()
+  }
+
+  if (typeof window !== "undefined" && window.TextDecoder) {
+    return new window.TextDecoder();
+  }
+
+  console.warn(UPGRADE_NODE);
+
+  return {
+    decode(buffer) {
+      const chars: string[] = [];
+      buffer.forEach(x => chars.push(String.fromCharCode(x)));
+      return chars.join("");
+    }
+  };
+}
+
+const td = newDecoder();
 /** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior
  * between environments, leading to testing
