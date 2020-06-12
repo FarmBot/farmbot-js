@@ -15,13 +15,9 @@ function stringToBuffer(str) {
     return data16;
 }
 exports.stringToBuffer = stringToBuffer;
-/** We origianlly called buffer.toString(),
+var td = new TextDecoder();
+/** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior
  * between environments, leading to testing
  * difficulty. */
-function bufferToString(buffer) {
-    var chars = [];
-    buffer.forEach(function (x) { return chars.push(String.fromCharCode(x)); });
-    return chars.join("");
-}
-exports.bufferToString = bufferToString;
+exports.bufferToString = function (b) { return td.decode(b); };

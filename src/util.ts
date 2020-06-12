@@ -11,12 +11,10 @@ export function stringToBuffer(str: string) {
   return data16;
 }
 
-/** We origianlly called buffer.toString(),
+const td = new TextDecoder();
+
+/** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior
  * between environments, leading to testing
  * difficulty. */
-export function bufferToString(buffer: Uint8Array) {
-  const chars: string[] = [];
-  buffer.forEach(x => chars.push(String.fromCharCode(x)));
-  return chars.join("");
-}
+export const bufferToString = (b: Uint8Array) => td.decode(b);
