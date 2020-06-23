@@ -85,6 +85,7 @@ export interface Log {
 
 export interface Peripheral extends ResourceBase {
   pin: number | undefined;
+  mode: number;
   label: string;
 }
 
@@ -205,7 +206,6 @@ export interface SensorReading extends ResourceBase {
 
 export interface Tool extends ResourceBase {
   name?: string;
-  status?: string | undefined;
 }
 
 export interface WebcamFeed extends ResourceBase {
