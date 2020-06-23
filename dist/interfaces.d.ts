@@ -5,7 +5,7 @@ export interface BotStateTree {
     /** Microcontroller configuration and settings. */
     mcu_params: McuParams;
     /** Cartesian coordinates of the bot. */
-    location_data: Record<LocationName, Record<Xyz, (number | undefined)>>;
+    location_data: LocationData;
     /** Lookup table, indexed by number for pin status */
     pins: Pins;
     /** User definable config settings.  */
@@ -29,6 +29,14 @@ export interface BotStateTree {
 export declare type FirmwareHardware = "none" | "arduino" | "express_k10" | "farmduino_k14" | "farmduino_k15" | "farmduino";
 /** FarmBot motor and encoder positions. */
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
+export declare type AxisState = "idle" | "begin" | "accelerate" | "cruise" | "decelerate" | "stop" | "crawl";
+export interface LocationData {
+    position: Record<Xyz, number | undefined>;
+    scaled_encoders: Record<Xyz, number | undefined>;
+    raw_encoders: Record<Xyz, number | undefined>;
+    load?: Record<Xyz, number | undefined>;
+    axis_states?: Record<Xyz, AxisState | undefined>;
+}
 /** Job progress status. */
 export declare type ProgressStatus = "complete" | "working" | "error";
 export declare type JobProgress = PercentageProgress | BytesProgress;
@@ -148,16 +156,20 @@ export interface FullConfiguration {
     arduino_debug_messages: number;
     auto_sync: boolean;
     beta_opt_in: boolean;
+    boot_sequence_id?: number;
     disable_factory_reset: boolean;
+    firmware_debug_log?: boolean;
     firmware_hardware: FirmwareHardware;
     firmware_input_log: boolean;
     firmware_output_log: boolean;
+    firmware_path?: string;
     fw_auto_update: number;
     network_not_found_timer: number;
     os_auto_update: number;
     sequence_body_log: boolean;
     sequence_complete_log: boolean;
     sequence_init_log: boolean;
+    update_channel?: string;
 }
 /** FarmBot OS configs. */
 export declare type Configuration = Partial<FullConfiguration>;
@@ -183,6 +195,8 @@ export interface InformationalSettings {
     wifi_level?: number;
     /** WiFi signal strength (percent). */
     wifi_level_percent?: number;
+    /** FBOS commit hash. */
+    controller_commit?: string;
     /** Current version of FarmBot OS. */
     controller_version?: string | undefined;
     /** Current uuid of FarmBot OS firmware. */
@@ -197,6 +211,8 @@ export interface InformationalSettings {
     sync_status?: SyncStatus | undefined;
     /** Microcontroller status (move in progress, etc.) */
     busy: boolean;
+    /** Microcontroller status */
+    idle?: boolean;
     /** Emergency stop status. */
     locked: boolean;
     /** FBOS commit hash. */
