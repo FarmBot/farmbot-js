@@ -15,6 +15,7 @@ export interface WebAppConfig {
   disable_i18n: boolean;
   discard_unsaved_sequences: boolean;
   discard_unsaved: boolean;
+  display_map_missed_steps: boolean;
   display_trail: boolean;
   dynamic_map: boolean;
   enable_browser_speak: boolean;
@@ -88,6 +89,7 @@ export type BooleanConfigKey =
   | "disable_i18n"
   | "discard_unsaved_sequences"
   | "discard_unsaved"
+  | "display_map_missed_steps"
   | "display_trail"
   | "dynamic_map"
   | "enable_browser_speak"

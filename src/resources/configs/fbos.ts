@@ -19,6 +19,7 @@ export interface FbosConfig {
   firmware_path?: string;
   firmware_debug_log?: boolean;
   boot_sequence_id?: number;
+  update_channel?: string;
 }
 
 export type NumberConfigKey =
@@ -29,7 +30,8 @@ export type NumberConfigKey =
 
 export type StringConfigKey =
   | "firmware_hardware"
-  | "firmware_path";
+  | "firmware_path"
+  | "update_channel";
 
 export type BooleanConfigKey = "auto_sync"
   | "api_migrated"
