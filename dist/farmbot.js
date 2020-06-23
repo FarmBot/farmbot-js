@@ -404,7 +404,6 @@ var Farmbot = /** @class */ (function () {
             // Part I: Warn user about which mechanism used.
             // This makes debugging less painful.
             if (_this.tempLegacyFlag) {
-                console.warn("Using legacy ping() mechanism (FBOS <= v7 detected)");
                 _this.tempLegacyFlag = false;
             }
             // Part II: Initial prep
@@ -499,7 +498,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "10.1.0-rc2";
+    Farmbot.VERSION = "10.2.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

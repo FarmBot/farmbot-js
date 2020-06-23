@@ -15,7 +15,6 @@ function stringToBuffer(str) {
     return data16;
 }
 exports.stringToBuffer = stringToBuffer;
-var UPGRADE_NODE = "\nYour platform does not support the TextDecoder API. Please\nconsider upgrading NodeJS / Browser to a newer version.\n\nExpected to find window.TextDecoder or util.TextDecoder.\nFound neither.\nYour session will not support unicode.\n";
 function newDecoder() {
     if (typeof util !== "undefined" && util.TextDecoder) {
         return new util.TextDecoder();
@@ -23,7 +22,6 @@ function newDecoder() {
     if (typeof window !== "undefined" && window.TextDecoder) {
         return new window.TextDecoder();
     }
-    console.warn(UPGRADE_NODE);
     return {
         decode: function (buffer) {
             var chars = [];
