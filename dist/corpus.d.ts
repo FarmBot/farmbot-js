@@ -760,6 +760,7 @@ export interface SpeedOverwrite {
     comment?: string | undefined;
     kind: "speed_overwrite";
     args: {
+        axis: ALLOWED_AXIS;
         speed_setting: Lua | Numeric;
     };
     body?: SpeedOverwriteBodyItem[] | undefined;
