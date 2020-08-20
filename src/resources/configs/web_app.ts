@@ -9,6 +9,7 @@ export interface WebAppConfig {
   confirm_plant_deletion: boolean;
   confirm_sequence_deletion: boolean;
   confirm_step_deletion: boolean;
+  crop_images: boolean;
   debug_log: number;
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
@@ -25,6 +26,7 @@ export interface WebAppConfig {
   fun_log: number;
   hide_sensors: boolean;
   hide_webcam_widget: boolean;
+  highlight_modified_settings: boolean;
   home_button_homing: boolean;
   info_log: number;
   legend_menu_open: boolean;
@@ -34,6 +36,7 @@ export interface WebAppConfig {
   photo_filter_end: string;
   raw_encoders: boolean;
   scaled_encoders: boolean;
+  show_camera_view_area: boolean;
   show_farmbot: boolean;
   show_first_party_farmware: boolean;
   show_historic_points: boolean;
@@ -49,7 +52,9 @@ export interface WebAppConfig {
   stub_config: boolean;
   success_log: number;
   time_format_24_hour: boolean;
+  time_format_seconds: boolean;
   user_interface_read_only_mode: boolean;
+  view_celery_script: boolean;
   warn_log: number;
   x_axis_inverted: boolean;
   xy_swap: boolean;
@@ -84,6 +89,7 @@ export type BooleanConfigKey =
   | "confirm_plant_deletion"
   | "confirm_sequence_deletion"
   | "confirm_step_deletion"
+  | "crop_images"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
   | "disable_i18n"
@@ -97,10 +103,12 @@ export type BooleanConfigKey =
   | "expand_step_options"
   | "hide_sensors"
   | "hide_webcam_widget"
+  | "highlight_modified_settings"
   | "home_button_homing"
   | "legend_menu_open"
   | "raw_encoders"
   | "scaled_encoders"
+  | "show_camera_view_area"
   | "show_farmbot"
   | "show_first_party_farmware"
   | "show_historic_points"
@@ -115,7 +123,9 @@ export type BooleanConfigKey =
   | "show_zones"
   | "stub_config"
   | "time_format_24_hour"
+  | "time_format_seconds"
   | "user_interface_read_only_mode"
+  | "view_celery_script"
   | "x_axis_inverted"
   | "xy_swap"
   | "y_axis_inverted"
