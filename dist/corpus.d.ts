@@ -735,7 +735,7 @@ export interface AxisOverwrite {
     kind: "axis_overwrite";
     args: {
         axis: ALLOWED_AXIS;
-        axis_operand: Coordinate | Identifier | Lua | Numeric | Point | Random | SpecialValue | Tool;
+        axis_operand: Identifier | Lua | Numeric | Point | Random | SpecialValue | Tool;
     };
     body?: AxisOverwriteBodyItem[] | undefined;
 }
@@ -748,7 +748,7 @@ export interface AxisAddition {
     kind: "axis_addition";
     args: {
         axis: ALLOWED_AXIS;
-        axis_operand: Coordinate | Identifier | Lua | Numeric | Point | Random | SpecialValue | Tool;
+        axis_operand: Identifier | Lua | Numeric | Point | Random | SpecialValue | Tool;
     };
     body?: AxisAdditionBodyItem[] | undefined;
 }
@@ -787,7 +787,7 @@ export interface Random {
     };
     body?: RandomBodyItem[] | undefined;
 }
-export declare type MoveBodyItem = (AxisAddition | AxisOverwrite | SafeZ | SpecialValue | SpeedOverwrite);
+export declare type MoveBodyItem = (AxisAddition | AxisOverwrite | SafeZ | SpeedOverwrite);
 /** move
 
  Tag properties: firmware_user, function. */
