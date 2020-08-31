@@ -9,7 +9,7 @@ import { fakeFarmbot, FAKE_TOKEN } from "../test_support";
 import { Pair, Home, WritePin, ReadPin } from "../corpus";
 import { CONFIG_DEFAULTS } from "../config";
 import { Misc } from "../constants";
-import { Priority } from "../util/rpc_request";
+import { Priority, rpcRequest } from "../util/rpc_request";
 
 describe("FarmBot", () => {
   const token = FAKE_TOKEN;
@@ -20,11 +20,11 @@ describe("FarmBot", () => {
     bot.setConfig("interim_flag_is_legacy_fbos", false);
 
     [Priority.HIGHEST, Priority.LOWEST].map(priority => {
-      const x = bot.rpcShim([], priority);
+      const x = rpcRequest([], priority);
       expect(x.args.priority).toEqual(priority);
     });
 
-    const x = bot.rpcShim([]);
+    const x = rpcRequest([]);
     expect(x.args.priority).toEqual(Priority.NORMAL);
   });
 
@@ -87,7 +87,7 @@ describe("FarmBot", () => {
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
+      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
     })
   });
 
@@ -142,7 +142,7 @@ describe("FarmBot", () => {
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
+      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
     })
   });
 
@@ -153,7 +153,7 @@ describe("FarmBot", () => {
 
     beforeEach(() => fakeSender.mockClear());
     function expectRPC(item: RpcRequestBodyItem) {
-      expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([item]));
+      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([item]));
     }
 
     it("installs Farmware", () => {

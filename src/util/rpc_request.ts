@@ -1,5 +1,6 @@
-import { RpcRequestBodyItem, RpcRequest } from "..";
+import { RpcRequestBodyItem } from "..";
 import { uuid } from "./uuid";
+import { RpcRequest } from "../corpus";
 
 export enum Priority {
   HIGHEST = 9000,
@@ -8,11 +9,11 @@ export enum Priority {
 }
 
 export const rpcRequest =
-  (body: RpcRequestBodyItem[], legacy: boolean, priority = Priority.NORMAL) => {
-    const output: RpcRequest =
-      { kind: "rpc_request", args: { label: uuid(), priority }, body };
-
-    if (legacy) { delete output.args.priority }
-
-    return output;
-  }
+  (body: RpcRequestBodyItem[], priority = Priority.NORMAL): RpcRequest => ({
+    kind: "rpc_request",
+    args: {
+      label: uuid(),
+      priority
+    },
+    body
+  })

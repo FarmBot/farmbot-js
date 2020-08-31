@@ -153,7 +153,7 @@ export declare class Farmbot {
         toDevice: string;
         /** From farmbot */
         toClient: string;
-        legacyStatus: string;
+        status: string;
         logs: string;
         status: string;
         sync: string;
@@ -182,4 +182,4 @@ export declare class Farmbot {
     /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<unknown>;
 }
-export {};
+export { };

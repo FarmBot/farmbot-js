@@ -3,7 +3,7 @@ export declare enum MqttChanName {
     fromClients = "from_clients",
     fromDevice = "from_device",
     logs = "logs",
-    legacyStatus = "status",
+    status = "status",
     statusV8 = "status_v8",
     sync = "sync",
     /** THIS ONE IS SPECIAL. */
@@ -14,7 +14,7 @@ export declare enum MqttChanName {
  * MQTT.js event names */
 export declare enum FbjsEventName {
     /** This can be removed 60 days after FBOS v8 release. */
-    legacy_status = "legacy_status",
+    status = "status",
     /** When a log is received */
     logs = "logs",
     /** When an unexpected message is received */
