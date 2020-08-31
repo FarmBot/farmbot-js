@@ -4,7 +4,6 @@ export declare enum MqttChanName {
     fromDevice = "from_device",
     logs = "logs",
     status = "status",
-    statusV8 = "status_v8",
     sync = "sync",
     /** THIS ONE IS SPECIAL. */
     publicBroadcast = "public_broadcast",

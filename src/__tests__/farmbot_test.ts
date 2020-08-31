@@ -111,8 +111,8 @@ describe("FarmBot", () => {
     const bot = fakeFarmbot();
     const fakeSender = jest.fn();
     bot.publish = fakeSender;
-
-    const expectations: [Function, RpcRequestBodyItem][] = [
+    type TestCase = [Function, RpcRequestBodyItem];
+    const expectations: TestCase[] = [
       [
         bot.installFirstPartyFarmware,
         { kind: "install_first_party_farmware", args: {} }
@@ -128,22 +128,32 @@ describe("FarmBot", () => {
       [
         bot.reboot,
         { kind: "reboot", args: { package: "farmbot_os" } }
-      ],
-      [
-        bot.emergencyLock,
-        { kind: "emergency_lock", args: {} }
-      ],
-      [
-        bot.emergencyUnlock,
-        { kind: "emergency_unlock", args: {} }
       ]
     ];
 
     expectations.map(([rpc, xpectArgs]) => {
       fakeSender.mockClear();
       rpc(false);
-      expect(fakeSender).toHaveBeenCalledWith(rpcRequest([xpectArgs]));
+      const x = rpcRequest([xpectArgs]);
+      expect(fakeSender).toHaveBeenCalledWith(x);
     })
+
+    const hiPriority: TestCase[] = [[
+      bot.emergencyLock,
+      { kind: "emergency_lock", args: {} }
+    ],
+    [
+      bot.emergencyUnlock,
+      { kind: "emergency_unlock", args: {} }
+    ]]
+
+    hiPriority.map(([rpc, xpectArgs]) => {
+      fakeSender.mockClear();
+      rpc(false);
+      const x = rpcRequest([xpectArgs], Priority.HIGHEST);
+      expect(fakeSender).toHaveBeenCalledWith(x);
+    })
+
   });
 
   describe("configurable RPC logic", () => {

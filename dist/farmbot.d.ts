@@ -3,7 +3,6 @@ import { Client as MqttClient } from "mqtt";
 import { Dictionary } from "./interfaces";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-import { Priority } from "./util/rpc_request";
 declare type RpcResponse = Promise<Corpus.RpcOk | Corpus.RpcError>;
 /** Meta data that wraps an event callback */
 interface CallbackWrapper {
@@ -19,8 +18,6 @@ export declare class Farmbot {
     resources: ResourceAdapter;
     static VERSION: string;
     constructor(input: FarmbotConstructorParams);
-    /** Delete this shim after FBOS v7 hits end of life. */
-    rpcShim: (body: Corpus.RpcRequestBodyItem[], priority?: Priority) => Corpus.RpcRequest;
     /** Get a Farmbot Constructor Parameter. */
     getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U) => Conf[U];
     /** Set a Farmbot Constructor Parameter. */
@@ -155,7 +152,6 @@ export declare class Farmbot {
         toClient: string;
         status: string;
         logs: string;
-        status: string;
         sync: string;
         /** Read only */
         pong: string;
@@ -172,14 +168,9 @@ export declare class Farmbot {
     send: (input: Corpus.RpcRequest) => RpcResponse;
     /** Main entry point for all MQTT packets. */
     _onmessage: (chan: string, buffer: Uint8Array) => void;
-    /** Delete this after FBOS v7 deprecation. */
-    private temporaryHeuristic;
-    private statusV8;
     ping: (timeout?: number, now?: number) => Promise<number>;
-    tempLegacyFlag: boolean;
-    private doLegacyPing;
     private doPing;
     /** Bootstrap the device onto the MQTT broker. */
     connect: () => Promise<unknown>;
 }
-export { };
+export {};

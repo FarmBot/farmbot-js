@@ -6,8 +6,7 @@ var MqttChanName;
     MqttChanName["fromClients"] = "from_clients";
     MqttChanName["fromDevice"] = "from_device";
     MqttChanName["logs"] = "logs";
-    MqttChanName["legacyStatus"] = "status";
-    MqttChanName["statusV8"] = "status_v8";
+    MqttChanName["status"] = "status";
     MqttChanName["sync"] = "sync";
     /** THIS ONE IS SPECIAL. */
     MqttChanName["publicBroadcast"] = "public_broadcast";
@@ -18,7 +17,7 @@ var MqttChanName;
 var FbjsEventName;
 (function (FbjsEventName) {
     /** This can be removed 60 days after FBOS v8 release. */
-    FbjsEventName["legacy_status"] = "legacy_status";
+    FbjsEventName["status"] = "status";
     /** When a log is received */
     FbjsEventName["logs"] = "logs";
     /** When an unexpected message is received */

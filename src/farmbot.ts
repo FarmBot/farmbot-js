@@ -45,7 +45,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "11.0.0";
+  static VERSION = "12.0.0-rc0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -447,33 +447,7 @@ export class Farmbot {
 
   ping = (timeout = 10000, now = timestamp()): Promise<number> => {
     this.setConfig("LAST_PING_OUT", now)
-    if (this.getConfig("interim_flag_is_legacy_fbos")) {
-      return this.doLegacyPing(timeout);
-    } else {
-      return this.doPing(now, timeout);
-    }
-  }
-  tempLegacyFlag = true;
-  private doLegacyPing = (timeout: number): Promise<number> => {
-    // Part I: Warn user about which mechanism used.
-    // This makes debugging less painful.
-    if (this.tempLegacyFlag) {
-      this.tempLegacyFlag = false;
-    }
-
-    // Part II: Initial prep
-    const start = timestamp();
-    const rpc = rpcRequest([]);
-    rpc.args.label = "ping"; // This is a "magic string". Can't change it.
-
-    // This is inadequate for latency detection. It will go away when v7 does.
-    const ok = () => this.setConfig("LAST_PING_IN", timestamp());
-    this.on(rpc.args.label, ok, true);
-
-    return Promise.race([
-      this.send(rpc).then(() => timestamp() - start, () => -1),
-      new Promise<number>((_, rej) => setTimeout(() => rej(-1), timeout))
-    ]);
+    return this.doPing(now, timeout);
   }
 
   // STEP 0: Subscribe to `bot/device_23/pong/#`
@@ -516,7 +490,6 @@ export class Farmbot {
     client.on("connect", () => this.emit(FbjsEventName.online, {}));
     const channels = [
       this.channel.logs,
-      this.channel.status,
       this.channel.status,
       this.channel.sync,
       this.channel.toClient,

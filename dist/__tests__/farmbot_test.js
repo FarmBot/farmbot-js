@@ -16,10 +16,10 @@ describe("FarmBot", function () {
         var bot = test_support_1.fakeFarmbot();
         bot.setConfig("interim_flag_is_legacy_fbos", false);
         [rpc_request_1.Priority.HIGHEST, rpc_request_1.Priority.LOWEST].map(function (priority) {
-            var x = bot.rpcShim([], priority);
+            var x = rpc_request_1.rpcRequest([], priority);
             expect(x.args.priority).toEqual(priority);
         });
-        var x = bot.rpcShim([]);
+        var x = rpc_request_1.rpcRequest([]);
         expect(x.args.priority).toEqual(rpc_request_1.Priority.NORMAL);
     });
     it("Instantiates a FarmBot", function () {
@@ -79,7 +79,7 @@ describe("FarmBot", function () {
             var rpc = _a[0], xpectArgs = _a[1];
             fakeSender.mockClear();
             rpc(false);
-            expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
+            expect(fakeSender).toHaveBeenCalledWith(rpc_request_1.rpcRequest([xpectArgs]));
         });
     });
     it("sets config values", function () {
@@ -114,21 +114,29 @@ describe("FarmBot", function () {
             [
                 bot.reboot,
                 { kind: "reboot", args: { package: "farmbot_os" } }
-            ],
-            [
-                bot.emergencyLock,
-                { kind: "emergency_lock", args: {} }
-            ],
-            [
-                bot.emergencyUnlock,
-                { kind: "emergency_unlock", args: {} }
             ]
         ];
         expectations.map(function (_a) {
             var rpc = _a[0], xpectArgs = _a[1];
             fakeSender.mockClear();
             rpc(false);
-            expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([xpectArgs]));
+            var x = rpc_request_1.rpcRequest([xpectArgs]);
+            expect(fakeSender).toHaveBeenCalledWith(x);
+        });
+        var hiPriority = [[
+                bot.emergencyLock,
+                { kind: "emergency_lock", args: {} }
+            ],
+            [
+                bot.emergencyUnlock,
+                { kind: "emergency_unlock", args: {} }
+            ]];
+        hiPriority.map(function (_a) {
+            var rpc = _a[0], xpectArgs = _a[1];
+            fakeSender.mockClear();
+            rpc(false);
+            var x = rpc_request_1.rpcRequest([xpectArgs], rpc_request_1.Priority.HIGHEST);
+            expect(fakeSender).toHaveBeenCalledWith(x);
         });
     });
     describe("configurable RPC logic", function () {
@@ -137,7 +145,7 @@ describe("FarmBot", function () {
         bot.publish = fakeSender;
         beforeEach(function () { return fakeSender.mockClear(); });
         function expectRPC(item) {
-            expect(fakeSender).toHaveBeenCalledWith(bot.rpcShim([item]));
+            expect(fakeSender).toHaveBeenCalledWith(rpc_request_1.rpcRequest([item]));
         }
         it("installs Farmware", function () {
             var url = "foo.bar/manifest.json";
