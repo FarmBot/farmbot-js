@@ -12,7 +12,7 @@ export declare enum MqttChanName {
 /** Not to be confused with MqttChanNames or
  * MQTT.js event names */
 export declare enum FbjsEventName {
-    /** This can be removed 60 days after FBOS v8 release. */
+    /** State tree update. */
     status = "status",
     /** When a log is received */
     logs = "logs",
@@ -29,9 +29,7 @@ export declare enum FbjsEventName {
     /** Used by resource auto-sync. */
     sync = "sync",
     /** When a key is removed from the device state tree. */
-    remove = "remove",
-    /** When a key is updated/inserted from the device state tree. */
-    upsert = "upsert"
+    remove = "remove"
 }
 export declare enum Misc {
     /** Channel delimiter for MQTT channels. */

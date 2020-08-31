@@ -16,7 +16,7 @@ var MqttChanName;
  * MQTT.js event names */
 var FbjsEventName;
 (function (FbjsEventName) {
-    /** This can be removed 60 days after FBOS v8 release. */
+    /** State tree update. */
     FbjsEventName["status"] = "status";
     /** When a log is received */
     FbjsEventName["logs"] = "logs";
@@ -34,8 +34,6 @@ var FbjsEventName;
     FbjsEventName["sync"] = "sync";
     /** When a key is removed from the device state tree. */
     FbjsEventName["remove"] = "remove";
-    /** When a key is updated/inserted from the device state tree. */
-    FbjsEventName["upsert"] = "upsert";
 })(FbjsEventName = exports.FbjsEventName || (exports.FbjsEventName = {}));
 var Misc;
 (function (Misc) {
