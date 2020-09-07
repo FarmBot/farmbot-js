@@ -51,9 +51,11 @@ export interface FirmwareConfig {
   movement_max_spd_x: number;
   movement_max_spd_y: number;
   movement_max_spd_z: number;
+  movement_max_spd_z2: number;
   movement_min_spd_x: number;
   movement_min_spd_y: number;
   movement_min_spd_z: number;
+  movement_min_spd_z2: number;
   movement_secondary_motor_invert_x: number;
   movement_secondary_motor_x: number;
   movement_step_per_mm_x: number;
@@ -62,6 +64,7 @@ export interface FirmwareConfig {
   movement_steps_acc_dec_x: number;
   movement_steps_acc_dec_y: number;
   movement_steps_acc_dec_z: number;
+  movement_steps_acc_dec_z2: number;
   movement_stop_at_home_x: number;
   movement_stop_at_home_y: number;
   movement_stop_at_home_z: number;
@@ -159,12 +162,14 @@ export type NumberConfigKey =
   | "movement_max_spd_x"
   | "movement_max_spd_y"
   | "movement_max_spd_z"
+  | "movement_max_spd_z2"
   | "movement_microsteps_x"
   | "movement_microsteps_y"
   | "movement_microsteps_z"
   | "movement_min_spd_x"
   | "movement_min_spd_y"
   | "movement_min_spd_z"
+  | "movement_min_spd_z2"
   | "movement_motor_current_x"
   | "movement_motor_current_y"
   | "movement_motor_current_z"
@@ -179,6 +184,7 @@ export type NumberConfigKey =
   | "movement_steps_acc_dec_x"
   | "movement_steps_acc_dec_y"
   | "movement_steps_acc_dec_z"
+  | "movement_steps_acc_dec_z2"
   | "movement_stop_at_home_x"
   | "movement_stop_at_home_y"
   | "movement_stop_at_home_z"
