@@ -209,6 +209,8 @@ export interface FullConfiguration {
   sequence_complete_log: boolean;
   sequence_init_log: boolean;
   update_channel?: string;
+  safe_height?: number;
+  soil_height?: number;
 }
 
 /** FarmBot OS configs. */
