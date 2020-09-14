@@ -20,12 +20,16 @@ export interface FbosConfig {
   firmware_debug_log?: boolean;
   boot_sequence_id?: number;
   update_channel?: string;
+  safe_height?: number;
+  soil_height?: number;
 }
 
 export type NumberConfigKey =
   | "id"
   | "device_id"
   | "network_not_found_timer"
+  | "safe_height"
+  | "soil_height"
   | "boot_sequence_id";
 
 export type StringConfigKey =
