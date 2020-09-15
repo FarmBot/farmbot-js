@@ -201,6 +201,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     last_saw_api?: string | undefined;
     last_saw_mq?: string | undefined;
     ota_hour?: number;
+    ota_hour_utc?: number;
     last_ota?: string | undefined;
     last_ota_checkup?: string | undefined;
     mounted_tool_id?: number | undefined;

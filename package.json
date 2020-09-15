@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "12.0.0",
+  "version": "12.0.1",
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh",
