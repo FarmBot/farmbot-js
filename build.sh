@@ -12,5 +12,5 @@ parcel build src/farmbot_single_file.js
 echo "Now run this: "
 echo "    git add -A"
 echo "    git commit -am 'FBJS Version x.y.z'"
-echo "    git push ____ master"
+echo "    git push ____ main"
 echo "    npm publish"

@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/RickCarlino/farmbot-js.svg?branch=master)](https://travis-ci.org/RickCarlino/farmbot-js)
-[![Coverage Status](https://coveralls.io/repos/github/FarmBot/farmbot-js/badge.svg?branch=master)](https://coveralls.io/github/FarmBot/farmbot-js?branch=master)
+[![Build Status](https://travis-ci.org/RickCarlino/farmbot-js.svg?branch=main)](https://travis-ci.org/RickCarlino/farmbot-js)
+[![Coverage Status](https://coveralls.io/repos/github/FarmBot/farmbot-js/badge.svg?branch=main)](https://coveralls.io/github/FarmBot/farmbot-js?branch=main)
 
 # FarmbotJS: Farmbot RPC wrapper
 
@@ -101,7 +101,7 @@ bot
 
 ### Currently supported commands:
 
-[See the annotated type definitions for available methods and properties.](https://github.com/FarmBot/farmbot-js/blob/master/dist/farmbot.d.ts)
+[See the annotated type definitions for available methods and properties.](https://github.com/FarmBot/farmbot-js/blob/main/dist/farmbot.d.ts)
 
 ## Using Events
 
