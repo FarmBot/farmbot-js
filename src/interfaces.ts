@@ -193,8 +193,6 @@ export type Pins = Dictionary<Pin | undefined>;
 /** FarmBot OS configs. */
 export interface FullConfiguration {
   arduino_debug_messages: number;
-  auto_sync: boolean;
-  beta_opt_in: boolean;
   boot_sequence_id?: number;
   disable_factory_reset: boolean;
   firmware_debug_log?: boolean;
