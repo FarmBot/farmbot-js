@@ -223,6 +223,7 @@ export interface SequenceResource extends Sequence, ResourceBase {
   color: Color;
   name: string;
   folder_id: number | undefined;
+  pinned: boolean
 }
 
 export interface Crop extends ResourceBase {

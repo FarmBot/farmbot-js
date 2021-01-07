@@ -433,7 +433,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Farmbot.VERSION = "12.1.0";
+    Farmbot.VERSION = "12.3.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
