@@ -16,3 +16,4 @@ node_modules
 npm-debug.log*
 pids
 test/fb_integration_test.js
+*scratchpad*

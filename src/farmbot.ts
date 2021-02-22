@@ -45,7 +45,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "12.3.0";
+  static VERSION = "13.0.0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -258,7 +258,7 @@ export class Farmbot {
 
   /** Snap a photo and send to the API for post processing. */
   takePhoto =
-    (args = {}) => this.send(rpcRequest([{ kind: "take_photo", args }]));
+    (args = {}) => this.send(rpcRequest([{ kind: "take_photo", args }]))
 
   /** Download/apply all of the latest FarmBot API JSON resources (plants,
    * account info, etc.) to the device. */
@@ -329,7 +329,7 @@ export class Farmbot {
 
   on = (event: string, value: Function, once = false) => {
     this.event(event).push({ value, once, event });
-  };
+  }
 
   emit = (event: string, data: {}) => {
     const nextArray: CallbackWrapper[] = [];
