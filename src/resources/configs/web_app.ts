@@ -36,6 +36,7 @@ export interface WebAppConfig {
   photo_filter_end: string;
   raw_encoders: boolean;
   scaled_encoders: boolean;
+  show_advanced_settings: boolean;
   show_camera_view_area: boolean;
   show_farmbot: boolean;
   show_first_party_farmware: boolean;
@@ -108,6 +109,7 @@ export type BooleanConfigKey =
   | "legend_menu_open"
   | "raw_encoders"
   | "scaled_encoders"
+  | "show_advanced_settings"
   | "show_camera_view_area"
   | "show_farmbot"
   | "show_first_party_farmware"
