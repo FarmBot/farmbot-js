@@ -36,6 +36,7 @@ export interface WebAppConfig {
     photo_filter_end: string;
     raw_encoders: boolean;
     scaled_encoders: boolean;
+    show_advanced_settings: boolean;
     show_camera_view_area: boolean;
     show_farmbot: boolean;
     show_first_party_farmware: boolean;
@@ -64,4 +65,4 @@ export interface WebAppConfig {
 }
 export declare type NumberConfigKey = "id" | "device_id" | "assertion_log" | "busy_log" | "debug_log" | "error_log" | "fun_log" | "info_log" | "success_log" | "warn_log" | "bot_origin_quadrant" | "map_size_x" | "map_size_y" | "zoom_level";
 export declare type StringConfigKey = "created_at" | "photo_filter_begin" | "photo_filter_end" | "updated_at";
-export declare type BooleanConfigKey = "confirm_plant_deletion" | "confirm_sequence_deletion" | "confirm_step_deletion" | "crop_images" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved_sequences" | "discard_unsaved" | "display_map_missed_steps" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "highlight_modified_settings" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_camera_view_area" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_pins" | "show_plants" | "show_points" | "show_sensor_readings" | "show_spread" | "show_weeds" | "show_zones" | "stub_config" | "time_format_24_hour" | "time_format_seconds" | "user_interface_read_only_mode" | "view_celery_script" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
+export declare type BooleanConfigKey = "confirm_plant_deletion" | "confirm_sequence_deletion" | "confirm_step_deletion" | "crop_images" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved_sequences" | "discard_unsaved" | "display_map_missed_steps" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "highlight_modified_settings" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_advanced_settings" | "show_camera_view_area" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_pins" | "show_plants" | "show_points" | "show_sensor_readings" | "show_spread" | "show_weeds" | "show_zones" | "stub_config" | "time_format_24_hour" | "time_format_seconds" | "user_interface_read_only_mode" | "view_celery_script" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
