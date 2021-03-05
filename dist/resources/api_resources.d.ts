@@ -204,6 +204,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     ota_hour?: number;
     ota_hour_utc?: number;
     mounted_tool_id?: number | undefined;
+    fb_order_number?: string;
 }
 export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
 interface PointGroupCriteria {
@@ -221,5 +222,10 @@ export interface PointGroup extends ResourceBase {
     sort_type: PointGroupSortType;
     point_ids: number[];
     criteria: PointGroupCriteria;
+}
+export interface WizardStepResult extends ResourceBase {
+    slug: string;
+    answer?: boolean;
+    outcome?: string;
 }
 export {};

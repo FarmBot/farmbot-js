@@ -1,9 +1,9 @@
-import { Crop, DeviceAccountSettings, FarmEvent, FarmwareEnv, FarmwareInstallation, Folder, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, PointGroup, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebcamFeed, WeedPointer } from "./api_resources";
+import { Crop, DeviceAccountSettings, FarmEvent, FarmwareEnv, FarmwareInstallation, Folder, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, PointGroup, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Tool, ToolSlotPointer, User, WebcamFeed, WeedPointer, WizardStepResult } from "./api_resources";
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
 import { WebAppConfig } from "./configs/web_app";
 import { Alert } from "../interfaces";
-export declare type ResourceName = "Alert" | "Crop" | "Device" | "FarmEvent" | "FarmwareEnv" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Folder" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "PointGroup" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WebcamFeed";
+export declare type ResourceName = "Alert" | "Crop" | "Device" | "FarmEvent" | "FarmwareEnv" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Folder" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "PointGroup" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Tool" | "User" | "WebAppConfig" | "WizardStepResult" | "WebcamFeed";
 export interface TaggedResourceBase {
     kind: ResourceName;
     /** Unique identifier and index key.
@@ -30,7 +30,7 @@ export interface RestResource<T extends ResourceName, U extends object> extends 
     kind: T;
     body: U;
 }
-export declare type TaggedResource = TaggedAlert | TaggedCrop | TaggedDevice | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedFolder | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedPointGroup | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWebcamFeed;
+export declare type TaggedResource = TaggedAlert | TaggedCrop | TaggedDevice | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedFolder | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedPointGroup | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWizardStepResult | TaggedWebcamFeed;
 declare type PointUnion = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
 export declare type TaggedAlert = RestResource<"Alert", Alert>;
 export declare type TaggedCrop = RestResource<"Crop", Crop>;
@@ -60,6 +60,7 @@ export declare type TaggedToolSlotPointer = RestResource<"Point", ToolSlotPointe
 export declare type TaggedUser = RestResource<"User", User>;
 export declare type TaggedWebAppConfig = RestResource<"WebAppConfig", WebAppConfig>;
 export declare type TaggedWebcamFeed = RestResource<"WebcamFeed", WebcamFeed>;
+export declare type TaggedWizardStepResult = RestResource<"WizardStepResult", WizardStepResult>;
 export declare type TaggedWeedPointer = RestResource<"Point", WeedPointer>;
 export declare type PointerType = TaggedToolSlotPointer | TaggedGenericPointer | TaggedPlantPointer | TaggedWeedPointer;
 export {};
