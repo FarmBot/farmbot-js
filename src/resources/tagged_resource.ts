@@ -23,6 +23,7 @@ import {
   User,
   WebcamFeed,
   WeedPointer,
+  WizardStepResult,
 } from "./api_resources";
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
@@ -55,6 +56,7 @@ export type ResourceName =
   | "Tool"
   | "User"
   | "WebAppConfig"
+  | "WizardStepResult"
   | "WebcamFeed";
 
 export interface TaggedResourceBase {
@@ -112,6 +114,7 @@ export type TaggedResource =
   | TaggedTool
   | TaggedUser
   | TaggedWebAppConfig
+  | TaggedWizardStepResult
   | TaggedWebcamFeed;
 
 type PointUnion =
@@ -148,6 +151,7 @@ export type TaggedToolSlotPointer = RestResource<"Point", ToolSlotPointer>;
 export type TaggedUser = RestResource<"User", User>;
 export type TaggedWebAppConfig = RestResource<"WebAppConfig", WebAppConfig>;
 export type TaggedWebcamFeed = RestResource<"WebcamFeed", WebcamFeed>;
+export type TaggedWizardStepResult = RestResource<"WizardStepResult", WizardStepResult>;
 export type TaggedWeedPointer = RestResource<"Point", WeedPointer>;
 
 export type PointerType =
