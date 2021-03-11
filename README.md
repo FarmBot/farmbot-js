@@ -120,12 +120,11 @@ bot
 
 ## Routine Events
 
+ * `"status"`: Most important. When the REMOTE device state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
  * `"logs"`: The bot will send logs to this channel.
  * `"offline"`: Connection lost. **Note: FarmbotJS will try to auto-reconnect**.
  * `"online"`: Client is connected and subscribed to bot.
  * `"sent"`: Triggered when the application begins sending a message.
- * `"status_v8"`: Most important. When the REMOTE device state changes (eg: "x" goes from 0 to 100), the bot will emit this event.
- * `"legacy_status"`: Formerly `"status"`. Deprecated and scheduled for removal in 2019. Do not use in new applications.
  * `"sync"`: A resource on the API has changed.
 
 ## Special Events
