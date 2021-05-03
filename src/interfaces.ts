@@ -29,8 +29,10 @@ export type FirmwareHardware =
   | "none"
   | "arduino"
   | "express_k10"
+  | "express_k11"
   | "farmduino_k14"
   | "farmduino_k15"
+  | "farmduino_k16"
   | "farmduino";
 
 /** FarmBot motor and encoder positions. */
