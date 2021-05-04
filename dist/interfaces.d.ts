@@ -26,7 +26,7 @@ export interface BotStateTree {
     } | undefined;
 }
 /** Microcontroller board. */
-export declare type FirmwareHardware = "none" | "arduino" | "express_k10" | "farmduino_k14" | "farmduino_k15" | "farmduino";
+export declare type FirmwareHardware = "none" | "arduino" | "express_k10" | "express_k11" | "farmduino_k14" | "farmduino_k15" | "farmduino_k16" | "farmduino";
 /** FarmBot motor and encoder positions. */
 export declare type LocationName = "position" | "scaled_encoders" | "raw_encoders";
 export declare type AxisState = "idle" | "begin" | "accelerate" | "cruise" | "decelerate" | "stop" | "crawl";
