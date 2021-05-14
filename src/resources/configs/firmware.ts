@@ -27,6 +27,12 @@ export interface FirmwareConfig {
   movement_axis_nr_steps_x: number;
   movement_axis_nr_steps_y: number;
   movement_axis_nr_steps_z: number;
+  movement_axis_stealth_x: number;
+  movement_axis_stealth_y: number;
+  movement_axis_stealth_z: number;
+  movement_calibration_deadzone_x: number;
+  movement_calibration_deadzone_y: number;
+  movement_calibration_deadzone_z: number;
   movement_calibration_retry_x: number;
   movement_calibration_retry_y: number;
   movement_calibration_retry_z: number;
@@ -137,6 +143,12 @@ export type NumberConfigKey =
   | "movement_axis_nr_steps_x"
   | "movement_axis_nr_steps_y"
   | "movement_axis_nr_steps_z"
+  | "movement_axis_stealth_x"
+  | "movement_axis_stealth_y"
+  | "movement_axis_stealth_z"
+  | "movement_calibration_deadzone_x"
+  | "movement_calibration_deadzone_y"
+  | "movement_calibration_deadzone_z"
   | "movement_calibration_retry_x"
   | "movement_calibration_retry_y"
   | "movement_calibration_retry_z"
