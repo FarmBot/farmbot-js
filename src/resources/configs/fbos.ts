@@ -3,7 +3,6 @@ export interface FbosConfig {
   device_id: number;
   created_at: string;
   updated_at: string;
-  disable_factory_reset: boolean;
   firmware_input_log: boolean;
   firmware_output_log: boolean;
   sequence_body_log: boolean;
@@ -36,7 +35,6 @@ export type StringConfigKey =
 
 export type BooleanConfigKey =
   | "arduino_debug_messages"
-  | "disable_factory_reset"
   | "firmware_debug_log"
   | "firmware_input_log"
   | "firmware_output_log"

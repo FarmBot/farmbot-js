@@ -155,7 +155,6 @@ export declare type Pins = Dictionary<Pin | undefined>;
 export interface FullConfiguration {
     arduino_debug_messages: number;
     boot_sequence_id?: number;
-    disable_factory_reset: boolean;
     firmware_debug_log?: boolean;
     firmware_hardware: FirmwareHardware;
     firmware_input_log: boolean;
