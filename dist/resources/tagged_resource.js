@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpecialStatus = void 0;
 /** Denotes special status of resource */
 var SpecialStatus;
 (function (SpecialStatus) {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateConfig = exports.FIX_ATOB_FIRST = exports.CONFIG_DEFAULTS = void 0;
 var util_1 = require("./util");
 var ERR_TOKEN_PARSE = "Unable to parse token. Is it properly formatted?";
 exports.CONFIG_DEFAULTS = {

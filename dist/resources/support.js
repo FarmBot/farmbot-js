@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.resolveOrReject = exports.internalError = exports.outboundChanFor = void 0;
 exports.outboundChanFor = function (username, op, kind, uuid, id) {
     if (id === void 0) { id = 0; }
     var segments = ["bot", username, "resources_v0", op, kind, uuid, id];

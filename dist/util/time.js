@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.timestamp = void 0;
 /** Returns a timestamp in ms. */
 function timestamp() {
     return Math.round((new Date()).getTime() / 100);

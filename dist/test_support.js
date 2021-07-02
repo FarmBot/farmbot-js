@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.fakeFarmbotLike = exports.expectEmitFrom = exports.fakeMqttEmission = exports.fakeFarmbot = exports.FAKE_TOKEN = void 0;
 var _1 = require(".");
 exports.FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
     "G1pbkBhZG1pbi5jb20iLCJpYXQiOjE1MDIxMjcxMTcsImp0aSI6IjlhZjY2NzJmLTY5NmEtNDh" +

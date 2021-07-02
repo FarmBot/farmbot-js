@@ -1,6 +1,7 @@
 import * as Corpus from "./corpus";
 import { Client as MqttClient } from "mqtt";
-import { Dictionary } from "./interfaces";
+import { Dictionary, Vector3 } from "./interfaces";
+import { ReadPin, WritePin } from ".";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
 declare type RpcResponse = Promise<Corpus.RpcOk | Corpus.RpcError>;
@@ -89,18 +90,10 @@ export declare class Farmbot {
         speed?: number | undefined;
     }) => RpcResponse;
     /** Set a GPIO pin to a particular value. */
-    writePin: (args: {
-        pin_mode: Corpus.ALLOWED_PIN_MODES;
-        pin_number: number | Corpus.NamedPin;
-        pin_value: number;
-    }) => RpcResponse;
+    writePin: (args: WritePin["args"]) => RpcResponse;
     /** Read the value of a GPIO pin. Will create a SensorReading if it's
      * a sensor. */
-    readPin: (args: {
-        label: string;
-        pin_mode: Corpus.ALLOWED_PIN_MODES;
-        pin_number: number | Corpus.NamedPin;
-    }) => RpcResponse;
+    readPin: (args: ReadPin["args"]) => RpcResponse;
     /** Reverse the value of a digital pin. */
     togglePin: (args: {
         pin_number: number;
@@ -124,7 +117,7 @@ export declare class Farmbot {
      * Set user ENV vars (usually used by 3rd-party Farmware plugins).
      * Set value to `undefined` to unset.
      */
-    setUserEnv: (configs: Dictionary<string | undefined>) => RpcResponse;
+    setUserEnv: (configs: Dictionary<(string | undefined)>) => RpcResponse;
     /** Control servos on pins 4 and 5. */
     setServoAngle: (args: {
         pin_number: number;
@@ -156,7 +149,7 @@ export declare class Farmbot {
         /** Read only */
         pong: string;
         /** Write only: bot/${deviceName}/ping/${timestamp} */
-        ping: (timestamp: number) => string;
+        ping: (tStamp: number) => string;
     };
     /** Low-level means of sending MQTT packets. Does not check format. Does not
      * acknowledge confirmation. Probably not the one you want. */

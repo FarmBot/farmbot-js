@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Farmbot = void 0;
 var mqtt_1 = require("mqtt");
 var util_1 = require("./util");
 var _1 = require(".");
@@ -331,9 +332,7 @@ var Farmbot = /** @class */ (function () {
                     return emit(constants_1.MqttChanName.publicBroadcast, msg);
                 }
                 switch (segments[2]) {
-                    case constants_1.MqttChanName.logs:
-                        return emit(constants_1.FbjsEventName.logs, msg);
-                        ;
+                    case constants_1.MqttChanName.logs: return emit(constants_1.FbjsEventName.logs, msg);
                     case constants_1.MqttChanName.status: return emit(constants_1.FbjsEventName.status, msg);
                     case constants_1.MqttChanName.sync: return emit(constants_1.FbjsEventName.sync, msg);
                     case constants_1.MqttChanName.pong:
@@ -368,7 +367,9 @@ var Farmbot = /** @class */ (function () {
                 };
                 _this.on("" + startedAt, ok, true);
                 var chan = _this.channel.ping(startedAt);
-                _this.client && _this.client.publish(chan, JSON.stringify(startedAt));
+                if (_this.client) {
+                    _this.client.publish(chan, JSON.stringify(startedAt));
+                }
             });
             return Promise.race([timeoutPromise, pingPromise]);
         };
@@ -399,9 +400,8 @@ var Farmbot = /** @class */ (function () {
             ];
             client.subscribe(channels);
             return new Promise(function (resolve, _reject) {
-                var client = _this.client;
-                if (client) {
-                    client.once("connect", function () { return resolve(_this); });
+                if (_this.client) {
+                    _this.client.once("connect", function () { return resolve(_this); });
                 }
                 else {
                     throw new Error("Please connect first.");
@@ -427,10 +427,10 @@ var Farmbot = /** @class */ (function () {
                 /** Read only */
                 pong: "bot/" + deviceName + "/pong/#",
                 /** Write only: bot/${deviceName}/ping/${timestamp} */
-                ping: function (timestamp) { return "bot/" + deviceName + "/ping/" + timestamp; }
+                ping: function (tStamp) { return "bot/" + deviceName + "/ping/" + tStamp; }
             };
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Farmbot.VERSION = "14.2.0";

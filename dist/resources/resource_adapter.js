@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ResourceAdapter = void 0;
 var __1 = require("..");
 var support_1 = require("./support");
 var reject_rpc_1 = require("./reject_rpc");
