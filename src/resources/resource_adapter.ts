@@ -18,12 +18,12 @@ export class ResourceAdapter {
   destroy = (r: DeletionRequest) => {
     const { client } = this.parent;
     return (client ? this.doDestroy(client, r.kind, r.id) : rejectRpc());
-  };
+  }
 
   save = (resource: TaggedResource) => {
     const { client } = this.parent;
     return (client ? this.doSave(client, resource) : rejectRpc());
-  };
+  }
 
   destroyAll = (req: DeletionRequest[]) => Promise.all(req.map(r => this.destroy(r)));
 

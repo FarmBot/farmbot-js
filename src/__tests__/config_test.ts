@@ -9,7 +9,7 @@ import { isNode } from "../util/is_node";
 describe("generateConfig", () => {
   it("crashes when given malformed token", () => {
     expect(() => generateConfig({ token: "no.no.no" }))
-      .toThrowError("Unable to parse token. Is it properly formatted?")
+      .toThrowError("Unable to parse token. Is it properly formatted?");
   });
 
   it("parses a properly formed token with default values", () => {

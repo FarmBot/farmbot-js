@@ -9,7 +9,7 @@ env:
 # before_install:
 # - "foo bar --baz"
 install:
-  - yarn install
+  - npm install
 # before_script:
 # - "foo bar --baz"
 script:

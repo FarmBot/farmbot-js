@@ -370,7 +370,7 @@ export class Farmbot {
       /** Read only */
       pong: `bot/${deviceName}/pong/#`,
       /** Write only: bot/${deviceName}/ping/${timestamp} */
-      ping: (timestamp: number) => `bot/${deviceName}/ping/${timestamp}`
+      ping: (tStamp: number) => `bot/${deviceName}/ping/${tStamp}`
     };
   }
 
@@ -429,7 +429,7 @@ export class Farmbot {
       }
 
       switch (segments[2]) {
-        case MqttChanName.logs: return emit(FbjsEventName.logs, msg);;
+        case MqttChanName.logs: return emit(FbjsEventName.logs, msg);
         case MqttChanName.status: return emit(FbjsEventName.status, msg);
         case MqttChanName.sync: return emit(FbjsEventName.sync, msg);
         case MqttChanName.pong:
@@ -446,7 +446,7 @@ export class Farmbot {
   }
 
   ping = (timeout = 10000, now = timestamp()): Promise<number> => {
-    this.setConfig("LAST_PING_OUT", now)
+    this.setConfig("LAST_PING_OUT", now);
     return this.doPing(now, timeout);
   }
 
@@ -461,14 +461,16 @@ export class Farmbot {
         const t = timestamp();
         this.setConfig("LAST_PING_IN", t);
         res(t - startedAt);
-      }
+      };
       this.on("" + startedAt, ok, true);
       const chan = this.channel.ping(startedAt);
-      this.client && this.client.publish(chan, JSON.stringify(startedAt))
+      if (this.client) {
+        this.client.publish(chan, JSON.stringify(startedAt));
+      }
     });
 
-    return Promise.race([timeoutPromise, pingPromise])
-  };
+    return Promise.race([timeoutPromise, pingPromise]);
+  }
 
   /** Bootstrap the device onto the MQTT broker. */
   connect = () => {
@@ -497,9 +499,8 @@ export class Farmbot {
     ];
     client.subscribe(channels);
     return new Promise((resolve, _reject) => {
-      const { client } = this;
-      if (client) {
-        client.once("connect", () => resolve(this));
+      if (this.client) {
+        this.client.once("connect", () => resolve(this));
       } else {
         throw new Error("Please connect first.");
       }
