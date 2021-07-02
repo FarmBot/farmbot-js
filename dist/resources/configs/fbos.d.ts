@@ -8,7 +8,6 @@ export interface FbosConfig {
     sequence_body_log: boolean;
     sequence_complete_log: boolean;
     sequence_init_log: boolean;
-    network_not_found_timer: number;
     firmware_hardware?: string;
     os_auto_update: boolean;
     arduino_debug_messages: boolean;
@@ -19,6 +18,6 @@ export interface FbosConfig {
     safe_height?: number;
     soil_height?: number;
 }
-export declare type NumberConfigKey = "id" | "device_id" | "network_not_found_timer" | "safe_height" | "soil_height" | "boot_sequence_id";
+export declare type NumberConfigKey = "id" | "device_id" | "safe_height" | "soil_height" | "boot_sequence_id";
 export declare type StringConfigKey = "firmware_hardware" | "firmware_path" | "update_channel";
 export declare type BooleanConfigKey = "arduino_debug_messages" | "firmware_debug_log" | "firmware_input_log" | "firmware_output_log" | "os_auto_update" | "sequence_body_log" | "sequence_complete_log" | "sequence_init_log";

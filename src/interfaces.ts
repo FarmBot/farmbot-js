@@ -202,7 +202,6 @@ export interface FullConfiguration {
   firmware_output_log: boolean;
   firmware_path?: string;
   fw_auto_update: number;
-  network_not_found_timer: number;
   os_auto_update: number;
   sequence_body_log: boolean;
   sequence_complete_log: boolean;

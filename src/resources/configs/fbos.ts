@@ -8,7 +8,6 @@ export interface FbosConfig {
   sequence_body_log: boolean;
   sequence_complete_log: boolean;
   sequence_init_log: boolean;
-  network_not_found_timer: number;
   firmware_hardware?: string;
   os_auto_update: boolean;
   arduino_debug_messages: boolean;
@@ -23,7 +22,6 @@ export interface FbosConfig {
 export type NumberConfigKey =
   | "id"
   | "device_id"
-  | "network_not_found_timer"
   | "safe_height"
   | "soil_height"
   | "boot_sequence_id";
