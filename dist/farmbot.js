@@ -226,6 +226,22 @@ var Farmbot = /** @class */ (function () {
             });
             return _this.send(util_1.rpcRequest([{ kind: "set_user_env", args: {}, body: body }]));
         };
+        this.sendMessage = function (message_type, message, channels) {
+            if (channels === void 0) { channels = []; }
+            _this.send(util_1.rpcRequest([{
+                    kind: "send_message",
+                    args: {
+                        message_type: message_type,
+                        message: message
+                    },
+                    body: channels.map(function (channel_name) { return ({
+                        kind: "channel",
+                        args: {
+                            channel_name: channel_name
+                        }
+                    }); })
+                }]));
+        };
         /** Control servos on pins 4 and 5. */
         this.setServoAngle = function (args) {
             var result = _this.send(util_1.rpcRequest([{ kind: "set_servo_angle", args: args }]));
@@ -433,7 +449,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "14.2.1";
+    Farmbot.VERSION = "14.2.2";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

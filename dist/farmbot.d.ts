@@ -118,6 +118,7 @@ export declare class Farmbot {
      * Set value to `undefined` to unset.
      */
     setUserEnv: (configs: Dictionary<(string | undefined)>) => RpcResponse;
+    sendMessage: (message_type: Corpus.ALLOWED_MESSAGE_TYPES, message: string, channels?: Corpus.ALLOWED_CHANNEL_NAMES[]) => void;
     /** Control servos on pins 4 and 5. */
     setServoAngle: (args: {
         pin_number: number;

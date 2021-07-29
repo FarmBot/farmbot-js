@@ -45,7 +45,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "14.2.1";
+  static VERSION = "14.2.2";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -290,6 +290,24 @@ export class Farmbot {
         };
       });
     return this.send(rpcRequest([{ kind: "set_user_env", args: {}, body }]));
+  }
+
+  sendMessage = (message_type: Corpus.ALLOWED_MESSAGE_TYPES,
+    message: string,
+    channels: Corpus.ALLOWED_CHANNEL_NAMES[] = []) => {
+    this.send(rpcRequest([{
+      kind: "send_message",
+      args: {
+        message_type,
+        message
+      },
+      body: channels.map(channel_name => ({
+        kind: "channel",
+        args: {
+          channel_name
+        }
+      }))
+    }]));
   }
 
   /** Control servos on pins 4 and 5. */
