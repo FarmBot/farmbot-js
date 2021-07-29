@@ -54,6 +54,7 @@ export interface Log {
     verbosity?: number;
     major_version?: number;
     minor_version?: number;
+    patch_version?: number;
     channels: ALLOWED_CHANNEL_NAMES[];
 }
 export interface Peripheral extends ResourceBase {
@@ -200,7 +201,6 @@ export interface DeviceAccountSettings extends ResourceBase {
     throttled_at?: string;
     fbos_version?: string | undefined;
     last_saw_api?: string | undefined;
-    last_saw_mq?: string | undefined;
     setup_completed_at?: string | undefined;
     ota_hour?: number;
     ota_hour_utc?: number;

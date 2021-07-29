@@ -46,7 +46,9 @@ export interface WebAppConfig {
   show_pins: boolean;
   show_plants: boolean;
   show_points: boolean;
+  show_soil_interpolation_map: boolean;
   show_sensor_readings: boolean;
+  show_moisture_interpolation_map: boolean;
   show_spread: boolean;
   show_weeds: boolean;
   show_zones: boolean;
@@ -119,7 +121,9 @@ export type BooleanConfigKey =
   | "show_pins"
   | "show_plants"
   | "show_points"
+  | "show_soil_interpolation_map"
   | "show_sensor_readings"
+  | "show_moisture_interpolation_map"
   | "show_spread"
   | "show_weeds"
   | "show_zones"
