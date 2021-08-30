@@ -224,7 +224,11 @@ export interface SequenceResource extends Sequence, ResourceBase {
   color: Color;
   name: string;
   folder_id: number | undefined;
-  pinned: boolean
+  pinned: boolean;
+  description: string;
+  forked: boolean;
+  sequence_version_id?: number;
+  sequence_versions?: number[];
 }
 
 export interface Crop extends ResourceBase {
