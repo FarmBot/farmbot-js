@@ -179,6 +179,10 @@ export interface SequenceResource extends Sequence, ResourceBase {
     name: string;
     folder_id: number | undefined;
     pinned: boolean;
+    description: string;
+    forked: boolean;
+    sequence_version_id?: number;
+    sequence_versions?: number[];
 }
 export interface Crop extends ResourceBase {
     svg_icon?: string | undefined;
