@@ -210,6 +210,9 @@ export interface DeviceAccountSettings extends ResourceBase {
     ota_hour_utc?: number;
     mounted_tool_id?: number | undefined;
     fb_order_number?: string;
+    lat: number | undefined;
+    lng: number | undefined;
+    indoor: boolean;
 }
 export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
 interface PointGroupCriteria {
