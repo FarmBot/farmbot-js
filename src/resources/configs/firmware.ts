@@ -36,6 +36,9 @@ export interface FirmwareConfig {
   movement_calibration_retry_x: number;
   movement_calibration_retry_y: number;
   movement_calibration_retry_z: number;
+  movement_calibration_retry_total_x: number;
+  movement_calibration_retry_total_y: number;
+  movement_calibration_retry_total_z: number;
   movement_enable_endpoints_x: number;
   movement_enable_endpoints_y: number;
   movement_enable_endpoints_z: number;
@@ -152,6 +155,9 @@ export type NumberConfigKey =
   | "movement_calibration_retry_x"
   | "movement_calibration_retry_y"
   | "movement_calibration_retry_z"
+  | "movement_calibration_retry_total_x"
+  | "movement_calibration_retry_total_y"
+  | "movement_calibration_retry_total_z"
   | "movement_enable_endpoints_x"
   | "movement_enable_endpoints_y"
   | "movement_enable_endpoints_z"
