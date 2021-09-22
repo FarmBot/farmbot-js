@@ -68,16 +68,21 @@ export type JobProgress =
   | PercentageProgress
   | BytesProgress;
 
-/** Percent job progress. */
-export interface PercentageProgress {
+interface JobProgressBase {
   status: ProgressStatus;
+  type: string;
+  file_type: string;
+  time: string;
+}
+
+/** Percent job progress. */
+export interface PercentageProgress extends JobProgressBase {
   unit: "percent";
   percent: number;
 }
 
 /** Bytes job progress. */
-export interface BytesProgress {
-  status: ProgressStatus;
+export interface BytesProgress extends JobProgressBase {
   unit: "bytes";
   bytes: number;
 }
