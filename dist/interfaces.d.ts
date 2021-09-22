@@ -40,15 +40,19 @@ export interface LocationData {
 /** Job progress status. */
 export declare type ProgressStatus = "complete" | "working" | "error";
 export declare type JobProgress = PercentageProgress | BytesProgress;
-/** Percent job progress. */
-export interface PercentageProgress {
+interface JobProgressBase {
     status: ProgressStatus;
+    type: string;
+    file_type: string;
+    time: string;
+}
+/** Percent job progress. */
+export interface PercentageProgress extends JobProgressBase {
     unit: "percent";
     percent: number;
 }
 /** Bytes job progress. */
-export interface BytesProgress {
-    status: ProgressStatus;
+export interface BytesProgress extends JobProgressBase {
     unit: "bytes";
     bytes: number;
 }
@@ -243,3 +247,4 @@ export interface APIToken {
     /** UUID of current bot, eg: "device_1". */
     bot: string;
 }
+export {};

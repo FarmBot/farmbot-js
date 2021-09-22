@@ -183,6 +183,7 @@ export interface SequenceResource extends Sequence, ResourceBase {
     forked: boolean;
     sequence_version_id?: number;
     sequence_versions?: number[];
+    copyright?: string;
 }
 export interface Crop extends ResourceBase {
     svg_icon?: string | undefined;
