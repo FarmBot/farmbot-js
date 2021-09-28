@@ -45,7 +45,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "14.3.0";
+  static VERSION = "14.4.0";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -336,6 +336,11 @@ export class Farmbot {
     return this.send(rpcRequest([{ kind: "calibrate", args }]));
   }
 
+  lua = (lua: string) => {
+    return this.send(rpcRequest([
+      { kind: "lua", args: { lua } }
+    ]));
+  }
   /**
    * Retrieves all of the event handlers for a particular event.
    * Returns an empty array if the event did not exist.

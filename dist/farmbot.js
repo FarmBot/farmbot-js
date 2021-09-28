@@ -263,6 +263,11 @@ var Farmbot = /** @class */ (function () {
         this.calibrate = function (args) {
             return _this.send(util_1.rpcRequest([{ kind: "calibrate", args: args }]));
         };
+        this.lua = function (lua) {
+            return _this.send(util_1.rpcRequest([
+                { kind: "lua", args: { lua: lua } }
+            ]));
+        };
         /**
          * Retrieves all of the event handlers for a particular event.
          * Returns an empty array if the event did not exist.
@@ -449,7 +454,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "14.3.0";
+    Farmbot.VERSION = "14.4.0";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
