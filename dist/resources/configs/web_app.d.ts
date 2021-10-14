@@ -10,6 +10,7 @@ export interface WebAppConfig {
     confirm_sequence_deletion: boolean;
     confirm_step_deletion: boolean;
     crop_images: boolean;
+    clip_image_layer: boolean;
     debug_log: number;
     disable_animations: boolean;
     disable_emergency_unlock_confirmation: boolean;
