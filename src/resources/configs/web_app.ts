@@ -94,6 +94,7 @@ export type BooleanConfigKey =
   | "confirm_sequence_deletion"
   | "confirm_step_deletion"
   | "crop_images"
+  | "clip_image_layer"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
   | "disable_i18n"
