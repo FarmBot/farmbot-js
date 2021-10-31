@@ -107,6 +107,8 @@ export interface FirmwareConfig {
   pin_guard_5_active_state: number;
   pin_guard_5_pin_nr: number;
   pin_guard_5_time_out: number;
+  pin_report_1_pin_nr: number;
+  pin_report_2_pin_nr: number;
   movement_invert_2_endpoints_x: number;
   movement_invert_2_endpoints_y: number;
   movement_invert_2_endpoints_z: number;
@@ -237,6 +239,8 @@ export type NumberConfigKey =
   | "pin_guard_4_time_out"
   | "pin_guard_5_active_state"
   | "pin_guard_5_pin_nr"
-  | "pin_guard_5_time_out";
+  | "pin_guard_5_time_out"
+  | "pin_report_1_pin_nr"
+  | "pin_report_2_pin_nr";
 
 export type StringConfigKey = "created_at" | "updated_at";
