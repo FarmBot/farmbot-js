@@ -72,6 +72,7 @@ export type NumberConfigKey =
   | "id"
   | "device_id"
   | "assertion_log"
+  | "beep_verbosity"
   | "busy_log"
   | "debug_log"
   | "error_log"
