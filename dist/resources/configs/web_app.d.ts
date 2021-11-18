@@ -4,6 +4,7 @@ export interface WebAppConfig {
     created_at: string;
     updated_at: string;
     assertion_log: number;
+    beep_verbosity: number;
     bot_origin_quadrant: number;
     busy_log: number;
     confirm_plant_deletion: boolean;
