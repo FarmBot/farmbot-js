@@ -518,7 +518,7 @@ export interface Text {
     comment?: string | undefined;
     kind: "text";
     args: {
-        string: String;
+        string: CSString;
     };
     body?: TextBodyItem[] | undefined;
 }
