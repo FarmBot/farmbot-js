@@ -17,7 +17,8 @@
     "abab": "^2.0.5",
     "coveralls": "^3.0.11",
     "ts-jest": "^27.0.3",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "parcel-bundler": "^1.12.5"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
