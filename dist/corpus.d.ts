@@ -319,7 +319,7 @@ export interface ParameterApplication {
     comment?: string | undefined;
     kind: "parameter_application";
     args: {
-        data_value: Tool | Coordinate | Point | Identifier | Numeric | Text | PointGroup;
+        data_value: Tool | Coordinate | Point | Identifier | Numeric | Text | Nothing | PointGroup;
         label: CSString;
     };
     body?: ParameterApplicationBodyItem[] | undefined;
@@ -332,7 +332,7 @@ export interface ParameterDeclaration {
     comment?: string | undefined;
     kind: "parameter_declaration";
     args: {
-        default_value: Tool | Coordinate | Point | Identifier | Numeric | Text;
+        default_value: Tool | Coordinate | Point | Identifier | Numeric | Text | Nothing;
         label: CSString;
     };
     body?: ParameterDeclarationBodyItem[] | undefined;
@@ -566,7 +566,7 @@ export interface VariableDeclaration {
     comment?: string | undefined;
     kind: "variable_declaration";
     args: {
-        data_value: Tool | Coordinate | Point | Identifier | Numeric | Text | PointGroup;
+        data_value: Tool | Coordinate | Point | Identifier | Numeric | Text | Nothing | PointGroup;
         label: CSString;
     };
     body?: VariableDeclarationBodyItem[] | undefined;
