@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "14.7.1",
+  "version": "14.8.0",
   "description": "Farmbot Javascript client.",
   "scripts": {
     "build": "./build.sh",
@@ -23,7 +23,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "mqtt": "^4.2.8"
+    "mqtt": "^4.3.4"
   },
   "repository": {
     "type": "git",
