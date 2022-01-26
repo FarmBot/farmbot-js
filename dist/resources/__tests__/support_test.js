@@ -49,7 +49,7 @@ describe("resolveOrReject", function () {
             switch (_a.label) {
                 case 0:
                     jest.clearAllMocks();
-                    fn = support_1.resolveOrReject(resolve, reject);
+                    fn = (0, support_1.resolveOrReject)(resolve, reject);
                     return [4 /*yield*/, fn(ok)];
                 case 1:
                     _a.sent();
@@ -64,7 +64,7 @@ describe("resolveOrReject", function () {
             switch (_a.label) {
                 case 0:
                     jest.clearAllMocks();
-                    fn = support_1.resolveOrReject(resolve, reject);
+                    fn = (0, support_1.resolveOrReject)(resolve, reject);
                     return [4 /*yield*/, fn(no)];
                 case 1:
                     _a.sent();
@@ -77,6 +77,6 @@ describe("resolveOrReject", function () {
 describe("rejectRPC", function () {
     it("always rejects RPCs", function () {
         var x = function (e) { return expect(e).toEqual(reject_rpc_1.rejectRpc); };
-        reject_rpc_1.rejectRpc().catch(x);
+        (0, reject_rpc_1.rejectRpc)().catch(x);
     });
 });

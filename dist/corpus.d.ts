@@ -17,7 +17,7 @@ export declare type AllowedPinTypes = "BoxLed3" | "BoxLed4" | "Peripheral" | "Se
 export declare type Color = "blue" | "gray" | "green" | "orange" | "pink" | "purple" | "red" | "yellow";
 export declare type DataChangeType = "add" | "remove" | "update";
 export declare type LegalArgString = "_else" | "_then" | "assertion_type" | "axis" | "axis_operand" | "channel_name" | "data_value" | "default_value" | "label" | "lhs" | "locals" | "location" | "lua" | "message" | "message_type" | "milliseconds" | "number" | "offset" | "op" | "package" | "pin_id" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "point_group_id" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "speed_setting" | "string" | "tool_id" | "url" | "value" | "variance" | "version" | "x" | "y" | "z";
-export declare type LegalKindString = "Assertion" | "AxisAddition" | "AxisOverwrite" | "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "Lua" | "Move" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "Numeric" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PointGroup" | "PowerOff" | "Random" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "Resource" | "ResourcePlaceholder" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "SafeZ" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "SpecialValue" | "SpeedOverwrite" | "Sync" | "TakePhoto" | "Text" | "TogglePin" | "Tool" | "UpdateFarmware" | "UpdateResource" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
+export declare type LegalKindString = "Assertion" | "AxisAddition" | "AxisOverwrite" | "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "LocationPlaceholder" | "Lua" | "Move" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "NumberPlaceholder" | "Numeric" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PointGroup" | "PowerOff" | "Random" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "Resource" | "ResourcePlaceholder" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "SafeZ" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetServoAngle" | "SetUserEnv" | "SpecialValue" | "SpeedOverwrite" | "Sync" | "TakePhoto" | "Text" | "TextPlaceholder" | "TogglePin" | "Tool" | "UpdateFarmware" | "UpdateResource" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
 export declare type LegalSequenceKind = "_if" | "assertion" | "calibrate" | "change_ownership" | "check_updates" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "flash_firmware" | "home" | "install_farmware" | "install_first_party_farmware" | "lua" | "move" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "send_message" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "update_resource" | "wait" | "write_pin" | "zero";
 export declare type PlantStage = "active" | "harvested" | "pending" | "planned" | "planted" | "removed" | "sprouted";
 export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot" | "Weed";
@@ -690,6 +690,36 @@ export interface ResourcePlaceholder {
     };
     body?: ResourcePlaceholderBodyItem[] | undefined;
 }
+export declare type NumberPlaceholderBodyItem = never;
+/** number_placeholder
+
+ Tag properties: . */
+export interface NumberPlaceholder {
+    comment?: string | undefined;
+    kind: "number_placeholder";
+    args: {};
+    body?: NumberPlaceholderBodyItem[] | undefined;
+}
+export declare type TextPlaceholderBodyItem = never;
+/** text_placeholder
+
+ Tag properties: . */
+export interface TextPlaceholder {
+    comment?: string | undefined;
+    kind: "text_placeholder";
+    args: {};
+    body?: TextPlaceholderBodyItem[] | undefined;
+}
+export declare type LocationPlaceholderBodyItem = never;
+/** location_placeholder
+
+ Tag properties: . */
+export interface LocationPlaceholder {
+    comment?: string | undefined;
+    kind: "location_placeholder";
+    args: {};
+    body?: LocationPlaceholderBodyItem[] | undefined;
+}
 export declare type UpdateResourceBodyItem = (Pair);
 /** update_resource
 
@@ -821,4 +851,4 @@ export interface Move {
     args: {};
     body?: MoveBodyItem[] | undefined;
 }
-export declare type CeleryNode = Assertion | AxisAddition | AxisOverwrite | Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | FlashFirmware | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | Lua | Move | MoveAbsolute | MoveRelative | NamedPin | Nothing | Numeric | Pair | ParameterApplication | ParameterDeclaration | Point | PointGroup | PowerOff | Random | ReadPin | ReadStatus | Reboot | RemoveFarmware | Resource | ResourcePlaceholder | ResourceUpdate | RpcError | RpcOk | RpcRequest | SafeZ | ScopeDeclaration | SendMessage | Sequence | SetServoAngle | SetUserEnv | SpecialValue | SpeedOverwrite | Sync | TakePhoto | Text | TogglePin | Tool | UpdateFarmware | UpdateResource | VariableDeclaration | Wait | WritePin | Zero;
+export declare type CeleryNode = Assertion | AxisAddition | AxisOverwrite | Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | FlashFirmware | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | LocationPlaceholder | Lua | Move | MoveAbsolute | MoveRelative | NamedPin | Nothing | NumberPlaceholder | Numeric | Pair | ParameterApplication | ParameterDeclaration | Point | PointGroup | PowerOff | Random | ReadPin | ReadStatus | Reboot | RemoveFarmware | Resource | ResourcePlaceholder | ResourceUpdate | RpcError | RpcOk | RpcRequest | SafeZ | ScopeDeclaration | SendMessage | Sequence | SetServoAngle | SetUserEnv | SpecialValue | SpeedOverwrite | Sync | TakePhoto | Text | TextPlaceholder | TogglePin | Tool | UpdateFarmware | UpdateResource | VariableDeclaration | Wait | WritePin | Zero;

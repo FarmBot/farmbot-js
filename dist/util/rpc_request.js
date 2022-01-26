@@ -8,14 +8,15 @@ var Priority;
     Priority[Priority["NORMAL"] = 600] = "NORMAL";
     Priority[Priority["LOWEST"] = 300] = "LOWEST";
 })(Priority = exports.Priority || (exports.Priority = {}));
-exports.rpcRequest = function (body, priority) {
+var rpcRequest = function (body, priority) {
     if (priority === void 0) { priority = Priority.NORMAL; }
     return ({
         kind: "rpc_request",
         args: {
-            label: uuid_1.uuid(),
+            label: (0, uuid_1.uuid)(),
             priority: priority
         },
         body: body
     });
 };
+exports.rpcRequest = rpcRequest;

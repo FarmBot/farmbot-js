@@ -8,11 +8,11 @@ var test_support_1 = require("../test_support");
 var is_node_1 = require("../util/is_node");
 describe("generateConfig", function () {
     it("crashes when given malformed token", function () {
-        expect(function () { return config_1.generateConfig({ token: "no.no.no" }); })
+        expect(function () { return (0, config_1.generateConfig)({ token: "no.no.no" }); })
             .toThrowError("Unable to parse token. Is it properly formatted?");
     });
     it("parses a properly formed token with default values", function () {
-        var result = config_1.generateConfig({ token: test_support_1.FAKE_TOKEN });
+        var result = (0, config_1.generateConfig)({ token: test_support_1.FAKE_TOKEN });
         expect(result.speed).toEqual(config_1.CONFIG_DEFAULTS.speed);
         expect(result.token).toEqual(test_support_1.FAKE_TOKEN);
         expect(result.secure).toEqual(true);
@@ -21,9 +21,9 @@ describe("generateConfig", function () {
     });
     it("warns users when atob is missing", function () {
         // Just to verify mock- not part of test.
-        expect(is_node_1.isNode()).toBe(true);
+        expect((0, is_node_1.isNode)()).toBe(true);
         global.atob = undefined;
-        var boom = function () { return config_1.generateConfig({ token: "{}" }); };
+        var boom = function () { return (0, config_1.generateConfig)({ token: "{}" }); };
         expect(boom).toThrowError(config_1.FIX_ATOB_FIRST);
     });
 });

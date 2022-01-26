@@ -20,9 +20,9 @@ export declare class Farmbot {
     static VERSION: string;
     constructor(input: FarmbotConstructorParams);
     /** Get a Farmbot Constructor Parameter. */
-    getConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U) => Conf[U];
+    getConfig: <U extends keyof Conf>(key: U) => Conf[U];
     /** Set a Farmbot Constructor Parameter. */
-    setConfig: <U extends "speed" | "token" | "secure" | "mqttServer" | "mqttUsername" | "LAST_PING_OUT" | "LAST_PING_IN" | "interim_flag_is_legacy_fbos">(key: U, value: Conf[U]) => void;
+    setConfig: <U extends keyof Conf>(key: U, value: Conf[U]) => void;
     /**
      * Installs a "Farmware" (plugin) onto the bot's SD card.
      * URL must point to a valid Farmware manifest JSON document.
@@ -82,11 +82,11 @@ export declare class Farmbot {
         axis: Corpus.ALLOWED_AXIS;
     }) => RpcResponse;
     /** Move FarmBot to an absolute point. */
-    moveAbsolute: (args: Record<import("./interfaces").Xyz, number> & {
+    moveAbsolute: (args: Vector3 & {
         speed?: number | undefined;
     }) => RpcResponse;
     /** Move FarmBot to position relative to its current position. */
-    moveRelative: (args: Record<import("./interfaces").Xyz, number> & {
+    moveRelative: (args: Vector3 & {
         speed?: number | undefined;
     }) => RpcResponse;
     /** Set a GPIO pin to a particular value. */

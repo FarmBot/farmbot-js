@@ -4,7 +4,7 @@ jest.mock("../util/uuid", function () { return ({ uuid: function () { return "FA
 var test_support_1 = require("../test_support");
 describe("FarmBot", function () {
     it("swallows errors when internal event system hits runtime error", function () {
-        var bot = test_support_1.fakeFarmbot();
+        var bot = (0, test_support_1.fakeFarmbot)();
         var oldDir = console.dir;
         var oldWarn = console.warn;
         console.dir = jest.fn();

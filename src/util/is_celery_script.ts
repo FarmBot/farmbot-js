@@ -1,6 +1,6 @@
 import { CeleryNode } from "..";
 
-const isObj = (o: unknown) => o && typeof o === "object";
+const isObj = (o: unknown) => !!(o && typeof o === "object");
 const hasKind = (o: any) => typeof o.kind === "string";
 const hasArgs = (o: any) => isObj(o) && !!o.args;
 

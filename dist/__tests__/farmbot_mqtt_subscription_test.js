@@ -8,7 +8,7 @@ jest.mock("../util/uuid", function () { return ({ uuid: function () { return "FA
 var test_support_1 = require("../test_support");
 describe("FarmBot", function () {
     it("Instantiates a FarmBot", function () {
-        var bot = test_support_1.fakeFarmbot();
+        var bot = (0, test_support_1.fakeFarmbot)();
         expect(bot.getConfig("token")).toEqual(test_support_1.FAKE_TOKEN);
         expect(bot.getConfig("speed")).toEqual(100);
         expect(bot.getConfig("secure")).toEqual(false);

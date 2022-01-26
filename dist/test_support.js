@@ -14,7 +14,7 @@ exports.FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZ" +
     "GxanoWVTTgGx2i_MZLr8FPZ8prnRdwC1x9zZ6xY7BtMPtHW0ddvMtXU8ZVF4CWJwKSaM0Q2pTx" +
     "I9GRqrp5Y8UjaKufif7bBPOUbkEHLNOiaux4MQr-OWAC8TrYMyFHzteXTEVkqw7rved84ogw6E" +
     "KBSFCVqwRA-NKWLpPMV_q7fRwiEGWj7R-KZqRweALXuvCLF765E6-ENxA";
-exports.fakeFarmbot = function (token) {
+var fakeFarmbot = function (token) {
     if (token === void 0) { token = exports.FAKE_TOKEN; }
     var bot = new _1.Farmbot({ token: token, speed: 100, secure: false });
     var fakeClient = {
@@ -25,12 +25,14 @@ exports.fakeFarmbot = function (token) {
     bot.client = fakeClient;
     return bot;
 };
+exports.fakeFarmbot = fakeFarmbot;
 function fakeMqttEmission(bot, chan, payload) {
-    bot.client.emit(chan, _1.stringToBuffer(JSON.stringify(payload)));
+    bot.client.emit(chan, (0, _1.stringToBuffer)(JSON.stringify(payload)));
 }
 exports.fakeMqttEmission = fakeMqttEmission;
 function expectEmitFrom(bot) {
     return expect(bot.client.emit);
 }
 exports.expectEmitFrom = expectEmitFrom;
-exports.fakeFarmbotLike = function () { return ({ on: jest.fn(), client: { publish: jest.fn() } }); };
+var fakeFarmbotLike = function () { return ({ on: jest.fn(), client: { publish: jest.fn() } }); };
+exports.fakeFarmbotLike = fakeFarmbotLike;

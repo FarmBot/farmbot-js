@@ -6,7 +6,7 @@ npm install
 rm -rf dist
 mkdir dist
 node_modules/typescript/bin/tsc
-node_modules/parcel-bundler/bin/cli.js build src/farmbot_single_file.js
+node_modules/.bin/parcel build
 # Commit
 echo "Now run this: "
 echo "    git add -A"

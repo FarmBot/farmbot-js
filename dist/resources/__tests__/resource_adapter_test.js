@@ -21,19 +21,19 @@ var reject_rpc_1 = require("../reject_rpc");
 describe("resourceAdapter", function () {
     var username = "device_87";
     it("destroys all", function () {
-        var fakeFb = test_support_1.fakeFarmbotLike();
+        var fakeFb = (0, test_support_1.fakeFarmbotLike)();
         var ra = new resource_adapter_1.ResourceAdapter(fakeFb, username);
         var requests = [{ kind: "Point", id: 4 }, { kind: "Sequence", id: 4 }];
         ra.destroyAll(requests).then(function () { }, function () { });
         requests.map(function (req) {
             var _a;
             var client = fakeFb.client;
-            var expectedArgs = [support_1.outboundChanFor(username, "destroy", req.kind, mockUuid, req.id), ""];
+            var expectedArgs = [(0, support_1.outboundChanFor)(username, "destroy", req.kind, mockUuid, req.id), ""];
             (_a = expect(client && client.publish)).toHaveBeenCalledWith.apply(_a, expectedArgs);
         });
     });
     it("handles a missing `client`", function () {
-        var fakeFb = test_support_1.fakeFarmbotLike();
+        var fakeFb = (0, test_support_1.fakeFarmbotLike)();
         fakeFb.client = undefined;
         var ra = new resource_adapter_1.ResourceAdapter(fakeFb, username);
         ra.destroy({ kind: "Point", id: 4 }).then(function () { }, function () { });
