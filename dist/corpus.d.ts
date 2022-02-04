@@ -22,7 +22,7 @@ export declare type LegalSequenceKind = "_if" | "assertion" | "calibrate" | "cha
 export declare type PlantStage = "active" | "harvested" | "pending" | "planned" | "planted" | "removed" | "sprouted";
 export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot" | "Weed";
 export declare type lhs = "pin0" | "pin1" | "pin10" | "pin11" | "pin12" | "pin13" | "pin14" | "pin15" | "pin16" | "pin17" | "pin18" | "pin19" | "pin2" | "pin20" | "pin21" | "pin22" | "pin23" | "pin24" | "pin25" | "pin26" | "pin27" | "pin28" | "pin29" | "pin3" | "pin30" | "pin31" | "pin32" | "pin33" | "pin34" | "pin35" | "pin36" | "pin37" | "pin38" | "pin39" | "pin4" | "pin40" | "pin41" | "pin42" | "pin43" | "pin44" | "pin45" | "pin46" | "pin47" | "pin48" | "pin49" | "pin5" | "pin50" | "pin51" | "pin52" | "pin53" | "pin54" | "pin55" | "pin56" | "pin57" | "pin58" | "pin59" | "pin6" | "pin60" | "pin61" | "pin62" | "pin63" | "pin64" | "pin65" | "pin66" | "pin67" | "pin68" | "pin69" | "pin7" | "pin8" | "pin9" | "x" | "y" | "z";
-export declare type resource_type = "Device" | "GenericPointer" | "Plant" | "Point" | "Sequence" | "ToolSlot" | "Weed";
+export declare type resource_type = "Device" | "GenericPointer" | "Peripheral" | "Plant" | "Point" | "PointGroup" | "SavedGarden" | "Sensor" | "Sequence" | "ToolSlot" | "Weed";
 export declare type AssertionBodyItem = never;
 /** assertion
 
