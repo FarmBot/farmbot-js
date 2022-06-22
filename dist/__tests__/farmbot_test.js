@@ -13,8 +13,6 @@ var rpc_request_1 = require("../util/rpc_request");
 describe("FarmBot", function () {
     var token = test_support_1.FAKE_TOKEN;
     it("creates RPCs", function () {
-        var bot = (0, test_support_1.fakeFarmbot)();
-        bot.setConfig("interim_flag_is_legacy_fbos", false);
         [rpc_request_1.Priority.HIGHEST, rpc_request_1.Priority.LOWEST].map(function (priority) {
             var x = (0, rpc_request_1.rpcRequest)([], priority);
             expect(x.args.priority).toEqual(priority);

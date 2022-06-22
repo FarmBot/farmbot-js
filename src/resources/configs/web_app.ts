@@ -31,6 +31,7 @@ export interface WebAppConfig {
   highlight_modified_settings: boolean;
   home_button_homing: boolean;
   info_log: number;
+  landing_page: string;
   legend_menu_open: boolean;
   map_size_x: number;
   map_size_y: number;
@@ -87,6 +88,7 @@ export type NumberConfigKey =
 
 export type StringConfigKey =
   | "created_at"
+  | "landing_page"
   | "photo_filter_begin"
   | "photo_filter_end"
   | "updated_at";

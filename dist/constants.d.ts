@@ -34,10 +34,8 @@ export declare enum FbjsEventName {
 export declare enum Misc {
     /** Channel delimiter for MQTT channels. */
     MQTT_DELIM = "/",
-    /** Namespace delimiter used by `sync_v7` */
-    PATH_DELIM = ".",
     /** A null value when dealing with empty `pair` nodes in CeleryScript. */
     NULL = "null",
-    /** Reconnect internval for MQTT.js */
+    /** Reconnect interval for MQTT.js */
     RECONNECT_THROTTLE_MS = 1000
 }

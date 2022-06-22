@@ -20,7 +20,8 @@ var fakeFarmbot = function (token) {
     var fakeClient = {
         emit: jest.fn(function (chan, payload) {
             bot._onmessage(chan, payload);
-        })
+        }),
+        publish: jest.fn(),
     };
     bot.client = fakeClient;
     return bot;

@@ -20,7 +20,8 @@ export const fakeFarmbot =
     const fakeClient: any = {
       emit: jest.fn((chan: string, payload: Uint8Array) => {
         bot._onmessage(chan, payload);
-      })
+      }),
+      publish: jest.fn(),
     };
     bot.client = fakeClient;
     return bot;

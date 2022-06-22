@@ -1,4 +1,4 @@
-import { resolveOrReject } from "../support";
+import { internalError, resolveOrReject } from "../support";
 import { RpcError, RpcOk } from "../../corpus";
 import { rejectRpc } from "../reject_rpc";
 
@@ -26,7 +26,7 @@ describe("resolveOrReject", () => {
 
 describe("rejectRPC", () => {
   it("always rejects RPCs", () => {
-    const x = (e: RpcError) => expect(e).toEqual(rejectRpc);
+    const x = (e: RpcError) => expect(e).toEqual(internalError);
     rejectRpc().catch(x);
   });
 });

@@ -15,10 +15,6 @@ describe("FarmBot", () => {
   const token = FAKE_TOKEN;
 
   it("creates RPCs", () => {
-    const bot = fakeFarmbot();
-
-    bot.setConfig("interim_flag_is_legacy_fbos", false);
-
     [Priority.HIGHEST, Priority.LOWEST].map(priority => {
       const x = rpcRequest([], priority);
       expect(x.args.priority).toEqual(priority);

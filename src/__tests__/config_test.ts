@@ -8,6 +8,7 @@ import { isNode } from "../util/is_node";
 
 describe("generateConfig", () => {
   it("crashes when given malformed token", () => {
+    console.warn = jest.fn();
     expect(() => generateConfig({ token: "no.no.no" }))
       .toThrowError("Unable to parse token. Is it properly formatted?");
   });

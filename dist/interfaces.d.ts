@@ -19,7 +19,7 @@ export interface BotStateTree {
     jobs: Dictionary<(JobProgress | undefined)>;
     /** List of user accessible processes running on the bot. */
     process_info: {
-        farmwares: Dictionary<FarmwareManifest | LegacyFarmwareManifest>;
+        farmwares: Dictionary<FarmwareManifest>;
     };
     gpio_registry: {
         [pin: number]: string | undefined;
@@ -45,6 +45,7 @@ interface JobProgressBase {
     type: string;
     file_type: string;
     time: string;
+    updated_at: number;
 }
 /** Percent job progress. */
 export interface PercentageProgress extends JobProgressBase {
@@ -65,19 +66,6 @@ export interface Alert {
     slug: string;
 }
 /**
- * Some of the data provided by Farmware author in a Farmware manifest JSON file.
- * Used in FarmBot OS < v8, since this info is now included in `FarmwareManifest`.
- */
-export interface LegacyFarmwareManifestMeta {
-    /** eg: "6" */
-    min_os_version_major: string;
-    description: string;
-    language: string;
-    version: string;
-    author: string;
-    zip: string;
-}
-/**
  * Configs (inputs) requested by a Farmware.
  * Can be namespaced and supplied to a run Farmware command.
  * Also used in FarmBot Web App Farmware page form builder.
@@ -86,26 +74,6 @@ export declare type FarmwareConfig = Record<"name" | "label" | "value", string>;
 /**
  * The Farmware manifest is a JSON file published by Farmware authors.
  * It is used by FarmBot OS to perform installation and upgrades.
- * Used in FarmBot OS < v8. For FarmBot OS >= v8, use `FarmwareManifest`.
- */
-export interface LegacyFarmwareManifest {
-    farmware_tools_version?: string;
-    /** The thing that will run the Farmware eg: `python`. */
-    executable: string;
-    uuid: string;
-    /** Command line args passed to `executable`. */
-    args: string[];
-    name: string;
-    /** Farmware manifest URL. */
-    url: string;
-    path: string;
-    meta: LegacyFarmwareManifestMeta;
-    config: FarmwareConfig[];
-}
-/**
- * The Farmware manifest is a JSON file published by Farmware authors.
- * It is used by FarmBot OS to perform installation and upgrades.
- * Used in FarmBot OS >= v8. For FarmBot OS < v8, use `LegacyFarmwareManifest`.
  */
 export interface FarmwareManifest {
     /** "2.0" */
@@ -231,6 +199,8 @@ export interface InformationalSettings {
     currently_on_beta?: boolean;
     /** FBOS update available? */
     update_available?: boolean;
+    /** CSV list of available camera device numbers (/dev/video#). */
+    video_devices?: string;
 }
 export declare type MQTTEventName = "connect" | "message";
 export interface Dictionary<T> {

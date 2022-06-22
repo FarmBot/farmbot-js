@@ -8,6 +8,7 @@ var test_support_1 = require("../test_support");
 var is_node_1 = require("../util/is_node");
 describe("generateConfig", function () {
     it("crashes when given malformed token", function () {
+        console.warn = jest.fn();
         expect(function () { return (0, config_1.generateConfig)({ token: "no.no.no" }); })
             .toThrowError("Unable to parse token. Is it properly formatted?");
     });

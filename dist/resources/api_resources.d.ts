@@ -215,7 +215,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     lng: number | undefined;
     indoor: boolean;
 }
-export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending";
+export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending" | "xy_alternating" | "yx_alternating" | "nn";
 interface PointGroupCriteria {
     day: {
         op: ">" | "<";

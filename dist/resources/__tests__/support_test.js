@@ -76,7 +76,7 @@ describe("resolveOrReject", function () {
 });
 describe("rejectRPC", function () {
     it("always rejects RPCs", function () {
-        var x = function (e) { return expect(e).toEqual(reject_rpc_1.rejectRpc); };
+        var x = function (e) { return expect(e).toEqual(support_1.internalError); };
         (0, reject_rpc_1.rejectRpc)().catch(x);
     });
 });

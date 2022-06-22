@@ -271,7 +271,10 @@ export type PointGroupSortType =
   | "xy_ascending"
   | "xy_descending"
   | "yx_ascending"
-  | "yx_descending";
+  | "yx_descending"
+  | "xy_alternating"
+  | "yx_alternating"
+  | "nn";
 
 interface PointGroupCriteria {
   day: {
