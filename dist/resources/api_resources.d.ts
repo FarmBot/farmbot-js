@@ -162,6 +162,18 @@ export interface SensorReading extends ResourceBase {
     pin: number;
     read_at: string;
 }
+export interface Telemetry extends ResourceBase {
+    target: string;
+    soc_temp?: number;
+    throttled?: string;
+    wifi_level_percent?: number;
+    uptime?: number;
+    memory_usage?: number;
+    disk_usage?: number;
+    cpu_usage?: number;
+    fbos_version?: string;
+    firmware_hardware?: string;
+}
 export interface Tool extends ResourceBase {
     name?: string;
 }

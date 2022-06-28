@@ -18,6 +18,7 @@ import {
   Sensor,
   SensorReading,
   SequenceResource,
+  Telemetry,
   Tool,
   ToolSlotPointer,
   User,
@@ -53,6 +54,7 @@ export type ResourceName =
   | "Sensor"
   | "SensorReading"
   | "Sequence"
+  | "Telemetry"
   | "Tool"
   | "User"
   | "WebAppConfig"
@@ -111,6 +113,7 @@ export type TaggedResource =
   | TaggedSensor
   | TaggedSensorReading
   | TaggedSequence
+  | TaggedTelemetry
   | TaggedTool
   | TaggedUser
   | TaggedWebAppConfig
@@ -146,6 +149,7 @@ export type TaggedSavedGarden = RestResource<"SavedGarden", SavedGarden>;
 export type TaggedSensor = RestResource<"Sensor", Sensor>;
 export type TaggedSensorReading = RestResource<"SensorReading", SensorReading>;
 export type TaggedSequence = RestResource<"Sequence", SequenceResource>;
+export type TaggedTelemetry = RestResource<"Telemetry", Telemetry>;
 export type TaggedTool = RestResource<"Tool", Tool>;
 export type TaggedToolSlotPointer = RestResource<"Point", ToolSlotPointer>;
 export type TaggedUser = RestResource<"User", User>;
