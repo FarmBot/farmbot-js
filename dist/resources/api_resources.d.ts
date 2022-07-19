@@ -162,7 +162,10 @@ export interface SensorReading extends ResourceBase {
     pin: number;
     read_at: string;
 }
-export interface Telemetry extends ResourceBase {
+export interface Telemetry {
+    id: number;
+    updated_at: string;
+    created_at: number;
     target: string;
     soc_temp?: number;
     throttled?: string;
