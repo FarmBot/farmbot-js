@@ -31,20 +31,29 @@
       "isLibrary": true,
       "distDir": "dist",
       "sourceMap": false,
-      "source": "src/farmbot_single_file.js"
+      "source": "src/farmbot_single_file.js",
+      "engines": {
+        "node": ">=18.0"
+      }
     },
     "single": {
       "isLibrary": true,
       "optimize": true,
       "distDir": "dist",
       "sourceMap": true,
-      "source": "src/farmbot_single_file.js"
+      "source": "src/farmbot_single_file.js",
+      "engines": {
+        "node": ">=18.0"
+      }
     },
     "types": {
       "isLibrary": true,
       "distDir": "dist",
       "sourceMap": false,
-      "source": "src/index.ts"
+      "source": "src/index.ts",
+      "engines": {
+        "node": ">=18.0"
+      }
     }
   },
   "dependencies": {
