@@ -26,6 +26,7 @@ export interface WebAppConfig {
   error_log: number;
   expand_step_options: boolean;
   fun_log: number;
+  go_button_axes: string;
   hide_sensors: boolean;
   hide_webcam_widget: boolean;
   highlight_modified_settings: boolean;
@@ -88,6 +89,7 @@ export type NumberConfigKey =
 
 export type StringConfigKey =
   | "created_at"
+  | "go_button_axes"
   | "landing_page"
   | "photo_filter_begin"
   | "photo_filter_end"
