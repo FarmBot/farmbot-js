@@ -13,6 +13,7 @@ export interface WebAppConfig {
   crop_images: boolean;
   clip_image_layer: boolean;
   debug_log: number;
+  default_plant_depth: number;
   disable_animations: boolean;
   disable_emergency_unlock_confirmation: boolean;
   disable_i18n: boolean;
@@ -42,6 +43,7 @@ export interface WebAppConfig {
   scaled_encoders: boolean;
   show_advanced_settings: boolean;
   show_camera_view_area: boolean;
+  show_uncropped_camera_view_area: boolean;
   show_farmbot: boolean;
   show_first_party_farmware: boolean;
   show_historic_points: boolean;
@@ -85,6 +87,7 @@ export type NumberConfigKey =
   | "bot_origin_quadrant"
   | "map_size_x"
   | "map_size_y"
+  | "default_plant_depth"
   | "zoom_level";
 
 export type StringConfigKey =
@@ -121,6 +124,7 @@ export type BooleanConfigKey =
   | "scaled_encoders"
   | "show_advanced_settings"
   | "show_camera_view_area"
+  | "show_uncropped_camera_view_area"
   | "show_farmbot"
   | "show_first_party_farmware"
   | "show_historic_points"

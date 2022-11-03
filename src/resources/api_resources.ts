@@ -141,6 +141,7 @@ export interface PlantPointer extends BasePoint {
   planted_at?: string;
   plant_stage: PlantStage;
   radius: number;
+  depth: number;
 }
 
 export interface ToolSlotPointer extends BasePoint {
