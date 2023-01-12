@@ -17,6 +17,7 @@ export interface FbosConfig {
   update_channel?: string;
   safe_height?: number;
   soil_height?: number;
+  gantry_height?: number;
 }
 
 export type NumberConfigKey =
@@ -24,6 +25,7 @@ export type NumberConfigKey =
   | "device_id"
   | "safe_height"
   | "soil_height"
+  | "gantry_height"
   | "boot_sequence_id";
 
 export type StringConfigKey =

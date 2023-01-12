@@ -191,6 +191,7 @@ export interface Regimen extends ResourceBase {
 
 export interface SavedGarden extends ResourceBase {
   name?: string;
+  notes?: string;
 }
 
 export interface Sensor extends ResourceBase {
@@ -227,6 +228,7 @@ export interface Telemetry {
 
 export interface Tool extends ResourceBase {
   name?: string;
+  flow_rate_ml_per_s: number;
 }
 
 export interface WebcamFeed extends ResourceBase {
@@ -290,6 +292,7 @@ export interface DeviceAccountSettings extends ResourceBase {
   lat: number | undefined;
   lng: number | undefined;
   indoor: boolean;
+  rpi: string | undefined;
 }
 
 export type PointGroupSortType =

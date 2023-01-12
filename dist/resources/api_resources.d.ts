@@ -151,6 +151,7 @@ export interface Regimen extends ResourceBase {
 }
 export interface SavedGarden extends ResourceBase {
     name?: string;
+    notes?: string;
 }
 export interface Sensor extends ResourceBase {
     pin: number | undefined;
@@ -183,6 +184,7 @@ export interface Telemetry {
 }
 export interface Tool extends ResourceBase {
     name?: string;
+    flow_rate_ml_per_s: number;
 }
 export interface WebcamFeed extends ResourceBase {
     url: string;
@@ -238,6 +240,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     lat: number | undefined;
     lng: number | undefined;
     indoor: boolean;
+    rpi: string | undefined;
 }
 export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending" | "xy_alternating" | "yx_alternating" | "nn";
 interface PointGroupCriteria {

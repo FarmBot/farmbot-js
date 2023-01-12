@@ -140,6 +140,7 @@ export interface FullConfiguration {
     update_channel?: string;
     safe_height?: number;
     soil_height?: number;
+    gantry_height?: number;
 }
 /** FarmBot OS configs. */
 export declare type Configuration = Partial<FullConfiguration>;
