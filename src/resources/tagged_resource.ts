@@ -1,4 +1,5 @@
 import {
+  Curve,
   Crop,
   DeviceAccountSettings,
   FarmEvent,
@@ -34,6 +35,7 @@ import { Alert } from "../interfaces";
 export type ResourceName =
   | "Alert"
   | "Crop"
+  | "Curve"
   | "Device"
   | "FarmEvent"
   | "FarmwareEnv"
@@ -94,6 +96,7 @@ export interface RestResource<T extends ResourceName, U extends object>
 export type TaggedResource =
   | TaggedAlert
   | TaggedCrop
+  | TaggedCurve
   | TaggedDevice
   | TaggedFarmEvent
   | TaggedFarmwareEnv
@@ -128,6 +131,7 @@ type PointUnion =
 
 export type TaggedAlert = RestResource<"Alert", Alert>;
 export type TaggedCrop = RestResource<"Crop", Crop>;
+export type TaggedCurve = RestResource<"Curve", Curve>;
 export type TaggedDevice = RestResource<"Device", DeviceAccountSettings>;
 export type TaggedFolder = RestResource<"Folder", Folder>;
 export type TaggedFarmEvent = RestResource<"FarmEvent", FarmEvent>;

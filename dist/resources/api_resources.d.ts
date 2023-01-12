@@ -113,6 +113,9 @@ export interface PlantPointer extends BasePoint {
     plant_stage: PlantStage;
     radius: number;
     depth: number;
+    water_curve_id?: number;
+    spread_curve_id?: number;
+    height_curve_id?: number;
 }
 export interface ToolSlotPointer extends BasePoint {
     pointer_type: "ToolSlot";
@@ -200,6 +203,11 @@ export interface SequenceResource extends Sequence, ResourceBase {
     sequence_version_id?: number;
     sequence_versions?: number[];
     copyright?: string;
+}
+export interface Curve extends ResourceBase {
+    name: string;
+    type: "water" | "spread" | "height";
+    data: Record<number, number>;
 }
 export interface Crop extends ResourceBase {
     svg_icon?: string | undefined;
