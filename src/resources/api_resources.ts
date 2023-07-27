@@ -274,6 +274,7 @@ export interface FarmwareEnv extends ResourceBase {
 export interface User extends ResourceBase {
   name: string;
   email: string;
+  language: string;
 }
 
 export interface DeviceAccountSettings extends ResourceBase {

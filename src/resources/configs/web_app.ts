@@ -49,6 +49,7 @@ export interface WebAppConfig {
   show_historic_points: boolean;
   show_images: boolean;
   show_motor_plot: boolean;
+  show_missed_step_plot: boolean;
   show_pins: boolean;
   show_plants: boolean;
   show_points: boolean;
@@ -130,6 +131,7 @@ export type BooleanConfigKey =
   | "show_historic_points"
   | "show_images"
   | "show_motor_plot"
+  | "show_missed_step_plot"
   | "show_pins"
   | "show_plants"
   | "show_points"
