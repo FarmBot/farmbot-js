@@ -1,7 +1,7 @@
 import * as Corpus from "./corpus";
 import {
   connect,
-  Client as MqttClient
+  MqttClient
 } from "mqtt";
 import {
   rpcRequest,
@@ -45,7 +45,7 @@ export class Farmbot {
   private config: Conf;
   public client?: MqttClient;
   public resources: ResourceAdapter;
-  static VERSION = "15.8.0";
+  static VERSION = "15.8.1";
 
   constructor(input: FarmbotConstructorParams) {
     this._events = {};
@@ -503,8 +503,8 @@ export class Farmbot {
       clean: true,
       clientId: `FBJS-${Farmbot.VERSION}-${genUuid()}`,
       password: token,
-      protocolId: "MQIsdp",
-      protocolVersion: 3,
+      protocolId: "MQTT",
+      protocolVersion: 4,
       reconnectPeriod,
       username: mqttUsername,
     });

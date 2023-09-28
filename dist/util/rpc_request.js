@@ -7,7 +7,7 @@ var Priority;
     Priority[Priority["HIGHEST"] = 9000] = "HIGHEST";
     Priority[Priority["NORMAL"] = 600] = "NORMAL";
     Priority[Priority["LOWEST"] = 300] = "LOWEST";
-})(Priority = exports.Priority || (exports.Priority = {}));
+})(Priority || (exports.Priority = Priority = {}));
 var rpcRequest = function (body, priority) {
     if (priority === void 0) { priority = Priority.NORMAL; }
     return ({

@@ -1,30 +1,30 @@
 export declare const LATEST_VERSION = 20180209;
 export declare const DIGITAL = 0;
 export declare const ANALOG = 1;
-export declare type CSBoolean = boolean;
-export declare type CSFloat = number;
-export declare type CSInteger = number;
-export declare type CSString = string;
-export declare type ALLOWED_ASSERTION_TYPES = "abort" | "abort_recover" | "continue" | "recover";
-export declare type ALLOWED_AXIS = "all" | "x" | "y" | "z";
-export declare type ALLOWED_CHANNEL_NAMES = "email" | "espeak" | "ticker" | "toast";
-export declare type ALLOWED_MESSAGE_TYPES = "assertion" | "busy" | "debug" | "error" | "fun" | "info" | "success" | "warn";
-export declare type ALLOWED_OPS = "<" | ">" | "is" | "is_undefined" | "not";
-export declare type ALLOWED_PACKAGES = "arduino_firmware" | "farmbot_os";
-export declare type ALLOWED_PIN_IO_MODES = "input" | "input_pullup" | "output";
-export declare type ALLOWED_PIN_MODES = 0 | 1;
-export declare type ALLOWED_SPECIAL_VALUE = "current_location" | "safe_height" | "soil_height";
-export declare type AllowedPinTypes = "BoxLed3" | "BoxLed4" | "Peripheral" | "Sensor";
-export declare type Color = "blue" | "gray" | "green" | "orange" | "pink" | "purple" | "red" | "yellow";
-export declare type DataChangeType = "add" | "remove" | "update";
-export declare type LegalArgString = "_else" | "_then" | "assertion_type" | "axis" | "axis_operand" | "channel_name" | "data_value" | "default_value" | "depth" | "label" | "lhs" | "locals" | "location" | "lua" | "message" | "message_type" | "milliseconds" | "number" | "offset" | "op" | "package" | "pin_id" | "pin_io_mode" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "point_group_id" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "speed_setting" | "string" | "tool_id" | "url" | "value" | "variance" | "version" | "x" | "y" | "z";
-export declare type LegalKindString = "Assertion" | "AxisAddition" | "AxisOverwrite" | "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "LocationPlaceholder" | "Lua" | "Move" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "NumberPlaceholder" | "Numeric" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PointGroup" | "PowerOff" | "Random" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "Resource" | "ResourcePlaceholder" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "SafeZ" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetPinIoMode" | "SetServoAngle" | "SetUserEnv" | "SpecialValue" | "SpeedOverwrite" | "Sync" | "TakePhoto" | "Text" | "TextPlaceholder" | "TogglePin" | "Tool" | "UpdateFarmware" | "UpdateResource" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
-export declare type LegalSequenceKind = "_if" | "assertion" | "calibrate" | "change_ownership" | "check_updates" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "flash_firmware" | "home" | "install_farmware" | "install_first_party_farmware" | "lua" | "move" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "send_message" | "set_pin_io_mode" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "update_resource" | "wait" | "write_pin" | "zero";
-export declare type PlantStage = "active" | "harvested" | "pending" | "planned" | "planted" | "removed" | "sprouted";
-export declare type PointType = "GenericPointer" | "Plant" | "ToolSlot" | "Weed";
-export declare type lhs = "pin0" | "pin1" | "pin10" | "pin11" | "pin12" | "pin13" | "pin14" | "pin15" | "pin16" | "pin17" | "pin18" | "pin19" | "pin2" | "pin20" | "pin21" | "pin22" | "pin23" | "pin24" | "pin25" | "pin26" | "pin27" | "pin28" | "pin29" | "pin3" | "pin30" | "pin31" | "pin32" | "pin33" | "pin34" | "pin35" | "pin36" | "pin37" | "pin38" | "pin39" | "pin4" | "pin40" | "pin41" | "pin42" | "pin43" | "pin44" | "pin45" | "pin46" | "pin47" | "pin48" | "pin49" | "pin5" | "pin50" | "pin51" | "pin52" | "pin53" | "pin54" | "pin55" | "pin56" | "pin57" | "pin58" | "pin59" | "pin6" | "pin60" | "pin61" | "pin62" | "pin63" | "pin64" | "pin65" | "pin66" | "pin67" | "pin68" | "pin69" | "pin7" | "pin8" | "pin9" | "x" | "y" | "z";
-export declare type resource_type = "Device" | "GenericPointer" | "Peripheral" | "Plant" | "Point" | "Sensor" | "Sequence" | "ToolSlot" | "Weed";
-export declare type AssertionBodyItem = never;
+export type CSBoolean = boolean;
+export type CSFloat = number;
+export type CSInteger = number;
+export type CSString = string;
+export type ALLOWED_ASSERTION_TYPES = "abort" | "abort_recover" | "continue" | "recover";
+export type ALLOWED_AXIS = "all" | "x" | "y" | "z";
+export type ALLOWED_CHANNEL_NAMES = "email" | "espeak" | "ticker" | "toast";
+export type ALLOWED_MESSAGE_TYPES = "assertion" | "busy" | "debug" | "error" | "fun" | "info" | "success" | "warn";
+export type ALLOWED_OPS = "<" | ">" | "is" | "is_undefined" | "not";
+export type ALLOWED_PACKAGES = "arduino_firmware" | "farmbot_os";
+export type ALLOWED_PIN_IO_MODES = "input" | "input_pullup" | "output";
+export type ALLOWED_PIN_MODES = 0 | 1;
+export type ALLOWED_SPECIAL_VALUE = "current_location" | "safe_height" | "soil_height";
+export type AllowedPinTypes = "BoxLed3" | "BoxLed4" | "Peripheral" | "Sensor";
+export type Color = "blue" | "gray" | "green" | "orange" | "pink" | "purple" | "red" | "yellow";
+export type DataChangeType = "add" | "remove" | "update";
+export type LegalArgString = "_else" | "_then" | "assertion_type" | "axis" | "axis_operand" | "channel_name" | "data_value" | "default_value" | "depth" | "label" | "lhs" | "locals" | "location" | "lua" | "message" | "message_type" | "milliseconds" | "number" | "offset" | "op" | "package" | "pin_id" | "pin_io_mode" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "point_group_id" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "speed_setting" | "string" | "tool_id" | "url" | "value" | "variance" | "version" | "x" | "y" | "z";
+export type LegalKindString = "Assertion" | "AxisAddition" | "AxisOverwrite" | "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "LocationPlaceholder" | "Lua" | "Move" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "NumberPlaceholder" | "Numeric" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PointGroup" | "PowerOff" | "Random" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "Resource" | "ResourcePlaceholder" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "SafeZ" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetPinIoMode" | "SetServoAngle" | "SetUserEnv" | "SpecialValue" | "SpeedOverwrite" | "Sync" | "TakePhoto" | "Text" | "TextPlaceholder" | "TogglePin" | "Tool" | "UpdateFarmware" | "UpdateResource" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
+export type LegalSequenceKind = "_if" | "assertion" | "calibrate" | "change_ownership" | "check_updates" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "flash_firmware" | "home" | "install_farmware" | "install_first_party_farmware" | "lua" | "move" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "send_message" | "set_pin_io_mode" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "update_resource" | "wait" | "write_pin" | "zero";
+export type PlantStage = "active" | "harvested" | "pending" | "planned" | "planted" | "removed" | "sprouted";
+export type PointType = "GenericPointer" | "Plant" | "ToolSlot" | "Weed";
+export type lhs = "pin0" | "pin1" | "pin10" | "pin11" | "pin12" | "pin13" | "pin14" | "pin15" | "pin16" | "pin17" | "pin18" | "pin19" | "pin2" | "pin20" | "pin21" | "pin22" | "pin23" | "pin24" | "pin25" | "pin26" | "pin27" | "pin28" | "pin29" | "pin3" | "pin30" | "pin31" | "pin32" | "pin33" | "pin34" | "pin35" | "pin36" | "pin37" | "pin38" | "pin39" | "pin4" | "pin40" | "pin41" | "pin42" | "pin43" | "pin44" | "pin45" | "pin46" | "pin47" | "pin48" | "pin49" | "pin5" | "pin50" | "pin51" | "pin52" | "pin53" | "pin54" | "pin55" | "pin56" | "pin57" | "pin58" | "pin59" | "pin6" | "pin60" | "pin61" | "pin62" | "pin63" | "pin64" | "pin65" | "pin66" | "pin67" | "pin68" | "pin69" | "pin7" | "pin8" | "pin9" | "x" | "y" | "z";
+export type resource_type = "Device" | "GenericPointer" | "Peripheral" | "Plant" | "Point" | "Sensor" | "Sequence" | "ToolSlot" | "Weed";
+export type AssertionBodyItem = never;
 /** assertion
 
  Tag properties: *. */
@@ -38,7 +38,7 @@ export interface Assertion {
     };
     body?: AssertionBodyItem[] | undefined;
 }
-export declare type IfBodyItem = (Pair);
+export type IfBodyItem = (Pair);
 /** _if
 
  Tag properties: *. */
@@ -54,7 +54,7 @@ export interface If {
     };
     body?: IfBodyItem[] | undefined;
 }
-export declare type CalibrateBodyItem = never;
+export type CalibrateBodyItem = never;
 /** calibrate
 
  Tag properties: firmware_user, function. */
@@ -66,7 +66,7 @@ export interface Calibrate {
     };
     body?: CalibrateBodyItem[] | undefined;
 }
-export declare type ChangeOwnershipBodyItem = (Pair);
+export type ChangeOwnershipBodyItem = (Pair);
 /** change_ownership
 Not a commonly used node. May be removed without notice.
  Tag properties: api_writer, cuts_power, disk_user, function, network_user. */
@@ -76,7 +76,7 @@ export interface ChangeOwnership {
     args: {};
     body?: ChangeOwnershipBodyItem[] | undefined;
 }
-export declare type ChannelBodyItem = never;
+export type ChannelBodyItem = never;
 /** channel
 Specifies a communication path for log messages.
  Tag properties: data. */
@@ -88,7 +88,7 @@ export interface Channel {
     };
     body?: ChannelBodyItem[] | undefined;
 }
-export declare type CheckUpdatesBodyItem = never;
+export type CheckUpdatesBodyItem = never;
 /** check_updates
 
  Tag properties: cuts_power, disk_user, function, network_user. */
@@ -100,7 +100,7 @@ export interface CheckUpdates {
     };
     body?: CheckUpdatesBodyItem[] | undefined;
 }
-export declare type CoordinateBodyItem = never;
+export type CoordinateBodyItem = never;
 /** coordinate
 
  Tag properties: data, location_like. */
@@ -114,7 +114,7 @@ export interface Coordinate {
     };
     body?: CoordinateBodyItem[] | undefined;
 }
-export declare type EmergencyLockBodyItem = never;
+export type EmergencyLockBodyItem = never;
 /** emergency_lock
 
  Tag properties: control_flow, firmware_user, function. */
@@ -124,7 +124,7 @@ export interface EmergencyLock {
     args: {};
     body?: EmergencyLockBodyItem[] | undefined;
 }
-export declare type EmergencyUnlockBodyItem = never;
+export type EmergencyUnlockBodyItem = never;
 /** emergency_unlock
 
  Tag properties: firmware_user, function. */
@@ -134,7 +134,7 @@ export interface EmergencyUnlock {
     args: {};
     body?: EmergencyUnlockBodyItem[] | undefined;
 }
-export declare type ExecuteScriptBodyItem = (Pair);
+export type ExecuteScriptBodyItem = (Pair);
 /** execute_script
 
  Tag properties: *. */
@@ -146,7 +146,7 @@ export interface ExecuteScript {
     };
     body?: ExecuteScriptBodyItem[] | undefined;
 }
-export declare type ExecuteBodyItem = (ParameterApplication);
+export type ExecuteBodyItem = (ParameterApplication);
 /** execute
 
  Tag properties: *. */
@@ -158,7 +158,7 @@ export interface Execute {
     };
     body?: ExecuteBodyItem[] | undefined;
 }
-export declare type ExplanationBodyItem = never;
+export type ExplanationBodyItem = never;
 /** explanation
 
  Tag properties: data. */
@@ -170,7 +170,7 @@ export interface Explanation {
     };
     body?: ExplanationBodyItem[] | undefined;
 }
-export declare type FactoryResetBodyItem = never;
+export type FactoryResetBodyItem = never;
 /** factory_reset
 
  Tag properties: cuts_power, function. */
@@ -182,7 +182,7 @@ export interface FactoryReset {
     };
     body?: FactoryResetBodyItem[] | undefined;
 }
-export declare type FindHomeBodyItem = never;
+export type FindHomeBodyItem = never;
 /** find_home
 
  Tag properties: firmware_user, function. */
@@ -195,7 +195,7 @@ export interface FindHome {
     };
     body?: FindHomeBodyItem[] | undefined;
 }
-export declare type FlashFirmwareBodyItem = never;
+export type FlashFirmwareBodyItem = never;
 /** flash_firmware
 
  Tag properties: api_writer, disk_user, firmware_user, function, network_user. */
@@ -207,7 +207,7 @@ export interface FlashFirmware {
     };
     body?: FlashFirmwareBodyItem[] | undefined;
 }
-export declare type HomeBodyItem = never;
+export type HomeBodyItem = never;
 /** home
 
  Tag properties: firmware_user, function. */
@@ -220,7 +220,7 @@ export interface Home {
     };
     body?: HomeBodyItem[] | undefined;
 }
-export declare type IdentifierBodyItem = never;
+export type IdentifierBodyItem = never;
 /** identifier
 
  Tag properties: data. */
@@ -232,7 +232,7 @@ export interface Identifier {
     };
     body?: IdentifierBodyItem[] | undefined;
 }
-export declare type InstallFarmwareBodyItem = never;
+export type InstallFarmwareBodyItem = never;
 /** install_farmware
 
  Tag properties: api_writer, disk_user, function, network_user. */
@@ -244,7 +244,7 @@ export interface InstallFarmware {
     };
     body?: InstallFarmwareBodyItem[] | undefined;
 }
-export declare type InstallFirstPartyFarmwareBodyItem = never;
+export type InstallFirstPartyFarmwareBodyItem = never;
 /** install_first_party_farmware
 
  Tag properties: function, network_user. */
@@ -254,7 +254,7 @@ export interface InstallFirstPartyFarmware {
     args: {};
     body?: InstallFirstPartyFarmwareBodyItem[] | undefined;
 }
-export declare type InternalFarmEventBodyItem = (ParameterApplication);
+export type InternalFarmEventBodyItem = (ParameterApplication);
 /** internal_farm_event
 
  Tag properties: . */
@@ -264,7 +264,7 @@ export interface InternalFarmEvent {
     args: {};
     body?: InternalFarmEventBodyItem[] | undefined;
 }
-export declare type InternalRegimenBodyItem = (ParameterApplication | ParameterDeclaration | VariableDeclaration);
+export type InternalRegimenBodyItem = (ParameterApplication | ParameterDeclaration | VariableDeclaration);
 /** internal_regimen
 
  Tag properties: . */
@@ -274,7 +274,7 @@ export interface InternalRegimen {
     args: {};
     body?: InternalRegimenBodyItem[] | undefined;
 }
-export declare type MoveRelativeBodyItem = never;
+export type MoveRelativeBodyItem = never;
 /** move_relative
 
  Tag properties: firmware_user, function. */
@@ -289,7 +289,7 @@ export interface MoveRelative {
     };
     body?: MoveRelativeBodyItem[] | undefined;
 }
-export declare type NothingBodyItem = never;
+export type NothingBodyItem = never;
 /** nothing
 
  Tag properties: data, function. */
@@ -299,7 +299,7 @@ export interface Nothing {
     args: {};
     body?: NothingBodyItem[] | undefined;
 }
-export declare type PairBodyItem = never;
+export type PairBodyItem = never;
 /** pair
 
  Tag properties: data. */
@@ -312,7 +312,7 @@ export interface Pair {
     };
     body?: PairBodyItem[] | undefined;
 }
-export declare type ParameterApplicationBodyItem = never;
+export type ParameterApplicationBodyItem = never;
 /** parameter_application
 
  Tag properties: control_flow, function, scope_writer. */
@@ -325,7 +325,7 @@ export interface ParameterApplication {
     };
     body?: ParameterApplicationBodyItem[] | undefined;
 }
-export declare type ParameterDeclarationBodyItem = never;
+export type ParameterDeclarationBodyItem = never;
 /** parameter_declaration
 
  Tag properties: scope_writer. */
@@ -338,7 +338,7 @@ export interface ParameterDeclaration {
     };
     body?: ParameterDeclarationBodyItem[] | undefined;
 }
-export declare type PointBodyItem = never;
+export type PointBodyItem = never;
 /** point
 
  Tag properties: data, location_like. */
@@ -351,7 +351,7 @@ export interface Point {
     };
     body?: PointBodyItem[] | undefined;
 }
-export declare type PowerOffBodyItem = never;
+export type PowerOffBodyItem = never;
 /** power_off
 
  Tag properties: cuts_power, function. */
@@ -361,7 +361,7 @@ export interface PowerOff {
     args: {};
     body?: PowerOffBodyItem[] | undefined;
 }
-export declare type ReadStatusBodyItem = never;
+export type ReadStatusBodyItem = never;
 /** read_status
 
  Tag properties: function. */
@@ -371,7 +371,7 @@ export interface ReadStatus {
     args: {};
     body?: ReadStatusBodyItem[] | undefined;
 }
-export declare type RebootBodyItem = never;
+export type RebootBodyItem = never;
 /** reboot
 
  Tag properties: cuts_power, firmware_user, function. */
@@ -383,7 +383,7 @@ export interface Reboot {
     };
     body?: RebootBodyItem[] | undefined;
 }
-export declare type RemoveFarmwareBodyItem = never;
+export type RemoveFarmwareBodyItem = never;
 /** remove_farmware
 
  Tag properties: function. */
@@ -395,7 +395,7 @@ export interface RemoveFarmware {
     };
     body?: RemoveFarmwareBodyItem[] | undefined;
 }
-export declare type RpcErrorBodyItem = (Explanation);
+export type RpcErrorBodyItem = (Explanation);
 /** rpc_error
 
  Tag properties: data. */
@@ -407,7 +407,7 @@ export interface RpcError {
     };
     body?: RpcErrorBodyItem[] | undefined;
 }
-export declare type RpcOkBodyItem = never;
+export type RpcOkBodyItem = never;
 /** rpc_ok
 
  Tag properties: data. */
@@ -419,7 +419,7 @@ export interface RpcOk {
     };
     body?: RpcOkBodyItem[] | undefined;
 }
-export declare type RpcRequestBodyItem = (If | Assertion | Calibrate | ChangeOwnership | CheckUpdates | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | FlashFirmware | Home | InstallFarmware | InstallFirstPartyFarmware | Lua | Move | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | SendMessage | SetPinIoMode | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | UpdateResource | Wait | WritePin | Zero);
+export type RpcRequestBodyItem = (If | Assertion | Calibrate | ChangeOwnership | CheckUpdates | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | FlashFirmware | Home | InstallFarmware | InstallFirstPartyFarmware | Lua | Move | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | SendMessage | SetPinIoMode | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | UpdateResource | Wait | WritePin | Zero);
 /** rpc_request
 
  Tag properties: *. */
@@ -432,7 +432,7 @@ export interface RpcRequest {
     };
     body?: RpcRequestBodyItem[] | undefined;
 }
-export declare type ScopeDeclarationBodyItem = (ParameterDeclaration | VariableDeclaration);
+export type ScopeDeclarationBodyItem = (ParameterDeclaration | VariableDeclaration);
 /** scope_declaration
 
  Tag properties: scope_writer. */
@@ -442,7 +442,7 @@ export interface ScopeDeclaration {
     args: {};
     body?: ScopeDeclarationBodyItem[] | undefined;
 }
-export declare type SendMessageBodyItem = (Channel);
+export type SendMessageBodyItem = (Channel);
 /** send_message
 
  Tag properties: function. */
@@ -455,7 +455,7 @@ export interface SendMessage {
     };
     body?: SendMessageBodyItem[] | undefined;
 }
-export declare type SequenceBodyItem = (If | Assertion | Calibrate | ChangeOwnership | CheckUpdates | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | FlashFirmware | Home | InstallFarmware | InstallFirstPartyFarmware | Lua | Move | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | SendMessage | SetPinIoMode | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | UpdateResource | Wait | WritePin | Zero);
+export type SequenceBodyItem = (If | Assertion | Calibrate | ChangeOwnership | CheckUpdates | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | FactoryReset | FindHome | FlashFirmware | Home | InstallFarmware | InstallFirstPartyFarmware | Lua | Move | MoveAbsolute | MoveRelative | PowerOff | ReadPin | ReadStatus | Reboot | RemoveFarmware | SendMessage | SetPinIoMode | SetServoAngle | SetUserEnv | Sync | TakePhoto | TogglePin | UpdateFarmware | UpdateResource | Wait | WritePin | Zero);
 /** sequence
 
  Tag properties: *. */
@@ -468,7 +468,7 @@ export interface Sequence {
     };
     body?: SequenceBodyItem[] | undefined;
 }
-export declare type SetServoAngleBodyItem = never;
+export type SetServoAngleBodyItem = never;
 /** set_servo_angle
 
  Tag properties: firmware_user, function. */
@@ -481,7 +481,7 @@ export interface SetServoAngle {
     };
     body?: SetServoAngleBodyItem[] | undefined;
 }
-export declare type SetPinIoModeBodyItem = never;
+export type SetPinIoModeBodyItem = never;
 /** set_pin_io_mode
 
  Tag properties: firmware_user, function. */
@@ -494,7 +494,7 @@ export interface SetPinIoMode {
     };
     body?: SetPinIoModeBodyItem[] | undefined;
 }
-export declare type SetUserEnvBodyItem = (Pair);
+export type SetUserEnvBodyItem = (Pair);
 /** set_user_env
 
  Tag properties: disk_user, function. */
@@ -504,7 +504,7 @@ export interface SetUserEnv {
     args: {};
     body?: SetUserEnvBodyItem[] | undefined;
 }
-export declare type SyncBodyItem = never;
+export type SyncBodyItem = never;
 /** sync
 
  Tag properties: disk_user, function, network_user. */
@@ -514,7 +514,7 @@ export interface Sync {
     args: {};
     body?: SyncBodyItem[] | undefined;
 }
-export declare type TakePhotoBodyItem = never;
+export type TakePhotoBodyItem = never;
 /** take_photo
 
  Tag properties: disk_user, function. */
@@ -524,7 +524,7 @@ export interface TakePhoto {
     args: {};
     body?: TakePhotoBodyItem[] | undefined;
 }
-export declare type TextBodyItem = never;
+export type TextBodyItem = never;
 /** text
 
  Tag properties: . */
@@ -536,7 +536,7 @@ export interface Text {
     };
     body?: TextBodyItem[] | undefined;
 }
-export declare type TogglePinBodyItem = never;
+export type TogglePinBodyItem = never;
 /** toggle_pin
 
  Tag properties: firmware_user, function. */
@@ -548,7 +548,7 @@ export interface TogglePin {
     };
     body?: TogglePinBodyItem[] | undefined;
 }
-export declare type ToolBodyItem = never;
+export type ToolBodyItem = never;
 /** tool
 
  Tag properties: api_validated, data, location_like. */
@@ -560,7 +560,7 @@ export interface Tool {
     };
     body?: ToolBodyItem[] | undefined;
 }
-export declare type UpdateFarmwareBodyItem = never;
+export type UpdateFarmwareBodyItem = never;
 /** update_farmware
 
  Tag properties: api_validated, function, network_user. */
@@ -572,7 +572,7 @@ export interface UpdateFarmware {
     };
     body?: UpdateFarmwareBodyItem[] | undefined;
 }
-export declare type VariableDeclarationBodyItem = never;
+export type VariableDeclarationBodyItem = never;
 /** variable_declaration
 
  Tag properties: function, scope_writer. */
@@ -585,7 +585,7 @@ export interface VariableDeclaration {
     };
     body?: VariableDeclarationBodyItem[] | undefined;
 }
-export declare type WaitBodyItem = never;
+export type WaitBodyItem = never;
 /** wait
 
  Tag properties: function. */
@@ -597,7 +597,7 @@ export interface Wait {
     };
     body?: WaitBodyItem[] | undefined;
 }
-export declare type ZeroBodyItem = never;
+export type ZeroBodyItem = never;
 /** zero
 
  Tag properties: firmware_user, function. */
@@ -609,7 +609,7 @@ export interface Zero {
     };
     body?: ZeroBodyItem[] | undefined;
 }
-export declare type NamedPinBodyItem = never;
+export type NamedPinBodyItem = never;
 /** named_pin
 
  Tag properties: api_validated, data, firmware_user, function, rpi_user. */
@@ -622,7 +622,7 @@ export interface NamedPin {
     };
     body?: NamedPinBodyItem[] | undefined;
 }
-export declare type MoveAbsoluteBodyItem = never;
+export type MoveAbsoluteBodyItem = never;
 /** move_absolute
 
  Tag properties: firmware_user, function. */
@@ -636,7 +636,7 @@ export interface MoveAbsolute {
     };
     body?: MoveAbsoluteBodyItem[] | undefined;
 }
-export declare type WritePinBodyItem = never;
+export type WritePinBodyItem = never;
 /** write_pin
 
  Tag properties: firmware_user, function, rpi_user. */
@@ -650,7 +650,7 @@ export interface WritePin {
     };
     body?: WritePinBodyItem[] | undefined;
 }
-export declare type ReadPinBodyItem = never;
+export type ReadPinBodyItem = never;
 /** read_pin
 
  Tag properties: firmware_user, function, rpi_user. */
@@ -664,7 +664,7 @@ export interface ReadPin {
     };
     body?: ReadPinBodyItem[] | undefined;
 }
-export declare type ResourceUpdateBodyItem = never;
+export type ResourceUpdateBodyItem = never;
 /** resource_update
 
  Tag properties: api_writer, function, network_user. */
@@ -679,7 +679,7 @@ export interface ResourceUpdate {
     };
     body?: ResourceUpdateBodyItem[] | undefined;
 }
-export declare type ResourceBodyItem = never;
+export type ResourceBodyItem = never;
 /** resource
 
  Tag properties: network_user. */
@@ -692,7 +692,7 @@ export interface Resource {
     };
     body?: ResourceBodyItem[] | undefined;
 }
-export declare type ResourcePlaceholderBodyItem = never;
+export type ResourcePlaceholderBodyItem = never;
 /** resource_placeholder
 
  Tag properties: . */
@@ -704,7 +704,7 @@ export interface ResourcePlaceholder {
     };
     body?: ResourcePlaceholderBodyItem[] | undefined;
 }
-export declare type NumberPlaceholderBodyItem = never;
+export type NumberPlaceholderBodyItem = never;
 /** number_placeholder
 
  Tag properties: . */
@@ -714,7 +714,7 @@ export interface NumberPlaceholder {
     args: {};
     body?: NumberPlaceholderBodyItem[] | undefined;
 }
-export declare type TextPlaceholderBodyItem = never;
+export type TextPlaceholderBodyItem = never;
 /** text_placeholder
 
  Tag properties: . */
@@ -724,7 +724,7 @@ export interface TextPlaceholder {
     args: {};
     body?: TextPlaceholderBodyItem[] | undefined;
 }
-export declare type LocationPlaceholderBodyItem = never;
+export type LocationPlaceholderBodyItem = never;
 /** location_placeholder
 
  Tag properties: . */
@@ -734,7 +734,7 @@ export interface LocationPlaceholder {
     args: {};
     body?: LocationPlaceholderBodyItem[] | undefined;
 }
-export declare type UpdateResourceBodyItem = (Pair);
+export type UpdateResourceBodyItem = (Pair);
 /** update_resource
 
  Tag properties: api_writer, function, network_user. */
@@ -746,7 +746,7 @@ export interface UpdateResource {
     };
     body?: UpdateResourceBodyItem[] | undefined;
 }
-export declare type PointGroupBodyItem = never;
+export type PointGroupBodyItem = never;
 /** point_group
 
  Tag properties: data, list_like. */
@@ -758,7 +758,7 @@ export interface PointGroup {
     };
     body?: PointGroupBodyItem[] | undefined;
 }
-export declare type NumericBodyItem = never;
+export type NumericBodyItem = never;
 /** numeric
 
  Tag properties: data. */
@@ -770,7 +770,7 @@ export interface Numeric {
     };
     body?: NumericBodyItem[] | undefined;
 }
-export declare type LuaBodyItem = (Pair);
+export type LuaBodyItem = (Pair);
 /** lua
 
  Tag properties: *. */
@@ -782,7 +782,7 @@ export interface Lua {
     };
     body?: LuaBodyItem[] | undefined;
 }
-export declare type SpecialValueBodyItem = never;
+export type SpecialValueBodyItem = never;
 /** special_value
 
  Tag properties: data. */
@@ -794,7 +794,7 @@ export interface SpecialValue {
     };
     body?: SpecialValueBodyItem[] | undefined;
 }
-export declare type AxisOverwriteBodyItem = never;
+export type AxisOverwriteBodyItem = never;
 /** axis_overwrite
 
  Tag properties: data. */
@@ -807,7 +807,7 @@ export interface AxisOverwrite {
     };
     body?: AxisOverwriteBodyItem[] | undefined;
 }
-export declare type AxisAdditionBodyItem = never;
+export type AxisAdditionBodyItem = never;
 /** axis_addition
 
  Tag properties: data. */
@@ -820,7 +820,7 @@ export interface AxisAddition {
     };
     body?: AxisAdditionBodyItem[] | undefined;
 }
-export declare type SpeedOverwriteBodyItem = never;
+export type SpeedOverwriteBodyItem = never;
 /** speed_overwrite
 
  Tag properties: data. */
@@ -833,7 +833,7 @@ export interface SpeedOverwrite {
     };
     body?: SpeedOverwriteBodyItem[] | undefined;
 }
-export declare type SafeZBodyItem = never;
+export type SafeZBodyItem = never;
 /** safe_z
 
  Tag properties: data. */
@@ -843,7 +843,7 @@ export interface SafeZ {
     args: {};
     body?: SafeZBodyItem[] | undefined;
 }
-export declare type RandomBodyItem = never;
+export type RandomBodyItem = never;
 /** random
 
  Tag properties: data. */
@@ -855,7 +855,7 @@ export interface Random {
     };
     body?: RandomBodyItem[] | undefined;
 }
-export declare type MoveBodyItem = (AxisAddition | AxisOverwrite | SafeZ | SpeedOverwrite);
+export type MoveBodyItem = (AxisAddition | AxisOverwrite | SafeZ | SpeedOverwrite);
 /** move
 
  Tag properties: firmware_user, function. */
@@ -865,4 +865,4 @@ export interface Move {
     args: {};
     body?: MoveBodyItem[] | undefined;
 }
-export declare type CeleryNode = Assertion | AxisAddition | AxisOverwrite | Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | FlashFirmware | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | LocationPlaceholder | Lua | Move | MoveAbsolute | MoveRelative | NamedPin | Nothing | NumberPlaceholder | Numeric | Pair | ParameterApplication | ParameterDeclaration | Point | PointGroup | PowerOff | Random | ReadPin | ReadStatus | Reboot | RemoveFarmware | Resource | ResourcePlaceholder | ResourceUpdate | RpcError | RpcOk | RpcRequest | SafeZ | ScopeDeclaration | SendMessage | Sequence | SetPinIoMode | SetServoAngle | SetUserEnv | SpecialValue | SpeedOverwrite | Sync | TakePhoto | Text | TextPlaceholder | TogglePin | Tool | UpdateFarmware | UpdateResource | VariableDeclaration | Wait | WritePin | Zero;
+export type CeleryNode = Assertion | AxisAddition | AxisOverwrite | Calibrate | ChangeOwnership | Channel | CheckUpdates | Coordinate | EmergencyLock | EmergencyUnlock | Execute | ExecuteScript | Explanation | FactoryReset | FindHome | FlashFirmware | Home | Identifier | If | InstallFarmware | InstallFirstPartyFarmware | InternalFarmEvent | InternalRegimen | LocationPlaceholder | Lua | Move | MoveAbsolute | MoveRelative | NamedPin | Nothing | NumberPlaceholder | Numeric | Pair | ParameterApplication | ParameterDeclaration | Point | PointGroup | PowerOff | Random | ReadPin | ReadStatus | Reboot | RemoveFarmware | Resource | ResourcePlaceholder | ResourceUpdate | RpcError | RpcOk | RpcRequest | SafeZ | ScopeDeclaration | SendMessage | Sequence | SetPinIoMode | SetServoAngle | SetUserEnv | SpecialValue | SpeedOverwrite | Sync | TakePhoto | Text | TextPlaceholder | TogglePin | Tool | UpdateFarmware | UpdateResource | VariableDeclaration | Wait | WritePin | Zero;

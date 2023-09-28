@@ -11,4 +11,4 @@ var SpecialStatus;
     /** API and FE are in sync. Using "" for now because its falsey like old
      * `undefined` value */
     SpecialStatus["SAVED"] = "";
-})(SpecialStatus = exports.SpecialStatus || (exports.SpecialStatus = {}));
+})(SpecialStatus || (exports.SpecialStatus = SpecialStatus = {}));

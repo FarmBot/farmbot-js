@@ -1,5 +1,5 @@
 import { Farmbot } from "../farmbot";
-import { Client } from "mqtt";
+import { MqttClient } from "mqtt";
 import { RpcOk, RpcError } from "..";
 import { TaggedResource } from "./tagged_resource";
 export interface FarmbotLike {
@@ -11,7 +11,7 @@ export interface DeletionRequest {
     kind: ResourceName;
 }
 export interface MqttLike {
-    publish: Client["publish"];
+    publish: MqttClient["publish"];
 }
-export declare type ResourceName = TaggedResource["kind"];
-export declare type RpcResponse = RpcOk | RpcError;
+export type ResourceName = TaggedResource["kind"];
+export type RpcResponse = RpcOk | RpcError;

@@ -6,4 +6,4 @@ var Encoder;
     Encoder[Encoder["unknown"] = -1] = "unknown";
     Encoder[Encoder["quadrature"] = 0] = "quadrature";
     Encoder[Encoder["differential"] = 1] = "differential";
-})(Encoder = exports.Encoder || (exports.Encoder = {}));
+})(Encoder || (exports.Encoder = Encoder = {}));

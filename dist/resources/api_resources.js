@@ -8,12 +8,12 @@ var ToolPulloutDirection;
     ToolPulloutDirection[ToolPulloutDirection["NEGATIVE_X"] = 2] = "NEGATIVE_X";
     ToolPulloutDirection[ToolPulloutDirection["POSITIVE_Y"] = 3] = "POSITIVE_Y";
     ToolPulloutDirection[ToolPulloutDirection["NEGATIVE_Y"] = 4] = "NEGATIVE_Y";
-})(ToolPulloutDirection = exports.ToolPulloutDirection || (exports.ToolPulloutDirection = {}));
+})(ToolPulloutDirection || (exports.ToolPulloutDirection = ToolPulloutDirection = {}));
 var PinBindingType;
 (function (PinBindingType) {
     PinBindingType["special"] = "special";
     PinBindingType["standard"] = "standard";
-})(PinBindingType = exports.PinBindingType || (exports.PinBindingType = {}));
+})(PinBindingType || (exports.PinBindingType = PinBindingType = {}));
 var PinBindingSpecialAction;
 (function (PinBindingSpecialAction) {
     PinBindingSpecialAction["emergency_lock"] = "emergency_lock";
@@ -23,4 +23,4 @@ var PinBindingSpecialAction;
     PinBindingSpecialAction["power_off"] = "power_off";
     PinBindingSpecialAction["read_status"] = "read_status";
     PinBindingSpecialAction["take_photo"] = "take_photo";
-})(PinBindingSpecialAction = exports.PinBindingSpecialAction || (exports.PinBindingSpecialAction = {}));
+})(PinBindingSpecialAction || (exports.PinBindingSpecialAction = PinBindingSpecialAction = {}));

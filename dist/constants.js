@@ -12,7 +12,7 @@ var MqttChanName;
     /** THIS ONE IS SPECIAL. */
     MqttChanName["publicBroadcast"] = "public_broadcast";
     MqttChanName["pong"] = "pong";
-})(MqttChanName = exports.MqttChanName || (exports.MqttChanName = {}));
+})(MqttChanName || (exports.MqttChanName = MqttChanName = {}));
 /** Not to be confused with MqttChanNames or
  * MQTT.js event names */
 var FbjsEventName;
@@ -35,7 +35,7 @@ var FbjsEventName;
     FbjsEventName["sync"] = "sync";
     /** When a key is removed from the device state tree. */
     FbjsEventName["remove"] = "remove";
-})(FbjsEventName = exports.FbjsEventName || (exports.FbjsEventName = {}));
+})(FbjsEventName || (exports.FbjsEventName = FbjsEventName = {}));
 var Misc;
 (function (Misc) {
     /** Channel delimiter for MQTT channels. */
@@ -44,4 +44,4 @@ var Misc;
     Misc["NULL"] = "null";
     /** Reconnect interval for MQTT.js */
     Misc[Misc["RECONNECT_THROTTLE_MS"] = 1000] = "RECONNECT_THROTTLE_MS";
-})(Misc = exports.Misc || (exports.Misc = {}));
+})(Misc || (exports.Misc = Misc = {}));

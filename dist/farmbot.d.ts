@@ -1,10 +1,10 @@
 import * as Corpus from "./corpus";
-import { Client as MqttClient } from "mqtt";
+import { MqttClient } from "mqtt";
 import { Dictionary, Vector3 } from "./interfaces";
 import { ReadPin, WritePin } from ".";
 import { FarmBotInternalConfig as Conf, FarmbotConstructorParams } from "./config";
 import { ResourceAdapter } from "./resources/resource_adapter";
-declare type RpcResponse = Promise<Corpus.RpcOk | Corpus.RpcError>;
+type RpcResponse = Promise<Corpus.RpcOk | Corpus.RpcError>;
 /** Meta data that wraps an event callback */
 interface CallbackWrapper {
     once: boolean;

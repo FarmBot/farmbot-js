@@ -402,8 +402,8 @@ var Farmbot = /** @class */ (function () {
                 clean: true,
                 clientId: "FBJS-".concat(Farmbot.VERSION, "-").concat((0, util_1.uuid)()),
                 password: token,
-                protocolId: "MQIsdp",
-                protocolVersion: 3,
+                protocolId: "MQTT",
+                protocolVersion: 4,
                 reconnectPeriod: reconnectPeriod,
                 username: mqttUsername,
             });
@@ -454,7 +454,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "15.8.0";
+    Farmbot.VERSION = "15.8.1";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;

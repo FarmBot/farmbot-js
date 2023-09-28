@@ -1,7 +1,7 @@
 import { ALLOWED_MESSAGE_TYPES, ALLOWED_CHANNEL_NAMES, PlantStage, Color, Sequence, InternalFarmEventBodyItem } from "..";
 import { VariableDeclaration, ParameterDeclaration, ParameterApplication } from "../corpus";
-export declare type TimeUnit = "never" | "minutely" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
-export declare type ExecutableType = "Sequence" | "Regimen";
+export type TimeUnit = "never" | "minutely" | "hourly" | "daily" | "weekly" | "monthly" | "yearly";
+export type ExecutableType = "Sequence" | "Regimen";
 export declare enum ToolPulloutDirection {
     NONE = 0,
     POSITIVE_X = 1,
@@ -86,7 +86,7 @@ export interface SpecialPinBinding extends PinBindingBase {
     binding_type: PinBindingType.special;
     special_action: PinBindingSpecialAction;
 }
-export declare type PinBinding = StandardPinBinding | SpecialPinBinding;
+export type PinBinding = StandardPinBinding | SpecialPinBinding;
 export interface PlantTemplate extends ResourceBase {
     saved_garden_id: number;
     radius: number;
@@ -132,7 +132,7 @@ export interface WeedPointer extends BasePoint {
     plant_stage: PlantStage;
     radius: number;
 }
-export declare type Point = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
+export type Point = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
 /** Individual step that a regimen will execute at a point in time. */
 export interface RegimenItem {
     id?: number;
@@ -243,7 +243,7 @@ export interface DeviceAccountSettings extends ResourceBase {
     indoor: boolean;
     rpi: string | undefined;
 }
-export declare type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending" | "xy_alternating" | "yx_alternating" | "nn";
+export type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending" | "xy_alternating" | "yx_alternating" | "nn";
 interface PointGroupCriteria {
     day: {
         op: ">" | "<";
