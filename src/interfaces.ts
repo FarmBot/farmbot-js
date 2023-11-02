@@ -30,6 +30,7 @@ export type FirmwareHardware =
   | "arduino"
   | "express_k10"
   | "express_k11"
+  | "express_k12"
   | "farmduino_k14"
   | "farmduino_k15"
   | "farmduino_k16"
