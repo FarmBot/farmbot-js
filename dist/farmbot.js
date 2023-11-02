@@ -454,7 +454,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "15.8.2";
+    Farmbot.VERSION = "15.8.3";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
