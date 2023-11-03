@@ -333,7 +333,7 @@ var Farmbot = /** @class */ (function () {
                             var reason = (response.body || [])
                                 .map(function (x) { return x.args.message; })
                                 .join(", ");
-                            return reject(new Error("Problem sending RPC command: " + reason));
+                            return reject(new Error(reason));
                         default:
                             console.dir(response);
                             throw new Error("Got a bad CeleryScript node.");
@@ -454,7 +454,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "15.8.4";
+    Farmbot.VERSION = "15.8.5";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
