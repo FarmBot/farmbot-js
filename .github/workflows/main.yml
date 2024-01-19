@@ -16,6 +16,7 @@ jobs:
     - run: npm run build
     - run: npm run typecheck
     - run: npm test
-    - run: npm run coverage
-      env:
-        COVERALLS_REPO_TOKEN: OsZTi8qvDNHjOzoii1sSir7DZPpnZ2aCU
+    - name: Report Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        file: coverage/lcov.info

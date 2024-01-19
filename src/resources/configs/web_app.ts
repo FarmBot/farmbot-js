@@ -23,6 +23,7 @@ export interface WebAppConfig {
   display_trail: boolean;
   dynamic_map: boolean;
   enable_browser_speak: boolean;
+  enable_3d_electronics_box_top: boolean;
   encoder_figure: boolean;
   error_log: number;
   expand_step_options: boolean;
@@ -114,6 +115,7 @@ export type BooleanConfigKey =
   | "display_trail"
   | "dynamic_map"
   | "enable_browser_speak"
+  | "enable_3d_electronics_box_top"
   | "encoder_figure"
   | "expand_step_options"
   | "hide_sensors"
