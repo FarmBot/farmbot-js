@@ -31,7 +31,7 @@
       "sourceMap": false,
       "source": "src/farmbot_single_file.js",
       "engines": {
-        "node": ">=18.0"
+        "node": ">=20.0"
       }
     },
     "single": {
@@ -41,7 +41,7 @@
       "sourceMap": true,
       "source": "src/farmbot_single_file.js",
       "engines": {
-        "node": ">=18.0"
+        "node": ">=20.0"
       }
     },
     "types": {
@@ -50,7 +50,7 @@
       "sourceMap": false,
       "source": "src/index.ts",
       "engines": {
-        "node": ">=18.0"
+        "node": ">=20.0"
       }
     }
   },
