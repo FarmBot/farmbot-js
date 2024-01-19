@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/RickCarlino/farmbot-js.svg?branch=main)](https://travis-ci.org/RickCarlino/farmbot-js)
 [![Coverage Status](https://coveralls.io/repos/github/FarmBot/farmbot-js/badge.svg?branch=main)](https://coveralls.io/github/FarmBot/farmbot-js?branch=main)
 
 # FarmbotJS: Farmbot RPC wrapper
