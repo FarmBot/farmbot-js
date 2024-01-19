@@ -1,3 +1,5 @@
+[![npm](https://img.shields.io/npm/v/farmbot)](https://www.npmjs.com/package/farmbot?activeTab=versions)
+[![ci](https://github.com/FarmBot/farmbot-js/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/FarmBot/farmbot-js/actions?query=branch%3Amain)
 [![Coverage Status](https://coveralls.io/repos/github/FarmBot/farmbot-js/badge.svg?branch=main)](https://coveralls.io/github/FarmBot/farmbot-js?branch=main)
 
 # FarmbotJS: Farmbot RPC wrapper
@@ -38,7 +40,7 @@ Please raise an issue if you require support with other package managers.
 
 ## Login with an API Token
 
-Login using your API token from the [Farmbot Web App](http://my.farmbot.io).
+Login using your API token from the [Farmbot Web App](http://my.farm.bot).
 
 [Click here for instructions on how to generate an API token.](https://developer.farm.bot/docs/rest-api#section-generating-an-api-token)
 
