@@ -294,6 +294,9 @@ export interface DeviceAccountSettings extends ResourceBase {
   lng: number | undefined;
   indoor: boolean;
   rpi: string | undefined;
+  max_log_age_in_days: number;
+  max_sequence_count: number;
+  max_sequence_length: number;
 }
 
 export type PointGroupSortType =

@@ -242,6 +242,9 @@ export interface DeviceAccountSettings extends ResourceBase {
     lng: number | undefined;
     indoor: boolean;
     rpi: string | undefined;
+    max_log_age_in_days: number;
+    max_sequence_count: number;
+    max_sequence_length: number;
 }
 export type PointGroupSortType = "random" | "xy_ascending" | "xy_descending" | "yx_ascending" | "yx_descending" | "xy_alternating" | "yx_alternating" | "nn";
 interface PointGroupCriteria {
