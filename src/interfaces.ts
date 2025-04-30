@@ -35,6 +35,7 @@ export type FirmwareHardware =
   | "farmduino_k15"
   | "farmduino_k16"
   | "farmduino_k17"
+  | "farmduino_k18"
   | "farmduino";
 
 /** FarmBot motor and encoder positions. */

@@ -12,6 +12,7 @@ export interface WebAppConfig {
   confirm_step_deletion: boolean;
   crop_images: boolean;
   clip_image_layer: boolean;
+  dark_mode: boolean;
   debug_log: number;
   default_plant_depth: number;
   disable_animations: boolean;
@@ -64,6 +65,7 @@ export interface WebAppConfig {
   success_log: number;
   time_format_24_hour: boolean;
   time_format_seconds: boolean;
+  three_d_garden: boolean;
   user_interface_read_only_mode: boolean;
   view_celery_script: boolean;
   warn_log: number;
@@ -106,6 +108,7 @@ export type BooleanConfigKey =
   | "confirm_step_deletion"
   | "crop_images"
   | "clip_image_layer"
+  | "dark_mode"
   | "disable_animations"
   | "disable_emergency_unlock_confirmation"
   | "disable_i18n"
@@ -146,6 +149,7 @@ export type BooleanConfigKey =
   | "stub_config"
   | "time_format_24_hour"
   | "time_format_seconds"
+  | "three_d_garden"
   | "user_interface_read_only_mode"
   | "view_celery_script"
   | "x_axis_inverted"
