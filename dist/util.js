@@ -14,7 +14,8 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bufferToString = exports.stringToBuffer = void 0;
+exports.bufferToString = void 0;
+exports.stringToBuffer = stringToBuffer;
 __exportStar(require("./util/coordinate"), exports);
 __exportStar(require("./util/is_celery_script"), exports);
 __exportStar(require("./util/is_node"), exports);
@@ -26,7 +27,6 @@ function stringToBuffer(str) {
     var data16 = new Uint8Array(regular_array);
     return data16;
 }
-exports.stringToBuffer = stringToBuffer;
 function newDecoder() {
     if (typeof util !== "undefined" && util.TextDecoder) {
         return new util.TextDecoder();

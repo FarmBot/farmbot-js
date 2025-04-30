@@ -2,7 +2,7 @@ import { CeleryNode } from "..";
 
 const isObj = (o: unknown) => !!(o && typeof o === "object");
 const hasKind = (o: any) => typeof o.kind === "string";
-const hasArgs = (o: any) => isObj(o) && !!o.args;
+const hasArgs = (o: Record<string, any>) => isObj(o) && !!o.args;
 
 export function isCeleryScript(x: unknown): x is CeleryNode {
   return isObj(x) && hasKind(x) && hasArgs(x);

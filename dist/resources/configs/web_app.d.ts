@@ -12,6 +12,7 @@ export interface WebAppConfig {
     confirm_step_deletion: boolean;
     crop_images: boolean;
     clip_image_layer: boolean;
+    dark_mode: boolean;
     debug_log: number;
     default_plant_depth: number;
     disable_animations: boolean;
@@ -64,6 +65,7 @@ export interface WebAppConfig {
     success_log: number;
     time_format_24_hour: boolean;
     time_format_seconds: boolean;
+    three_d_garden: boolean;
     user_interface_read_only_mode: boolean;
     view_celery_script: boolean;
     warn_log: number;
@@ -75,4 +77,4 @@ export interface WebAppConfig {
 }
 export type NumberConfigKey = "id" | "device_id" | "assertion_log" | "beep_verbosity" | "busy_log" | "debug_log" | "error_log" | "fun_log" | "info_log" | "success_log" | "warn_log" | "bot_origin_quadrant" | "map_size_x" | "map_size_y" | "default_plant_depth" | "zoom_level";
 export type StringConfigKey = "created_at" | "go_button_axes" | "landing_page" | "photo_filter_begin" | "photo_filter_end" | "updated_at";
-export type BooleanConfigKey = "confirm_plant_deletion" | "confirm_sequence_deletion" | "confirm_step_deletion" | "crop_images" | "clip_image_layer" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved_sequences" | "discard_unsaved" | "display_map_missed_steps" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "enable_3d_electronics_box_top" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "highlight_modified_settings" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_advanced_settings" | "show_camera_view_area" | "show_uncropped_camera_view_area" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_missed_step_plot" | "show_pins" | "show_plants" | "show_points" | "show_soil_interpolation_map" | "show_sensor_readings" | "show_moisture_interpolation_map" | "show_spread" | "show_weeds" | "show_zones" | "stub_config" | "time_format_24_hour" | "time_format_seconds" | "user_interface_read_only_mode" | "view_celery_script" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";
+export type BooleanConfigKey = "confirm_plant_deletion" | "confirm_sequence_deletion" | "confirm_step_deletion" | "crop_images" | "clip_image_layer" | "dark_mode" | "disable_animations" | "disable_emergency_unlock_confirmation" | "disable_i18n" | "discard_unsaved_sequences" | "discard_unsaved" | "display_map_missed_steps" | "display_trail" | "dynamic_map" | "enable_browser_speak" | "enable_3d_electronics_box_top" | "encoder_figure" | "expand_step_options" | "hide_sensors" | "hide_webcam_widget" | "highlight_modified_settings" | "home_button_homing" | "legend_menu_open" | "raw_encoders" | "scaled_encoders" | "show_advanced_settings" | "show_camera_view_area" | "show_uncropped_camera_view_area" | "show_farmbot" | "show_first_party_farmware" | "show_historic_points" | "show_images" | "show_motor_plot" | "show_missed_step_plot" | "show_pins" | "show_plants" | "show_points" | "show_soil_interpolation_map" | "show_sensor_readings" | "show_moisture_interpolation_map" | "show_spread" | "show_weeds" | "show_zones" | "stub_config" | "time_format_24_hour" | "time_format_seconds" | "three_d_garden" | "user_interface_read_only_mode" | "view_celery_script" | "x_axis_inverted" | "xy_swap" | "y_axis_inverted" | "z_axis_inverted";

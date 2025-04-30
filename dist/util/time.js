@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.timestamp = void 0;
+exports.timestamp = timestamp;
 /** Returns a timestamp in ms. */
 function timestamp() {
     return Math.round((new Date()).getTime() / 100);
 }
-exports.timestamp = timestamp;
 // type RejectFn = (reason?: any) => void;
 // type ResolveFn<T> = (value?: T | PromiseLike<T>) => void;
 // interface Executor<T> {

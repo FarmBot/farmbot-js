@@ -57,7 +57,9 @@ export declare class Farmbot {
     resetOS: () => void;
     /** WARNING: will reset all firmware (hardware) settings! */
     resetMCU: () => RpcResponse;
-    flashFirmware: (firmware_name: string) => RpcResponse;
+    flashFirmware: (
+    /** one of: "arduino"|"express_k10"|"farmduino_k14"|"farmduino" */
+    firmware_name: string) => RpcResponse;
     /**
      * Lock the bot from moving (E-STOP). Turns off peripherals and motors. This
      * also will pause running regimens and cause any running sequences to exit.
@@ -68,7 +70,11 @@ export declare class Farmbot {
     /** Execute a sequence by its ID on the FarmBot API. */
     execSequence: (sequence_id: number, body?: Corpus.ParameterApplication[]) => RpcResponse;
     /** Run an installed Farmware plugin on the SD Card. */
-    execScript: (label: string, envVars?: Corpus.Pair[] | undefined) => RpcResponse;
+    execScript: (
+    /** Name of the Farmware. */
+    label: string, 
+    /** Optional ENV vars to pass the Farmware. */
+    envVars?: Corpus.Pair[] | undefined) => RpcResponse;
     /** Bring a particular axis (or all of them) to position 0 in Z Y X order. */
     home: (args: {
         speed: number;
@@ -83,11 +89,11 @@ export declare class Farmbot {
     }) => RpcResponse;
     /** Move FarmBot to an absolute point. */
     moveAbsolute: (args: Vector3 & {
-        speed?: number | undefined;
+        speed?: number;
     }) => RpcResponse;
     /** Move FarmBot to position relative to its current position. */
     moveRelative: (args: Vector3 & {
-        speed?: number | undefined;
+        speed?: number;
     }) => RpcResponse;
     /** Set a GPIO pin to a particular value. */
     writePin: (args: WritePin["args"]) => RpcResponse;

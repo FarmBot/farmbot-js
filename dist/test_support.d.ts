@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 import { Farmbot } from ".";
 import { FarmbotLike } from "./resources/interfaces";
 export declare const FAKE_TOKEN: string;

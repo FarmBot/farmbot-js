@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isNode = void 0;
+exports.isNode = isNode;
 function isNode() {
     return typeof window === "undefined";
 }
-exports.isNode = isNode;
