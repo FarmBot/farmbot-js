@@ -398,7 +398,7 @@ var Farmbot = /** @class */ (function () {
         this.connect = function () {
             var _a = _this.config, mqttUsername = _a.mqttUsername, token = _a.token, mqttServer = _a.mqttServer;
             var reconnectPeriod = constants_1.Misc.RECONNECT_THROTTLE_MS;
-            var client = (0, mqtt_1.connect)(mqttServer, {
+            var client = mqtt_1.default.connect(mqttServer, {
                 clean: true,
                 clientId: "FBJS-".concat(Farmbot.VERSION, "-").concat((0, util_1.uuid)()),
                 password: token,
@@ -454,7 +454,7 @@ var Farmbot = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Farmbot.VERSION = "15.8.9";
+    Farmbot.VERSION = "15.8.10";
     return Farmbot;
 }());
 exports.Farmbot = Farmbot;
