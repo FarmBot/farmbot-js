@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "15.8.11",
+  "version": "15.9.0",
   "description": "Farmbot Javascript client.",
   "browserslist": "defaults",
   "scripts": {
@@ -11,14 +11,14 @@
   "author": "FarmBot.io, Rick Carlino",
   "license": "MIT",
   "devDependencies": {
-    "@parcel/packager-ts": "2.14.4",
-    "@parcel/transformer-typescript-tsc": "2.14.4",
-    "@parcel/transformer-typescript-types": "2.14.4",
+    "@parcel/packager-ts": "2.15.4",
+    "@parcel/transformer-typescript-tsc": "2.15.4",
+    "@parcel/transformer-typescript-types": "2.15.4",
     "@types/jest": "29.5.14",
-    "@types/node": "22.15.14",
+    "@types/node": "24.1.0",
     "@types/ws": "8.18.1",
-    "parcel": "2.14.4",
-    "ts-jest": "29.3.2",
+    "parcel": "2.15.4",
+    "ts-jest": "29.4.0",
     "typescript": "5.8.3"
   },
   "main": "dist/index.js",
@@ -54,7 +54,7 @@
     }
   },
   "dependencies": {
-    "mqtt": "5.12.1"
+    "mqtt": "5.13.3"
   },
   "repository": {
     "type": "git",

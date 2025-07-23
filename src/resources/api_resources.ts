@@ -229,6 +229,7 @@ export interface Telemetry {
 export interface Tool extends ResourceBase {
   name?: string;
   flow_rate_ml_per_s: number;
+  seeder_tip_z_offset: number;
 }
 
 export interface WebcamFeed extends ResourceBase {
