@@ -8,16 +8,18 @@ export type CSString = string;
 export type ALLOWED_ASSERTION_TYPES = "abort" | "abort_recover" | "continue" | "recover";
 export type ALLOWED_AXIS = "all" | "x" | "y" | "z";
 export type ALLOWED_CHANNEL_NAMES = "email" | "espeak" | "ticker" | "toast";
+export type ALLOWED_GROUPING = "x" | "x,y" | "x,y,z" | "x,yz" | "x,z" | "x,z,y" | "xy" | "xy,z" | "xyz" | "xz" | "xz,y" | "y" | "y,x" | "y,x,z" | "y,xz" | "y,z" | "y,z,x" | "yz" | "yz,x" | "z" | "z,x" | "z,x,y" | "z,xy" | "z,y" | "z,y,x";
 export type ALLOWED_MESSAGE_TYPES = "assertion" | "busy" | "debug" | "error" | "fun" | "info" | "success" | "warn";
 export type ALLOWED_OPS = "<" | ">" | "is" | "is_undefined" | "not";
 export type ALLOWED_PACKAGES = "arduino_firmware" | "farmbot_os";
 export type ALLOWED_PIN_IO_MODES = "input" | "input_pullup" | "output";
 export type ALLOWED_PIN_MODES = 0 | 1;
+export type ALLOWED_ROUTE = "high" | "in_order" | "low";
 export type ALLOWED_SPECIAL_VALUE = "current_location" | "safe_height" | "soil_height";
 export type AllowedPinTypes = "BoxLed3" | "BoxLed4" | "Peripheral" | "Sensor";
 export type Color = "blue" | "gray" | "green" | "orange" | "pink" | "purple" | "red" | "yellow";
 export type DataChangeType = "add" | "remove" | "update";
-export type LegalArgString = "_else" | "_then" | "assertion_type" | "axis" | "axis_operand" | "channel_name" | "data_value" | "default_value" | "depth" | "label" | "lhs" | "locals" | "location" | "lua" | "message" | "message_type" | "milliseconds" | "number" | "offset" | "op" | "order" | "package" | "pin_id" | "pin_io_mode" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "point_group_id" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource" | "resource_id" | "resource_type" | "rhs" | "sequence_id" | "speed" | "speed_setting" | "string" | "tool_id" | "url" | "value" | "variance" | "version" | "x" | "y" | "z";
+export type LegalArgString = "_else" | "_then" | "assertion_type" | "axis" | "axis_operand" | "channel_name" | "data_value" | "default_value" | "depth" | "grouping" | "label" | "lhs" | "locals" | "location" | "lua" | "message" | "message_type" | "milliseconds" | "number" | "offset" | "op" | "package" | "pin_id" | "pin_io_mode" | "pin_mode" | "pin_number" | "pin_type" | "pin_value" | "point_group_id" | "pointer_id" | "pointer_type" | "priority" | "radius" | "resource" | "resource_id" | "resource_type" | "rhs" | "route" | "sequence_id" | "speed" | "speed_setting" | "string" | "tool_id" | "url" | "value" | "variance" | "version" | "x" | "y" | "z";
 export type LegalKindString = "Assertion" | "AxisAddition" | "AxisOrder" | "AxisOverwrite" | "Calibrate" | "ChangeOwnership" | "Channel" | "CheckUpdates" | "Coordinate" | "EmergencyLock" | "EmergencyUnlock" | "Execute" | "ExecuteScript" | "Explanation" | "FactoryReset" | "FindHome" | "FlashFirmware" | "Home" | "Identifier" | "If" | "InstallFarmware" | "InstallFirstPartyFarmware" | "InternalEntryPoint" | "InternalFarmEvent" | "InternalRegimen" | "LocationPlaceholder" | "Lua" | "Move" | "MoveAbsolute" | "MoveRelative" | "NamedPin" | "Nothing" | "NumberPlaceholder" | "Numeric" | "Pair" | "ParameterApplication" | "ParameterDeclaration" | "Point" | "PointGroup" | "PowerOff" | "Random" | "ReadPin" | "ReadStatus" | "Reboot" | "RemoveFarmware" | "Resource" | "ResourcePlaceholder" | "ResourceUpdate" | "RpcError" | "RpcOk" | "RpcRequest" | "SafeZ" | "ScopeDeclaration" | "SendMessage" | "Sequence" | "SetPinIoMode" | "SetServoAngle" | "SetUserEnv" | "SpecialValue" | "SpeedOverwrite" | "Sync" | "TakePhoto" | "Text" | "TextPlaceholder" | "TogglePin" | "Tool" | "UpdateFarmware" | "UpdateResource" | "VariableDeclaration" | "Wait" | "WritePin" | "Zero";
 export type LegalSequenceKind = "_if" | "assertion" | "calibrate" | "change_ownership" | "check_updates" | "emergency_lock" | "emergency_unlock" | "execute" | "execute_script" | "factory_reset" | "find_home" | "flash_firmware" | "home" | "install_farmware" | "install_first_party_farmware" | "lua" | "move" | "move_absolute" | "move_relative" | "power_off" | "read_pin" | "read_status" | "reboot" | "remove_farmware" | "send_message" | "set_pin_io_mode" | "set_servo_angle" | "set_user_env" | "sync" | "take_photo" | "toggle_pin" | "update_farmware" | "update_resource" | "wait" | "write_pin" | "zero";
 export type PlantStage = "active" | "harvested" | "pending" | "planned" | "planted" | "removed" | "sprouted";
@@ -851,7 +853,8 @@ export interface AxisOrder {
     comment?: string | undefined;
     kind: "axis_order";
     args: {
-        order: CSString;
+        grouping: ALLOWED_GROUPING;
+        route: ALLOWED_ROUTE;
     };
     body?: AxisOrderBodyItem[] | undefined;
 }
