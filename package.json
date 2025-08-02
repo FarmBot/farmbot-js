@@ -1,6 +1,6 @@
 {
   "name": "farmbot",
-  "version": "15.9.1",
+  "version": "15.9.2",
   "description": "Farmbot Javascript client.",
   "browserslist": "defaults",
   "scripts": {

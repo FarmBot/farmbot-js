@@ -184,6 +184,7 @@ export interface FullConfiguration {
   safe_height?: number;
   soil_height?: number;
   gantry_height?: number;
+  default_axis_order: string;
 }
 
 /** FarmBot OS configs. */

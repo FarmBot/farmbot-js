@@ -18,6 +18,7 @@ export interface FbosConfig {
   safe_height?: number;
   soil_height?: number;
   gantry_height?: number;
+  default_axis_order: string;
 }
 
 export type NumberConfigKey =
@@ -31,6 +32,7 @@ export type NumberConfigKey =
 export type StringConfigKey =
   | "firmware_hardware"
   | "firmware_path"
+  | "default_axis_order"
   | "update_channel";
 
 export type BooleanConfigKey =

@@ -18,7 +18,8 @@ export interface FbosConfig {
     safe_height?: number;
     soil_height?: number;
     gantry_height?: number;
+    default_axis_order: string;
 }
 export type NumberConfigKey = "id" | "device_id" | "safe_height" | "soil_height" | "gantry_height" | "boot_sequence_id";
-export type StringConfigKey = "firmware_hardware" | "firmware_path" | "update_channel";
+export type StringConfigKey = "firmware_hardware" | "firmware_path" | "default_axis_order" | "update_channel";
 export type BooleanConfigKey = "arduino_debug_messages" | "firmware_debug_log" | "firmware_input_log" | "firmware_output_log" | "os_auto_update" | "sequence_body_log" | "sequence_complete_log" | "sequence_init_log";
