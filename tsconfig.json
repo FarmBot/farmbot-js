@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "declaration": true,
     "strict": true,
@@ -9,6 +9,7 @@
     "noImplicitAny": true,
     "allowUnreachableCode": false,
     "strictNullChecks": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "lib": [
       "es2018",
@@ -16,7 +17,8 @@
     ],
   },
   "exclude": [
-    "*__tests__*",
+    "**/__tests__/**",
+    "src/test_support.ts",
     "node_modules",
     "typings",
     "dist"

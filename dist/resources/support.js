@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolveOrReject = exports.internalError = exports.outboundChanFor = void 0;
-var outboundChanFor = function (username, op, kind, uuid, id) {
-    if (id === void 0) { id = 0; }
-    var segments = ["bot", username, "resources_v0", op, kind, uuid, id];
+const outboundChanFor = (username, op, kind, uuid, id = 0) => {
+    const segments = [`bot`, username, `resources_v0`, op, kind, uuid, id];
     return segments.join("/");
 };
 exports.outboundChanFor = outboundChanFor;
@@ -18,7 +17,7 @@ exports.internalError = {
         }
     ]
 };
-var resolveOrReject = function (res, rej) {
-    return function (m) { return (m.kind == "rpc_ok" ? res : rej)(m); };
+const resolveOrReject = (res, rej) => {
+    return (m) => (m.kind == "rpc_ok" ? res : rej)(m);
 };
 exports.resolveOrReject = resolveOrReject;

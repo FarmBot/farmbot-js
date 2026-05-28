@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isCeleryScript = isCeleryScript;
 exports.hasLabel = hasLabel;
-var isObj = function (o) { return !!(o && typeof o === "object"); };
-var hasKind = function (o) { return typeof o.kind === "string"; };
-var hasArgs = function (o) { return isObj(o) && !!o.args; };
+const isObj = (o) => !!(o && typeof o === "object");
+const hasKind = (o) => typeof o.kind === "string";
+const hasArgs = (o) => isObj(o) && !!o.args;
 function isCeleryScript(x) {
     return isObj(x) && hasKind(x) && hasArgs(x);
 }

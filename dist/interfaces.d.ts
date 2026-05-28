@@ -21,9 +21,6 @@ export interface BotStateTree {
     process_info: {
         farmwares: Dictionary<FarmwareManifest>;
     };
-    gpio_registry: {
-        [pin: number]: string | undefined;
-    } | undefined;
 }
 /** Microcontroller board. */
 export type FirmwareHardware = "none" | "arduino" | "express_k10" | "express_k11" | "express_k12" | "farmduino_k14" | "farmduino_k15" | "farmduino_k16" | "farmduino_k17" | "farmduino_k18" | "farmduino";

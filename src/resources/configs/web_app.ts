@@ -66,8 +66,10 @@ export interface WebAppConfig {
   time_format_24_hour: boolean;
   time_format_seconds: boolean;
   three_d_garden: boolean;
+  top_down_view: boolean;
   user_interface_read_only_mode: boolean;
   view_celery_script: boolean;
+  viewpoint_heading: number;
   warn_log: number;
   x_axis_inverted: boolean;
   xy_swap: boolean;
@@ -92,6 +94,7 @@ export type NumberConfigKey =
   | "map_size_x"
   | "map_size_y"
   | "default_plant_depth"
+  | "viewpoint_heading"
   | "zoom_level";
 
 export type StringConfigKey =
@@ -150,6 +153,7 @@ export type BooleanConfigKey =
   | "time_format_24_hour"
   | "time_format_seconds"
   | "three_d_garden"
+  | "top_down_view"
   | "user_interface_read_only_mode"
   | "view_celery_script"
   | "x_axis_inverted"

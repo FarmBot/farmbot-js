@@ -23,8 +23,8 @@ __exportStar(require("./util/pick"), exports);
 __exportStar(require("./util/rpc_request"), exports);
 __exportStar(require("./util/uuid"), exports);
 function stringToBuffer(str) {
-    var regular_array = str.split("").map(function (x) { return x.charCodeAt(0); });
-    var data16 = new Uint8Array(regular_array);
+    const regular_array = str.split("").map(x => x.charCodeAt(0));
+    const data16 = new Uint8Array(regular_array);
     return data16;
 }
 function newDecoder() {
@@ -35,17 +35,17 @@ function newDecoder() {
         return new window.TextDecoder();
     }
     return {
-        decode: function (buffer) {
-            var chars = [];
-            buffer.forEach(function (x) { return chars.push(String.fromCharCode(x)); });
+        decode(buffer) {
+            const chars = [];
+            buffer.forEach(x => chars.push(String.fromCharCode(x)));
             return chars.join("");
         }
     };
 }
-var td = newDecoder();
+const td = newDecoder();
 /** We originally called buffer.toString(),
  *  but that suffers from inconsistent behavior
  * between environments, leading to testing
  * difficulty. */
-var bufferToString = function (b) { return td.decode(b); };
+const bufferToString = (b) => td.decode(b);
 exports.bufferToString = bufferToString;
