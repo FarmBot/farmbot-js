@@ -11,6 +11,10 @@
     "strictNullChecks": true,
     "rootDir": "./src",
     "outDir": "./dist",
+    "types": [
+      "jest",
+      "node"
+    ],
     "lib": [
       "es2018",
       "dom"

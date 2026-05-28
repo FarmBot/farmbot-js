@@ -42,7 +42,7 @@ describe("FarmBot", () => {
       },
       body: []
     });
-    expect(boom).toThrowError("Not connected to server");
+    expect(boom).toThrow("Not connected to server");
   });
 
   it("uses the bot object to *BROADCAST* simple RPCs", () => {
@@ -99,8 +99,8 @@ describe("FarmBot", () => {
       () => bot.setServoAngle({ pin_number: 0, pin_value: 90 });
     const bad_angle =
       () => bot.setServoAngle({ pin_number: 4, pin_value: 900 });
-    expect(bad_angle).toThrowError("Pin value outside of 0...180 range");
-    expect(bad_pin).toThrowError("Servos only work on pins 4 and 5");
+    expect(bad_angle).toThrow("Pin value outside of 0...180 range");
+    expect(bad_pin).toThrow("Servos only work on pins 4 and 5");
   });
 
   it("uses the bot object to *SEND* simple RPCs", () => {

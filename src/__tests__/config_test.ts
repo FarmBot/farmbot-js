@@ -10,7 +10,7 @@ describe("generateConfig", () => {
   it("crashes when given malformed token", () => {
     console.warn = jest.fn();
     expect(() => generateConfig({ token: "no.no.no" }))
-      .toThrowError("Unable to parse token. Is it properly formatted?");
+      .toThrow("Unable to parse token. Is it properly formatted?");
   });
 
   it("parses a properly formed token with default values", () => {
@@ -33,8 +33,8 @@ describe("generateConfig", () => {
     const boom = () => generateConfig({ token: "{}" });
     // TODO
     // expect(global.atob).toBeFalsy();
-    // expect(boom).toThrowError(FIX_ATOB_FIRST);
+    // expect(boom).toThrow(FIX_ATOB_FIRST);
     FIX_ATOB_FIRST;
-    expect(boom).toThrowError();
+    expect(boom).toThrow();
   });
 });
