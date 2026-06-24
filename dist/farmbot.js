@@ -441,4 +441,4 @@ class Farmbot {
     }
 }
 exports.Farmbot = Farmbot;
-Farmbot.VERSION = "15.9.4";
+Farmbot.VERSION = "15.9.5";
