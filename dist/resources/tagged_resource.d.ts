@@ -1,9 +1,9 @@
-import { Curve, Crop, DeviceAccountSettings, FarmEvent, FarmwareEnv, FarmwareInstallation, Folder, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, PointGroup, Regimen, SavedGarden, Sensor, SensorReading, SequenceResource, Telemetry, Tool, ToolSlotPointer, User, WebcamFeed, WeedPointer, WizardStepResult } from "./api_resources";
+import { Curve, Crop, DeviceAccountSettings, FarmEvent, FarmwareEnv, FarmwareInstallation, Folder, GenericPointer, Image, Log, Peripheral, PinBinding, PlantPointer, PlantTemplate, PointGroup, Regimen, SavedGarden, SceneObject, Sensor, SensorReading, SequenceResource, Telemetry, Tool, ToolSlotPointer, User, WebcamFeed, WeedPointer, WizardStepResult } from "./api_resources";
 import { FbosConfig } from "./configs/fbos";
 import { FirmwareConfig } from "./configs/firmware";
 import { WebAppConfig } from "./configs/web_app";
 import { Alert } from "../interfaces";
-export type ResourceName = "Alert" | "Crop" | "Curve" | "Device" | "FarmEvent" | "FarmwareEnv" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Folder" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "PointGroup" | "Regimen" | "SavedGarden" | "Sensor" | "SensorReading" | "Sequence" | "Telemetry" | "Tool" | "User" | "WebAppConfig" | "WizardStepResult" | "WebcamFeed";
+export type ResourceName = "Alert" | "Crop" | "Curve" | "Device" | "FarmEvent" | "FarmwareEnv" | "FarmwareInstallation" | "FbosConfig" | "FirmwareConfig" | "Folder" | "Image" | "Log" | "Peripheral" | "PinBinding" | "Plant" | "PlantTemplate" | "Point" | "PointGroup" | "Regimen" | "SavedGarden" | "SceneObject" | "Sensor" | "SensorReading" | "Sequence" | "Telemetry" | "Tool" | "User" | "WebAppConfig" | "WizardStepResult" | "WebcamFeed";
 export interface TaggedResourceBase {
     kind: ResourceName;
     /** Unique identifier and index key.
@@ -30,7 +30,7 @@ export interface RestResource<T extends ResourceName, U extends object> extends 
     kind: T;
     body: U;
 }
-export type TaggedResource = TaggedAlert | TaggedCrop | TaggedCurve | TaggedDevice | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedFolder | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedPointGroup | TaggedRegimen | TaggedSavedGarden | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTelemetry | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWizardStepResult | TaggedWebcamFeed;
+export type TaggedResource = TaggedAlert | TaggedCrop | TaggedCurve | TaggedDevice | TaggedFarmEvent | TaggedFarmwareEnv | TaggedFarmwareInstallation | TaggedFbosConfig | TaggedFirmwareConfig | TaggedFolder | TaggedImage | TaggedLog | TaggedPeripheral | TaggedPinBinding | TaggedPlantTemplate | TaggedPoint | TaggedPointGroup | TaggedRegimen | TaggedSavedGarden | TaggedSceneObject | TaggedSensor | TaggedSensorReading | TaggedSequence | TaggedTelemetry | TaggedTool | TaggedUser | TaggedWebAppConfig | TaggedWizardStepResult | TaggedWebcamFeed;
 type PointUnion = GenericPointer | PlantPointer | ToolSlotPointer | WeedPointer;
 export type TaggedAlert = RestResource<"Alert", Alert>;
 export type TaggedCrop = RestResource<"Crop", Crop>;
@@ -53,6 +53,7 @@ export type TaggedPoint = RestResource<"Point", PointUnion>;
 export type TaggedPointGroup = RestResource<"PointGroup", PointGroup>;
 export type TaggedRegimen = RestResource<"Regimen", Regimen>;
 export type TaggedSavedGarden = RestResource<"SavedGarden", SavedGarden>;
+export type TaggedSceneObject = RestResource<"SceneObject", SceneObject>;
 export type TaggedSensor = RestResource<"Sensor", Sensor>;
 export type TaggedSensorReading = RestResource<"SensorReading", SensorReading>;
 export type TaggedSequence = RestResource<"Sequence", SequenceResource>;

@@ -16,6 +16,7 @@ import {
   PointGroup,
   Regimen,
   SavedGarden,
+  SceneObject,
   Sensor,
   SensorReading,
   SequenceResource,
@@ -53,6 +54,7 @@ export type ResourceName =
   | "PointGroup"
   | "Regimen"
   | "SavedGarden"
+  | "SceneObject"
   | "Sensor"
   | "SensorReading"
   | "Sequence"
@@ -113,6 +115,7 @@ export type TaggedResource =
   | TaggedPointGroup
   | TaggedRegimen
   | TaggedSavedGarden
+  | TaggedSceneObject
   | TaggedSensor
   | TaggedSensorReading
   | TaggedSequence
@@ -150,6 +153,7 @@ export type TaggedPoint = RestResource<"Point", PointUnion>;
 export type TaggedPointGroup = RestResource<"PointGroup", PointGroup>;
 export type TaggedRegimen = RestResource<"Regimen", Regimen>;
 export type TaggedSavedGarden = RestResource<"SavedGarden", SavedGarden>;
+export type TaggedSceneObject = RestResource<"SceneObject", SceneObject>;
 export type TaggedSensor = RestResource<"Sensor", Sensor>;
 export type TaggedSensorReading = RestResource<"SensorReading", SensorReading>;
 export type TaggedSequence = RestResource<"Sequence", SequenceResource>;

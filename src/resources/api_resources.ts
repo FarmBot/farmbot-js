@@ -334,3 +334,20 @@ export interface WizardStepResult extends ResourceBase {
   answer?: boolean;
   outcome?: string;
 }
+
+export interface SceneObject extends ResourceBase {
+  name: string;
+  texture: string;
+  shape: string;
+  color: string;
+  x_origin: string;
+  y_origin: string;
+  z_origin: string;
+  x_center: number;
+  y_center: number;
+  z_base: number;
+  x_size: number;
+  y_size: number;
+  z_size: number;
+  show: boolean;
+}
