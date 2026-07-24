@@ -349,5 +349,6 @@ export interface SceneObject extends ResourceBase {
   x_size: number;
   y_size: number;
   z_size: number;
+  rotation: number;
   show: boolean;
 }
